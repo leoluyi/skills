@@ -1,6 +1,6 @@
 ---
 name: rfp-writing
-description: Review and write technical RFP documents in formal, plain Chinese. Catches structural issues, redundancy, AI-isms, and vague language.
+description: Use ONLY when the user explicitly asks to write or review an RFP (Request for Proposal) or formal requirements specification (需求規格書 / 需求規劃 / 招標規格). Do NOT invoke for general technical documents — migration plans, runbooks, ADR/ARB, architecture docs, meeting minutes, design specs, or any other formal Chinese technical writing. The structural rules (redundancy elimination, appendix bloat, thin section consolidation) are tuned for RFP conventions and will misfire on other doc types.
 ---
 
 # Technical RFP Writing & Review
@@ -9,9 +9,24 @@ Review or draft technical RFP documents. Enforces clear structure, eliminates re
 
 ## When to Use
 
-- Reviewing or editing an existing RFP
-- Drafting new RFP sections
-- Auditing RFP language quality
+Trigger only when the user's request explicitly names one of these artifacts:
+
+- RFP (Request for Proposal) — reviewing, drafting, or section editing
+- 需求規格書 / 需求規劃書 / 招標規格書 / 招標文件
+- Vendor requirement specification being sent out for bidding
+
+## When NOT to Use
+
+The following are adjacent but distinct — each has its own conventions that conflict with RFP rules:
+
+- Migration plans, test plans, deployment plans
+- Runbooks, SOPs, operational procedures
+- ADR / ARB / architecture decision records
+- Design docs, technical specifications (internal)
+- Meeting minutes, decision memos, stakeholder pre-reads
+- General technical documentation (README, onboarding, API docs)
+
+For general formal Chinese writing discipline (avoiding AI-isms), invoke `avoid-ai-writing` or `clean-ai-writing` instead. Those skills apply broadly; this one does not.
 
 ## Review Checklist
 
