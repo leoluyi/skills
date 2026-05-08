@@ -3,8 +3,59 @@
   "evals": [
     {
       "id": 1,
-      "prompt": "[TODO: realistic prompt]",
-      "expected_output": "[TODO]"
+      "category": "positive/zh-tw/review",
+      "prompt": "幫我 review 這份 LLM 推論平台的需求規格書，看看章節擺放、附錄是否灌水、有沒有冗贅段落需要合併。",
+      "expected_trigger": true
+    },
+    {
+      "id": 2,
+      "category": "positive/zh-tw/draft-section",
+      "prompt": "我要寫一份地端 Kubernetes 平台的招標規格書，幫我擬第三章「部署與發布」底下的需求清單，要含金絲雀部署與自動回滾。",
+      "expected_trigger": true
+    },
+    {
+      "id": 3,
+      "category": "positive/en/draft",
+      "prompt": "Help me draft an RFP for a vendor-supplied document indexing platform. Output should be Traditional Chinese, formal RFP style, with a section on storage and observability.",
+      "expected_trigger": true
+    },
+    {
+      "id": 4,
+      "category": "positive/zh-tw/section-edit",
+      "prompt": "這份 RFP 的 3.3 節寫得太散，幫我整併，並檢查與附錄 A 的引用是否一致。",
+      "expected_trigger": true
+    },
+    {
+      "id": 5,
+      "category": "negative/migration-plan",
+      "prompt": "幫我寫一份從 Oracle 11g 遷移到 PostgreSQL 16 的 migration plan，要包含切換步驟、驗證點與回滾流程。",
+      "expected_trigger": false
+    },
+    {
+      "id": 6,
+      "category": "negative/adr",
+      "prompt": "幫我寫一份 ADR，記錄我們為什麼選 Kafka 而不是 SQS，要含 context、decision、consequences。",
+      "expected_trigger": false
+    },
+    {
+      "id": 7,
+      "category": "negative/meeting-minutes",
+      "prompt": "幫我整理今天架構審查會議的紀錄，列出決議事項與後續行動項。",
+      "expected_trigger": false
+    },
+    {
+      "id": 8,
+      "category": "negative/general-formal-zh",
+      "prompt": "幫我潤飾這份內部技術文件，把 AI 味的詞彙（確保、賦能、進而那種）拿掉，改成正式但人話的中文。",
+      "expected_trigger": false,
+      "note": "Should route to clean-ai-writing / avoid-ai-writing, not rfp-writing."
+    },
+    {
+      "id": 9,
+      "category": "negative/vendor-proposal",
+      "prompt": "我們公司要回應客戶的 RFP，幫我寫投標提案第二章的解決方案說明。",
+      "expected_trigger": false,
+      "note": "Vendor-side proposal authoring is the inverse direction; rfp-writing is for the RFP issuer, not the responder."
     }
   ]
 }

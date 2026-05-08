@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: $(basename "$0") <skill-name>" >&2
+  echo "       env: ANTHROPIC_API_KEY required" >&2
+  exit 1
+fi
+
+SKILL_NAME="$1"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SKILL_MD="$REPO_ROOT/skills/$SKILL_NAME/SKILL.md"
+PROMPTS_FILE="$REPO_ROOT/evals/$SKILL_NAME/prompts.json"
+MODEL="${EVAL_MODEL:-claude-haiku-4-5}"
+
+[[ -n "${ANTHROPIC_API_KEY:-}" ]] || { echo "error: ANTHROPIC_API_KEY not set" >&2; exit 1; }
+command -v jq   >/dev/null || { echo "error: jq required" >&2; exit 1; }
+command -v curl >/dev/null || { echo "error: curl required" >&2; exit 1; }
+[[ -f "$SKILL_MD" ]]     || { echo "error: missing $SKILL_MD" >&2; exit 1; }
+[[ -f "$PROMPTS_FILE" ]] || { echo "error: missing $PROMPTS_FILE" >&2; exit 1; }
+
+# Extract description from YAML frontmatter (single-line scalar only).
+# Multi-line descriptions are not supported; flatten before running.
+DESCRIPTION=$(awk '
+  /^---$/ { fence++; if (fence == 2) exit; next }
+  fence == 1 && /^description:/ {
+    sub(/^description:[[:space:]]*/, "")
+    print
+    exit
+  }
+' "$SKILL_MD")
+
+[[ -n "$DESCRIPTION" ]] || { echo "error: no description in $SKILL_MD" >&2; exit 1; }
+
+SYSTEM_PROMPT="You are Claude Code's skill router. Given the user's message, decide whether the named skill should be invoked based on its description.
+
+Skill: $SKILL_NAME
+Description: $DESCRIPTION
+
+Call invoke_skill with name=\"$SKILL_NAME\" if the description's trigger conditions are met by the user's message. Otherwise call invoke_skill with name=\"none\". Be strict: follow the description's exclusions verbatim."
+
+TOOLS=$(jq -n --arg name "$SKILL_NAME" '[
+  {
+    name: "invoke_skill",
+    description: "Pick which skill (if any) handles this user message",
+    input_schema: {
+      type: "object",
+      properties: {
+        name: { type: "string", enum: [$name, "none"] }
+      },
+      required: ["name"]
+    }
+  }
+]')
+
+pass=0
+fail=0
+errors=0
+fail_ids=()
+
+while IFS= read -r entry; do
+  id=$(jq -r '.id' <<<"$entry")
+  category=$(jq -r '.category' <<<"$entry")
+  prompt=$(jq -r '.prompt' <<<"$entry")
+  expected=$(jq -r '.expected_trigger' <<<"$entry")
+
+  payload=$(jq -n \
+    --arg model "$MODEL" \
+    --arg system "$SYSTEM_PROMPT" \
+    --argjson tools "$TOOLS" \
+    --arg user "$prompt" \
+    '{
+      model: $model,
+      max_tokens: 256,
+      system: $system,
+      tools: $tools,
+      tool_choice: { type: "any" },
+      messages: [{ role: "user", content: $user }]
+    }')
+
+  response=$(curl -sS https://api.anthropic.com/v1/messages \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "content-type: application/json" \
+    -d "$payload")
+
+  choice=$(jq -r '.content[]? | select(.type == "tool_use") | .input.name // empty' <<<"$response")
+
+  if [[ -z "$choice" ]]; then
+    err=$(jq -r '.error.message // "no tool_use in response"' <<<"$response")
+    printf "[%s] ERROR (%s) — %s\n" "$id" "$category" "$err" >&2
+    errors=$((errors + 1))
+    fail_ids+=("$id")
+    continue
+  fi
+
+  actual=false
+  [[ "$choice" == "$SKILL_NAME" ]] && actual=true
+
+  if [[ "$actual" == "$expected" ]]; then
+    printf "[%s] PASS  expected=%-5s actual=%-5s  %s\n" "$id" "$expected" "$actual" "$category"
+    pass=$((pass + 1))
+  else
+    printf "[%s] FAIL  expected=%-5s actual=%-5s  %s\n" "$id" "$expected" "$actual" "$category"
+    printf "       prompt: %.120s\n" "$prompt"
+    fail=$((fail + 1))
+    fail_ids+=("$id")
+  fi
+done < <(jq -c '.evals[]' "$PROMPTS_FILE")
+
+total=$((pass + fail + errors))
+echo "---"
+printf "model: %s   total: %d   pass: %d   fail: %d   error: %d\n" "$MODEL" "$total" "$pass" "$fail" "$errors"
+if [[ ${#fail_ids[@]} -gt 0 ]]; then
+  printf "failing ids: %s\n" "${fail_ids[*]}"
+fi
+
+[[ $fail -eq 0 && $errors -eq 0 ]]
