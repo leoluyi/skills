@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+DAYS="${1:-90}"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECTS_DIR="${HOME}/.claude/projects"
+
+if [[ ! -d "$PROJECTS_DIR" ]]; then
+  echo "error: $PROJECTS_DIR does not exist" >&2
+  exit 1
+fi
+
+mapfile -t SKILLS < <(
+  { ls -1 "$REPO_ROOT/skills" 2>/dev/null; ls -1 "$REPO_ROOT/_archive" 2>/dev/null; } | sort -u
+)
+
+if [[ ${#SKILLS[@]} -eq 0 ]]; then
+  echo "no skills found in skills/ or _archive/"
+  exit 0
+fi
+
+FILE_LIST="$(mktemp)"
+trap 'rm -f "$FILE_LIST"' EXIT
+find "$PROJECTS_DIR" -type f -name '*.jsonl' -mtime "-${DAYS}" -print0 > "$FILE_LIST"
+
+if [[ ! -s "$FILE_LIST" ]]; then
+  echo "no transcripts in the last ${DAYS} days under $PROJECTS_DIR"
+  exit 0
+fi
+
+echo "skill trigger counts (last ${DAYS} days):"
+{
+  for skill in "${SKILLS[@]}"; do
+    count="$(xargs -0 grep -c -F -- "$skill" < "$FILE_LIST" 2>/dev/null \
+      | awk -F: '{s+=$NF} END {print s+0}')"
+    printf "%6d  %s\n" "$count" "$skill"
+  done
+} | sort -rn

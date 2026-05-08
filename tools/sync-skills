@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SRC="$REPO_ROOT/skills"
+DST="${HOME}/.claude/skills"
+
+if [[ ! -d "$SRC" ]]; then
+  echo "error: $SRC does not exist" >&2
+  exit 1
+fi
+
+mkdir -p "$DST"
+
+# Per-skill symlinks: avoids the Claude Code discovery bug where a directory-level
+# symlink at ~/.claude/skills/ itself confuses the loader.
+shopt -s nullglob
+for skill_path in "$SRC"/*/; do
+  skill_path="${skill_path%/}"
+  name="$(basename "$skill_path")"
+  target="$DST/$name"
+
+  if [[ -L "$target" ]]; then
+    ln -sfn "$skill_path" "$target"
+    echo "linked: $name"
+  elif [[ -e "$target" ]]; then
+    echo "WARN: $target is a real directory, not a symlink — skipping. Remove or rename it manually if you want sync-skills to manage it." >&2
+  else
+    ln -s "$skill_path" "$target"
+    echo "linked: $name"
+  fi
+done
+
+# Prune dangling symlinks under DST (target no longer exists).
+for entry in "$DST"/*; do
+  if [[ -L "$entry" && ! -e "$entry" ]]; then
+    rm -- "$entry"
+    echo "pruned dangling: $(basename "$entry")"
+  fi
+done

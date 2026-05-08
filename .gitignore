@@ -1,0 +1,4 @@
+evals/*/runs/
+.DS_Store
+*.swp
+*.swo

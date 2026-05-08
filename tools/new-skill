@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -ne 1 ]]; then
+  echo "usage: $(basename "$0") <kebab-case-name>" >&2
+  exit 1
+fi
+
+NAME="$1"
+if [[ ! "$NAME" =~ ^[a-z][a-z0-9]*(-[a-z0-9]+)*$ ]]; then
+  echo "error: name must be kebab-case (lowercase letters/digits, hyphen-separated)" >&2
+  exit 1
+fi
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SKILL_DIR="$REPO_ROOT/skills/$NAME"
+EVAL_DIR="$REPO_ROOT/evals/$NAME"
+
+if [[ -e "$SKILL_DIR" ]]; then
+  echo "error: $SKILL_DIR already exists" >&2
+  exit 1
+fi
+if [[ -e "$EVAL_DIR" ]]; then
+  echo "error: $EVAL_DIR already exists" >&2
+  exit 1
+fi
+
+mkdir -p "$SKILL_DIR" "$EVAL_DIR"
+
+cat > "$SKILL_DIR/SKILL.md" <<EOF
+---
+name: $NAME
+description: [TODO: one-sentence trigger — be pushy and specific. Name the explicit phrases / contexts that should fire this skill, and what should NOT fire it.]
+---
+
+# $NAME
+
+[TODO: one-line purpose.]
+
+## When to use
+
+- Use when [TODO]
+- Skip when [TODO]
+
+## Procedure
+
+1. [TODO: imperative step]
+2. [TODO: imperative step]
+
+## Why
+
+[TODO: explain the reasoning so a reader can extrapolate to edge cases the bullets miss.]
+EOF
+
+cat > "$EVAL_DIR/prompts.json" <<EOF
+{
+  "skill_name": "$NAME",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "[TODO: realistic prompt]",
+      "expected_output": "[TODO]"
+    }
+  ]
+}
+EOF
+
+echo "created:"
+echo "  $SKILL_DIR/SKILL.md"
+echo "  $EVAL_DIR/prompts.json"
+echo
+echo "next steps:"
+echo "  1. fill in the SKILL.md frontmatter description (it is the trigger gate)"
+echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
+echo "  3. add at least one realistic prompt to evals/$NAME/prompts.json"
+echo "  4. run 'tools/sync-skills' if airgapped, otherwise consumers pick it up via 'npx skills update --all'"

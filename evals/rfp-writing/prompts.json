@@ -1,0 +1,10 @@
+{
+  "skill_name": "rfp-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "[TODO: realistic prompt]",
+      "expected_output": "[TODO]"
+    }
+  ]
+}
