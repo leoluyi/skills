@@ -1,0 +1,63 @@
+{
+  "skill_name": "avoid-ai-writing-zh",
+  "evals": [
+    {
+      "id": 1,
+      "category": "positive/zh-tw/rewrite",
+      "prompt": "幫我把這段內部報告改掉 AI 味，像是「賦能」「全面提升」「打造完整生態」那種空話，改成正式但人話的中文。",
+      "expected_trigger": true
+    },
+    {
+      "id": 2,
+      "category": "positive/zh-tw/detect",
+      "prompt": "幫我看這份簽呈有沒有 AI 味的空話跟不是…而是…那種句型，先標出來就好，不用改。",
+      "expected_trigger": true
+    },
+    {
+      "id": 3,
+      "category": "positive/en/rewrite",
+      "prompt": "Clean up the AI-isms in this blog intro — too many 'delve', 'leverage', and 'it's not X, it's Y' sentences.",
+      "expected_trigger": true
+    },
+    {
+      "id": 4,
+      "category": "positive/mixed-zh-en",
+      "prompt": "這份技術文件中英混雜，幫我把中文那段的 AI 味拿掉，英文技術術語 (API、Kubernetes) 保留。",
+      "expected_trigger": true
+    },
+    {
+      "id": 5,
+      "category": "positive/zh-tw/edit-in-place",
+      "prompt": "幫我直接編輯 draft.md，把裡面中文的 AI 寫作模式修掉，像是「值得一提的是」「至關重要」那些。",
+      "expected_trigger": true
+    },
+    {
+      "id": 6,
+      "category": "negative/creative-writing",
+      "prompt": "幫我寫一首關於海邊黃昏的新詩，要有畫面感。",
+      "expected_trigger": false,
+      "note": "Creative writing is out of scope; not an AI-ism audit."
+    },
+    {
+      "id": 7,
+      "category": "negative/code-comments",
+      "prompt": "幫我這段 Python 函式加上 docstring 跟行內註解。",
+      "expected_trigger": false,
+      "note": "Code commenting is not writing-quality AI-ism cleanup."
+    },
+    {
+      "id": 8,
+      "category": "negative/casual-chat",
+      "prompt": "今天晚餐你覺得吃什麼比較好？",
+      "expected_trigger": false,
+      "note": "Casual conversation."
+    },
+    {
+      "id": 9,
+      "category": "negative/rfp-structural-authoring",
+      "prompt": "幫我擬一份招標規格書第三章「部署與發布」底下的需求清單，要含金絲雀部署。",
+      "expected_trigger": false,
+      "note": "Structural RFP authoring routes to rfp-writing, not language cleanup. Gate must not grab it."
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "skill_name": "formal-doc-structure",
+  "evals": [
+    {
+      "id": 1,
+      "category": "positive/zh-tw/approval-doc",
+      "prompt": "幫我擬一份簽呈，向主管申請採購一套內部知識庫工具，要含背景、現況需求、方案、經費與擬辦事項。",
+      "expected_trigger": true
+    },
+    {
+      "id": 2,
+      "category": "positive/zh-tw/evaluation-report",
+      "prompt": "幫我寫一份評估報告，比較三家雲端備份廠商，要有評估基準、分析結果、風險限制與建議方案。",
+      "expected_trigger": true
+    },
+    {
+      "id": 3,
+      "category": "positive/zh-tw/meeting-record",
+      "prompt": "幫我整理今天跟廠商的需求討論會議紀錄，列出討論重點、決議事項、待辦與下次追蹤。",
+      "expected_trigger": true
+    },
+    {
+      "id": 4,
+      "category": "positive/zh-tw/implementation-plan",
+      "prompt": "幫我寫一份內部 SRE 教育訓練的執行計畫，要有整體執行模式、角色分工、時程階段、交付物與驗收方式。",
+      "expected_trigger": true
+    },
+    {
+      "id": 5,
+      "category": "positive/zh-tw/vendor-comm",
+      "prompt": "幫我擬一份給廠商的澄清信稿，說明本方需求、請對方確認的事項、需提供的資料與回覆時程。",
+      "expected_trigger": true
+    },
+    {
+      "id": 6,
+      "category": "positive/en/restructure",
+      "prompt": "Help me restructure this internal project status memo into proper sections — it's currently one wall of text. Output in Traditional Chinese, formal internal style.",
+      "expected_trigger": true
+    },
+    {
+      "id": 7,
+      "category": "negative/rfp",
+      "prompt": "我要寫一份地端 Kubernetes 平台的招標規格書，幫我擬第三章「部署與發布」底下的需求清單。",
+      "expected_trigger": false,
+      "note": "RFP / 招標規格 issuer spec routes to rfp-writing, not this skill."
+    },
+    {
+      "id": 8,
+      "category": "negative/language-cleanup-only",
+      "prompt": "幫我潤飾這段文字，把 AI 味的詞彙（確保、賦能、進而那種）拿掉，改成正式但人話的中文，結構不用動。",
+      "expected_trigger": false,
+      "note": "Pure language cleanup with no structural work routes to avoid-ai-writing / clean-ai-writing."
+    },
+    {
+      "id": 9,
+      "category": "negative/marketing-copy",
+      "prompt": "幫我寫一段產品官網的行銷文案，主打我們新功能的亮點，要吸睛有記憶點。",
+      "expected_trigger": false,
+      "note": "Marketing / advertising copy is explicitly out of scope."
+    },
+    {
+      "id": 10,
+      "category": "negative/casual",
+      "prompt": "幫我寫個訊息跟同事說我今天下午要請假，晚點再回他的問題。",
+      "expected_trigger": false,
+      "note": "Casual conversation, not a formal internal document."
+    }
+  ]
+}
