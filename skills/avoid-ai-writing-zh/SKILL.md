@@ -585,9 +585,18 @@ These reduce false positives on legitimate Taiwan business and technical writing
 | 不是 X，是 Y as a factual boundary | A real distinction, not contrarian structure |
 | Structured uniformity in 公文 / RFP / SOP | These genres are inherently uniform; do not break their formatting for "rhythm" |
 
+### AI 慣用詞替換（個別用詞對照）
+
+AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中有更精準的對應詞。逐詞替換，**carve-out** 欄列出仍應保留原詞的語境。
+
+| Flag | 為何不精準 | Fix | Carve-out（保留原詞） |
+|---|---|---|---|
+| 節奏（用於時程／進度語境，如「專案節奏」「開發節奏」） | 把英文 rhythm／cadence 的譬喻套到時程上；中文應直接指明時間規劃 | 期程（時間規劃）／排程（具體時間表，依語境擇一） | 真正描述音樂、運動、敘事的「節奏感」時保留 |
+| 編排（用於 orchestration，如「服務編排」「流程編排」） | orchestration 直譯為「編排」偏向版面／內容編排語意，與調度資源、協調流程的原意不符 | 調度 | 描述版面、內容、表演、課程「編排」時保留 |
+
 ### Taiwan term preferences (zh-TW, not zh-CN)
 
-When rewriting, prefer Taiwan-standard terms: 計畫 (not 计划), 規劃, 執行, 檢核, 驗收, 廠商, 資訊, 專案, 承辦單位, 權責單位, 待辦事項, 後續追蹤. Avoid PRC-style phrasing (賦能, 抓手, 落地, 閉環, 顆粒度, 對齊顆粒度) unless quoting source material.
+When rewriting, prefer Taiwan-standard terms: 計畫 (not 计划), 規劃, 執行, 檢核, 驗收, 廠商, 資訊, 專案, 承辦單位, 權責單位, 待辦事項, 後續追蹤, 期程, 排程, 調度. Avoid PRC-style phrasing (賦能, 抓手, 落地, 閉環, 顆粒度, 對齊顆粒度) unless quoting source material.
 
 ---
 
