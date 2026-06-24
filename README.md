@@ -2,6 +2,14 @@
 
 Personal Claude Code skills repo. Source of truth for the `npx skills` package install on every machine I use.
 
+## Quickstart (development)
+
+```bash
+git clone git@github.com:leoluyi/skills.git ~/.skills
+cd ~/.skills
+tools/sync-skills
+```
+
 ## Quick install
 
 ```
