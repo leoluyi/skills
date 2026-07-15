@@ -12,6 +12,15 @@ description: >-
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
+version: 1.0.0
+license: MIT
+compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
+metadata:
+  author: Lu Yi
+  tags: writing explanation plain-language audience-translation zh-tw bilingual
+  agentskills_spec: "1.0"
+  openclaw:
+    emoji: "\U0001F5E3️"
 ---
 
 # Plain Speak — 技術術語轉白話文
