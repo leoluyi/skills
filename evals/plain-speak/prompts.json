@@ -1,0 +1,76 @@
+{
+  "skill_name": "plain-speak",
+  "evals": [
+    {
+      "id": 1,
+      "category": "positive/zh-tw/single-term",
+      "prompt": "用白話解釋 idempotent 是什麼,我要在週會跟主管講。",
+      "expected_trigger": true
+    },
+    {
+      "id": 2,
+      "category": "positive/zh-tw/rewrite-passage",
+      "prompt": "這段技術說明太硬了,幫我翻成人話,對象是不懂技術的產品經理:「服務改用 event-driven 架構,透過 message queue 解耦,達成最終一致性。」",
+      "expected_trigger": true
+    },
+    {
+      "id": 3,
+      "category": "positive/en/explain-for-pm",
+      "prompt": "Explain what a race condition is, in plain language for my PM.",
+      "expected_trigger": true
+    },
+    {
+      "id": 4,
+      "category": "positive/en/explain-error",
+      "prompt": "My manager saw this in a report: 'the deploy failed on a database migration lock timeout'. What does that mean in non-technical terms?",
+      "expected_trigger": true
+    },
+    {
+      "id": 5,
+      "category": "positive/mixed/exec-summary-prep",
+      "prompt": "幫我把這句改成給高層看的白話版本,術語 (Kubernetes、autoscaling) 保留原文標註:「we hit HPA limits so pods stopped autoscaling under peak load」。",
+      "expected_trigger": true
+    },
+    {
+      "id": 11,
+      "category": "positive/zh-tw/named-listener",
+      "prompt": "老闆問 API 是什麼,幫我用他聽得懂的白話講一下。",
+      "expected_trigger": true
+    },
+    {
+      "id": 6,
+      "category": "negative/voice-cleanup-routes-to-avoid-ai-writing-zh",
+      "prompt": "幫我把這段內部報告的 AI 味拿掉,像是「賦能」「全面提升」「不是…而是…」那種空話,改成正式但人話的中文。",
+      "expected_trigger": false,
+      "note": "Voice/AI-ism cleanup of existing prose, not audience translation. Routes to avoid-ai-writing-zh."
+    },
+    {
+      "id": 7,
+      "category": "negative/whole-doc-structure-routes-to-formal-doc-structure",
+      "prompt": "幫我擬一份系統汰換的簽呈,要有背景、方案比較、經費、風險跟建議事項。",
+      "expected_trigger": false,
+      "note": "Structuring a whole formal business document. Routes to formal-doc-structure, not term-level plain-speak."
+    },
+    {
+      "id": 8,
+      "category": "negative/rfp-routes-to-rfp-writing",
+      "prompt": "幫我寫招標規格書第三章「部署與發布」的需求清單,要含金絲雀部署。",
+      "expected_trigger": false,
+      "note": "RFP structural authoring. Routes to rfp-writing."
+    },
+    {
+      "id": 9,
+      "category": "negative/deep-technical-answer",
+      "prompt": "幫我實作一個 idempotent 的付款 API,要處理重試跟去重,用 Postgres 當儲存。",
+      "expected_trigger": false,
+      "note": "User wants an implementation for an engineer audience, not a plain-language explanation."
+    },
+    {
+      "id": 10,
+      "category": "negative/casual-chat",
+      "prompt": "今天中午吃什麼比較好?",
+      "expected_trigger": false,
+      "note": "Casual conversation, no technical term to translate."
+    }
+  ]
+}
