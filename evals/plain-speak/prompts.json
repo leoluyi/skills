@@ -38,6 +38,20 @@
       "expected_trigger": true
     },
     {
+      "id": 12,
+      "category": "positive/zh-tw/review-draft",
+      "prompt": "幫我看這段給高層的白話寫得夠不夠白,非技術主管看不看得懂:「我們碰到 HPA 上限,pods 在尖峰負載下停止 autoscaling,導致部分請求 503。」",
+      "expected_trigger": true,
+      "note": "Review branch: grade an existing plain-language draft against the bar and fix. Should return the criterion checklist plus a corrected draft."
+    },
+    {
+      "id": 13,
+      "category": "positive/en/review-draft",
+      "prompt": "Is this clear enough for a PM? 'We flipped the feature behind a canary and rolled it back after the error rate crossed the SLO.'",
+      "expected_trigger": true,
+      "note": "Review branch in English: check whether the draft lands for a non-technical reader, flag unglossed terms (canary, SLO), return checklist plus corrected draft."
+    },
+    {
       "id": 6,
       "category": "negative/voice-cleanup-routes-to-avoid-ai-writing-zh",
       "prompt": "幫我把這段內部報告的 AI 味拿掉,像是「賦能」「全面提升」「不是…而是…」那種空話,改成正式但人話的中文。",

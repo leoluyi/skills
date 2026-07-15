@@ -6,13 +6,16 @@ description: >-
   user asks to "explain in plain language", "白話文", "翻成人話", "用白話解釋",
   "explain like I'm a PM", "make this non-technical", "simplify this term",
   "what does this term mean", or pastes technical text and asks for a
-  business-audience version. Reply in the language the user wrote in. Do NOT
+  business-audience version, or asks you to review/check whether an existing
+  plain-language draft lands for a non-technical reader ("這樣夠白話嗎", "幫我看
+  非技術主管看不看得懂", "is this clear enough for a PM"). Reply in the language
+  the user wrote in. Do NOT
   invoke for removing AI-isms / 潤飾語氣 from existing prose (use
   avoid-ai-writing-zh), for structuring a whole formal business document —
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
-version: 1.0.0
+version: 1.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -32,12 +35,19 @@ knows the business and the product but not the stack, sharpened to the specific
 listener whenever the user names or implies one. Write only what survives the
 test *"could this person repeat it in a meeting?"*
 
+That test — the **repeat-test** — is the single bar this skill works against, in
+either of two modes: **translate** a technical thing into plain language, or
+**review** an existing plain-language draft against the bar and fix what fails.
+Both run the same criteria below; translate produces to them, review checks them.
+
 ## When this applies
 
 - A single term to define ("什麼是 idempotent", "explain eventual consistency")
 - A chunk of technical text to rewrite for a business audience
 - A code snippet or error the user wants explained in human terms
 - Prep for a status update, exec summary, or doc aimed at non-engineers
+- A finished plain-language draft to review — a colleague's, or your own — against
+  the bar before it reaches the reader
 
 Sibling skills own the adjacent axes — hand off rather than half-do their job:
 lowering AI-ish *voice* in prose → `avoid-ai-writing-zh`; organizing a whole
@@ -82,6 +92,28 @@ structure only when rewriting a longer passage with several distinct points.
 Length tracks the input: one term ≈ 2–4 sentences; a paragraph ≈ a tight
 rewrite no longer than the original.
 
+Before returning, run the review checklist (§Reviewing a draft) over your own
+draft and fix any ✗ — the self-review gate is this same bar applied to yourself.
+
+## Reviewing a draft
+
+When the input is an already-written plain-language draft — a colleague's, or
+your own pre-send — don't rewrite blind. Grade it against the bar, then fix.
+
+Mark each criterion pass (✓) / fail (✗) / not-applicable (—):
+
+- **Reader locked** — one specific reader in view, not a generic "non-tech"? (§How to respond 1)
+- **What-it-does + what-it's-for** — one line carrying both beats? (§2)
+- **Reader-relative why** — the consequence *to this reader*, not just intrinsic purpose? (§3)
+- **Analogy fits the medium** — present only where it belongs (spoken/casual), out of formal written output? (§4)
+- **The catch** — any trade-off whose omission would mislead is stated? (§5)
+- **Every term glossed** — no acronym or term of art carries a sentence unglossed? (Guardrails)
+- **Accurate** — simplification didn't bend anything into something false? (Guardrails)
+
+Output stays flat — one bullet list of the marked criteria (each ✗ carrying a
+clause that names the failing line and why), then the corrected draft, held to
+the same length discipline as a translate. No section headers.
+
 ## Guardrails
 
 - **Accuracy outranks simplicity.** Never simplify into something wrong. If a
@@ -124,3 +156,22 @@ API(應用程式介面)就是兩套系統之間的「點餐窗口」。比方餐
 看菜單點餐,服務生(API)把需求送進廚房(另一套系統),再把做好的菜端回來——
 你不用知道廚房怎麼運作,照窗口的規則點餐就好。對我們的意義是:別人的系統要用
 我們的資料或功能,不必了解我們內部怎麼做,照這個窗口串接就行,整合更快也更好控管。
+
+---
+
+**Input:** 幫我看這段給高層的白話寫得夠不夠白:「我們碰到 HPA 上限,pods 在尖峰
+負載下停止 autoscaling,導致部分請求 503。」
+
+**Output:**
+- 讀者鎖定:— 只說「高層」,沒細分(CFO 看成本 / 產品高層看客戶影響)
+- 一句話做什麼+為什麼:✗ 只描述現象,沒說這對業務是什麼事
+- 對這位讀者的意義:✗ 缺
+- 類比適配:—(篇幅短,不需要)
+- The catch:—
+- 術語 gloss:✗「HPA」「autoscaling」「503」三個都沒解釋就承載語意
+- 失真:✓ 事實正確
+
+改寫版(先假設是產品高層、看客戶影響;若對象是 CFO 再改成談成本):
+系統在流量尖峰時,原本會自動增加機器來吸收暴量的機制撞到了設定上限,機器加不
+上去,於是一部分使用者的請求被擋掉、看到錯誤畫面。對我們的意義是尖峰時段有真實
+使用者受影響、可能流失;要嘛調高上限,要嘛在流量可預期時預先擴容。
