@@ -26,7 +26,7 @@ The recurring failure is drift below altitude — dragging in 逐項標準、逐
 4. **Draft each section purpose-first.** Lead with the section's intent (目的／要驗證／要達成), then the essence, then point down with 「（詳《source》）」. Rewrite spec-voice into stakeholder-voice — turn a source's noun-list objective (「…之能力／功能／規格」) into a plain 「能做到〔動詞成果〕」 statement — and run the retained sentences through the `plain-speak` skill against the least-technical reader in the room (its repeat-test). Source already at altitude passes through; don't rewrite well-pitched material to rewrite it.
 5. **Cut to altitude — per item, not a flat line.** Give each item only the room it **earns** (see Altitude); collapse the rest to a label and point down. When one section is deliberately more granular than its siblings, say so rather than let it read as drift. This is the core editorial act — when in doubt, cut and point down.
 6. **Apply house style.** Conform the draft to the style reference below, then run the `avoid-ai-writing-zh` skill on it.
-7. **Sync check.** Confirm every claim and every load-bearing number is traceable to a source and contradicts none. Cross-reference coverage tracks detail density — the heaviest sections need the 「（詳《source》）」 pointer most, not least. When a change is important enough, cascade a brief mention into companion overview docs (e.g. a one-page 版). Completion: 提綱 and sources tell one consistent story.
+7. **Verify.** Run the draft through every gate in **## Verification** below; each is pass/fail and a fail sends you back to the named step. When a change is important enough, cascade a brief mention into companion overview docs (e.g. a one-page 版). Completion: every gate passes.
 
 **Re-sync branch** — a source document changed: identify the affected sections and re-run steps 4–7 for those only, including the cascade check in step 7.
 
@@ -65,6 +65,19 @@ The 提綱 may also **synthesize what the sources only imply**: name a structure
 - Truncate long enumerations to anchor items + 「等」.
 - Top-level sections numbered 一、二、三; keep numbering stable across edits so references hold.
 - No emoji. Strip AI-isms (the `avoid-ai-writing-zh` pass in step 6 handles this).
+
+## Verification
+
+Before declaring a 提綱 done, run every gate. Each is pass/fail; a fail sends you back to the named step. Verify by inspecting the draft against the sources, not from memory of what you intended.
+
+- **Coverage** (step 3) — every source maps to exactly one section; the umbrella lent the spine and is *not* pointed to. Any orphaned or double-covered source fails.
+- **MECE** (step 3) — no fact lives in two sections, and no section needs a back-reference to another to be understood.
+- **Governance placement** (step 3) — any oversight/governing section sits beside the phase it governs, not after phases it doesn't touch.
+- **Altitude** (step 5) — scan for below-altitude leakage (逐項配分、逐條標準、SOP、逐步操作、原始碼／設定／記錄檔、完整表格明細). Each hit is cut and pointed down, or the gate fails.
+- **Earned depth** (step 5) — each item's room matches what it earns; no self-describing label padded, no non-obvious or decision-bearing item starved. A section deliberately more granular than its siblings says so.
+- **Traceability** (step 4) — every claim and every load-bearing number, *including synthesized ones* (computed totals, regrouped structures), traces to a source. A load-bearing number with no anchor fails.
+- **Pointer coverage** (step 4) — cross-reference density tracks detail density: the heaviest sections each carry a 「（詳《source》）」, not just the light ones.
+- **Voice & shape** (steps 4, 6) — purpose-first labels present; essence is flat bullet clusters, not nested 槽狀 prose; retained sentences pass `plain-speak`'s repeat-test; `avoid-ai-writing-zh` has run.
 
 ## Worked example
 
