@@ -15,7 +15,7 @@ description: >-
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
-version: 1.1.0
+version: 1.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -108,6 +108,7 @@ Mark each criterion pass (✓) / fail (✗) / not-applicable (—):
 - **Analogy fits the medium** — present only where it belongs (spoken/casual), out of formal written output? (§4)
 - **The catch** — any trade-off whose omission would mislead is stated? (§5)
 - **Every term glossed** — no acronym or term of art carries a sentence unglossed? (Guardrails)
+- **No plainness-narration** — free of「白話講/白話來說/說白了/簡單來說」-type self-framing? (Guardrails)
 - **Accurate** — simplification didn't bend anything into something false? (Guardrails)
 
 Output stays flat — one bullet list of the marked criteria (each ✗ carrying a
@@ -124,6 +125,12 @@ the same length discipline as a translate. No section headers.
   (SaaS、CI/CD、五字訣…) carry the meaning of a sentence. Replace it with the
   plain idea; keep the term only as a parenthetical label the reader can match
   later — as with "idempotent(冪等)" in Output language above.
+- **Never narrate the plainness.** The output must not contain self-referential
+  framing like「白話講」「白話來說」「白話說」「說白了」「簡單來說」「講白一點」
+  or English equivalents ("in plain terms", "simply put"). The whole deliverable
+  is already the plain version — just say the thing directly. These phrases add
+  nothing and signal that the sentence they precede wasn't plain enough on its
+  own; rewrite that sentence instead of prefixing it.
 
 ## Examples
 
