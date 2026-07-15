@@ -59,10 +59,10 @@
     },
     {
       "id": 9,
-      "category": "negative/single-doc-tldr",
+      "category": "positive/zh-tw/single-source",
       "prompt": "這份 40 頁的評估報告，幫我摘要成一頁重點。",
-      "expected_trigger": false,
-      "note": "Edge discriminator: summarizing ONE document is a plain summary, not a 提綱 that sits above a document SET and points down into each source. No set, no pointers."
+      "expected_trigger": true,
+      "note": "Source count is not the criterion: distilling one long report into a high-altitude overview that points down to its sections is still briefing-outline. The altitude/point-down relationship is what triggers, not the number of documents."
     },
     {
       "id": 10,
