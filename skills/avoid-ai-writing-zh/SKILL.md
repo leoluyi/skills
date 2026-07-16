@@ -1,7 +1,7 @@
 ---
 name: avoid-ai-writing-zh
 description: >-
-  Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「潤飾成正式但不像 AI 的中文」「把規劃書／報告書／知識文件定稿前去 AI 味」. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升 / 賦能 / 打造完整生態), 不是…而是… contrarian structure, copula inflation (作為 / 扮演著), significance inflation (至關重要 / 不言而喻), and AI sentence templates (在當今…的時代 / 隨著…的快速發展). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills reach this as a finishing pass. When formal-doc-structure, rfp-writing, or briefing-outline complete a formal-document draft (簽呈／報告書／規劃書／需求規格書／說明提綱), they offer it here for a deep de-AI pass before final output. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese or mixed zh/en.
+  Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「把規劃書／報告書／知識文件或 README／開發文件定稿前去 AI 味」. Also use as a de-AI finishing pass when finalizing or reviewing English/mixed software-development docs — README, CONTRIBUTING, CHANGELOG, ADR, API docs, code comments. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升／賦能), 不是…而是… contrarian structure, copula inflation (作為／扮演著), significance inflation (至關重要), AI 句式 (在當今…的時代), and 專有名詞過度翻譯／生造中文譯名 (house rules→房規；無定譯保留原文). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese, mixed zh/en, or software-development docs.
 version: 1.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -630,6 +630,29 @@ AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中�
 | 節奏（用於時程／進度語境，如「專案節奏」「開發節奏」） | 把英文 rhythm／cadence 的譬喻套到時程上；中文應直接指明時間規劃 | 期程（時間規劃）／排程（具體時間表，依語境擇一） | 真正描述音樂、運動、敘事的「節奏感」時保留 |
 | 編排（用於 orchestration，如「服務編排」「流程編排」） | orchestration 直譯為「編排」偏向版面／內容編排語意，與調度資源、協調流程的原意不符 | 調度 | 描述版面、內容、表演、課程「編排」時保留 |
 
+### 專有名詞過度翻譯（生造中文譯名）
+
+AI 傾向把沒有通行中文譯名的專有名詞硬翻成逐字直譯的生造詞——產品名、功能名、專案代號、框架／工具名、尚無定譯的領域術語——例如把 house rules 譯成「房規」。這類譯名台灣同行不會使用，讀者也無法回推原文或據以搜尋，反而製造理解障礙。缺乏通行譯名時，人類寫作直接保留原文（英文），這是標準台灣工作場域用法。
+
+這是既有 carve-out「API／Kubernetes 等英文術語保留原文」的延伸：不只是保留本來就通行的英文詞，更要還原被 AI 生造中文詞蓋掉的原文。
+
+判準：這個中文詞是否為該領域已通行的譯名（查得到、同行看得懂）？
+
+- 有通行譯名 → 用中文：資料庫（database）、伺服器（server）、快取（cache）、負載平衡（load balancing）。
+- 無通行譯名，或譯名為 AI 逐字生造 → 保留原文：Kubernetes、Prometheus、Terraform，以及產品名、功能名、專案代號、尚無定譯的領域術語。
+- 判斷測試：把生造中文詞拿去搜尋，若查無此領域用法、且原文才是同行實際使用的詞，即為過度翻譯，標記並還原為英文。
+
+Fix：還原英文原文；首次出現可用「英文原文（簡短白話說明）」補一句，之後直接沿用英文。
+
+- 「房規」→ house rules（房型與房價的設定規則）
+- 若原文是 orchestration engine 而無定譯 →（該詞已由前一節處理調度語意，若整體為專有名詞則）保留 orchestration engine
+
+**Carve-out：**
+
+- 反向也是 AI 味：已有通行中文定譯者一律用中文，不可為了「保留原文顯得專業」而英文化。本規則只還原被生造中文詞蓋掉的原文，不鼓勵一律英文化。
+- 知識文件首次定義時中英並列（中文（English）或 English（中文說明））是好習慣，不算過度翻譯。
+- 有疑義時以「同行能否辨識、能否搜尋得到」為準，而非以「是否為專有名詞」為準。
+
 ### Taiwan term preferences (zh-TW, not zh-CN)
 
 When rewriting, prefer Taiwan-standard terms: 計畫 (not 计划), 規劃, 執行, 檢核, 驗收, 廠商, 資訊, 專案, 承辦單位, 權責單位, 待辦事項, 後續追蹤, 期程, 排程, 調度. Avoid PRC-style phrasing (賦能, 抓手, 落地, 閉環, 顆粒度, 對齊顆粒度) unless quoting source material.
@@ -667,6 +690,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - zh-TW empty slogans (全面提升 / 賦能 / 打造完整生態), contrarian 不是…而是…, and AI sentence templates (在當今…的時代)
 - zh-TW abstract-claim-without-deliverable (本案將提升…效率 with no concrete output)
 - zh-TW 口語化萬能動詞／含糊簡寫（補一下 / 先撐著 / 串起來，動詞可代入 3 種以上互斥動作）
+- zh-TW 專有名詞過度翻譯（把無通行譯名的產品名／功能名／術語生造成逐字中文，如 house rules→房規）
 - Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
 
 ### P2 — Stylistic polish (fix when time allows)
@@ -698,7 +722,7 @@ Pass an optional context hint to adjust rule strictness. If no context is specif
 **`blog`** � Default. Standard long-form prose. All rules apply at full strength.
 **`technical-blog`** � Long-form with code, architecture, APIs. Technical terms get a pass.
 **`investor-email`** � High-trust audience. Tighten everything; promotional language is the biggest risk.
-**`docs`** � Documentation, READMEs, guides. Clarity over voice.
+**`docs`** � Documentation and software-development docs: READMEs, CONTRIBUTING, CHANGELOG, ADR, API docs, guides, and code comments. Clarity over voice. This is a finishing/review pass, not a drafting aid � run it when a dev doc is being finalized or reviewed for AI tells, and leave code identifiers, commands, config keys, and fenced code blocks untouched.
 **`casual`** � Slack messages, internal notes, quick replies. Only catch the worst offenders.
 
 ### Tolerance matrix

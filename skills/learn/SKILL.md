@@ -51,14 +51,14 @@ VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}
    mkdir -p "$VAULT/00-inbox" "$VAULT/01-unique-notes" "$VAULT/05-tech"
    ```
    把 `VAULT` 覆寫成這個路徑；之後步驟 1–6 原封不動照跑（都走 `"$VAULT/..."`）。
-2. **自帶 template**：此機沒有 vault 的範本檔，就地寫一份最小 `learning-note` scaffold 到 `"$VAULT/00-inbox/"`（frontmatter: id/aliases/date/tags:[learning]/urls；區塊：問題、來源+錨點、gap、我的 distill、promote 決定）。房規（answer-first、自己的話、claim 標題、wikilinks、YAML block tags）沿用本 skill 已載明的規則，不依賴 vault 檔。
+2. **自帶 template**：此機沒有 vault 的範本檔，就地寫一份最小 `learning-note` scaffold 到 `"$VAULT/00-inbox/"`（frontmatter: id/aliases/date/tags:[learning]/urls；區塊：問題、來源+錨點、gap、我的 distill、promote 決定）。house style（answer-first、自己的話、claim 標題、wikilinks、YAML block tags）沿用本 skill 已載明的規則，不依賴 vault 檔。
 3. **告知 caveat 並沿用全程**：
    - **無法錨定既有知識** —— grep 不到真 vault 的筆記。步驟 2 的既有錨點、步驟 5 的 `[[連結]]` 與 MOC 都是**建議值**，不是驗證過的。
    - 步驟 6 的 weekly-review 排程**延到併回時**做，temp 模式不寫真 vault 的 checklist。
    - 其餘鐵律（不代寫、來源查證、批次寫檔）全部照舊。
 4. 產出照樣走完步驟 1–5，最後接**步驟 7 打包**（取代真 vault 模式的步驟 6）。
 
-方法論全文：`"$VAULT/06-knowledge-management/Learning workflow — from AI chat to crystallized knowledge.md"`；房規：`"$VAULT/99-system/Context/writing-style.md"`。嚴格照下面六步跑，一次一步，每步等 Leo 回應。六步**不必一次跑完** —— 工作筆記留在 `00-inbox`，Leo 可跨多次 session 接續（capture／ground／教考／distill 分開做都行）。
+方法論全文：`"$VAULT/06-knowledge-management/Learning workflow — from AI chat to crystallized knowledge.md"`；house style：`"$VAULT/99-system/Context/writing-style.md"`。嚴格照下面六步跑，一次一步，每步等 Leo 回應。六步**不必一次跑完** —— 工作筆記留在 `00-inbox`，Leo 可跨多次 session 接續（capture／ground／教考／distill 分開做都行）。
 
 ## 鐵律（違反即失敗）
 
@@ -96,7 +96,7 @@ VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}
 
 ### 5. Promote & connect
 - 標題自檢：能寫成一句命題 → **evergreen**（`"$VAULT/01-unique-notes/"`，claim 標題，strict atomic）；否則 → **reference**（`"$VAULT/05-tech/"` 對應資料夾，topic 標題，lookup-optimized）。跟 Leo 確認去處。
-- 你做 plumbing：套 Templater frontmatter、加 `[[連結]]` 到步驟 2 找到的錨點（≥1）、指出該掛哪個 MOC、檢查房規（answer-first、source、一詞一概念）。
+- 你做 plumbing：套 Templater frontmatter、加 `[[連結]]` 到步驟 2 找到的錨點（≥1）、指出該掛哪個 MOC、檢查house style（answer-first、source、一詞一概念）。
 - 把**精華**寫進 permanent 檔（Leo 的文字為準，你只潤 frontmatter/格式）。scaffold（問題、考題、gap 紀錄）留在 `"$VAULT/00-inbox/"` 工作筆記，**不進 permanent note**。
 - 批次寫檔。
 
