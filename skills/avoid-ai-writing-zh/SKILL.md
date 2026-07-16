@@ -2,7 +2,7 @@
 name: avoid-ai-writing-zh
 description: >-
   Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「把規劃書／報告書／知識文件或 README／開發文件定稿前去 AI 味」. Also use as a de-AI finishing pass when finalizing or reviewing English/mixed software-development docs — README, CONTRIBUTING, CHANGELOG, ADR, API docs, code comments. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升／賦能), 不是…而是… contrarian structure, copula inflation (作為／扮演著), significance inflation (至關重要), AI 句式 (在當今…的時代), and 專有名詞過度翻譯／生造中文譯名 (house rules→房規；無定譯保留原文). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese, mixed zh/en, or software-development docs. This skill removes AI patterns; it does not create a voice — to inject human voice or restructure a blog draft, use blog-writing-zh first, then run this as the finishing pass.
-version: 1.1.0
+version: 1.1.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -659,13 +659,19 @@ Fix：補回省略成分，名詞用完整詞，寫成完整句型。
 
 **detect only。** 高見龍〈寫作吧，菜鳥工程師〉點名的病灶：「正確但沒有靈魂」——句子工整、用詞精準，卻少了真實經驗、踩過的坑、「我當初也卡在這」的共鳴。拔掉 AI 病句只是減法，得到乾淨但無聲的中性文；讀者仍覺得「像 AI 寫的」，往往不是殘留病句，而是缺少人味的**正向特徵**。這一節收錄結構級訊號——句子層看不到、要退一步看整篇才浮現的缺席。
 
-**適用範圍與姿態。** 這些是 detect 訊號，不是判決（沿用本 skill 的 signals-not-proof 立場）。**只在 voice profile 為 `casual`（部落格聲音）或使用者傳入 `--structure-signals` 時啟用**；正式文體（RFP、簽呈、公文、SOP）本就該均質、無立場、句句完整，不適用，比照下節 Allowed patterns 的 Structured uniformity carve-out。**rewrite 模式下只提示、不自動改**——修復需要作者補入真實經驗與判斷，機器代筆只會生出更多假細節。
+**適用範圍與姿態。** 這些是 detect 訊號，不是判決（沿用本 skill 的 signals-not-proof 立場）。判準是**文體是否 voice-bearing**（該有聲音），不是「blog vs 非 blog」：
+
+- **啟用（voice-bearing）**：`casual`／`blunt` voice，`technical-blog`／`blog` context 帶個人語氣，觀點倡議、newsletter、深度解讀、個人 essay。這些文體本就該有立場與具體經驗，缺席才是訊號。
+- **排除（voice-neutral）**：`docs`／README、RFP、簽呈、公文、SOP、`investor-email`、reference material。這些本就該均質、無立場、句句完整，不適用，比照下節 Allowed patterns 的 Structured uniformity carve-out。
+- **`--structure-signals`** 為顯性 override，可對任一 voice-bearing 文體強制啟用；對 voice-neutral 文體傳入時應先提示會有大量 false positive。
+
+依據 GAN 協定 round 1（見 `evals/avoid-ai-writing-zh/benchmark-protocol.md`）：真人 voice-bearing 文（觀點／教學／newsletter）FP = 0/3，voice-neutral 文若誤啟用 FP = 2/2，AI voiceless 文 recall = 3/3。**rewrite 模式下只提示、不自動改**——修復需要作者補入真實經驗與判斷，機器代筆只會生出更多假細節。
 
 淨新增兩條（其餘三條與英文版既有規則同源，見交叉引用）：
 
 | 訊號 | 說明與 Fix |
 |---|---|
-| 只解釋不造像（no original metaphor） | 難概念全用定義式解釋，通篇沒有一個自創比喻把抽象拉到讀者的生活經驗。Fix：為關鍵概念造一個貼身的像（「就像…」），出自作者自己的經驗，不是查來的通用比喻。 |
+| 只解釋不造像（no original metaphor） | 難概念全用定義式解釋，通篇沒有一個自創比喻把抽象拉到讀者的生活經驗。Fix：為關鍵概念造一個貼身的像（「就像…」），出自作者自己的經驗，不是查來的通用比喻。**Carve-out：`technical-blog` 密集操作型教學本就比喻少，真人教學文常只用固定俗諺（如「地雷」）而無自創比喻；此條在教學文不可單獨觸發，需與其他結構訊號成群（≥1 條）才計入（GAN round 1：保哥教學文缺自創比喻但其餘 voice marker 齊全）。** |
 | 句句完整、無口語破格（no colloquial breaks） | 通篇沒有任何刻意的口語破格：括號補刀、（吧？）、自問自答、刻意的不完整句。真人寫部落格會破格。這是既有 "Over-polishing" 警告的正面版——不是要製造錯字，是要保留呼吸。Fix：在該停頓、該補刀處，容許一兩處破格。 |
 
 交叉引用（沿用「同源…已在此標記者不必重複標記」慣例）：

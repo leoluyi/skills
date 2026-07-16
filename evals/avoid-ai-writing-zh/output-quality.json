@@ -49,6 +49,32 @@
           "ref": "SKILL.md: 若宣告特徵也命中規則，保留並在 audit 註記"
         }
       ]
+    },
+    {
+      "id": 3,
+      "category": "structure-signals/gating-voice-bearing",
+      "prompt": "detect 這篇觀點文（technical-blog，個人語氣）：「工程師該不該寫作，我的答案很明確：該。我自己就是靠寫落落長的排錯筆記，才把三年前那個把同事 code 蓋掉的凌晨三點記牢——寫作就像留給未來自己的一張紙條（雖然當下很煩）。」",
+      "note": "Gating: a voice-bearing genre that actually carries stance/specifics/metaphor/口語破格 must NOT be flagged. Guards against false positives from the round-1 gate expansion (blunt/technical-blog auto-enable).",
+      "assertions": [
+        {
+          "criterion": "no-false-positive-on-voiced-text",
+          "must": "不觸發結構級訊號：文中有明確立場（答案很明確：該）、具體細節（三年前、凌晨三點）、自創比喻（留給未來自己的紙條）、口語破格（（雖然當下很煩）），皆為真人 voice marker，不得誤標為 AI。",
+          "ref": "SKILL.md: 結構級訊號 — 啟用（voice-bearing）; benchmark-protocol round 1 (FP=0/3)"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "category": "structure-signals/metaphor-clustering-in-tutorial",
+      "prompt": "用 --structure-signals detect 這段真人技術教學：「這個地雷有兩個 Workaround。我認為第一種比較完美，可以應付各種狀況——記得 13 年前我也踩過一樣的坑（那時還沒有這個範本，只能手動設）。步驟是先在 Controllers 資料夾 Add > Controller，選 API Controller with actions。」（有立場、有具體、有口語破格，但無自創比喻，只用俗諺「地雷」。）",
+      "note": "Adversarial: dense technical tutorial with 4/5 voice markers but no original metaphor. no-original-metaphor must not fire solo.",
+      "assertions": [
+        {
+          "criterion": "metaphor-absence-does-not-flag-solo",
+          "must": "不因『只解釋不造像』單條就標記整篇為 voiceless；教學文缺自創比喻是常態，需與其他結構訊號成群才計入。此文其餘 voice marker 齊全，應判為 clean。",
+          "ref": "SKILL.md: 只解釋不造像 — technical-blog carve-out; benchmark-protocol round 1"
+        }
+      ]
     }
   ]
 }
