@@ -540,6 +540,22 @@ Default opening frames that signal generation. Delete the frame; state the fact.
 - 這不僅…更是… / 這標誌著…
 - 具體而言 **only when** no concrete items follow (as a list intro before real items, it is fine — see carve-outs)
 
+### 空降斷言開場（沒頭沒腦丟一個 term 或 claim）
+
+AI 常在段落或小節開頭空降一個名詞或一句戲劇化斷言，不鋪陳就要讀者買單——例如「三個失效機制，全部指向同一件事」。問題在於它預設了讀者還不知道的資訊：哪三個失效機制？同一件事又是什麼？它用「數字＋懸念」製造戲劇感，卻把讀者丟在半空。這是把英文科技寫作的 punchy 開場硬套到中文的常見 AI 味。
+
+要和「開門見山、先講重點」區分：先講一個**自足、讀者當下就懂**的結論是好事；先丟一個**指涉尚未交代之物**的斷言才是問題。判準：開場句裡的每個名詞與主張，讀者能否用目前為止讀到的內容還原？若「三個失效機制」指向後文才會點名的東西，即為空降斷言，標記。
+
+Fix：補上主題句，先交代主詞再下判斷（近似英文論說文的 topic sentence：先立主題，再展開支撐）。但別矯枉過正倒向另一種 AI 味——「在當今…的時代」式的空泛鋪陳；要的是具體的引導句，不是無意義的暖場。
+- Poor：三個失效機制，全部指向同一件事。
+- Better：這次故障可歸因於三個失效機制——連線逾時、重試風暴與快取穿透——三者共同的根因，是重試時沒有設上限、尖峰時所有請求擠在同一瞬間。
+
+與 Infomercial engagement hooks（「The catch?」這類中途懸念）、Self-labeling significance（事後回指貼標籤）不同：此條針對的是段落／小節**開頭**、指涉未交代之物的斷言。
+
+**Carve-out：**
+- 標題與小節標題本就精簡點題，不受此限。
+- 前文已充分鋪陳時，開場的回指承接（「這三者的共同根因是…」）是正常銜接，不是空降。
+
 ### Excessive adjective stacking
 
 Strings of parallel adjectives that assert quality without evidence.
@@ -592,6 +608,22 @@ Fix：換成單義動詞，補上受詞與方式。
 **Carve-out：**
 - 真正的口語對話、聊天訊息（casual profile）裡這些動詞是自然語域，不必動。
 - 已約定俗成的技術慣用語組合詞保留：串接 API、掛載磁碟、打補丁／熱補丁、扛住流量。判斷關鍵是搭配是否固定且單義——固定搭配（掛載、串接）保留，臨時拼裝的單字動詞（補一下、撐著、頂一下）才標記。
+
+### 過度簡寫（省略主詞受詞、截斷名詞）— 寫成完整句型
+
+AI 在濃縮、摘要或翻譯時，會把完整句子壓成電報式短語——省略主詞、丟掉受詞、把名詞截成單字、拿掉量詞助詞——例如「分享後存同一夾」。語氣像順手記的便條，但讀者得自己補回被省略的成分：「存」的是什麼？（檔案）「同一夾」是哪種夾？（資料夾）。看似精簡，實則把還原語意的工作丟回給讀者，句子也讀來突兀不完整。
+
+判準：把句子攤開，主詞、動詞、受詞是否齊全、名詞是否為完整詞？受詞缺席或名詞被截成單字（夾←資料夾、庫←資料庫），即為過度簡寫，標記。
+
+Fix：補回省略成分，名詞用完整詞，寫成完整句型。
+- 「分享後存同一夾」→「將檔案分享到同一個資料夾」
+- 「跑完打包上傳」→「測試跑完後，將產出物打包並上傳到發布區」
+
+與前一節「口語化萬能動詞」互補而不重疊：萬能動詞抓的是動詞語意含糊（補／撐／串可代入多種動作），此條抓的是句子成分被省略、名詞被截斷。已在此標記者不必在那條重複標記。
+
+**Carve-out：**
+- 真正的口語對話、聊天訊息、便條（casual profile）本就精簡，不必動。
+- 已通行的固定簡稱保留：資安（資訊安全）、API、K8s。判準是該簡稱是否固定通行且單義——固定通行者保留，臨時截斷者（同一夾、設定←設定檔）才標記。
 
 ### 打破第四面牆 — 工作情境外洩 / 生成過程外洩
 
@@ -690,6 +722,8 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - zh-TW empty slogans (全面提升 / 賦能 / 打造完整生態), contrarian 不是…而是…, and AI sentence templates (在當今…的時代)
 - zh-TW abstract-claim-without-deliverable (本案將提升…效率 with no concrete output)
 - zh-TW 口語化萬能動詞／含糊簡寫（補一下 / 先撐著 / 串起來，動詞可代入 3 種以上互斥動作）
+- zh-TW 過度簡寫（省略主詞受詞、截斷名詞，如 存同一夾←將檔案存到同一個資料夾），寫成完整句型
+- zh-TW 空降斷言開場（段落／小節開頭丟一個指涉未交代之物的 term／claim，如「三個失效機制，全部指向同一件事」）
 - zh-TW 專有名詞過度翻譯（把無通行譯名的產品名／功能名／術語生造成逐字中文，如 house rules→房規）
 - Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
 
