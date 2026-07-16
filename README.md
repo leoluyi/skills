@@ -24,7 +24,7 @@ npx skills update --all
 tools/sync-skills
 ```
 
-That script symlinks each `skills/<name>/` into `~/.claude/skills/<name>/`, refuses to overwrite real directories, and prunes dangling links left behind by archives.
+That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` (Claude Code, Cursor) and `~/.agents/skills/<name>/` (Codex, OpenHands), refuses to overwrite real directories, and prunes dangling links left behind by archives.
 
 ## Develop (contributor)
 
@@ -54,7 +54,7 @@ tools/sync-skills
 | Script | Purpose |
 |--------|---------|
 | `tools/new-skill <name>` | Scaffold a new skill (SKILL.md + eval stub + next-step hints). |
-| `tools/sync-skills` | Per-skill symlinks into `~/.claude/skills/`. Offline / airgapped fallback. |
+| `tools/sync-skills` | Per-skill symlinks into `~/.claude/skills/` (Claude Code, Cursor) **and** `~/.agents/skills/` (Codex, OpenHands). Offline / airgapped fallback. |
 | `tools/archive-skill <name>` | `git mv` skill (and its evals) to `_archive/`, commit `archive: <name>`. |
 | `tools/usage-report [days]` | Count skill triggers in `~/.claude/projects/` JSONL transcripts. Default 90 days. |
 
@@ -113,6 +113,30 @@ A skill goes through these seven stages. Most die at stage 3.
 - **Write the description pushy.** It's the trigger gate (see [Anatomy](#anatomy-of-a-skill)). Name the explicit phrases that should fire it *and* what should NOT. Vague descriptions either misfire on unrelated prompts or silently never load.
 - **Body under 500 lines.** Lean on progressive disclosure — the SKILL.md is the index, push detail into `references/` and logic into `scripts/`.
 - **Explain *why*, not just *what*.** Bullet lists describe a procedure; the *why* lets a reader extrapolate to edge cases the bullets miss. If the skill says "do X", say what X is preventing.
+- **Every skill must be portable.** It runs unchanged on Claude Code *and* Codex — not Claude Code only. See [Portability](#portability). Tool-specific power (hooks, `context: fork`, `model`) may be present but never load-bearing.
+
+### Portability
+
+This repo is the single source of truth, symlinked into each agent's skills tree. So every skill must run **unchanged** on Claude Code *and* Codex (Cursor and OpenHands then come nearly free). Portability is a shipping requirement, not a nice-to-have — a skill that only works in Claude Code is half-built.
+
+What actually breaks portability, and the rule for each:
+
+- **`name` + `description` are the only universally-required frontmatter.** That's the agentskills.io 1.0 core, and exactly what Codex requires. Claude-Code extras (`hooks`, `context: fork`, `model`, `effort`, `agent`, `argument-hint`, `disable-model-invocation`) are no-ops in Codex — keep them where they earn it, but **never let a skill's core behavior depend on one**. Custom data goes in the spec's `metadata:` map, not new top-level keys — Codex tolerates unknown keys, but the spec only *guarantees* a home under `metadata`.
+- **The body stays invocation-agnostic.** Write "when the user asks to X", never "when the user runs `/x`" (Claude) or "`$x`" (Codex) — invocation syntax differs per tool. Let `description` carry the trigger; keep the body about *what*, not *how it's typed*.
+- **No CWD assumptions.** Different tools launch from different directories. Reference bundled files by relative path from `SKILL.md` (both honor that); resolve machine paths through an env var with a default (`learn`'s `LEARN_VAULT`), never a hardcoded absolute. Don't put `${CLAUDE_SKILL_DIR}` in text Codex must execute — it won't expand there.
+- **Tool-specific runtime features live outside the skill, registered separately.** Claude Code hooks are the worked example: `learn`'s vault guard is `skills/learn/hooks/guard-vault-path.sh` plus a `~/.claude/settings.json` registration — *not* a line in `SKILL.md`. A machine without Claude Code just loses the guard; the skill still runs. Same discipline for MCP-only tools — name plain `Bash`/`Read`/`Grep` both agents have, not a specific MCP tool, unless both are guaranteed to have it.
+- **Sync must bridge every tool's tree — or "portable" is only a claim.** `~/.claude/skills/` is read by Claude Code and Cursor. **Codex and OpenHands do not read it** — they read `~/.agents/skills/`, the emerging cross-tool standard dir. `tools/sync-skills` links each `skills/<name>/` into both trees, so this is enforced, not just documented.
+
+Who reads what:
+
+| Tool | reads `~/.claude/skills`? | native skills dir |
+|------|---------------------------|-------------------|
+| Claude Code | yes (home) | `~/.claude/skills/` |
+| Cursor | yes (compat) | `~/.cursor/skills/`, `~/.agents/skills/` |
+| Codex | **no** | `~/.agents/skills/` |
+| OpenHands | **no** | `~/.agents/skills/` |
+
+Sources: `code.claude.com/docs/en/skills` · `learn.chatgpt.com/docs/build-skills` · `agentskills.io/specification` · `cursor.com/docs/context/skills`.
 
 ### Test discipline
 

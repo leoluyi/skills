@@ -3,38 +3,59 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$REPO_ROOT/skills"
-DST="${HOME}/.claude/skills"
+
+# Per-tool skills trees to bridge. Each gets its own per-skill symlinks so this
+# repo stays the single source of truth across tools:
+#   ~/.claude/skills — Claude Code (also read by Cursor)
+#   ~/.agents/skills — Codex, OpenHands, and the emerging cross-tool standard dir
+# Codex/OpenHands do NOT read ~/.claude/skills, so the second tree is what makes
+# a skill actually portable rather than Claude-Code-only. See README "Portability".
+DESTS=(
+  "${HOME}/.claude/skills"
+  "${HOME}/.agents/skills"
+)
 
 if [[ ! -d "$SRC" ]]; then
   echo "error: $SRC does not exist" >&2
   exit 1
 fi
 
-mkdir -p "$DST"
-
-# Per-skill symlinks: avoids the Claude Code discovery bug where a directory-level
-# symlink at ~/.claude/skills/ itself confuses the loader.
 shopt -s nullglob
-for skill_path in "$SRC"/*/; do
-  skill_path="${skill_path%/}"
-  name="$(basename "$skill_path")"
-  target="$DST/$name"
 
-  if [[ -L "$target" ]]; then
-    ln -sfn "$skill_path" "$target"
-    echo "linked: $name"
-  elif [[ -e "$target" ]]; then
-    echo "WARN: $target is a real directory, not a symlink — skipping. Remove or rename it manually if you want sync-skills to manage it." >&2
-  else
-    ln -s "$skill_path" "$target"
-    echo "linked: $name"
-  fi
-done
+sync_tree() {
+  local dst="$1"
+  mkdir -p "$dst"
 
-# Prune dangling symlinks under DST (target no longer exists).
-for entry in "$DST"/*; do
-  if [[ -L "$entry" && ! -e "$entry" ]]; then
-    rm -- "$entry"
-    echo "pruned dangling: $(basename "$entry")"
-  fi
+  # Per-skill symlinks: avoids the Claude Code discovery bug where a
+  # directory-level symlink at the tree root itself confuses the loader.
+  local skill_path name target
+  for skill_path in "$SRC"/*/; do
+    skill_path="${skill_path%/}"
+    name="$(basename "$skill_path")"
+    target="$dst/$name"
+
+    if [[ -L "$target" ]]; then
+      ln -sfn "$skill_path" "$target"
+      echo "linked: $dst/$name"
+    elif [[ -e "$target" ]]; then
+      echo "WARN: $target is a real directory, not a symlink — skipping. Remove or rename it manually if you want sync-skills to manage it." >&2
+    else
+      ln -s "$skill_path" "$target"
+      echo "linked: $dst/$name"
+    fi
+  done
+
+  # Prune dangling symlinks under dst (target no longer exists). Only touches
+  # dangling symlinks — real dirs and valid links from other sources are left alone.
+  local entry
+  for entry in "$dst"/*; do
+    if [[ -L "$entry" && ! -e "$entry" ]]; then
+      rm -- "$entry"
+      echo "pruned dangling: $dst/$(basename "$entry")"
+    fi
+  done
+}
+
+for dst in "${DESTS[@]}"; do
+  sync_tree "$dst"
 done
