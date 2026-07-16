@@ -1,0 +1,78 @@
+{
+  "skill_name": "blog-writing-zh",
+  "note": "Routing evals: does the skill fire (positive) or stay quiet (negative)? v0.3: includes two-layer menu (article-type x flavor) routing cases.",
+  "evals": [
+    {
+      "id": 1,
+      "category": "positive/compose/type-and-flavor-named",
+      "prompt": "幫我寫一篇部落格文章，主題是「為什麼工程師應該學會用 AI 寫測試」，觀點倡議型、高見龍風味。",
+      "expected": "trigger; skip menu entirely (type+flavor both specified)"
+    },
+    {
+      "id": 2,
+      "category": "positive/rewrite/obsidian",
+      "prompt": "這是我 Obsidian 裡關於 n8n webhook 除錯的筆記（都是 bullet），幫我改寫成一篇可以發的 blog 文。",
+      "expected": "trigger; recommend a type x flavor combo and confirm via single-select menu"
+    },
+    {
+      "id": 3,
+      "category": "positive/rewrite/translation",
+      "prompt": "把這篇 Anthropic 的英文官方公告翻譯改寫成中文電子報文章，像知識倉鼠那樣加導讀。",
+      "expected": "trigger; map to 深度解讀型×倉鼠 without extra questions"
+    },
+    {
+      "id": 4,
+      "category": "positive/legacy-preset-name",
+      "prompt": "用「保哥教學型」寫一篇 uv 安裝教學。",
+      "expected": "trigger; legacy name maps to 教學實作型×保哥 automatically, no follow-up question about style"
+    },
+    {
+      "id": 5,
+      "category": "positive/til",
+      "prompt": "我今天發現 ripgrep 的 --json flag 配 jq 很好用，幫我寫成一篇短短的 TIL 筆記文。",
+      "expected": "trigger; route to 實測筆記型 (Simon flavor suggested)"
+    },
+    {
+      "id": 6,
+      "category": "positive/compose/casual-phrasing",
+      "prompt": "隨手寫一篇 blog 聊聊我最近用 Claude Code 重構舊專案的心得，輕鬆一點就好",
+      "expected": "trigger"
+    },
+    {
+      "id": 7,
+      "category": "negative/formal-doc",
+      "prompt": "幫我寫一份給主管的專案進度簽呈。",
+      "expected": "should NOT trigger — formal-doc-structure territory"
+    },
+    {
+      "id": 8,
+      "category": "negative/de-ai-only",
+      "prompt": "這段文字幫我去掉 AI 味就好，結構不要動。",
+      "expected": "should NOT trigger — avoid-ai-writing-zh territory"
+    },
+    {
+      "id": 9,
+      "category": "negative/plain-speak",
+      "prompt": "用白話解釋什麼是 idempotent，我要跟 PM 講。",
+      "expected": "should NOT trigger — plain-speak territory"
+    },
+    {
+      "id": 10,
+      "category": "positive/style-guidance-request",
+      "prompt": "我想寫一篇給高中生看的 AI 入門文，但不知道該用什麼風格跟結構，給我建議。",
+      "expected": "trigger; preset recommendation flow (guidance is now an explicit capability)"
+    },
+    {
+      "id": 11,
+      "category": "positive/dual-draft-request",
+      "prompt": "這篇幫我用兩個版本寫再合起來，我要最好的版本。",
+      "expected": "trigger; dual-draft mode explicitly requested"
+    },
+    {
+      "id": 12,
+      "category": "positive/length-request",
+      "prompt": "寫一篇 5000 字以上的 n8n 完整升級指南，越詳細越好。",
+      "expected": "trigger; length tier = 工具書級, 教學實作型"
+    }
+  ]
+}
