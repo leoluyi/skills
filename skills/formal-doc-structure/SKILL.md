@@ -90,3 +90,7 @@ Run before finalizing:
 8. Are risks, assumptions, and constraints stated plainly?
 9. Are all AI-style slogans and filler phrases removed (see references/language.md)?
 10. Is the tone formal, practical, and fit for internal review?
+
+## De-AI finishing pass
+
+After the checklist passes, offer `avoid-ai-writing-zh` as a deep de-AI pass over the draft, a far richer AI-ism ruleset than item 9's own light check (references/language.md). Run it only if the user agrees; otherwise finalize as-is. This is the last step before final output.

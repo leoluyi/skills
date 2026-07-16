@@ -1,6 +1,7 @@
 ---
 name: avoid-ai-writing-zh
-description: Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / \u53F0\u7063 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," \u6216\u300C\u53BB\u9664 AI \u5473\u300D\u300C\u628A\u9019\u6BB5\u4E2D\u6587\u6539\u6210\u4EBA\u8A71\u300D\u300C\u6F64\u98FE\u6210\u6B63\u5F0F\u4F46\u4E0D\u50CF AI \u7684\u4E2D\u6587\u300D. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: \u7A7A\u8A71\u53E3\u865F (\u5168\u9762\u63D0\u5347 / \u8CE6\u80FD / \u6253\u9020\u5B8C\u6574\u751F\u614B), \u4E0D\u662F\u2026\u800C\u662F\u2026 contrarian structure, copula inflation (\u4F5C\u70BA / \u626E\u6F14\u8457), significance inflation (\u81F3\u95DC\u91CD\u8981 / \u4E0D\u8A00\u800C\u55BB), and AI sentence templates (\u5728\u7576\u4ECA\u2026\u7684\u6642\u4EE3 / \u96A8\u8457\u2026\u7684\u5FEB\u901F\u767C\u5C55). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese or mixed zh/en.
+description: >-
+  Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「潤飾成正式但不像 AI 的中文」「把規劃書／報告書／知識文件定稿前去 AI 味」. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升 / 賦能 / 打造完整生態), 不是…而是… contrarian structure, copula inflation (作為 / 扮演著), significance inflation (至關重要 / 不言而喻), and AI sentence templates (在當今…的時代 / 隨著…的快速發展). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills reach this as a finishing pass. When formal-doc-structure, rfp-writing, or briefing-outline complete a formal-document draft (簽呈／報告書／規劃書／需求規格書／說明提綱), they offer it here for a deep de-AI pass before final output. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese or mixed zh/en.
 version: 1.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -577,6 +578,21 @@ The highest-value Chinese fix: AI states intent where a person states deliverabl
 | 由內外部共同合作推動。 | 承辦單位負責需求確認與驗收；協作單位負責資料提供；廠商負責交付文件、環境設定與問題排除。 |
 | 依執行情形進行評估。 | 評估資料包含交付文件、測試紀錄、會議紀錄、問題追蹤表、驗收紀錄及主管評語。 |
 
+### 口語化萬能動詞（自以為白話的含糊簡寫）
+
+AI 常把一個具體動作壓縮成單音節萬能動詞或極短口語簡寫——補、撐、擋、頂、串、接、拉、掛、走一遍——語氣像白話，其實沒指明做了什麼。讀者無法還原真正的動作：「補資料」是補齊缺漏、補寫說明、還是事後補登？「先用假資料撐著」的「撐」是暫代、佔位、還是維持服務不中斷？看似親切，實際上把說清楚的責任丟回給讀者。
+
+判準：把受詞和情境拿掉，這個動詞是否還指向唯一動作？若「補 X」「撐 Y」能代入三種以上互斥解釋（補充／補足／補寫；暫代／支撐／維持），就是萬能動詞，標記。
+
+Fix：換成單義動詞，補上受詞與方式。
+- 「先用預設值撐著」→「先以預設值回填，待正式資料到位後覆寫」
+- 「這塊之後再補」→「缺少的錯誤處理由承辦於下一版補寫」
+- 「把兩個服務串起來」→「以訊息佇列串接兩個服務，A 完成後發事件觸發 B」
+
+**Carve-out：**
+- 真正的口語對話、聊天訊息（casual profile）裡這些動詞是自然語域，不必動。
+- 已約定俗成的技術慣用語組合詞保留：串接 API、掛載磁碟、打補丁／熱補丁、扛住流量。判斷關鍵是搭配是否固定且單義——固定搭配（掛載、串接）保留，臨時拼裝的單字動詞（補一下、撐著、頂一下）才標記。
+
 ### 打破第四面牆 — 工作情境外洩 / 生成過程外洩
 
 產出文件把自己的「生成情境」寫進內文，有兩種形態。一是復述**委託場景**：「根據您提供的需求，本報告將…」「如您所述…」「依提示…」，彷彿這份成品仍在對下指令的人說話。二是敘述作者的**思考過程**：「首先我需要釐清…接著評估各方案…最後得出結論」，把推理的走位當成內容寫出來。一份完成的報告是寫給讀者看的，不是回話給委託者；它呈現結論，而不是產生結論的思考。
@@ -650,6 +666,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - Tier 3 phrase clustering (≥3 distinct boilerplate phrases in one piece)
 - zh-TW empty slogans (全面提升 / 賦能 / 打造完整生態), contrarian 不是…而是…, and AI sentence templates (在當今…的時代)
 - zh-TW abstract-claim-without-deliverable (本案將提升…效率 with no concrete output)
+- zh-TW 口語化萬能動詞／含糊簡寫（補一下 / 先撐著 / 串起來，動詞可代入 3 種以上互斥動作）
 - Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
 
 ### P2 — Stylistic polish (fix when time allows)

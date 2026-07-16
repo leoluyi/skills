@@ -82,6 +82,14 @@ description: Write or review technical RFP documents from the issuer's perspecti
 ---
 ```
 
+### Gotcha: frontmatter must be real UTF-8, never `\u` escapes
+
+The `description` is an unquoted YAML plain scalar, and **YAML does not decode `\u` escapes in plain scalars** — the skill loader hands Claude the raw `\u`-escaped codepoints, not the decoded `台灣`. A zh skill whose description is `\u`-escaped therefore has *dead* Chinese triggers: Claude sees escape gibberish, not 「去除 AI 味」, and never fires on Chinese prompts. The body is unaffected (it isn't parsed as YAML), which is why the bug hides — the skill reads fine, it just won't trigger. This silently disabled every Chinese trigger in `avoid-ai-writing-zh` until it was caught.
+
+- **Detect:** `rg -l '\\u[0-9A-F]{4}' skills/*/SKILL.md` — any hit on a `description:` line is the bug. An escaped emoji on a *double-quoted* line (`emoji: "✍️"`) is fine; double-quoted scalars do decode.
+- **Fix:** write the description in real Traditional Chinese, same as the body. `tools/new-skill` is the suspected source of escaping — check new skills before shipping.
+- **Related:** a `: ` (colon-space) inside an *unquoted* description breaks strict YAML parsers. The fix is a `>-` folded block scalar (see `plain-speak`) — inside a block scalar `:` and `"` are literal, so a description can hold them freely. Scaffold new descriptions as `>-`.
+
 ### SDLC
 
 A skill goes through these seven stages. Most die at stage 3.

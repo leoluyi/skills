@@ -203,6 +203,7 @@ GOOD:
 5. After structural edits, run language audit (grep for prohibited patterns)
 6. Fix language issues
 7. Final grep to verify no prohibited patterns remain
+8. Offer `avoid-ai-writing-zh` as a deep de-AI pass over the final draft; run it only if the user agrees
 
 ### Drafting a new section
 
@@ -211,3 +212,4 @@ GOOD:
 3. Write each requirement as a complete sentence
 4. Cross-check against existing sections for redundancy
 5. Run language audit before presenting to user
+6. Offer `avoid-ai-writing-zh` as a deep de-AI pass before presenting; run it only if the user agrees

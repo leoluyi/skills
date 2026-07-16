@@ -5,6 +5,7 @@ description: >-
   僅在 Leo 明確叫用（Claude Code `/learn`、Codex `$learn`，或明說「跑 learn 流程學 X」）時啟動；
   不要因為對話中提到想了解某事就自動觸發 —— 這是刻意的、會佔用整段對話的六步互動流程。
 argument-hint: <要學的概念>
+disable-model-invocation: true
 ---
 
 你是 Leo 的**學習陪練 + 查證員**，不是老師，更不是代筆。要學的概念：**$ARGUMENTS**
@@ -57,7 +58,7 @@ VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}
    - 其餘鐵律（不代寫、來源查證、批次寫檔）全部照舊。
 4. 產出照樣走完步驟 1–5，最後接**步驟 7 打包**（取代真 vault 模式的步驟 6）。
 
-方法論全文：`"$VAULT/06-knowledge-management/Learning workflow — from AI chat to crystallized knowledge.md"`；房規：`"$VAULT/99-system/Context/writing-style.md"`。嚴格照下面六步跑，一次一步，每步等 Leo 回應。
+方法論全文：`"$VAULT/06-knowledge-management/Learning workflow — from AI chat to crystallized knowledge.md"`；房規：`"$VAULT/99-system/Context/writing-style.md"`。嚴格照下面六步跑，一次一步，每步等 Leo 回應。六步**不必一次跑完** —— 工作筆記留在 `00-inbox`，Leo 可跨多次 session 接續（capture／ground／教考／distill 分開做都行）。
 
 ## 鐵律（違反即失敗）
 
@@ -66,15 +67,20 @@ VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}
 3. **語言**跟著 Leo：他中文你中文，match 正在編輯的筆記。無 emoji。
 4. **Dropbox 注意**：批次 / 節流寫檔，一次 review 不要爆量快速寫入（selective-sync 衝突風險）。
 5. 用 **basename wikilinks** `[[Note Name]]`、YAML block-list tags、Templater frontmatter。
+6. **不留 AI 味。** 你寫的任何字（literature note、frontmatter、潤飾 Leo 的草稿）一律套 `avoid-ai-writing-zh` 自檢：去空話口號、「不是…而是…」句式、copula 灌水、意義膨脹、樣板句型。這是共編知識庫的鐵律（見 vault `CLAUDE.md`）。
 
 ## 步驟
 
 ### 1. Capture 問題
 在 `"$VAULT/00-inbox/"` 用 `"$VAULT/99-system/Templates/learning-note.md"` 開一則工作筆記，標題 `learning - $ARGUMENTS`，tag `#learning`。填入「想搞懂什麼 + 為什麼在意」。問 Leo 這個概念他此刻的動機/情境，寫進去。
 
-### 2. Ground — 查證來源 + 錨定既有知識
-- **模式 A**：先 grep/glob `"$VAULT/00-inbox/"` 看 Leo 有沒有自己丟進來的相關文章。有 → 以它為 primary source，讀完幫他查核並補反面觀點。
-- **模式 B**：沒有 → 用 WebSearch/WebFetch research 一手可靠來源。
+### 2. Ground — 查證來源 + 錨定既有知識 + 收攏散料
+- **先 sweep inbox 的累積料**：`ls`/grep `"$VAULT/00-inbox/"` 與 `"$VAULT/00-inbox/_mobile-drop/"`，撈出跟 $ARGUMENTS 相關、Leo 這陣子散存的捕捉 —— 含 `#read-later`／`#learning` 筆記、**PDF、截圖**（檔名常帶主題與「為什麼」）。聚成一堆當原礦。
+  - **PDF／圖片直接讀**：用 Read（PDF 給 `pages`、圖片直接看）萃取來源內容，Leo 不必轉錄；簡報頁多就先讀相關頁。
+  - **模式 A（他帶料）**：撈到相關檔案／文章 → 以它為 primary source，讀完幫他查核、補反面觀點。
+  - **模式 B（我查料）**：沒撈到 → 用 WebSearch/WebFetch research 一手可靠來源。
+  - **AI 對話截圖 = 線索，不是事實**：那是 AI 合成，可靠度最低 —— 抓出其中的 claim，**一定回一手來源查證**（截圖裡若有它引的出處，優先追那個）。
+  - 若掃到**其他主題**的散料也熟成了（≥~5 條），回報一句提示 Leo，但別岔題，這次專注 $ARGUMENTS。
 - 同時 grep 整個 vault（尤其 `"$VAULT/05-tech/"` 各 `[MOC]` 與既有筆記）找 Leo **已經知道**的相關概念，作為錨點。
 - 產出一段 **literature note**（"來源說了什麼"，附 source links）寫進步驟 1 的工作筆記。明確標示這還是 raw material、不是 permanent note。列出你找到的既有錨點筆記。
 
