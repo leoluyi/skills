@@ -50,10 +50,7 @@ the documentation didn't quite give me the information I needed.」
 論證失敗會公開道歉修正（"It's OK to call it AI" 一文用了糟糕的
 稻草人論證，事後認錯）。信譽來自可被究責。
 
-## 兩篇對照補強（benchmark 實證）
-
-比對〈2025: The year in LLMs〉（年度回顧型）與〈The last six months
-in LLMs in five minutes〉（速覽型）後的可般化技巧：
+## 進階招式
 
 **1. 招牌一致測試當標尺。**
 用同一個荒謬但穩定的測試貫穿多篇比較模型能力（pelican riding a

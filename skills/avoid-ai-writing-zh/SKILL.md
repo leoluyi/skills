@@ -665,13 +665,13 @@ Fix：補回省略成分，名詞用完整詞，寫成完整句型。
 - **排除（voice-neutral）**：`docs`／README、RFP、簽呈、公文、SOP、`investor-email`、reference material。這些本就該均質、無立場、句句完整，不適用，比照下節 Allowed patterns 的 Structured uniformity carve-out。
 - **`--structure-signals`** 為顯性 override，可對任一 voice-bearing 文體強制啟用；對 voice-neutral 文體傳入時應先提示會有大量 false positive。
 
-依據 GAN 協定 round 1（見 `evals/avoid-ai-writing-zh/benchmark-protocol.md`）：真人 voice-bearing 文（觀點／教學／newsletter）FP = 0/3，voice-neutral 文若誤啟用 FP = 2/2，AI voiceless 文 recall = 3/3。**rewrite 模式下只提示、不自動改**——修復需要作者補入真實經驗與判斷，機器代筆只會生出更多假細節。
+**rewrite 模式下只提示、不自動改**——修復需要作者補入真實經驗與判斷，機器代筆只會生出更多假細節。
 
 淨新增兩條（其餘三條與英文版既有規則同源，見交叉引用）：
 
 | 訊號 | 說明與 Fix |
 |---|---|
-| 只解釋不造像（no original metaphor） | 難概念全用定義式解釋，通篇沒有一個自創比喻把抽象拉到讀者的生活經驗。Fix：為關鍵概念造一個貼身的像（「就像…」），出自作者自己的經驗，不是查來的通用比喻。**Carve-out：`technical-blog` 密集操作型教學本就比喻少，真人教學文常只用固定俗諺（如「地雷」）而無自創比喻；此條在教學文不可單獨觸發，需與其他結構訊號成群（≥1 條）才計入（GAN round 1：保哥教學文缺自創比喻但其餘 voice marker 齊全）。** |
+| 只解釋不造像（no original metaphor） | 難概念全用定義式解釋，通篇沒有一個自創比喻把抽象拉到讀者的生活經驗。Fix：為關鍵概念造一個貼身的像（「就像…」），出自作者自己的經驗，不是查來的通用比喻。**Carve-out：`technical-blog` 密集操作型教學本就比喻少，真人教學文常只用固定俗諺（如「地雷」）而無自創比喻；此條在教學文不可單獨觸發，需與其他結構訊號成群（≥1 條）才計入。** |
 | 句句完整、無口語破格（no colloquial breaks） | 通篇沒有任何刻意的口語破格：括號補刀、（吧？）、自問自答、刻意的不完整句。真人寫部落格會破格。這是既有 "Over-polishing" 警告的正面版——不是要製造錯字，是要保留呼吸。Fix：在該停頓、該補刀處，容許一兩處破格。 |
 
 交叉引用（沿用「同源…已在此標記者不必重複標記」慣例）：

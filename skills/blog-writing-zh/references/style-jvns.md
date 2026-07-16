@@ -41,10 +41,9 @@ refs，想『喔對，同事大概推了新 commit』，跑 git pull --rebase，
 （Dan Luu 評語）。相關文體：TIL、"WHY DID NOBODY TELL ME ABOUT
 THIS BEFORE?!" 型小工具驚喜文、輪詢讀者困惑再回應的 poll 文。
 
-## 兩篇對照補強（benchmark 實證）
+## 進階招式
 
-比對〈Why is DNS still hard to learn?〉（解惑型）與〈How does gzip
-work?〉（探索日誌型）後，發現 Julia 橫跨兩種子模式：
+此風味橫跨兩種子模式，下筆前先定位在哪一端：
 
 **內部光譜：打磨解惑 ↔ live 探索。**
 - 打磨解惑型：主題她已精通，目標是替讀者卸除恐懼。用「困惑源
