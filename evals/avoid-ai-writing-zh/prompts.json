@@ -58,6 +58,13 @@
       "prompt": "幫我擬一份招標規格書第三章「部署與發布」底下的需求清單，要含金絲雀部署。",
       "expected_trigger": false,
       "note": "Structural RFP authoring routes to rfp-writing, not language cleanup. Gate must not grab it."
+    },
+    {
+      "id": 10,
+      "category": "positive/zh-tw/structure-signals",
+      "prompt": "這篇部落格草稿沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂。幫我用 --structure-signals 看是不是均質、沒立場、沒有具體例子。",
+      "expected_trigger": true,
+      "note": "Structural-signal detect on blog voice: no word-level AI-isms but structurally voiceless. Should trigger the 結構級訊號 layer under casual voice / --structure-signals."
     }
   ]
 }
