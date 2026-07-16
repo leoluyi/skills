@@ -26,7 +26,7 @@ Keep the **insight**, drop the **derivation**. Rewrite `比對 A 與 B 後發現
 Before finalizing a skill edit, grep the skill and its references:
 
 ```
-grep -rnE 'GAN|round [0-9]|benchmark|補強|補充樣本|比對〈|eval #|FP ?=|recall' skills/<name>/
+grep -rnE 'GAN|round [0-9]|benchmark|補強|補充樣本|比對〈|對照[^，。]*〈|可般化|般化|來自對照|eval #|FP ?=|recall' skills/<name>/
 ```
 
 Hits inside `SKILL.md` or `references/` are noise — move them to the dev docs above. Hits inside `DEVELOPMENT.md` / `benchmark-protocol.md` / `.json` eval fixtures are fine; that is where provenance lives.
