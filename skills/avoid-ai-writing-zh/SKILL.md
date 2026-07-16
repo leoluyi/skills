@@ -1,8 +1,8 @@
 ---
 name: avoid-ai-writing-zh
 description: >-
-  Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「把規劃書／報告書／知識文件或 README／開發文件定稿前去 AI 味」. Also use as a de-AI finishing pass when finalizing or reviewing English/mixed software-development docs — README, CONTRIBUTING, CHANGELOG, ADR, API docs, code comments. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升／賦能), 不是…而是… contrarian structure, copula inflation (作為／扮演著), significance inflation (至關重要), AI 句式 (在當今…的時代), and 專有名詞過度翻譯／生造中文譯名 (house rules→房規；無定譯保留原文). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese, mixed zh/en, or software-development docs.
-version: 1.0.0
+  Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「把規劃書／報告書／知識文件或 README／開發文件定稿前去 AI 味」. Also use as a de-AI finishing pass when finalizing or reviewing English/mixed software-development docs — README, CONTRIBUTING, CHANGELOG, ADR, API docs, code comments. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升／賦能), 不是…而是… contrarian structure, copula inflation (作為／扮演著), significance inflation (至關重要), AI 句式 (在當今…的時代), and 專有名詞過度翻譯／生造中文譯名 (house rules→房規；無定譯保留原文). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese, mixed zh/en, or software-development docs. This skill removes AI patterns; it does not create a voice — to inject human voice or restructure a blog draft, use blog-writing-zh first, then run this as the finishing pass.
+version: 1.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -45,7 +45,7 @@ This skill operates in one of three modes:
 
 Trigger detect mode when the user says "detect," "flag only," "audit only," "just flag," "scan," "what AI patterns are in this," or similar. Trigger edit mode when the user names a file and asks you to fix or clean it in place. Default to rewrite mode if not specified.
 
-**Invocation.** Natural language is enough ("rewrite this in a blunt voice for LinkedIn," "edit `post.md` in place," "scan this, don't rewrite"). Power users can also pass explicit options, which map to the sections below: `[--mode rewrite|detect|edit]`, `[--voice casual|professional|technical|warm|blunt]`, `[--context linkedin|blog|technical-blog|investor-email|docs|casual]`, `[--file PATH]`, `[--iterate N]` (max 2).
+**Invocation.** Natural language is enough ("rewrite this in a blunt voice for LinkedIn," "edit `post.md` in place," "scan this, don't rewrite"). Power users can also pass explicit options, which map to the sections below: `[--mode rewrite|detect|edit]`, `[--voice casual|professional|technical|warm|blunt]`, `[--context linkedin|blog|technical-blog|investor-email|docs|casual]`, `[--file PATH]`, `[--iterate N]` (max 2), `[--structure-signals]` (see [結構級訊號](#結構級訊號zh-tw-部落格聲音)).
 
 **Iterate to convergence (optional).** Rewrite mode already runs one corrective second pass (see Output format) — that built-in pass *is* pass 2, so `--iterate` does not stack on top of it. When the writer asks to "iterate," "keep going until it's clean," or passes `--iterate N`, repeat the audit→rewrite cycle until no patterns remain or **N passes** are reached. Cap **N at 2**: a rewrite plus one corrective pass clears the flagged patterns, and a third pass costs a full regeneration while rarely finding more. Report how many passes it took ("converged in 2 passes").
 
@@ -394,13 +394,13 @@ These slot-fill constructions signal that a sentence was generated, not written.
 - "While X is impressive, Y remains a challenge" or "Although X has made strides, Y is still an open question." AI uses this to sound balanced without actually weighing anything. Both halves are vague. Either make the concession specific (name what's impressive, name the actual challenge) or pick a side and argue it.
 
 ### Rhetorical question openers
-- "But what does this mean for developers?" / "So why should you care?" / "What's next?" � AI uses rhetorical questions to stall before the actual point. If you know the answer, just say it. Rhetorical questions are earned by strong setup, not dropped as section transitions.
+- "But what does this mean for developers?" / "So why should you care?" / "What's next?" — AI uses rhetorical questions to stall before the actual point. If you know the answer, just say it. Rhetorical questions are earned by strong setup, not dropped as section transitions.
 
 ### Parenthetical hedging
-- "(and, increasingly, Z)" / "(or, more precisely, Y)" / "(and perhaps more importantly, W)" � AI inserts parenthetical asides to sound nuanced without committing. If the aside matters, give it its own sentence. If it doesn't, cut it.
+- "(and, increasingly, Z)" / "(or, more precisely, Y)" / "(and perhaps more importantly, W)" — AI inserts parenthetical asides to sound nuanced without committing. If the aside matters, give it its own sentence. If it doesn't, cut it.
 
 ### Numbered list inflation
-- "Three key takeaways" / "Five things to know" / "Here are the top seven" � AI defaults to numbered lists because they're structurally safe. Only use numbered lists when the content genuinely has that many discrete, parallel items. If you're padding to hit a number, the list shouldn't exist.
+- "Three key takeaways" / "Five things to know" / "Here are the top seven" — AI defaults to numbered lists because they're structurally safe. Only use numbered lists when the content genuinely has that many discrete, parallel items. If you're padding to hit a number, the list shouldn't exist.
 
 ### Reasoning chain artifacts
 - "Let me think step by step," "Breaking this down," "To approach this systematically," "Step 1:," "Here's my thought process," "First, let's consider," "Working through this logically" — these are artifacts of chain-of-thought reasoning leaking into published prose. The reader doesn't need to see the scaffolding. State the conclusion, then the evidence.
@@ -655,6 +655,27 @@ Fix：補回省略成分，名詞用完整詞，寫成完整句型。
 
 與英文版 Reasoning chain artifacts、Acknowledgment loops 同源：前者抓「首先／第一步」這類指紋詞，此處收錄的是委託場景復述、沒有指紋詞而以流暢中文寫出的過程外洩，以及併稿接縫。已在此標記者，不必在那兩條重複標記。
 
+### 結構級訊號（zh-TW 部落格聲音）
+
+**detect only。** 高見龍〈寫作吧，菜鳥工程師〉點名的病灶：「正確但沒有靈魂」——句子工整、用詞精準，卻少了真實經驗、踩過的坑、「我當初也卡在這」的共鳴。拔掉 AI 病句只是減法，得到乾淨但無聲的中性文；讀者仍覺得「像 AI 寫的」，往往不是殘留病句，而是缺少人味的**正向特徵**。這一節收錄結構級訊號——句子層看不到、要退一步看整篇才浮現的缺席。
+
+**適用範圍與姿態。** 這些是 detect 訊號，不是判決（沿用本 skill 的 signals-not-proof 立場）。**只在 voice profile 為 `casual`（部落格聲音）或使用者傳入 `--structure-signals` 時啟用**；正式文體（RFP、簽呈、公文、SOP）本就該均質、無立場、句句完整，不適用，比照下節 Allowed patterns 的 Structured uniformity carve-out。**rewrite 模式下只提示、不自動改**——修復需要作者補入真實經驗與判斷，機器代筆只會生出更多假細節。
+
+淨新增兩條（其餘三條與英文版既有規則同源，見交叉引用）：
+
+| 訊號 | 說明與 Fix |
+|---|---|
+| 只解釋不造像（no original metaphor） | 難概念全用定義式解釋，通篇沒有一個自創比喻把抽象拉到讀者的生活經驗。Fix：為關鍵概念造一個貼身的像（「就像…」），出自作者自己的經驗，不是查來的通用比喻。 |
+| 句句完整、無口語破格（no colloquial breaks） | 通篇沒有任何刻意的口語破格：括號補刀、（吧？）、自問自答、刻意的不完整句。真人寫部落格會破格。這是既有 "Over-polishing" 警告的正面版——不是要製造錯字，是要保留呼吸。Fix：在該停頓、該補刀處，容許一兩處破格。 |
+
+交叉引用（沿用「同源…已在此標記者不必重複標記」慣例）：
+
+- **節奏均質（uniform rhythm）** — 與英文版 Rhythm and uniformity 同源：連續數段長度相近、句長變異低，缺少單句段與長短交錯。
+- **全文無立場（zero stance）** — 與 Rhythm and uniformity 的 "Missing first-person perspective" 及 Emotional flatline 同源：找不到一句作者判斷句，每個論點都以「各有優劣」收場。
+- **零具體個人細節（zero specifics）** — 與 Treadmill effect / low information density 及 Vocabulary diversity 的 fix 同源：全文沒有一個具體時間、次數、場景（「卡關三次」「凌晨三點」「花了三天」）。
+
+與 blog-writing-zh 分工：本節只**偵測**聲音的缺席；要**注入**聲音或重寫結構，用 blog-writing-zh（加法），再回到本 skill 除噪（減法）。
+
 ### Allowed patterns — do NOT flag (繁中 carve-outs)
 
 These reduce false positives on legitimate Taiwan business and technical writing:
@@ -769,12 +790,12 @@ Pass an optional context hint to adjust rule strictness. If no context is specif
 
 ### Profile definitions
 
-**`linkedin`** � Short-form social. Punchy fragments, visual formatting matter.
-**`blog`** � Default. Standard long-form prose. All rules apply at full strength.
-**`technical-blog`** � Long-form with code, architecture, APIs. Technical terms get a pass.
-**`investor-email`** � High-trust audience. Tighten everything; promotional language is the biggest risk.
-**`docs`** � Documentation and software-development docs: READMEs, CONTRIBUTING, CHANGELOG, ADR, API docs, guides, and code comments. Clarity over voice. This is a finishing/review pass, not a drafting aid � run it when a dev doc is being finalized or reviewed for AI tells, and leave code identifiers, commands, config keys, and fenced code blocks untouched.
-**`casual`** � Slack messages, internal notes, quick replies. Only catch the worst offenders.
+**`linkedin`** — Short-form social. Punchy fragments, visual formatting matter.
+**`blog`** — Default. Standard long-form prose. All rules apply at full strength.
+**`technical-blog`** — Long-form with code, architecture, APIs. Technical terms get a pass.
+**`investor-email`** — High-trust audience. Tighten everything; promotional language is the biggest risk.
+**`docs`** — Documentation and software-development docs: READMEs, CONTRIBUTING, CHANGELOG, ADR, API docs, guides, and code comments. Clarity over voice. This is a finishing/review pass, not a drafting aid — run it when a dev doc is being finalized or reviewed for AI tells, and leave code identifiers, commands, config keys, and fenced code blocks untouched.
+**`casual`** — Slack messages, internal notes, quick replies. Only catch the worst offenders.
 
 ### Tolerance matrix
 
@@ -821,7 +842,7 @@ When no context is specified, infer from these signals:
 | Code blocks, API references, or technical architecture | `technical-blog` |
 | Salutation ("Hi [name]", "Dear") + investor/fundraising language | `investor-email` |
 | Step-by-step instructions, parameter docs, README structure | `docs` |
-| No strong signals | `blog` (safest default � all rules apply) |
+| No strong signals | `blog` (safest default — all rules apply) |
 
 If auto-detection feels wrong, say which profile you're using and why. The user can override.
 
@@ -847,6 +868,8 @@ Each profile is a set of concrete targets, not a vibe:
 **Calibrate to a sample (optional).** If the writer gives you a sample of their own writing ("match my voice — here's a post"), analyze its sentence-length pattern, contraction rate, paragraph openings, and recurring word choices, then match those instead of a named profile. Don't "upgrade" their vocabulary: if they write "stuff" and "things," keep that register.
 
 **How voice composes with context.** Voice sets the target; context sets how hard to enforce it. A voice *target* always applies, even where a context profile would skip that category — `technical` voice still prefers plain copulatives in a `casual` context that otherwise ignores copula avoidance. Where both axes govern the same rule and agree, they reinforce: `blunt` voice wants near-zero em-dashes and a `blog` context is already strict on them, so it stays a hard edit. Where they disagree, resolve toward the **stricter** of the two — a `warm` voice on `docs` still doesn't get decorative tables. Sensible default pairings: casual↔casual, professional↔linkedin/investor-email, technical↔docs/technical-blog.
+
+**Voice profile as a positive-feature contract.** When the writer supplies a voice profile or voice sample — including one authored by a sibling skill like `blog-writing-zh` — the positive features it declares are **intentional**: a stated stance, a metaphor system, a deliberate rhythm, intentional 口語破格. Do not strip them as AI-isms. This is what lets the additive and subtractive passes compose: `blog-writing-zh` injects the voice, this skill removes the noise, and the subtraction must not eat the addition. If a declared feature *also* matches an AI-ism rule, leave it in place and note it in the audit rather than editing it out.
 
 ---
 
