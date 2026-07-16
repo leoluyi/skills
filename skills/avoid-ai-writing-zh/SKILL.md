@@ -415,10 +415,15 @@ These slot-fill constructions signal that a sentence was generated, not written.
 - Related pattern: opening a section by summarizing what the previous section said. If the structure is clear, the reader doesn't need a recap.
 
 ### Breaking the fourth wall
-- A deliverable leaks its own making apparatus in one of two ways. It narrates its **commissioning** — "As requested, this report…," "Based on the scenario you described," "Per your prompt" — as if the finished document were still addressing whoever ordered it. Or it narrates the author's **deliberation** — "First I need to clarify X, then I'll weigh the options, and finally arrive at…" — laying out the reasoning walk instead of the argument it produced. A finished report speaks to its reader, not to whoever commissioned it, and shows its conclusions, not the thinking that reached them.
-- The test that separates a leak from real content: does the sentence help the **reader** follow the argument, or narrate how the **writer** got there? Reader-facing rationale stays — a justification the argument depends on ("We chose B because its tail latency is lower under load") is substance, not scaffolding, and cutting it breaks the piece. Author-facing process goes — the writer's own decision walk ("I first considered A, found it blocked on X, so I switched to B") is scaffolding, unless that comparison is itself what the deliverable exists to report.
-- Distinct from two narrower rules above. **Reasoning chain artifacts** catches the phrase-fingerprints ("Let me think step by step," "Step 1:"); this rule catches the same leak when it is phrased as fluent prose with no telltale marker. **Acknowledgment loops** catches restating the prompt in a conversational reply; this rule generalizes it to any standalone deliverable and adds the commissioning-scenario form. Don't re-flag under those rules what you flag here.
-- Fix: delete the framing and open on the substance. "As requested, this report analyzes three vendors" → "Three vendors meet the latency requirement:". Where a rationale is load-bearing, keep it but strip the first person and the sequence markers — state *why* it holds, not *when the writer realized it*.
+- A deliverable leaks its own making instead of delivering content, in three forms:
+  - **Commissioning echo** — "As requested, this report…," "Based on the scenario you described," "Per your prompt" — the finished document still addressing whoever ordered it.
+  - **Author deliberation** — "First I need to clarify X, then I'll weigh the options, and finally arrive at…" — the reasoning walk laid out instead of the argument it produced.
+  - **Seams of consolidation** — pointing at a sibling document instead of stating a conclusion ("詳《04_技術面試題目》", "see the other doc", "併入 02 人才徵選附件"), swapping a lazy back or forward reference for the content ("比照前述", "同上", "as above", "see below"), or leaving an orphaned pointer to a figure, table, or section that did not survive the merge ("如圖", "如下表", "as shown above"). Not an AI tell — a human merging drafts by hand leaves the identical seams — but they defeat a standalone deliverable just the same.
+- A finished report speaks to its reader, not to whoever commissioned it; shows its conclusions, not the thinking that reached them; and stands alone, not pointing at another file.
+- The test that separates a leak from real content: does the sentence help the **reader** follow the argument, or narrate how the **writer** got there / send the reader off the page? Reader-facing rationale stays — a justification the argument depends on ("We chose B because its tail latency is lower under load") is substance, not scaffolding, and cutting it breaks the piece. Author-facing process goes, and so does a pointer standing in for content — pull the referenced conclusion inline; if it is too long to inline, the two passages probably belong together.
+- **Carve-out (genuine external citation).** A deliberate reference to an EXTERNAL authoritative source — a law, a standard, an official spec, a published paper — is legitimate and stays: "依《個人資料保護法》第 8 條", "per RFC 7519", "see NIST SP 800-63B". The test: can the reader obtain and check the target independently, and is it cited to establish authority rather than to avoid restating your own content? If both hold, keep it.
+- Distinct from two narrower rules above. **Reasoning chain artifacts** catches the phrase-fingerprints ("Let me think step by step," "Step 1:"); this rule catches the same leak when it is phrased as fluent prose with no telltale marker. **Acknowledgment loops** catches restating the prompt in a conversational reply; this rule generalizes it to any standalone deliverable and adds the commissioning and consolidation-seam forms. Don't re-flag under those rules what you flag here.
+- Fix: delete the framing and open on the substance. "As requested, this report analyzes three vendors" → "Three vendors meet the latency requirement:"; "錄取標準比照前述" → state the actual criteria inline. Where a rationale is load-bearing, keep it but strip the first person and the sequence markers — state *why* it holds, not *when the writer realized it*.
 
 ### Confidence calibration phrases
 - "It's worth noting that," "Interestingly," "Surprisingly," "Importantly," "Significantly," "Notably," "Certainly," "Undoubtedly," "Without a doubt" — AI uses these to signal how the reader should feel about a fact instead of letting the fact speak for itself.
@@ -627,17 +632,28 @@ Fix：補回省略成分，名詞用完整詞，寫成完整句型。
 
 ### 打破第四面牆 — 工作情境外洩 / 生成過程外洩
 
-產出文件把自己的「生成情境」寫進內文，有兩種形態。一是復述**委託場景**：「根據您提供的需求，本報告將…」「如您所述…」「依提示…」，彷彿這份成品仍在對下指令的人說話。二是敘述作者的**思考過程**：「首先我需要釐清…接著評估各方案…最後得出結論」，把推理的走位當成內容寫出來。一份完成的報告是寫給讀者看的，不是回話給委託者；它呈現結論，而不是產生結論的思考。
+產出文件不直接給內容，反而洩漏自己的來歷，有三種形態：
 
-判準：這句話是幫**讀者**理解論點，還是在敘述**作者**如何得到論點？
+- **委託場景復述** — 「根據您提供的需求，本報告將…」「如您所述…」「依提示…」，彷彿這份成品仍在對下指令的人說話。
+- **思考過程外洩** — 「首先我需要釐清…接著評估各方案…最後得出結論」，把推理的走位當成內容寫出來。
+- **併稿的接縫** — 不寫結論而指向兄弟文件（「詳《04_技術面試題目》」「見《…》」「併入 02 人才徵選附件」），用回指／前指代替內容（「比照前述」「同上」「如前所述」），或留下指向已不存在之物的殘留指標（併稿後「如圖」「如下表」「見上節」所指的圖、表、章節並未一併帶入）。不是 AI 特有的毛病——人工合併草稿也會留下一模一樣的縫——但一樣會破壞獨立交付文件。
+
+一份完成的報告是寫給讀者、不是回話給委託者；它呈現結論、而非產生結論的思考；它自成一體、而不是指著別的檔案。
+
+判準：這句話是幫**讀者**理解論點，還是在敘述**作者**如何得到論點、或把讀者指去別處？
 
 - 保留（讀者導向的理由）：論點所依賴的論據——「採用方案 B，因為高併發下尾延遲較低」是實質內容，不是鷹架，刪掉會使論述斷裂。
-- 刪除（作者導向的過程）：作者自己的決策歷程——「我先考慮方案 A，發現卡在 X，於是改用 B」是鷹架；除非這個比較本身就是文件要交付的重點。
+- 刪除（作者導向的過程，以及代替內容的指標）：作者自己的決策歷程——「我先考慮方案 A，發現卡在 X，於是改用 B」是鷹架，除非那個比較本身就是文件要交付的重點；以及指向兄弟文件的指標——把被指涉的結論直接寫進來，若長到無法內嵌，兩段多半該併在一起。
 
 > Poor: 根據您提供的評估需求，我將分三個步驟說明，首先…
 > Better: 三家廠商中，僅 B 符合延遲要求：
 
-與英文版 Reasoning chain artifacts、Acknowledgment loops 同源：前者抓「首先／第一步」這類指紋詞，此處收錄的是委託場景復述，以及沒有指紋詞、以流暢中文寫出的過程外洩。已在此標記者，不必在那兩條重複標記。
+> Poor：錄取標準比照前述，專案細節詳《04_訓練計劃_專案實作》。
+> Better：錄取標準為三年以上後端經驗、通過實作測驗且面談評分達 B 以上；專案需交付需求規格、系統設計、測試紀錄與驗收報告四份文件。
+
+**Carve-out（對外部權威來源的正式引用）：** 對外部權威來源（法規、標準、官方文件、已發表文獻）的刻意引用是正當的，保留：「依《個人資料保護法》第 8 條」「參 NIST SP 800-63B」「見 RFC 7519」。判準：讀者能否獨立取得並查核該來源，且該引用是為訴諸權威、而非為省去重述自己的內容？兩者皆成立才保留。
+
+與英文版 Reasoning chain artifacts、Acknowledgment loops 同源：前者抓「首先／第一步」這類指紋詞，此處收錄的是委託場景復述、沒有指紋詞而以流暢中文寫出的過程外洩，以及併稿接縫。已在此標記者，不必在那兩條重複標記。
 
 ### Allowed patterns — do NOT flag (繁中 carve-outs)
 
@@ -726,6 +742,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - zh-TW 空降斷言開場（段落／小節開頭丟一個指涉未交代之物的 term／claim，如「三個失效機制，全部指向同一件事」）
 - zh-TW 專有名詞過度翻譯（把無通行譯名的產品名／功能名／術語生造成逐字中文，如 house rules→房規）
 - Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
+- Breaking the fourth wall — consolidation seams (併稿接縫): pointing at a sibling document instead of stating the conclusion (詳《04_技術面試題目》, "see the other doc", 併入 02 人才徵選附件), a lazy back/forward reference standing in for content (比照前述, 同上, "as above"), or an orphaned pointer to a figure/table/section that didn't survive the merge (如圖, 如下表). Not an AI tell per se, but a standalone-readability defect from consolidating source documents.
 
 ### P2 — Stylistic polish (fix when time allows)
 - Generic conclusions ("The future looks bright")
