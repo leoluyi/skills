@@ -67,4 +67,4 @@ harness 自動化 fan-out：generator 產 AI 桶、evaluator 跑判別器與 jud
 
 | 日期 | 真人桶 | AI 桶 | FP / recall | 主要發現 | Patch |
 |---|---|---|---|---|---|
-| — | （待跑） | | | | |
+| 2026-07-17 | 5 篇：觀點（高見龍）、教學（保哥/miniasp）、newsletter（倉鼠）、docs（工程會使用手冊）、公文規格（工程會資安要求） | 3 篇自生 zh-TW voiceless 文（觀點／教學／分析，無 Tier-1 詞級病句） | voice-bearing 真人 FP=0/3；voice-neutral 若誤啟用 FP=2/2；AI recall=3/3 | (1) 判準應為 voice-bearing vs voice-neutral，非 blog vs 非 blog——真人觀點/教學/newsletter 穩定帶齊 stance/specifics/metaphor/口語破格；docs/公文本就均質須維持排除。(2) AI voiceless 文常無詞級病句，詞表會漏標，結構層才抓得到（層的價值驗證）。(3) 密集教學文（保哥）缺自創比喻卻為真人 →『只解釋不造像』不可單獨觸發。樣本小（n=3/3），round 2 應擴語料。 | gating 從 casual-only 擴為 voice-bearing 文體集；只解釋不造像加 technical-blog 成群才觸發 carve-out；eval #3 #4 |
