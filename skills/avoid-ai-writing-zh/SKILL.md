@@ -413,6 +413,12 @@ These slot-fill constructions signal that a sentence was generated, not written.
 - "You're asking about," "The question of whether," "To answer your question," "That's a great question. The..." — AI restates the prompt before answering. In writing, this is pure filler. The reader knows what they asked. Just answer.
 - Related pattern: opening a section by summarizing what the previous section said. If the structure is clear, the reader doesn't need a recap.
 
+### Breaking the fourth wall
+- A deliverable leaks its own making apparatus in one of two ways. It narrates its **commissioning** — "As requested, this report…," "Based on the scenario you described," "Per your prompt" — as if the finished document were still addressing whoever ordered it. Or it narrates the author's **deliberation** — "First I need to clarify X, then I'll weigh the options, and finally arrive at…" — laying out the reasoning walk instead of the argument it produced. A finished report speaks to its reader, not to whoever commissioned it, and shows its conclusions, not the thinking that reached them.
+- The test that separates a leak from real content: does the sentence help the **reader** follow the argument, or narrate how the **writer** got there? Reader-facing rationale stays — a justification the argument depends on ("We chose B because its tail latency is lower under load") is substance, not scaffolding, and cutting it breaks the piece. Author-facing process goes — the writer's own decision walk ("I first considered A, found it blocked on X, so I switched to B") is scaffolding, unless that comparison is itself what the deliverable exists to report.
+- Distinct from two narrower rules above. **Reasoning chain artifacts** catches the phrase-fingerprints ("Let me think step by step," "Step 1:"); this rule catches the same leak when it is phrased as fluent prose with no telltale marker. **Acknowledgment loops** catches restating the prompt in a conversational reply; this rule generalizes it to any standalone deliverable and adds the commissioning-scenario form. Don't re-flag under those rules what you flag here.
+- Fix: delete the framing and open on the substance. "As requested, this report analyzes three vendors" → "Three vendors meet the latency requirement:". Where a rationale is load-bearing, keep it but strip the first person and the sequence markers — state *why* it holds, not *when the writer realized it*.
+
 ### Confidence calibration phrases
 - "It's worth noting that," "Interestingly," "Surprisingly," "Importantly," "Significantly," "Notably," "Certainly," "Undoubtedly," "Without a doubt" — AI uses these to signal how the reader should feel about a fact instead of letting the fact speak for itself.
 - "Here's what's interesting," "Here's the interesting part," "Here are the parts I found interesting" — reader-steering cue that pre-interprets importance. Works when followed by genuinely surprising data; fails when it introduces a restatement of something obvious (which is the AI default).
@@ -571,6 +577,20 @@ The highest-value Chinese fix: AI states intent where a person states deliverabl
 | 由內外部共同合作推動。 | 承辦單位負責需求確認與驗收；協作單位負責資料提供；廠商負責交付文件、環境設定與問題排除。 |
 | 依執行情形進行評估。 | 評估資料包含交付文件、測試紀錄、會議紀錄、問題追蹤表、驗收紀錄及主管評語。 |
 
+### 打破第四面牆 — 工作情境外洩 / 生成過程外洩
+
+產出文件把自己的「生成情境」寫進內文，有兩種形態。一是復述**委託場景**：「根據您提供的需求，本報告將…」「如您所述…」「依提示…」，彷彿這份成品仍在對下指令的人說話。二是敘述作者的**思考過程**：「首先我需要釐清…接著評估各方案…最後得出結論」，把推理的走位當成內容寫出來。一份完成的報告是寫給讀者看的，不是回話給委託者；它呈現結論，而不是產生結論的思考。
+
+判準：這句話是幫**讀者**理解論點，還是在敘述**作者**如何得到論點？
+
+- 保留（讀者導向的理由）：論點所依賴的論據——「採用方案 B，因為高併發下尾延遲較低」是實質內容，不是鷹架，刪掉會使論述斷裂。
+- 刪除（作者導向的過程）：作者自己的決策歷程——「我先考慮方案 A，發現卡在 X，於是改用 B」是鷹架；除非這個比較本身就是文件要交付的重點。
+
+> Poor: 根據您提供的評估需求，我將分三個步驟說明，首先…
+> Better: 三家廠商中，僅 B 符合延遲要求：
+
+與英文版 Reasoning chain artifacts、Acknowledgment loops 同源：前者抓「首先／第一步」這類指紋詞，此處收錄的是委託場景復述，以及沒有指紋詞、以流暢中文寫出的過程外洩。已在此標記者，不必在那兩條重複標記。
+
 ### Allowed patterns — do NOT flag (繁中 carve-outs)
 
 These reduce false positives on legitimate Taiwan business and technical writing:
@@ -598,6 +618,8 @@ AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中�
 
 When rewriting, prefer Taiwan-standard terms: 計畫 (not 计划), 規劃, 執行, 檢核, 驗收, 廠商, 資訊, 專案, 承辦單位, 權責單位, 待辦事項, 後續追蹤, 期程, 排程, 調度. Avoid PRC-style phrasing (賦能, 抓手, 落地, 閉環, 顆粒度, 對齊顆粒度) unless quoting source material.
 
+**For a dedicated 陸用語 → 台灣正體 pass, use the `avoid-china-writing` skill.** This section is a light touch — it catches PRC phrasing only where it overlaps AI 空話. The sibling `avoid-china-writing` skill is the deep pass: a full 詞彙對照表 (視頻→影片、軟件→軟體、屏幕→螢幕), 互聯網／職場黑話, 簡體字殘留偵測, and 音譯專名差異 (奧巴馬→歐巴馬). Cross-strait localization is an axis orthogonal to AI-ism cleanup — when the writer wants both, run `avoid-china-writing` for 用語 and this skill for 語氣／結構.
+
 ---
 
 ## Severity tiers
@@ -609,6 +631,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - Chatbot artifacts ("I hope this helps!", "Great question!")
 - Vague attributions without sources ("Experts believe")
 - Significance inflation on routine events
+- Breaking the fourth wall — commissioning echo (「根據您提供的需求…」/ "As requested, this report…"); a deliverable addressing its prompter
 - Hashtag stuffing on `linkedin` and `investor-email` posts (severity varies by profile — same rule, lower priority on `blog`/`technical-blog` where a launch post may legitimately stack tags; see the context-profile table below)
 
 ### P1 — Obvious AI smell (fix before publishing)
@@ -627,6 +650,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - Tier 3 phrase clustering (≥3 distinct boilerplate phrases in one piece)
 - zh-TW empty slogans (全面提升 / 賦能 / 打造完整生態), contrarian 不是…而是…, and AI sentence templates (在當今…的時代)
 - zh-TW abstract-claim-without-deliverable (本案將提升…效率 with no concrete output)
+- Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
 
 ### P2 — Stylistic polish (fix when time allows)
 - Generic conclusions ("The future looks bright")

@@ -31,6 +31,15 @@ cat > "$SKILL_DIR/SKILL.md" <<EOF
 ---
 name: $NAME
 description: [TODO: one-sentence trigger — be pushy and specific. Name the explicit phrases / contexts that should fire this skill, and what should NOT fire it.]
+version: 0.1.0
+license: MIT
+compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
+metadata:
+  author: Lu Yi
+  tags: [TODO: space-separated tags — e.g. writing zh-tw traditional-chinese]
+  agentskills_spec: "1.0"
+  openclaw:
+    emoji: "[TODO: one emoji, e.g. ✍️]"
 ---
 
 # $NAME
@@ -70,7 +79,7 @@ echo "  $SKILL_DIR/SKILL.md"
 echo "  $EVAL_DIR/prompts.json"
 echo
 echo "next steps:"
-echo "  1. fill in the SKILL.md frontmatter description (it is the trigger gate)"
+echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji"
 echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
 echo "  3. add at least one realistic prompt to evals/$NAME/prompts.json"
 echo "  4. run 'tools/sync-skills' if airgapped, otherwise consumers pick it up via 'npx skills update --all'"
