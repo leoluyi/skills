@@ -2,7 +2,7 @@
 name: avoid-ai-writing-zh
 description: >-
   Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「把規劃書／報告書／知識文件或 README／開發文件定稿前去 AI 味」. Also use as a de-AI finishing pass when finalizing or reviewing English/mixed software-development docs — README, CONTRIBUTING, CHANGELOG, ADR, API docs, code comments. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升／賦能), 不是…而是… contrarian structure, copula inflation (作為／扮演著), significance inflation (至關重要), AI 句式 (在當今…的時代), and 專有名詞過度翻譯／生造中文譯名 (house rules→房規；無定譯保留原文). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese, mixed zh/en, or software-development docs. This skill removes AI patterns; it does not create a voice — to inject human voice or restructure a blog draft, use blog-writing-zh first, then run this as the finishing pass.
-version: 1.1.2
+version: 1.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -191,6 +191,23 @@ Fix：補上主題句，先交代主詞再下判斷（近似英文論說文的 t
 - 標題與小節標題本就精簡點題，不受此限。
 - 前文已充分鋪陳時，開場的回指承接（「這三者的共同根因是…」）是正常銜接，不是空降。
 
+### 空降主張（文中無依據的判斷句）
+
+前一條抓開場的空降斷言；此條抓文章**中段**冒出來的判斷句——「導入風險可控」「不影響既有安全邊界」「這個做法更成熟」——結論下得篤定，但依據既不在前文、也不在句內、也沒有來源。AI 產生論述時常把「判斷」和「支撐判斷的事實」分開生成，事實那半有時就丟失了，留下一句懸空的結論。對讀者的傷害比空話更大：空話一眼看穿，空降主張看起來像有所本，實際上無法檢驗。
+
+判準：對文中每個判斷句問「憑什麼？」——答案是否存在於（a）前文已建立的論述、（b）同句給出的理由、或（c）標註的來源？三者皆無，即為空降主張，標記。評估類文件（ADR、選型報告）的「理由」段落從嚴適用：理由裡引用的每個事實，讀者都應該能在正文找到對應論述。
+
+Fix：三選一——補上當場理由、回指前文（前文若沒有就先補建立）、或附來源；都做不到就刪除該判斷。
+- 「BFF 落在 gateway 之後，不動既有認證與稽核邊界」（前文未提過 gateway 承載認證稽核）→ 前文先建立「對外認證與存取稽核由 gateway 集中承載」的事實，此處改寫為「如前節所述，認證與稽核由 gateway 集中承載；BFF 落在 gateway 之後，這條既有安全邊界不需變動」
+- 「這個方案風險可控」→「此方案不變更安全邊界、且可先以單一服務試點，風險因此可控」
+
+與「空降斷言開場」互補：那條抓開頭指涉未交代之物，此條抓文中結論缺乏依據。與 Vague attributions（「Experts believe」）不同：那是假託他人，此條是連託詞都沒有的裸判斷。
+
+**Carve-out：**
+- 摘要與一頁總結回收正文已論證過的結論，不是空降。
+- 明確標示為假設、待驗證、或個人猜測的句子（「假設」「待確認」「我猜」）不標——它們誠實聲明了自己沒有依據。
+- 領域公認常識（「網路呼叫有延遲」）不需逐句給依據，判斷標準是目標讀者是否會問「憑什麼」。
+
 ### Excessive adjective stacking
 
 Strings of parallel adjectives that assert quality without evidence.
@@ -201,6 +218,17 @@ Strings of parallel adjectives that assert quality without evidence.
 ### Slash enumeration in Chinese prose
 
 Chinese enumeration uses 頓號, not slashes: 輸入/輸出/紀錄 → 輸入、輸出、紀錄. **Carve-out:** English technical terms keep the slash — `JWT / OAuth2`, `CI/CD`, `AWQ / GPTQ` are standard notation.
+
+### 頓號串列代替論述（名詞／動詞堆砌）
+
+AI 在論述段裡把應該展開的內容壓成頓號串列——「gateway 負責認證、限流、路由、觀測」——四個名詞各自是一門學問，串在一起等於什麼都沒說。讀過的人當它是複習，沒讀過的人從中學不到任何東西；論述段的職責是教學，不是複習。與 Slash enumeration 相鄰互補：那條抓斜線分隔（A/B/C），此條抓頓號堆砌出現在承重的論述位置。
+
+判準：概念在文中**首次**出現處，是否只以頓號串列帶過、沒有任何一項被展開說明？首次出現即串列者標記；前文已逐項論述過、此處僅回顧者不標。
+
+Fix：首次出現處逐項展開（每項一句話交代它是什麼、為什麼在這裡），或至少展開承重的那幾項；串列留給表格與摘要。
+- 「gateway 負責認證、限流、路由、觀測」→「gateway 承接跨客戶端一致的關卡工作：驗證請求者身分（認證）、限制單一來源的請求頻率（限流）、把請求導向正確的後端（路由），並統一收集流量記錄（觀測）」
+
+**Carve-out：** 表格儲存格、條列摘要、一頁總結、以及前文已展開過的回顧句不標。技術慣用的固定並列（增刪查改、讀寫）不標。
 
 ### Synonym cycling (中文)
 
@@ -248,17 +276,59 @@ Fix：換成單義動詞，補上受詞與方式。
 
 AI 在濃縮、摘要或翻譯時，會把完整句子壓成電報式短語——省略主詞、丟掉受詞、把名詞截成單字、拿掉量詞助詞——例如「分享後存同一夾」。語氣像順手記的便條，但讀者得自己補回被省略的成分：「存」的是什麼？（檔案）「同一夾」是哪種夾？（資料夾）。看似精簡，實則把還原語意的工作丟回給讀者，句子也讀來突兀不完整。
 
-判準：把句子攤開，主詞、動詞、受詞是否齊全、名詞是否為完整詞？受詞缺席或名詞被截成單字（夾←資料夾、庫←資料庫），即為過度簡寫，標記。
+判準：把句子攤開，主詞、動詞、受詞是否齊全、名詞是否為完整詞？受詞缺席、名詞被截成單字（夾←資料夾、庫←資料庫）、或動詞缺席（以名詞片語代替動作，如「服務間自動 mTLS 加密」——自動做什麼？），即為過度簡寫，標記。條列項的說明文字同樣適用此條，不因出現在 bullet 裡而豁免。
 
 Fix：補回省略成分，名詞用完整詞，寫成完整句型。
 - 「分享後存同一夾」→「將檔案分享到同一個資料夾」
 - 「跑完打包上傳」→「測試跑完後，將產出物打包並上傳到發布區」
+- 「服務間自動 mTLS 加密，不必改程式」→「mesh 自動為服務之間的連線套用 mTLS 加密，應用程式不必修改自己的程式碼就能得到加密」
 
 與前一節「口語化萬能動詞」互補而不重疊：萬能動詞抓的是動詞語意含糊（補／撐／串可代入多種動作），此條抓的是句子成分被省略、名詞被截斷。已在此標記者不必在那條重複標記。
 
 **Carve-out：**
 - 真正的口語對話、聊天訊息、便條（casual profile）本就精簡，不必動。
 - 已通行的固定簡稱保留：資安（資訊安全）、API、K8s。判準是該簡稱是否固定通行且單義——固定通行者保留，臨時截斷者（同一夾、設定←設定檔）才標記。
+
+### 破折號當萬用連接詞（——濫用）
+
+AI 中文把破折號（——）當成萬用連接詞，用它取代「因為」「所以」「例如」「也就是」「其中」等本來各司其職的承接詞——讀者每遇到一個破折號，都得自己猜前後句的邏輯關係。單看一處無傷大雅，密度一高，全文的因果與舉例關係就都藏進了同一個符號裡。這與英文規則的 Em dash frequency 同源，中文另有一個誘因：破折號讓句子顯得文氣流暢，掩蓋了連接詞沒想清楚的事實。
+
+判準：兩層。（一）頻率：正文的連接用破折號以**每千字一次**為上限，超過即整篇檢討。（二）逐處測試：把破折號換成明確承接詞（因為／所以／例如／也就是／即），句意是否更清楚？是，就換。
+
+Fix：換回明確承接詞，或直接以句號拆句。
+- 「更麻煩的是組織面——這個 API 沒有單一的主人」→「更麻煩的是組織面的問題：這個 API 沒有單一的主人」
+- 「實務架構是並存——gateway 站最外層」→「實務架構是並存：gateway 站最外層」
+
+**Carve-out：**
+- 條列的「**概念名** — 說明」結構分隔符（單破折號、前後有空格）是格式約定，不計入頻率。
+- 成對破折號夾注（——插入語——）為合法用法，但整組計一次、同受頻率上限約束。
+- 引文與標題不計。
+
+### 警句式評語（破折號收尾的自我加值）
+
+AI 論述常在句尾用破折號補一句評價式短評，替自己剛講完的論點打分數——「——這比任何文字定義都快」「——這正是它的價值所在」「——僅此而已」。同一家族還有祈使句形態的道德化評語充當強調：「成本要誠實面對」「必須正視」「不要迴避」。這類句子沒有增加資訊，功能只是宣告「我剛剛講的很重要」。與英文規則的 em-dash frequency 同源，但中文的病灶是「破折號＋評語」的組合，不只是破折號的出現頻率。
+
+判準：刪掉破折號之後那句（或把祈使評語改成中性陳述，如「成本要誠實面對」→「成本包含」），論述是否少了任何事實或推論？若只少了情緒與強調，即為警句式評語，標記。
+
+Fix：刪除評語；或把它想表達的判斷寫成有依據的完整句。
+- 「下圖用顏色直接標出擁有權——這比任何文字定義都快」→「下圖以顏色標出擁有權界線，後文表格沿用同一套配色」
+- 「成本要誠實面對：每多一個 BFF 就多一個服務」→「導入的成本：每多一個 BFF，就多一個需要部署與維運的服務」
+
+**Carve-out：** 引文、標語、簡報標題頁等以警句為體裁的場合不標。
+
+### 破碎短句堆疊（推論鏈斷裂）
+
+AI 壓縮論述時，常把一段完整推理拆成連續斷言短句，句與句之間只以分號或破折號並置，省掉前提與因果承接——「硬要 DRY 抽共用層就會繞回通用 API 的老路；多一跳也多一份延遲」。每個短句各自是一個結論，中間的推論步驟由讀者自行補回。節奏讀來俐落，代價是論證無法檢驗：看得到主張，看不到主張為什麼成立。
+
+判準：句中出現結論詞（就會、導致、所以、因此）但前提沒有寫出來；或正文論述段裡連續三個以上斷言短句僅以分號／破折號並置，沒有承接詞交代彼此的因果關係。任一成立即標記。
+
+Fix：攤開為完整推論——前提、因果、結論各自成句，承接詞寫明白。
+- 「硬要 DRY 抽共用層就會繞回通用 API 的老路」→「若為了消除重複而把共用邏輯抽成一層，所有 BFF 會重新耦合在這一層上；這一層必須同時滿足所有客戶端，也就回到了當初通用 API 難以維護的處境」
+- 「多一跳也多一份延遲」→「請求路徑上多了 BFF 這一跳，每次呼叫都增加對應的網路延遲」
+
+與「過度簡寫」互補而不重疊：那條抓句子成分（主詞、受詞）缺席，此條抓論證步驟（前提、因果）缺席。已在此標記者不必在那條重複標記。
+
+**Carve-out：** 摘要、表格儲存格、條列重點、一頁總結等以濃縮為體裁的區塊不標——濃縮是那些區塊的職責；此條只適用於正文論述段。
 
 ### 打破第四面牆 — 工作情境外洩 / 生成過程外洩
 
@@ -334,6 +404,7 @@ AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中�
 |---|---|---|---|
 | 節奏（用於時程／進度語境，如「專案節奏」「開發節奏」） | 把英文 rhythm／cadence 的譬喻套到時程上；中文應直接指明時間規劃 | 期程（時間規劃）／排程（具體時間表，依語境擇一） | 真正描述音樂、運動、敘事的「節奏感」時保留 |
 | 編排（用於 orchestration，如「服務編排」「流程編排」） | orchestration 直譯為「編排」偏向版面／內容編排語意，與調度資源、協調流程的原意不符 | 調度 | 描述版面、內容、表演、課程「編排」時保留 |
+| 跳（用於 network hop，如「多一跳」「少一跳」「每跳延遲」） | network hop 的直譯；圈外讀者不知道「跳」的是什麼，句中也沒有動作與對象 | 寫明動作與對象：「請求多經過一個轉發節點（network hop）」「每經過一個節點就增加一段轉發延遲」 | 明確面向網路工程讀者、且文中已定義 hop 一詞時，可用「hop」原文 |
 
 ### 專有名詞過度翻譯（生造中文譯名）
 
@@ -389,6 +460,11 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - Generic future-narrative closers ("may become one of the most important narratives…")
 - Social endorsement closers ("This one is worth your time:", "thank me later")
 - Hedge-stacked predictions ("could potentially," "may eventually")
+- 破折號當萬用連接詞（連接用——每千字超過一次）
+- 警句式評語（破折號收尾的自我加值／祈使式道德評語）
+- 破碎短句堆疊（正文論述段的推論鏈斷裂）
+- 頓號串列代替論述（概念首次出現即以名詞堆砌帶過）
+- 空降主張（文中判斷句無前文依據、無當場理由、無來源）
 - Real/actual adjective inflation ("real on-chain tokenomics")
 - Bullet lists of bare noun phrases (5+ short adj+noun items, no verbs)
 - Tier 3 phrase clustering (≥3 distinct boilerplate phrases in one piece)
