@@ -1,7 +1,7 @@
 ---
 name: avoid-ai-writing-zh
 description: >-
-  Audit and rewrite content to remove AI writing patterns ("AI-isms") in BOTH English and Traditional Chinese (Taiwan / 台灣 business usage). Use when asked to "remove AI-isms," "clean up AI writing," "make this sound less like AI," 或「去除 AI 味」「把這段中文改成人話」「把規劃書／報告書／知識文件或 README／開發文件定稿前去 AI 味」. Also use as a de-AI finishing pass when finalizing or reviewing English/mixed software-development docs — README, CONTRIBUTING, CHANGELOG, ADR, API docs, code comments. Adds a Traditional-Chinese layer the English-only avoid-ai-writing lacks: 空話口號 (全面提升／賦能), 不是…而是… contrarian structure, copula inflation (作為／扮演著), significance inflation (至關重要), AI 句式 (在當今…的時代), and 專有名詞過度翻譯／生造中文譯名 (house rules→房規；無定譯保留原文). Supports detect / rewrite / edit modes, voice profiles, and an iterate-to-convergence pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass. Prefer this over avoid-ai-writing whenever the text is Traditional Chinese, mixed zh/en, or software-development docs. This skill removes AI patterns; it does not create a voice — to inject human voice or restructure a blog draft, use blog-writing-zh first, then run this as the finishing pass.
+  Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. Removes AI patterns but does not create a voice — to inject voice or restructure a blog draft, run blog-writing-zh first, then this as the finishing pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass.
 version: 1.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -369,6 +369,8 @@ These slot-fill constructions signal that a sentence was generated, not written.
 ## Traditional Chinese AI-isms (繁體中文／台灣用語)
 
 Apply this section whenever the text contains CJK. These are the Chinese analogues of the English patterns above, plus filler shapes specific to Taiwan business and formal writing.
+
+**陸用語不在此範圍。** 這裡只清 AI 味。跨海峽在地化——陸用語（視頻→影片、軟件→軟體）、互聯網／職場黑話（賦能、抓手）、簡體字殘留——是正交的另一軸，由 sibling skill `avoid-china-writing` 負責（詞例見 [references/zh-phrase-rules.md](references/zh-phrase-rules.md) 的 Taiwan term preferences 段）。若稿子同時有 AI 味與陸用語，先跑 `avoid-china-writing` 清用語，再用本 skill 清語氣／結構。
 
 **A caution before flagging.** Several of these patterns also appear in legitimate formal Taiwanese business writing — 公文, 簽呈, 法遵文件 — and in second-language writers. They are signals, not proof (the same "signals, not proof" rule from [What this skill is and isn't](#what-this-skill-is-and-isnt) applies). Flag the *empty* instances; keep the ones doing real work. The do-not-flag carve-outs (the Allowed patterns table at the end of this section) exist to stop over-flagging.
 
