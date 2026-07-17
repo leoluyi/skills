@@ -150,7 +150,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
 
 1. **必做：調用 `avoid-ai-writing-zh` 做去 AI 味終稿檢查。**
    用自然語言交棒即可，它支援 rewrite/detect/edit 模式與 voice
-   profile。**採 detect-first 三步流程**（實測證實最不會誤削聲音）：
+   profile。**採 detect-first 三步流程**（最不會誤削聲音）：
 
    **步驟 A — 先 detect，拿命中清單。** 以 `detect` 模式交棒，
    要它只標記 AI-ism、不改字，回傳每個命中項＋所在文字。
@@ -167,7 +167,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
    以 `rewrite`（或 `edit`）模式只改這些項，明確告知豁免清單不得
    更動。
 
-   為什麼不直接 rewrite：實測顯示直接 rewrite 時 detect 會命中大量
+   為什麼不直接 rewrite：直接 rewrite 時 detect 會命中大量
    intentional voice，下游可能一併改掉；detect-first 讓過濾權留在
    懂本文聲音的 blog-writing-zh 手上，下游只執行確認過的修改。
    稿子 AI 味本來就低時（如高見龍白話風），步驟 A 常只回幾項、
@@ -177,7 +177,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
    - voice profile：把本次風味與人設濃度傳為 voice。高見龍 L3 →
      `--voice casual`；保哥 L1 → `--voice professional/technical`；
      Simon → `--voice technical`。dual-draft 熔接稿**務必**跑這關，
-     接縫處最容易殘留 AI 味（實測命中多集中在 A/B 稿論據交會處）。
+     接縫處最容易殘留 AI 味（多集中在 A/B 稿論據交會處）。
    - context：依發布場景給 `--context blog|technical-blog|casual` 等。
    - 交棒話術範例（步驟 A）：「用 avoid-ai-writing-zh 以 detect 模式、
      casual voice 掃這篇，只列 AI-ism 命中清單不要改字，我要自己

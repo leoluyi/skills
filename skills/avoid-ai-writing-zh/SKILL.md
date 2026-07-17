@@ -8,7 +8,7 @@ compatibility: Any AI coding assistant that supports agentskills.io SKILL.md for
 metadata:
   author: Conor Bronsdon
   adapted_by: Lu Yi
-  adaptation: Traditional Chinese (Taiwan) AI-ism layer added; mined from personal rfp-writing and formal-doc-structure skills. English layer rebased verbatim from upstream avoid-ai-writing v3.16.0 (MIT); see DEVELOPMENT.md.
+  adaptation: Traditional Chinese (Taiwan) layer added on top of the upstream avoid-ai-writing English layer; see DEVELOPMENT.md.
   tags: writing editing voice quality zh-tw traditional-chinese
   agentskills_spec: "1.0"
   openclaw:
@@ -368,7 +368,7 @@ These slot-fill constructions signal that a sentence was generated, not written.
 
 ## Traditional Chinese AI-isms (繁體中文／台灣用語)
 
-Apply this section whenever the text contains CJK. These are the Chinese analogues of the English patterns above, plus filler shapes specific to Taiwan business and formal writing. Mined from the `rfp-writing` and `formal-doc-structure` skills.
+Apply this section whenever the text contains CJK. These are the Chinese analogues of the English patterns above, plus filler shapes specific to Taiwan business and formal writing.
 
 **A caution before flagging.** Several of these patterns also appear in legitimate formal Taiwanese business writing — 公文, 簽呈, 法遵文件 — and in second-language writers. They are signals, not proof (the same "signals, not proof" rule from [What this skill is and isn't](#what-this-skill-is-and-isnt) applies). Flag the *empty* instances; keep the ones doing real work. The do-not-flag carve-outs (the Allowed patterns table at the end of this section) exist to stop over-flagging.
 
