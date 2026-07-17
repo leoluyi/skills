@@ -2,7 +2,7 @@
 name: briefing-outline
 description: >-
   說明提綱 (briefing outline) writing — distill detailed source material into one high-altitude overview that gives each part its purpose and essence, then points down for the detail. Source count is not the point: it works over several documents or one long report (pointing down to its sections). Use when the user wants to 整理／撰寫一份說明提綱, condense one or more sources into a navigable briefing for a 主管 or 委員會, summarise a long report into a high-altitude overview that points down for detail, or re-sync an existing 提綱 after its sources changed. Do NOT invoke to author a single formal document from scratch — 簽呈/會議紀錄/報告/專案規劃 (use formal-doc-structure), for RFP / 需求規格書 / 招標規格 (use rfp-writing), for lowering one term or passage to a non-technical audience (use plain-speak), or for pure language cleanup (use avoid-ai-writing-zh). This skill sits above the source material and points down into each part.
-version: 1.0.0
+version: 1.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -30,6 +30,8 @@ The recurring failure is drift below altitude — dragging in 逐項標準、逐
 7. **Verify.** Run the draft through every gate in **## Verification** below; each is pass/fail and a fail sends you back to the named step. When a change is important enough, cascade a brief mention into companion overview docs (e.g. a one-page 版). Completion: every gate passes.
 
 **Re-sync branch** — a source document changed: identify the affected sections and re-run steps 4–7 for those only, including the cascade check in step 7.
+
+**Visual-emphasis branch** — the 提綱 will be rendered (PDF/HTML) for a 主管 to read from or scan aloud: after step 7, optionally add a visual emphasis layer (sparse yellow keyword anchors, blue definitional fields, boxed labels, A/B/C on parallel groups). Applies only when the render pipeline's CSS carries the classes; sparse by default; skip entirely for plain-text delivery. See `references/visual-emphasis.md` (full working stylesheet: `references/report.css`).
 
 ## Altitude: what stays, at what depth
 
@@ -65,6 +67,8 @@ The 提綱 may also **synthesize what the sources only imply**: name a structure
 - Tables for governance/structure — 階段／數量、組成、角色分工. Flat bullets for enumerable essence. Prose for the opening one-or-two-sentence essence.
 - Truncate long enumerations to anchor items + 「等」.
 - Top-level sections numbered 一、二、三; keep numbering stable across edits so references hold.
+- **Lock owner-designated keywords verbatim.** When the source's owner (主管／委員) has fixed specific technical keywords, carry them through unchanged even while rewriting the surrounding prose to altitude; fix only a typo, mis-set term, or technical/logic error, flag it, and confirm before removing or merging a keyword.
+- **Lock shared terms across the source set.** One canonical form per concept (課程類別、委員會職務、關卡名、機構／子公司名); change one, change all, so cross-references hold.
 - No emoji. Strip AI-isms (the `avoid-ai-writing-zh` pass in step 6 handles this).
 
 ## Verification
