@@ -60,6 +60,17 @@
 
 這輪修正也再次印證了「改完 skill 要從零重產，不能 patch」的方法論：每條規則改完都重新產出受影響的文件（而非在舊檔案上直接改樣式），確保規則本身站得住、不是靠人工修補撐過測試。
 
+## v1.1.0 → v1.2.0：圖表打磨層由 frontend-design 改為 infographic-design
+
+原本借 `frontend-design`（Anthropic 公開 skill）當 SVG 圖表的內容打磨層（見上「HTML／SVG 產出規則的來源」）。改用同 repo 的 `infographic-design`，理由：
+
+- **原生產出自足 SVG**，與本 skill「圖表一律 inline SVG」的規則同一個目標，不必再把通用前端 token system 流程裁剪成圖表用途。
+- **有現成的 layout archetype 與三層資訊層級**（流程/對照/剖解、L1 takeaway／L2 sections／L3 support），比 frontend-design 的通用版面概念更貼合本 skill 固定的架構圖、流程圖、對照圖幾種圖型。
+- **`references/bytebytego-style.md` 的編號走查**專門處理「機制怎麼運作」的技術圖，正是知識文件裡架構圖最需要、frontend-design 沒有的東西。
+- **自我批判迴圈**（squint／8 秒測試）與原本借用 frontend-design 的自我批判等價。
+
+沿用不變的是 v1.1.0 定下的邊界：打磨層只作用在圖表內容，文件外殼與色彩／字體以固定模板為準。這次把這條 override 講得更硬——SKILL.md 裡明文蓋掉 infographic-design 自己的色彩與字體系統（其 step 7 與 `references/color-typography.md`），以及它針對「單張獨立 infographic」的交付品質閘（`scripts/check.py` 那套 delivery guard）。因為這裡的圖是嵌在 HTML 文件內的 figure，視覺語言必須跟正文一致，走的是本節固定模板的 token，不套獨立 infographic 的配色與交付檢查。既有的 frontend-design 歷史段落保留不刪，那是 v1.0→v1.1 的準確紀錄。
+
 ## 已知限制 / 後續可做
 
 - 分層結構（Application/Middleware/Infrastructure/Hardware）與 ADR 情境模組尚未各自跑過從零重產的完整測試迴圈，目前只在早期（patch 方法論修正之前）的 BFF 測試中驗證過 ADR 部分。下次遇到適合分層結構的主題（如 AI 平台或容器平台）時，應補一輪從零重產測試。

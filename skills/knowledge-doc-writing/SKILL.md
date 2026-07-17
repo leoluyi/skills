@@ -12,7 +12,7 @@ description: >-
   不要用於：learn 的互動學習迴圈本身（用 learn）、公司內部簽呈／會議紀錄／評估報告等行政文件（用 formal-doc-structure）、
   RFP／招標規格（用 rfp-writing）、部落格文章（用 blog-writing-zh）、只做語言層去 AI 味不動結構（用 avoid-ai-writing-zh）、
   只要口頭白話解釋不產文件（用 plain-speak）。
-version: 1.1.0
+version: 1.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required; source-verification steps assume web access when available.
 metadata:
@@ -235,7 +235,7 @@ a{color:var(--accent-b)}
 - SVG 圖要能獨立讀懂：圖內標籤完整，不依賴周邊文字才看得懂；配色與 HTML 版整體 token 一致。
 - **條列項目符號用真正的 bullet，不用破折號或連字號充當**（破折號在條列裡的角色是「概念名 — 說明」的分隔符，見論述紀律，兩者不可混用）。樣式已含在下方最低規範 CSS 的 `ul.kv` 區塊。
 
-**`frontend-design` skill 只用在 SVG 圖表本身的內容設計**，不用在文件外殼：畫架構圖、流程圖、對照圖時，讀該 skill 決定圖的版面配置、視覺隱喻（例如用色塊面積表示佔比、用箭頭粗細表示流量大小）、圖例安排，並做自我批判避免落入樣板化的方框加箭頭。但圖表的顏色必須從文件既有的 token 變數（`--ink`、`--muted`、`--accent-a`、`--accent-b`、`--warn` 等）裡挑，不新開色票；字體也沿用 `--font-body`／`--font-mono`。這樣同一份文件裡，圖表與正文永遠是同一套視覺語言，換了主題也不會每次重新設計一次外觀。
+**過程中若需要設計圖表（架構圖、流程圖、對照圖），引用 `infographic-design` skill 處理圖的內容設計**，只用在圖本身、不用在文件外殼。畫「這個協定／管線／架構怎麼運作」這類機制圖時，另讀該 skill 的 `references/bytebytego-style.md`，用編號走查（numbered walkthrough）把複雜流程講成一個可循序讀懂的序列，不是一張泛泛的方框加箭頭。但**文件外殼與整體視覺語言以本節的固定模板為準，覆蓋該 skill 自己的色彩與字體系統**：圖表顏色一律從文件既有的 token 變數（`--ink`、`--muted`、`--accent-a`、`--accent-b`、`--warn` 等）裡挑，不新開色票；字體沿用 `--font-body`／`--font-mono`。這樣同一份文件裡，圖表與正文永遠是同一套視覺語言，換了主題也不會每次重新設計一次外觀。
 
 完整風格錨點與段落示範見 [references/skeletons.md](references/skeletons.md)。
 
