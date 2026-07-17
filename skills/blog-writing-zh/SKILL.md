@@ -23,7 +23,7 @@ description: >-
   PRC usage may have leaked in. Do NOT invoke for 正式公文／簽呈 (use formal-doc-structure), RFP (use
   rfp-writing), 白話翻譯單一術語 (use plain-speak), or pure de-AI editing of an
   existing text with no restructuring (use avoid-ai-writing-zh directly).
-version: 0.13.1
+version: 0.14.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, etc.). No external tools or APIs required.
 metadata:
@@ -41,7 +41,7 @@ and a voice — not like a well-organized machine summary.
 ## 核心原則：一個活人在對讀者說話
 
 研究五個台灣高人氣部落格後的共同底層原則：**每篇文章都能感覺到「一個活人在
-對你說話」**。這由四種正向特徵構成，缺一味道就淡：
+對你說話」**。這由五種正向特徵構成，缺一味道就淡：
 
 1. **有立場**：作者敢下判斷（「燒腦但值得」「別急著投降」），不是中立百科。
 2. **有親身經歷**：具體的個人契機、踩坑、時間數字（「被卡關三次，超煩的」
@@ -51,6 +51,12 @@ and a voice — not like a well-organized machine summary.
    委員」「葉子亮燈」），不是解釋，是造像。
 4. **節奏不均質**：句長、段落長刻意起伏。一句話自成一段。金句急停。
    AI 文的破綻常常不是病句，而是每段都一樣長、每句都太完整。
+5. **有思考痕跡**：像是邊想邊寫、在腦袋裡跟自己對話，讓讀者看著你從
+   困惑走到結論——試過的死路、卡住的地方、改變主意的轉折（「我一開始
+   以為 X，跑過一次才發現不對」「這段我卡了很久」）。人味來自呈現
+   「怎麼想到的」，不是把打磨好的結論丟給讀者。改寫模式下不可捏造
+   第一人稱困惑，改用編者視角攤開素材本身的推導順序（「這裡值得停下來
+   想一下為什麼」）。
 
 ## Modes
 
@@ -151,8 +157,9 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
 
    **步驟 B — blog-writing-zh 過濾 intentional 項。** 拿到清單後，
    本 skill 對照風味檔逐項判定：屬本文正向特徵者（有立場的判斷句、
-   第一人稱經歷、自建比喻、刻意的不均質節奏與口語破格、風味簽名
-   句式、單句段急停、低劑量顏文字）標為**豁免**；只留下真正機械化
+   第一人稱經歷、自建比喻、刻意的不均質節奏與口語破格、邊想邊寫的
+   思考痕跡（「我一開始以為…」「老實說不確定」、改變主意的轉折）、
+   風味簽名句式、單句段急停、低劑量顏文字）標為**豁免**；只留下真正機械化
    的 AI 套路（空話口號、不是…而是、過度翻譯術語、三元排比慣性、
    Tier 1 硬核詞等）。
 
@@ -181,10 +188,10 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
 **衝突保護（傳給下游的硬約束）**：本 skill 是加法（給聲音與結構），
 那兩個是減法（除雜訊）。順序不可反過來。交棒時明確告知下游：
 本文的正向特徵——有立場的判斷句、第一人稱經歷、自建比喻、
-刻意的不均質節奏與口語破格——是 intentional voice，不是 AI-ism，
-必須保留；只移除機械化的 AI 套路（空話口號、不是…而是、
-過度翻譯術語等）。若下游削掉了聲音，以本 skill 的正向特徵為準
-回復。
+刻意的不均質節奏與口語破格、邊想邊寫的思考痕跡——是 intentional
+voice，不是 AI-ism，必須保留；只移除機械化的 AI 套路（空話口號、
+不是…而是、過度翻譯術語等）。若下游削掉了聲音，以本 skill 的
+正向特徵為準回復。
 
 **呼叫後**：拿回下游的 rewrite 結果與 diff，快速檢查聲音是否被
 誤削（尤其金句、單句段、顏文字、簽名句式）；沒問題才定稿交付。
