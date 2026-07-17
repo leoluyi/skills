@@ -7,7 +7,7 @@ description: >-
   支援三種輸入：對話紀錄整理、原始資料整理、從零自學產出（強制查證一手來源並標註時效）。
   產出核心是 What/Why 論述與辯證比較決策框架，並依情境附自學消化模組
   （前置知識地圖、心智模型與類比、常見誤解與陷阱、最小可運行範例、費曼式自述檢核、待驗證問題清單）。
-  可接在 learn skill 之後作為下游：learn 管六步互動學習迴圈、Obsidian vault、與親手 distillation（learn 鐵律：distillation 是學習本身，不代寫），
+  可接在 learn-loop skill 之後作為下游：learn 管六步互動學習迴圈、Obsidian vault、與親手 distillation（learn 鐵律：distillation 是學習本身，不代寫），
   本 skill 只接手 distill 完成之後的產文件步驟——重新組織、補讀者上下文、套用完稿檢查，不重新消化或代替使用者理解。
   不要用於：learn 的互動學習迴圈本身（用 learn）、公司內部簽呈／會議紀錄／評估報告等行政文件（用 formal-doc-structure）、
   RFP／招標規格（用 rfp-writing）、部落格文章（用 blog-writing-zh）、只做語言層去 AI 味不動結構（用 avoid-ai-writing-zh）、
@@ -64,7 +64,7 @@ metadata:
 
 ## 接在 learn 之後：從 vault 筆記到正式文件
 
-本 skill 是 `learn` 的下游，且**不得跨越這條分工線**：distillation（把資料消化成自己的話、判斷懂了沒懂）永遠是 learn 的職責、永遠由使用者親手做；本 skill 拿到的必須是已經 distill 完成的理解，任務只是把它寫成結構完整、可對外的文件。兩者職責不重疊：
+本 skill 是 `learn-loop` 的下游，且**不得跨越這條分工線**：distillation（把資料消化成自己的話、判斷懂了沒懂）永遠是 learn 的職責、永遠由使用者親手做；本 skill 拿到的必須是已經 distill 完成的理解，任務只是把它寫成結構完整、可對外的文件。兩者職責不重疊：
 
 - **learn 的產物是 distilled permanent note** — 存在 Obsidian vault、由使用者親手 distill（learn 的鐵律：distillation 是學習本身，不代寫）。它是消化過的個人知識，格式為 vault house style（answer-first、claim 標題、wikilinks、YAML block tags）。
 - **本 skill 把那則筆記轉成可對外的正式文件** — 重新組織成本 skill 的骨架（What/Why、辯證比較五件套），補齊給第三方讀者所需的上下文，套用完稿檢查。

@@ -1,6 +1,6 @@
 # learn — Claude Code hooks
 
-Optional, **Claude-Code-only** guardrails for the `learn` skill. The skill in
+Optional, **Claude-Code-only** guardrails for the `learn-loop` skill. The skill in
 `../SKILL.md` stays tool-portable (Claude Code, Codex, …); these hooks add
 deterministic enforcement for the one tool that supports them. Nothing here is
 required for the skill to work — a machine without them just loses the guard.
@@ -8,8 +8,8 @@ required for the skill to work — a machine without them just loses the guard.
 ## guard-vault-path.sh
 
 `PreToolUse(Write|Edit)` guard. Denies a `learning - *` note that would be
-written outside the learn vault or `~/learn-outbox` — the CWD-confusion failure
-`learn` warns about. Fail-open: it only denies when certain, and allows on any
+written outside the learn vault or `~/learn-loop-outbox` — the CWD-confusion failure
+`learn-loop` warns about. Fail-open: it only denies when certain, and allows on any
 uncertainty, so it never blocks normal editing.
 
 ### Register (Claude Code)
@@ -27,7 +27,7 @@ variant is not read). Add:
         "hooks": [
           {
             "type": "command",
-            "command": "bash -c 'S=\"$HOME/.skills/skills/learn/hooks/guard-vault-path.sh\"; [ -f \"$S\" ] && exec bash \"$S\" || exit 0'"
+            "command": "bash -c 'S=\"$HOME/.skills/skills/learn-loop/hooks/guard-vault-path.sh\"; [ -f \"$S\" ] && exec bash \"$S\" || exit 0'"
           }
         ]
       }

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# guard-vault-path.sh — Claude Code PreToolUse guard for the `learn` skill.
+# guard-vault-path.sh — Claude Code PreToolUse guard for the `learn-loop` skill.
 #
 # Denies a Write/Edit of a learning-note-shaped file that would land OUTSIDE the
 # learn vault (or the temp outbox). It targets exactly one failure mode: the
-# cross-tool CWD confusion `learn` warns about, where a capture note titled
+# cross-tool CWD confusion `learn-loop` warns about, where a capture note titled
 # `learning - <concept>` gets written to the current directory instead of VAULT.
 #
 # Design: FAIL-OPEN. On any uncertainty — no jq, unparseable payload, missing
@@ -11,7 +11,7 @@
 # when it is certain: a `learning - *` file resolving outside every sanctioned
 # root. A guard that runs on every Write/Edit must never brick normal editing.
 #
-# This is a Claude-Code-only layer. The `learn` skill itself stays tool-portable;
+# This is a Claude-Code-only layer. The `learn-loop` skill itself stays tool-portable;
 # this hook is optional determinism for the one tool that supports hooks.
 # Registration + rationale: see the sibling README.md.
 
@@ -31,7 +31,7 @@ cwd="$(printf '%s' "$payload" | jq -r '.cwd // empty' 2>/dev/null)"
 
 base="$(basename -- "$file_path")"
 
-# Is this a `learn` capture note? Step 1 titles it `learning - <concept>`. That
+# Is this a `learn-loop` capture note? Step 1 titles it `learning - <concept>`. That
 # prefix is the fingerprint; normal code edits never match it. No match => the
 # guard has no opinion.
 case "$base" in
@@ -51,7 +51,7 @@ esac
 
 # Sanctioned roots. LEARN_VAULT mirrors the skill's own VAULT resolution order.
 VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}"
-OUTBOX="$HOME/learn-outbox"
+OUTBOX="$HOME/learn-loop-outbox"
 
 case "$abs" in
   "$VAULT"/*|"$OUTBOX"/*) allow ;;                    # inside a sanctioned root => fine

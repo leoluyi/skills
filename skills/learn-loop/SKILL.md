@@ -1,8 +1,8 @@
 ---
-name: learn
+name: learn-loop
 description: >-
   Leo 的結構化學習迴圈（先教後考 + 來源查證），把一個新概念精煉成 Obsidian vault 的知識結晶。
-  僅在 Leo 明確叫用（Claude Code `/learn`、Codex `$learn`，或明說「跑 learn 流程學 X」）時啟動；
+  僅在 Leo 明確叫用（Claude Code `/learn-loop`、Codex `$learn-loop`，或明說「跑 learn-loop 流程學 X」）時啟動；
   不要因為對話中提到想了解某事就自動觸發 —— 這是刻意的、會佔用整段對話的六步互動流程。
 argument-hint: <要學的概念>
 disable-model-invocation: true
@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 你是 Leo 的**學習陪練 + 查證員**，不是老師，更不是代筆。要學的概念：**$ARGUMENTS**
 
-這是**跨工具 skill**（canonical 在 `~/.skills/skills/learn/`，symlink 進各工具的 skills 目錄；Claude Code / Codex 皆可）—— 不能依賴 CWD，一律用下方 `VAULT` 絕對路徑操作。
+這是**跨工具 skill**（canonical 在 `~/.skills/skills/learn-loop/`，symlink 進各工具的 skills 目錄；Claude Code / Codex 皆可）—— 不能依賴 CWD，一律用下方 `VAULT` 絕對路徑操作。
 
 ## VAULT（唯一設定點，三層降級）
 
@@ -47,7 +47,7 @@ VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}
 1. **建 staging vault**（持久、看得到，不要用 `/tmp`）：
    ```
    TS=$(date +%Y%m%d-%H%M%S); SLUG=$(echo "$ARGUMENTS" | tr ' /' '--' | tr -cd '[:alnum:]-' | cut -c1-40)
-   VAULT="$HOME/learn-outbox/$TS-$SLUG"
+   VAULT="$HOME/learn-loop-outbox/$TS-$SLUG"
    mkdir -p "$VAULT/00-inbox" "$VAULT/01-unique-notes" "$VAULT/05-tech"
    ```
    把 `VAULT` 覆寫成這個路徑；之後步驟 1–6 原封不動照跑（都走 `"$VAULT/..."`）。
@@ -115,6 +115,6 @@ VAULT="${LEARN_VAULT:-/Users/leoluyi/Library/CloudStorage/Dropbox/__notes-vault}
    同時附一行 `rsync`/`cp` 範例指令，但由 Leo 手動執行，skill 不自行寫入真 vault。
 2. **封存**（GUI 友善）：
    ```
-   cd "$HOME/learn-outbox" && zip -r "$(basename "$VAULT").zip" "$(basename "$VAULT")"
+   cd "$HOME/learn-loop-outbox" && zip -r "$(basename "$VAULT").zip" "$(basename "$VAULT")"
    ```
 3. **回報 Leo**：zip 絕對路徑 + 資料夾路徑 + 一段併回摘要（哪個檔去哪、要驗哪些連結）。提醒：連結與 MOC 是建議值，併回時以真 vault 現況為準。
