@@ -1,7 +1,7 @@
 ---
 name: avoid-ai-writing-zh
 description: >-
-  Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. Removes AI patterns but does not create a voice — to inject voice or restructure a blog draft, run blog-writing-zh first, then this as the finishing pass. Other authoring skills (formal-doc-structure, rfp-writing, briefing-outline) reach this as a finishing pass.
+  Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. It removes AI patterns but does not create a voice — injecting voice or restructuring a blog draft is blog-writing-zh's job, not this skill's.
 version: 1.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -370,7 +370,7 @@ These slot-fill constructions signal that a sentence was generated, not written.
 
 Apply this section whenever the text contains CJK. These are the Chinese analogues of the English patterns above, plus filler shapes specific to Taiwan business and formal writing.
 
-**陸用語不在此範圍。** 這裡只清 AI 味。跨海峽在地化——陸用語（視頻→影片、軟件→軟體）、互聯網／職場黑話（賦能、抓手）、簡體字殘留——是正交的另一軸，由 sibling skill `avoid-china-writing` 負責（詞例見 [references/zh-phrase-rules.md](references/zh-phrase-rules.md) 的 Taiwan term preferences 段）。若稿子同時有 AI 味與陸用語，先跑 `avoid-china-writing` 清用語，再用本 skill 清語氣／結構。
+**陸用語不在此範圍。** 這裡只清 AI 味。跨海峽在地化——陸用語（視頻→影片、軟件→軟體）、互聯網／職場黑話（賦能、抓手）、簡體字殘留——是正交的另一軸（詞例見 [references/zh-phrase-rules.md](references/zh-phrase-rules.md) 的 Taiwan term preferences 段）。本 skill 不需要任何其他 skill 在場就能把去 AI 味做完；若稿子另外也有陸用語，那是獨立的一軸，可視需要另用 sibling skill `avoid-china-writing` 處理。
 
 **A caution before flagging.** Several of these patterns also appear in legitimate formal Taiwanese business writing — 公文, 簽呈, 法遵文件 — and in second-language writers. They are signals, not proof (the same "signals, not proof" rule from [What this skill is and isn't](#what-this-skill-is-and-isnt) applies). Flag the *empty* instances; keep the ones doing real work. The do-not-flag carve-outs (the Allowed patterns table at the end of this section) exist to stop over-flagging.
 
@@ -596,7 +596,7 @@ Fix：攤開為完整推論——前提、因果、結論各自成句，承接�
 - **全文無立場（zero stance）** — 與 Rhythm and uniformity 的 "Missing first-person perspective" 及 Emotional flatline 同源：找不到一句作者判斷句，每個論點都以「各有優劣」收場。
 - **零具體個人細節（zero specifics）** — 與 Treadmill effect / low information density 及 Vocabulary diversity 的 fix 同源：全文沒有一個具體時間、次數、場景（「卡關三次」「凌晨三點」「花了三天」）。
 
-與 blog-writing-zh 分工：本節只**偵測**聲音的缺席；要**注入**聲音或重寫結構，用 blog-writing-zh（加法），再回到本 skill 除噪（減法）。
+分工：本節只**偵測**聲音的缺席並做減法（除噪），這部分本 skill 自成一套、不假外求。**注入**聲音或重寫結構是加法，不在本 skill 範圍——那是 blog-writing-zh 的事，兩者各自獨立。
 
 #### 專有名詞過度翻譯（生造中文譯名）
 
