@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
   echo "usage: $(basename "$0") <skill-name>" >&2
-  echo "       env: ANTHROPIC_API_KEY required" >&2
+  echo "       env: RUN_EVAL_AGENT=claude|codex to pin the router CLI (default: auto-detect)" >&2
   exit 1
 fi
 
@@ -17,11 +17,8 @@ PROMPTS_FILE="$REPO_ROOT/skills/$SKILL_NAME/evals/trigger-queries.json"
 if [ ! -f "$PROMPTS_FILE" ]; then
   PROMPTS_FILE="$REPO_ROOT/evals/$SKILL_NAME/prompts.json"
 fi
-MODEL="${EVAL_MODEL:-claude-haiku-4-5}"
 
-[[ -n "${ANTHROPIC_API_KEY:-}" ]] || { echo "error: ANTHROPIC_API_KEY not set" >&2; exit 1; }
-command -v jq   >/dev/null || { echo "error: jq required" >&2; exit 1; }
-command -v curl >/dev/null || { echo "error: curl required" >&2; exit 1; }
+command -v jq >/dev/null || { echo "error: jq required" >&2; exit 1; }
 [[ -f "$SKILL_MD" ]]     || { echo "error: missing $SKILL_MD" >&2; exit 1; }
 [[ -f "$PROMPTS_FILE" ]] || { echo "error: missing $PROMPTS_FILE" >&2; exit 1; }
 
@@ -38,26 +35,61 @@ DESCRIPTION=$(awk '
 
 [[ -n "$DESCRIPTION" ]] || { echo "error: no description in $SKILL_MD" >&2; exit 1; }
 
-SYSTEM_PROMPT="You are Claude Code's skill router. Given the user's message, decide whether the named skill should be invoked based on its description.
+# The router runs as a one-shot subagent call through whatever coding-agent
+# CLI is installed, never a direct HTTP call to a vendor's API. This keeps
+# the harness cross-AI-company: it works with any CLI that supports a
+# non-interactive/exec mode, not just Anthropic's.
+AGENT="${RUN_EVAL_AGENT:-}"
+if [[ -z "$AGENT" ]]; then
+  if command -v claude >/dev/null 2>&1; then
+    AGENT=claude
+  elif command -v codex >/dev/null 2>&1; then
+    AGENT=codex
+  else
+    echo "error: no supported coding-agent CLI found (need 'claude' or 'codex' on PATH)" >&2
+    exit 1
+  fi
+fi
+case "$AGENT" in
+  claude|codex) ;;
+  *) echo "error: unsupported RUN_EVAL_AGENT '$AGENT' (want claude or codex)" >&2; exit 1 ;;
+esac
+
+router_prompt() {
+  local query="$1"
+  cat <<EOF
+You are a skill router. Decide whether the skill below should fire for the user message, using ONLY its description's stated trigger conditions and exclusions — be strict, follow the description verbatim.
 
 Skill: $SKILL_NAME
 Description: $DESCRIPTION
 
-Call invoke_skill with name=\"$SKILL_NAME\" if the description's trigger conditions are met by the user's message. Otherwise call invoke_skill with name=\"none\". Be strict: follow the description's exclusions verbatim."
+User message:
+"""
+$query
+"""
 
-TOOLS=$(jq -n --arg name "$SKILL_NAME" '[
-  {
-    name: "invoke_skill",
-    description: "Pick which skill (if any) handles this user message",
-    input_schema: {
-      type: "object",
-      properties: {
-        name: { type: "string", enum: [$name, "none"] }
-      },
-      required: ["name"]
-    }
-  }
-]')
+Reply with exactly one word and nothing else: TRIGGER or NONE.
+EOF
+}
+
+# Runs the router prompt as an isolated one-shot subagent call — no tool
+# access, no file/network side effects, just a text judgment.
+invoke_router() {
+  local query="$1" prompt
+  prompt=$(router_prompt "$query")
+  case "$AGENT" in
+    claude)
+      claude -p "$prompt" --tools="" </dev/null 2>/dev/null || true
+      ;;
+    codex)
+      local tmp
+      tmp=$(mktemp)
+      codex exec -s read-only -o "$tmp" "$prompt" </dev/null >/dev/null 2>&1 || true
+      cat "$tmp" 2>/dev/null
+      rm -f "$tmp"
+      ;;
+  esac
+}
 
 pass=0
 fail=0
@@ -67,48 +99,28 @@ fail_ids=()
 while IFS= read -r entry; do
   id=$(jq -r '.id' <<<"$entry")
   category=$(jq -r '.category // "-"' <<<"$entry")
-  prompt=$(jq -r '.prompt // .query' <<<"$entry")
+  query=$(jq -r '.prompt // .query' <<<"$entry")
   expected=$(jq -r '.expected_trigger // .should_trigger' <<<"$entry")
 
-  payload=$(jq -n \
-    --arg model "$MODEL" \
-    --arg system "$SYSTEM_PROMPT" \
-    --argjson tools "$TOOLS" \
-    --arg user "$prompt" \
-    '{
-      model: $model,
-      max_tokens: 256,
-      system: $system,
-      tools: $tools,
-      tool_choice: { type: "any" },
-      messages: [{ role: "user", content: $user }]
-    }')
-
-  response=$(curl -sS https://api.anthropic.com/v1/messages \
-    -H "x-api-key: $ANTHROPIC_API_KEY" \
-    -H "anthropic-version: 2023-06-01" \
-    -H "content-type: application/json" \
-    -d "$payload")
-
-  choice=$(jq -r '.content[]? | select(.type == "tool_use") | .input.name // empty' <<<"$response")
+  raw=$(invoke_router "$query")
+  choice=$(grep -ioE 'TRIGGER|NONE' <<<"$raw" | head -1 | tr '[:upper:]' '[:lower:]' || true)
 
   if [[ -z "$choice" ]]; then
-    err=$(jq -r '.error.message // "no tool_use in response"' <<<"$response")
-    printf "[%s] ERROR (%s) — %s\n" "$id" "$category" "$err" >&2
+    printf "[%s] ERROR (%s) — no parseable decision from %s\n" "$id" "$category" "$AGENT" >&2
     errors=$((errors + 1))
     fail_ids+=("$id")
     continue
   fi
 
   actual=false
-  [[ "$choice" == "$SKILL_NAME" ]] && actual=true
+  [[ "$choice" == "trigger" ]] && actual=true
 
   if [[ "$actual" == "$expected" ]]; then
     printf "[%s] PASS  expected=%-5s actual=%-5s  %s\n" "$id" "$expected" "$actual" "$category"
     pass=$((pass + 1))
   else
     printf "[%s] FAIL  expected=%-5s actual=%-5s  %s\n" "$id" "$expected" "$actual" "$category"
-    printf "       prompt: %.120s\n" "$prompt"
+    printf "       prompt: %.120s\n" "$query"
     fail=$((fail + 1))
     fail_ids+=("$id")
   fi
@@ -116,7 +128,7 @@ done < <(jq -c '(.queries // .evals)[]' "$PROMPTS_FILE")
 
 total=$((pass + fail + errors))
 echo "---"
-printf "model: %s   total: %d   pass: %d   fail: %d   error: %d\n" "$MODEL" "$total" "$pass" "$fail" "$errors"
+printf "agent: %s   total: %d   pass: %d   fail: %d   error: %d\n" "$AGENT" "$total" "$pass" "$fail" "$errors"
 if [[ ${#fail_ids[@]} -gt 0 ]]; then
   printf "failing ids: %s\n" "${fail_ids[*]}"
 fi
