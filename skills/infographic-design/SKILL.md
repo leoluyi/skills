@@ -17,7 +17,7 @@ description: >-
   survey findings, statistical graphics) — hand those to a
   data-visualization workflow. Quantities that serve as evidence inside an
   explanation (a funnel's drop-off, a cache hit-rate) stay in scope.
-version: 0.9.1
+version: 0.10.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -116,12 +116,15 @@ every pull needs a purpose and a source:
   explicit signal ("for laypeople", "one glance", a poster or social
   brief). It trades density away, so it must be asked for, never assumed.
 
-No signal → stay at base and state the assumption in one line, without
-stopping.
+No signal → stay at base. Either way, **declare the position** in one line —
+*base*, or the pull with its purpose and source — because step 9 checks the
+build against what you declared here.
 
 Then write the one message: "After seeing this, the viewer should understand
 ___." One sentence, before any drawing. Multiple stories → pick the strongest
 or propose a series.
+
+**Done when** both lines exist: the declared position and the one message.
 
 ### 2. Pick the output format
 
@@ -134,6 +137,9 @@ stay still; baseline CSS in `references/svg-construction.md`), **PNG** social,
 One route skips this step: a learning recap (`references/learn-loop-viz.md`)
 is always a single self-contained animated HTML file. Don't offer the
 choice, don't ask for motion — build it and say what you built.
+
+**Done when** exactly one format is settled and stated — recommended and
+chosen, the recap's forced HTML, or (embedded) the host's.
 
 **Embedded mode.** When the graphic is a figure inside a document another
 skill is producing, that skill owns the surface and this one owns the
@@ -166,6 +172,10 @@ part-whole, geo, hero-stat. For technical explainers read
 diagram, worked example, making abstract concepts visual. For a visual recap
 of a completed teaching dialogue also read `references/learn-loop-viz.md`.
 
+**Done when** one archetype is named and it survives the outline test: if the
+arrangement would sit unchanged on a different subject, it came from your
+notes — rebuild it from how the parts actually relate.
+
 ### 4. Build the three-level hierarchy
 
 - **L1 — takeaway**: the headline, embedded *inside* the image (a reposted
@@ -176,6 +186,9 @@ of a completed teaching dialogue also read `references/learn-loop-viz.md`.
 
 One font family; vary size/weight/colour across levels. Most of the surface
 is text, and labels template as easily as layouts do — `references/words.md`.
+
+**Done when** every text element sits at exactly one level, and L1+L2 read on
+their own still tell the skeleton.
 
 ### 5. Compose on a grid, spend whitespace
 
@@ -190,6 +203,10 @@ node type (`references/icons.md`), and a surface treatment that means one
 thing consistently (`references/color-typography.md`). A wall of same-shaped
 text cards has no landmarks, so every re-find is a linear search.
 
+**Done when** every box lands on the 8-pt grid with consistent gaps and ~40%
+air, and every recurring node type carries a landmark — an icon plus a
+surface that means one thing.
+
 ### 6. Visualize quantities honestly
 
 Quantities appear here as *evidence inside an explanation* — a funnel's
@@ -200,6 +217,9 @@ Zero-baseline bars, no 3-D, no dual axes, area scales by value not diameter.
 Round numbers unless precision is the point. Cite the source (small, L3).
 Embedded forms and hero numbers: `references/charts.md`.
 
+**Done when** every quantity — the hero number and each inline stat alike —
+has cleared the rules above.
+
 ### 7. Colour and type
 
 One neutral + one theme + one accent, ~60/30/10; the accent marks the single
@@ -208,11 +228,18 @@ starting points, application principles, and type scales:
 `references/color-typography.md`) and contrast-check it before layout. Icons: inline vector from
 `references/icons.md`, one style throughout.
 
+**Done when** the palette is bound to its 60/30/10 roles with the accent on
+exactly one thing, and every text and graphic pair has passed contrast —
+before you lay out.
+
 ### 8. Accessibility
 
 WCAG 4.5:1 for text (3:1 for large/graphic), never colour as the only
 channel — pair with label, position, or line-style. Respect
 `prefers-reduced-motion` in HTML output.
+
+**Done when** every distinction the colour makes is also carried by a label,
+position, or line-style — drop the graphic to grayscale and it still reads.
 
 ### 9. Critique, then gate, then deliver
 
@@ -238,6 +265,9 @@ Exit 0 required before delivering. If it flags something, fix the cause
 (usually: cut words first, then shrink type, enlarge boxes only last — and
 never by eating the grid's gaps). Advisory warnings (font naming, emoji,
 var() renderer compat, restyle structure) are judgment calls, not blockers.
+
+**Done when** every reader-critique question answers yes and the gate returns
+exit 0 — the green gate is the seatbelt, the reader-critique the driving.
 
 ## Building the output
 
