@@ -5,7 +5,7 @@ teaching session, a tutoring thread, any multi-turn lesson) into ONE
 long-scroll visual that replays the learning journey.
 
 In dial terms (SKILL step 1) this is the canonical **retention pull**: the
-graphic stays at the base position on density and dimension — nothing about
+graphic stays at the home position on density and dimension — nothing about
 teaching licenses thinner content — and pulls exactly two dials toward the
 reader: *redundancy* (dual naming) and *familiarity* (the analogy
 vocabulary). Both pulls are provenance-bound: the analogies and checkpoints

@@ -3,7 +3,7 @@
 ## Intent shapes how you use an archetype
 
 The archetype (below) comes from the *data shape*; the dial position
-(SKILL step 1) sets how densely you use it. At the fixed base position the
+(SKILL step 1) sets how densely you use it. At the fixed home position the
 archetype runs at full fidelity: every party, step, and relationship shown
 spatially — a multi-party mechanism gets real lanes and cross-party arrows,
 and density is the deliverable. A pulled dial changes the build, not the

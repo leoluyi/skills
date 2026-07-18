@@ -126,7 +126,7 @@ write a label where you should draw a thing.
 
 ## Base-position information density
 
-At the base position (SKILL step 1), density is the deliverable —
+At the home position (SKILL step 1), density is the deliverable —
 but density means *more relations shown*, not more pixels filled. Three rules
 that separate a reference diagram from a thinned-out walkthrough:
 
@@ -147,11 +147,11 @@ that separate a reference diagram from a thinned-out walkthrough:
    conclusion; the converging mini-diagram lets the reader verify it. Give
    recurring tokens a letter badge (A/B/C) plus a one-line footer legend.
 
-The failure mode these prevent: drift below the base position — parties
+The failure mode these prevent: drift below the home position — parties
 spatialized but payloads, ownership, and the causal join thinned into
 captions. Density does not fall because drawing relations is hard; it falls
 only when a dial was deliberately pulled. If the mechanism's core relation
-isn't *drawn*, the diagram isn't at base yet.
+isn't *drawn*, the diagram isn't at home yet.
 
 ## Palette and tone
 
