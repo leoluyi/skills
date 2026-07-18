@@ -114,6 +114,26 @@ uncaught until the next full run.
   id-9 eligible expectations at control 0/3 → treatment 3/3. No 2-run cell is
   improvement-eligible.
 
+## Amendment v3 — 6-agent Haiku smoke test (what finally ran)
+
+Both prior designs (v1 54-gen, v2 40-gen) died when the host process exited
+mid-run; neither produced inspected verdicts. Registered blind to all prior
+results. This is a **smoke test, not an A/B** — power is deliberately spent
+down to fit ≤6 agents on the cheapest model.
+
+- **id-9 only, 2 arms × 2 runs, Haiku.** 4 generations + 2 scorers = 6 agents.
+  id-9 chosen because it alone carries every behaviour `home` governs —
+  density [0,1,3] and the declare expectation [5].
+- **Improvement:** control 0/2 → treatment 2/2 on eligible [0,1,3,5]. This is
+  a weaker bar than 0/3→3/3 and is labelled as such.
+- **Regression:** control 2/2 pass & treatment 2/2 fail on any expectation.
+
+**Trust caveat (binding on the read).** On Haiku both arms are expected to
+fail id-9's hard expectations from floor effects, so the likely result is *no
+signal*. Per the eval-integrity rule, only a **negative finding** (treatment
+breaks what control reliably did) is trustworthy from a run this small on a
+weak model; a positive improvement at n=2 is suggestive, not established.
+
 ## Results
 
 (appended after the run)
