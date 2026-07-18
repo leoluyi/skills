@@ -14,7 +14,7 @@ fi
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_DIR="$REPO_ROOT/skills/$NAME"
-EVAL_DIR="$REPO_ROOT/evals/$NAME"
+EVAL_DIR="$SKILL_DIR/evals"
 
 if [[ -e "$SKILL_DIR" ]]; then
   echo "error: $SKILL_DIR already exists" >&2
@@ -61,14 +61,15 @@ metadata:
 [TODO: explain the reasoning so a reader can extrapolate to edge cases the bullets miss.]
 EOF
 
-cat > "$EVAL_DIR/prompts.json" <<EOF
+cat > "$EVAL_DIR/evals.json" <<EOF
 {
   "skill_name": "$NAME",
   "evals": [
     {
       "id": 1,
       "prompt": "[TODO: realistic prompt]",
-      "expected_output": "[TODO]"
+      "expected_output": "[TODO: human-readable description of success]",
+      "expectations": ["[TODO: an objectively verifiable statement]"]
     }
   ]
 }
@@ -76,10 +77,10 @@ EOF
 
 echo "created:"
 echo "  $SKILL_DIR/SKILL.md"
-echo "  $EVAL_DIR/prompts.json"
+echo "  $EVAL_DIR/evals.json"
 echo
 echo "next steps:"
 echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji"
 echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
-echo "  3. add at least one realistic prompt to evals/$NAME/prompts.json"
+echo "  3. add at least one realistic prompt to skills/$NAME/evals/evals.json"
 echo "  4. run 'tools/sync-skills' if airgapped, otherwise consumers pick it up via 'npx skills update --all'"
