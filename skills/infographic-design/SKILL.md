@@ -15,9 +15,13 @@ description: >-
   language (use plain-speak), or for data-dense charts where the numbers are
   themselves the subject or precise scales matter (annual-results decks,
   survey findings, statistical graphics) — hand those to a
-  data-visualization workflow. Quantities that serve as evidence inside an
-  explanation (a funnel's drop-off, a cache hit-rate) stay in scope.
-version: 0.11.0
+  data-visualization workflow. An explicit ask for an infographic /
+  資訊圖表 / 懶人包 / one-pager always qualifies even when the underlying
+  data is precise; the data-density exclusion applies only when the user
+  names a chart, plot, or dashboard instead. Quantities that serve as
+  evidence inside an explanation (a funnel's drop-off, a cache hit-rate)
+  stay in scope.
+version: 0.11.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
