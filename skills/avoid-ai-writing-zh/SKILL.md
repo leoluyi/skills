@@ -1,8 +1,8 @@
 ---
 name: avoid-ai-writing-zh
 description: >-
-  Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. It removes AI patterns but does not create a voice — injecting voice or restructuring a blog draft is blog-writing-zh's job, not this skill's.
-version: 1.2.0
+  Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. Also runs a detect-only structure-signals audit for a draft that carries no obvious AI-isms yet still reads as AI-written — uniform rhythm, no stance, no concrete examples, 「正確但沒有靈魂」— naming what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
+version: 1.2.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
