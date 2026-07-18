@@ -162,3 +162,60 @@ is stated plainly rather than papered over.
 **fresh, low-cost session** so generation subagents do not refuse on cost, and
 on a capable model (Sonnet+) so id-9's hard expectations are not floored. The
 scripts are cached at the run IDs recorded in the commit history.
+
+## v3 rerun — 2026-07-19, fresh session
+
+Ran to mechanical completion this time: 4/4 generators produced SVGs (no cost
+refusals), 2/2 blind scorers returned JSON verdicts. Still on Haiku, per the
+v3 registration.
+
+**Blinding:** each run's control/treatment pair was copied to
+`artifact-A`/`artifact-B` before scoring; the scorer saw neither filenames nor
+prompts that named an arm. Mapping: A = control (v0.9.1), B = treatment
+(v0.10.1) in both runs — de-blinded only after both scorer verdicts were in.
+
+**Raw tally (pass/2), id-9, all 8 expectations:**
+
+| # | expectation | control | treatment |
+|---|---|---|---|
+| 0 | own lane, messages cross | 2/2 | 2/2 |
+| 1 | payload labelled on arrow | 0/2 | 0/2 |
+| 2 | direction w/o colour alone | 2/2 | 2/2 |
+| 3 | key derivation drawn as converging paths | 2/2 | 0/2 |
+| 4 | recurring token same name | 2/2 | 2/2 |
+| 5 | response states dial position | 0/2 | 1/2 |
+| 6 | contrast (check.py) | 0/2 | 2/2 |
+| 7 | no overflow (check.py) | 1/2 | 2/2 |
+
+**Improvement (eligible: [0],[1],[3],[5]):** no expectation cleared the
+pre-registered 0/2→2/2 bar. [0] and [1] were already tied; [3] moved the
+wrong direction (see regression below); [5] split 0/2→1/2, which the
+pre-registered rule treats as noise, not signal. **No improvement
+established** — the `home`/declare change did not demonstrate a detectable
+effect at this power.
+
+**Regression ([3]):** control 2/2 pass, treatment 2/2 fail — meets the v3
+regression rule exactly. Verified independently of the scorer by grepping the
+raw SVGs: both `control-*.svg` contain actual `<path class="derive-arrow">`
+convergence geometry into the master-secret box; both `treatment-*.svg`
+express the same fact only as a `<text>` caption, no converging paths. This
+is not a scorer artifact.
+
+**Caveat on causation.** Diffing `snapshot-v0.9.1/SKILL.md` against the
+working tree shows the step-9 density check text is unchanged in substance
+(`"base position actually dense (lanes, payloads, derivations)"` →
+`"home actually dense (lanes, payloads, derivations)"` — a rename, not a
+content change). Nothing in the v0.10.1 diff plausibly *causes* worse
+key-derivation rendering. Per the pre-registered trust caveat this negative
+finding is still the one thing this run is entitled to trust — but n=2 on
+Haiku cannot distinguish "v0.10.1 broke this" from "this expectation is
+inherently unstable and the 2/2-vs-2/2 split happened to land this way here."
+
+**Verdict against the frozen rules:** one regression flagged on id-9
+expectation [3], no improvement established. Per the v1 rule
+("regressions are fixed before v0.10.1 is considered validated, not
+rationalized") this technically blocks sign-off — but given the causation
+caveat above, the recommended next step is a confirmatory run (more reps,
+same expectation only) before touching SKILL.md, rather than editing the
+skill against a signal this thin. Left as an open decision for the next
+session; not resolved unilaterally here.
