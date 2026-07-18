@@ -22,14 +22,43 @@ command -v jq >/dev/null || { echo "error: jq required" >&2; exit 1; }
 [[ -f "$SKILL_MD" ]]     || { echo "error: missing $SKILL_MD" >&2; exit 1; }
 [[ -f "$PROMPTS_FILE" ]] || { echo "error: missing $PROMPTS_FILE" >&2; exit 1; }
 
-# Extract description from YAML frontmatter (single-line scalar only).
-# Multi-line descriptions are not supported; flatten before running.
+# Extract description from YAML frontmatter. Handles both a single-line
+# scalar (description: foo) and a folded/literal block scalar
+# (description: >- / description: |-) whose body is the indented lines
+# that follow, folded into one space-joined line per YAML folding rules.
 DESCRIPTION=$(awk '
-  /^---$/ { fence++; if (fence == 2) exit; next }
-  fence == 1 && /^description:/ {
-    sub(/^description:[[:space:]]*/, "")
-    print
-    exit
+  /^---$/ {
+    fence++
+    if (fence == 2) { if (collecting) print out; exit }
+    next
+  }
+  fence == 1 && !collecting && /^description:/ {
+    val = $0
+    sub(/^description:[[:space:]]*/, "", val)
+    if (val ~ /^[>|][-+0-9]*[[:space:]]*$/) {
+      collecting = 1
+      out = ""
+      next
+    } else {
+      print val
+      exit
+    }
+  }
+  fence == 1 && collecting {
+    if ($0 ~ /^[[:space:]]/) {
+      line = $0
+      sub(/^[[:space:]]+/, "", line)
+      if (line == "") {
+        out = out " "
+      } else {
+        if (out != "" && out !~ / $/) out = out " "
+        out = out line
+      }
+      next
+    } else {
+      print out
+      exit
+    }
   }
 ' "$SKILL_MD")
 
