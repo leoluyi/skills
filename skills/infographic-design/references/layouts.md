@@ -1,5 +1,20 @@
 # Layout Archetypes, Dimensions, and Reading Patterns
 
+## Intent shapes how you use an archetype
+
+The archetype (below) comes from the *data shape*; the dial position
+(SKILL step 1) sets how densely you use it. At the fixed home position the
+archetype runs at full fidelity: every party, step, and relationship shown
+spatially — a multi-party mechanism gets real lanes and cross-party arrows,
+and density is the deliverable. A pulled dial changes the build, not the
+archetype: a retention pull keeps full fidelity and adds the analogy layer
+(see learn-loop-viz.md); a simplification pull reduces the archetype to its
+single most important element and moves everything else to the caption.
+
+If a simplification ask meets an inherently complex archetype (a "one
+glance" request for a 12-step protocol), surface the tension and propose a
+split rather than silently producing an unreadable compromise.
+
 ## Dimensions by use case
 
 Pick dimensions first — layout decisions cascade from aspect ratio.

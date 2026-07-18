@@ -1,27 +1,32 @@
-# Chart Selection, Big Numbers, and Data Integrity
+# Quantities Inside an Explanation
 
-## Chart selection table
+Quantities enter this skill as *evidence* — the drop-off that proves a funnel
+leaks, the hit-rate that justifies a cache, the before/after that motivates a
+redesign. Graphics whose numbers are themselves the subject (annual results,
+survey findings, statistical analysis) were handed off at the door; if you
+find yourself choosing among trend lines, distributions, scatters, or dual
+axes, that is the hand-off signal, not a design decision.
 
-Ask: what comparison does the viewer need to make?
+## Choosing the embedded form
 
-| Comparison | Best encoding | Avoid |
+Ask: what single comparison does this piece of evidence carry?
+
+| Evidence | Embedded form | Avoid |
 |---|---|---|
-| One standout value | Big styled numeral (no chart) | Gauge with one needle |
-| A vs B vs C (categories) | Horizontal bar chart | Pie with >4 slices; 3-D bars |
-| Trend over time | Line (or area if volume matters) | Bars for many time points |
-| Part of whole (2–4 parts) | Donut, stacked bar, or waffle | Pie with tiny slices |
-| Part of whole (5+ parts) | Horizontal stacked bar or treemap | Any pie |
-| Progress toward goal | Filled progress bar / radial ring | Speedometer gauges |
-| Distribution | Histogram / dot strip | Averages hiding spread |
-| Correlation | Scatter | Dual-axis line pairs |
-| Proportion as population | Icon array / waffle (e.g. 10×10) | Scaled icons (area illusion) |
-| Flow between states | Sankey / chevron flow | Complex network unless essential |
+| One standout value | Hero numeral (no chart) | Gauge with one needle |
+| A vs B (vs C) | 2–3 horizontal bars | Pie; 3-D bars |
+| Part of whole (2–4 parts) | Proportion block: stacked bar / waffle | Pie with tiny slices |
+| Progress toward goal | Filled progress bar | Speedometer gauges |
+| "X out of Y people" | Icon array / waffle (10×10) | Scaled icons (area illusion) |
+| Stage-to-stage loss | Chevron / funnel widths | Sankey unless flows genuinely split |
 
-In an infographic (vs. a dashboard), simpler wins: a big number beats a gauge; a waffle beats a pie; three bars beat a clustered chart. One chart = one comparison.
+Simpler wins: a hero number beats a gauge, a waffle beats a pie, three bars
+beat a clustered chart. One embedded form = one comparison; a second
+comparison is a second element, or it isn't evidence — it's a dataset.
 
-## Big-number styling
+## Hero numbers
 
-The single most powerful infographic element. Pattern:
+The single most powerful quantity-as-evidence element. Pattern:
 
 - Numeral at 4–8× body size, heaviest weight, accent color.
 - Unit/symbol (%, $, ×) at ~40–50% of numeral size, lighter weight — don't let "%" compete with "68".

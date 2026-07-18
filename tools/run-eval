@@ -10,7 +10,13 @@ fi
 SKILL_NAME="$1"
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_MD="$REPO_ROOT/skills/$SKILL_NAME/SKILL.md"
-PROMPTS_FILE="$REPO_ROOT/evals/$SKILL_NAME/prompts.json"
+# This harness tests description triggering only. Migrated skills keep their
+# trigger queries beside the skill (skill-creator layout); the top-level
+# evals/ tree is the legacy location for skills not yet migrated.
+PROMPTS_FILE="$REPO_ROOT/skills/$SKILL_NAME/evals/trigger-queries.json"
+if [ ! -f "$PROMPTS_FILE" ]; then
+  PROMPTS_FILE="$REPO_ROOT/evals/$SKILL_NAME/prompts.json"
+fi
 MODEL="${EVAL_MODEL:-claude-haiku-4-5}"
 
 [[ -n "${ANTHROPIC_API_KEY:-}" ]] || { echo "error: ANTHROPIC_API_KEY not set" >&2; exit 1; }
@@ -60,9 +66,9 @@ fail_ids=()
 
 while IFS= read -r entry; do
   id=$(jq -r '.id' <<<"$entry")
-  category=$(jq -r '.category' <<<"$entry")
-  prompt=$(jq -r '.prompt' <<<"$entry")
-  expected=$(jq -r '.expected_trigger' <<<"$entry")
+  category=$(jq -r '.category // "-"' <<<"$entry")
+  prompt=$(jq -r '.prompt // .query' <<<"$entry")
+  expected=$(jq -r '.expected_trigger // .should_trigger' <<<"$entry")
 
   payload=$(jq -n \
     --arg model "$MODEL" \
@@ -106,7 +112,7 @@ while IFS= read -r entry; do
     fail=$((fail + 1))
     fail_ids+=("$id")
   fi
-done < <(jq -c '.evals[]' "$PROMPTS_FILE")
+done < <(jq -c '(.queries // .evals)[]' "$PROMPTS_FILE")
 
 total=$((pass + fail + errors))
 echo "---"

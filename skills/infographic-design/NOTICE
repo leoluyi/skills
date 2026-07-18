@@ -1,0 +1,12 @@
+Portions of SKILL.md (the studio role framing, "Ground it in the subject",
+"Structure is information", the AI-default calibration pattern, the two-pass
+plan/critique/build process, and "spend your boldness in one place"), and
+portions of references/words.md (words as design material, writing from the
+reader's side, one name per thing, one job per element, and the register
+guidance), are
+adapted from Anthropic's "frontend-design" skill, licensed under the
+Apache License, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0).
+Adaptations: examples and vocabulary retargeted from web UI to infographic
+design; the source's guidance on error and empty states is omitted as it has
+no analogue in static graphics. The remainder of this skill is original work under the MIT License
+(see LICENSE).

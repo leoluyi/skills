@@ -1,253 +1,272 @@
-# infographic-design — 開發紀錄與接續指南
+# infographic-design — 開發指南
 
-給未來用 Claude Code 接續開發此 skill 的人（或 agent）。SKILL.md 與
-references/ 依 repo 規範不含開發過程；來源與決策記在這裡。
+給接續開發此 skill 的人或 agent。SKILL.md 與 references/ 依 repo 規範不含
+開發過程,所以「為什麼長這樣」「改的時候要守什麼」寫在這裡。
 
-## 一句話定位
+這是**指南不是日誌** —— 只寫還會影響下一次修改的結論。逐批的過程記在
+git history,`git log --follow skills/infographic-design/` 可查。
 
-把資訊做成「一張自足畫布」的設計 skill。核心信念：資訊圖表是**無人講解、
-數秒內被消費**的媒介，所以一切規則都為「8 秒內傳達單一訊息」服務。
+兩套外部標準:**怎麼寫 skill** 依 `writing-great-skills`(mattpocock/skills)
+的詞彙與判準;**怎麼評測 skill** 依官方 `skill-creator`。兩者範圍不同,
+少數重疊處(描述長度、禁令寫法)**以 writing-great-skills 為準**。
 
-## 研究來源（v0.1.0 的知識基礎）
+---
 
-2026-07 網路研究彙整，主要來源：
+## 1. 定位與邊界
 
-- **版面與視覺層級**：Visme（infographic layout / best practices —
-  三段式敘事、60-40 留白、11 種 layout 類型）、Venngage（13 best
-  practices — margin/一致性）、Piktochart、Toptal、Hull University
-  LibGuide（三層 hierarchy 上限）、F/Z reading patterns。
-- **圖表誠實性**：Tufte 原則（data-ink ratio、chartjunk、graphical
-  integrity）＋ Frank Elavsky 對 minimalism 的批判（別為了 ratio 犧牲
-  accessibility contrast）。
-- **無障礙**：WCAG 2.1 — 文字 4.5:1（SC 1.4.3）、非文字圖形 3:1
-  （SC 1.4.11，IBM Carbon 的實作經驗）、color-only encoding 禁令。
-- **60/30/10 色彩結構、60-30-10 rule** 為設計圈慣例，非單一出處。
+**這是一把解釋性圖示(explanatory graphic)的刀,不是通用資訊圖表工具。**
 
-References 裡的具體數字（如 8px spacing unit、palette hex、type scale）
-是綜合上述來源後的**編輯決策**，不是引用 — 可依實測調整。
+名字沿用 `infographic-design`(那是使用者實際會搜的詞),但實質重心在
+機制圖:泳道、有向流、payload、推導關係。整條開發史上每一張成功的產出
+都是機制圖,沒有一張是資料驅動的。
 
-### bytebytego-style.md 的來源（2026-07 補研究）
+邊界寫在 description 裡,兩句話決定要不要接:
 
-使用者要求參考 ByteByteGo 風格。網路上對其設計的解析散在課程評論裡，
-真正談「怎麼做」的線索：
+- **數字本身就是主題**(年度業績、問卷結果、需要精確尺度)→ 轉手給
+  data-visualization workflow,不接。
+- **數字是解釋裡的證據**(漏斗流失率、快取命中率)→ 接,依
+  `references/charts.md` 的嵌入形式處理。
 
-- **wey-gu 的 gist**（"How to create diagrams like Alex Xu/bytebytego"）
-  ＋ Alex Xu 本人推文 → 工具是 **draw.io**，招牌是**連接線的
-  flow animation**（有向流）。
-- **ByteByteGo newsletter 原文**（EP17、Diagram as Code、DevSecOps
-  cheat sheet 貼文）→ 實際看到簽名句型：「The diagram below shows…」、
-  **🔹Step 0/1/2 編號走查**、「Let's take process 1234 as an example」
-  的**具體實體接地**、taxonomy 題目改用**🔹分類格狀 cheat sheet**。
-- **javinpaul/Medium**（"How ByteByteGo Makes System Design Easy"）→
-  **progressive reveal**：high-level overview → detailed components →
-  scenarios/trade-offs。
-- Glarity/Alex Xu → **Diagram as Code**（Python `diagrams` 套件、
-  box-and-arrow、Jupyter），佐證「程式化、box-and-arrow、克制配色」。
+其他轉手:投影片 → pptx skill;白話解釋名詞 → plain-speak。
 
-歸納出的簽名 = 編號走查焊在有向流上 + 一圖一點 + 具體範例實體 +
-分類格狀變體。定位為 Process/flow 與 Anatomical archetype 的**風格變體**，
-不是新 archetype。刻意只留「技法」，不綁 draw.io（可攜；SVG 用
-arrowhead＋編號＋request/response 配色取代動畫）。
+**invocation:model-invoked,而且沒有取捨空間。** `knowledge-doc-writing`
+在產文件的過程中會叫這個 skill 設計圖表。user-invoked 會把 description 從
+agent 的可及範圍拿掉,**其他 skill 就叫不動它** —— 所以 description 必須
+留著,它的 context 成本是永久的、每一輪都在付。既然躲不掉,就得把它壓到
+最小:只留分支觸發語與觸及條款,身分敘述交給本體。
 
-尚未做：此風格的 output-quality 專屬 assertions（如「每個 step badge
-都有對應 prose 編號」「request/response 用不同視覺編碼」）待補。
+**嵌入模式是一條分支。** 被別的 skill 叫來畫文件裡的 figure 時,宿主擁有
+外觀、本 skill 擁有內容:色彩與字體讓給宿主的 token(蓋掉 step 7 與
+`color-typography.md`),step 9 的交付 gate 由宿主的檢查取代(那道 gate 守的
+是獨立畫布,不描述頁面裡的一張圖),格式由宿主決定。內容規則全數照舊。
+這條契約**兩邊都要寫**:只寫在呼叫端,改 step 7 或 gate 的人不會知道有人
+依賴著覆蓋它。
 
-### 輸出格式選擇（Step 2，2026-07 依使用者需求加入）
+---
 
-使用者要求 skill 讓他**選擇產出格式，並預設推薦建議格式**。設計決策：
+## 2. 檔案架構:誰擁有什麼
 
-- 把格式選擇放在 **Step 2（設計之前）**，因為 static-vs-interactive 的
-  分岔會改變「怎麼做」，且目標平台決定尺寸（Step 5 / layouts.md）。
-- 互動模式 = **recommend-then-confirm**：agent 依用途推薦一個預設 +
-  一句理由，列替代選項，讓使用者一句話覆寫；若使用者已指名格式就直接用；
-  無訊號時 default 到 SVG。刻意不做成硬性 gate（不強迫每次都問），
-  已指名時要能直接動作。
-- **SVG = source of truth**：SVG/PNG/PDF 都先做 SVG 再轉檔（cairosvg/
-  rsvg-convert 的 recipe 寫進 Building the output）。只有 HTML（互動）與
-  PPTX 會真正改變 build path。這呼應先前「為何 SVG」的分析：可縮放、
-  一處改色、text-based 可被 agent 編輯、可無損轉檔。
-- 交付時連 SVG source 一起給，方便日後 restyle。
+`SKILL.md` 是**索引不是手冊**。九個步驟各自只留決策點,細節一律在
+references。新內容要放哪,先問「這條規則在哪個時刻開火」:
 
-尚未做：Step 2 的行為型 eval（給定平台訊號→是否推薦正確格式、
-已指名格式→是否略過詢問）。目前 evals 只有 trigger cases，
-behavior eval 待回 Claude Code 補 output-quality.json 時一起做。
+| 檔案 | 擁有的主題 |
+|---|---|
+| `SKILL.md` | 九步驟工作流與各步的決策點;每個 reference 的入口 |
+| `references/bytebytego-style.md` | 編號走查風格、基準位置的資訊密度 |
+| `references/layouts.md` | archetype 選擇與 dial 位置如何改變密度 |
+| `references/charts.md` | 解釋中的量值:hero 數字、比例塊、嵌入形式、誠實規則 |
+| `references/color-typography.md` | 配色推導、字級、表面詞彙(卡片/色帶/註記) |
+| `references/icons.md` | 圖示規格:24×24、currentColor、symbol/use |
+| `references/svg-construction.md` | SVG 機制、CJK、HTML 輸出與 flow 動畫基準、頁框 |
+| `references/words.md` | 標籤與文案:讀者視角、一物一名、字數預算 |
+| `references/learn-loop-viz.md` | 學習對話回顧這一個路線的專屬規則 |
+| `scripts/` | 客觀檢查(見「評測」) |
 
-### 能力強化批次（2026-07）
+**放置判準 —— 用 branch 測試。** 這個 skill 有幾條分支(一般解釋圖、
+學習回顧、既有圖評估)。**每條分支都需要的,寫在 SKILL.md 裡;只有部分
+分支會走到的,推到 reference 後面用 context pointer 指過去。** 指標的
+**措辭**決定 agent 會不會、多可靠地取用那份材料 —— 目標檔案本身不決定。
 
-依「該做」清單做的最小高價值批次：
+推太少則頂層臃腫,推太多則藏起 agent 真正需要的東西;這個張力就是全部
+的決定。踩過的坑:好規則寫進特例檔,只在那個特例開火。加東西到具名圖表
+類型之前,逐條問「這條真的只有這個分支會用嗎」—— 通常只有一兩句是。
 
-1. **測試發現的兩個 bug — 已修**。（a）accent 過度使用：
-   bytebytego-style.md 加 "Accent-count exception"（badge 系統算一次
-   accent，另留最多一個 accent moment）。（b）列距不均：layouts.md 加
-   anchor-pitch 規則（固定 anchor pitch、card height 隨內容浮動，
-   不要固定 card 間距）。這兩點是 HTTPS 測試實際暴露的。
+同一層裡用 **co-location**:一個概念的定義、規則、例外放在同一個標題下,
+讀到其中一段就會連帶讀到旁邊那幾段。
 
-2. **contrast 從「目測」升級成工具**：新增 `scripts/check_contrast.py`
-   （純 stdlib，無依賴）。pair 模式與 `--svg --bg` 掃描模式；WCAG
-   4.5/3.0 門檻。**實測抓到 HTTPS 測試圖自己的真 fail** —— L3 灰字
-   #8794a0 在淺底只有 2.94:1（kicker／lane 副標／來源行），證明
-   render 後目測不夠。已在 SKILL build step 串接。已知限制：SVG 模式
-   分不出 text 色與 surface fill，白色/淡色卡片底會誤報 —— 已在
-   docstring 與 SKILL 註明忽略。
+---
 
-3. **CJK／多語字體段**（對主要用例關鍵）：svg-construction.md 新增
-   "CJK / multilingual text" 段 —— 重點是 **SVG→PNG 匯出時 system
-   stack 掉字成 tofu（□）**，要顯式指名 Noto Sans TC/SC/JP 等 stack、
-   render 機器要裝字型（fonts-noto-cjk）、換行以**字數**非詞數計、
-   CJK 不加 letter-spacing／不 all-caps。color-typography.md 型錄段
-   加對應指標。
+## 3. 不可打破的不變量
 
-未納入此批次（DEVELOPMENT backlog）：內容萃取（Step 1 的 how）、
-資料來源接口（xlsx/file-reading 銜接＋數字正確性驗證）、圖表 SVG
-座標運算 helper、SVG 螢幕閱讀器無障礙（title/desc/aria）、
-色盲模擬、圖示語彙。刻意不一次全塞以維持 index 精簡。
+每條後面是它存在的理由。理由比規則更難被誤用,所以理由不能刪。
 
-### 圖示語彙 + restyle 結構（2026-07 第二批）
+1. **一則訊息先於任何版面。** 這是 infographic 與 data viz 的定義分界
+   (Cairo:infographic 是作者編輯過的觀點;data viz 讓讀者自己下結論),
+   不是風格偏好。
+2. **標題內嵌在畫布裡。** 圖被單獨轉貼時仍須自足(Kosara:infographic
+   是自足的)。
+3. **基準位置固定,旋鈕拉動需目的 + 出處。** step 1 的核心。留存拉動
+   (redundancy + familiarity)才授權雙重詞彙,且第二個名字必須有來源
+   ——對話裡教過的、受眾自己的用語,絕不畫圖時發明。
+4. **顏色不得單獨承載語意。** 也適用於動態:多種 flow 各配自己的 dash
+   pattern,因為灰階列印與截圖同樣會失效。
+5. **一種表面 = 一個意思。** 把註記畫成卡片,讀者會把旁白讀成機制的
+   零件。
+6. **章節序 = 概念相依鏈**(learn-loop 路線)。每節踩在前一節的 a-ha
+   上;禁止重排成參考文件或請求旅程順序。對話自己的收斂句通常是旅程序,
+   它只屬於 payoff band。
+7. **gate 只擋讀者會實際受害的缺陷。** 風格問題一律 advisory。混進
+   風格判斷會讓 gate 失去「擋下就是真的壞了」的意義。
+8. **不得在 prose 重述 check 已經強制的事。** 重述只是增加 context
+   成本;未被強制的清單項目該改寫成在決策點開火的生成式規則。
+9. **兩個 reference 打架時,白紙黑字調解。** 例外綁在**目的與出處**上,
+   雙向交叉引用。「僅限留存圖、僅限對話教過的名字」經得起邊界案例,
+   「某某風格允許」不行。
+10. **正面陳述目標行為,讓被禁的那個選項根本不被提起。** 用禁令操舵會
+    反效果:說「別想大象」等於點名大象,反而讓它更容易被取用。只有在
+    某條界線**無法用正面語句表達**時才保留禁令,而且必須同時寫出改做
+    什麼。這也順帶解決另一個病:純禁令在混亂情境會靜默失效 ——
+    「照被教的順序」在真實對話迂迴時會被讀成「抄逐字稿」,而正面版
+    「依概念相依鏈排序,每節踩在前一節的 a-ha 上」直接告訴 agent
+    遇到岔路怎麼辦。
 
-依 backlog 兩項做:
+---
 
-1. **圖示語彙 `references/icons.md`** —— 解「從零畫難一致」。給
-   24×24 構圖網格規範(2px stroke、round cap/join、2px padding、
-   `currentColor`)＋**30 個實測過會 render 的 starter library**
-   (user/server/database/cloud/lock/chart/…),以 `<symbol>`+`<use>`
-   使用,顏色靠 currentColor 一處改。全部先 render 成 sheet 目測,
-   修過兩處:zero-length dot 用 `.01` offset(`h0` 在部分 converter
-   不顯示)、help 改成真正問號曲線。並用 `<use>` 版重跑一次確認
-   teach 的 pattern 本身可用、且 currentColor 能一鍵改色。
+## 4. 步驟、完成條件、leading word
 
-2. **restyle 結構** —— svg-construction.md 新增 "Structuring for
-   restyle" 段:單一 `:root` CSS 變數 block、class 對應三層 hierarchy
-   (.l1/.l2/.l3)、幾何與顏色分離、語意化 `<g id>`(以內容命名非位置)、
-   region 註解、base unit 註記。呼應 Step 2 的「日後 restyle」承諾 ——
-   rebrand = 改 `:root` 五行。pitfalls checklist 同步加入 icon/
-   inline-hex/semantic-group/contrast 幾項。SKILL build step 兩處
-   pointer 已接。
+**步驟要停在可判定的完成條件上。** SKILL.md 的九步是有序動作,每一步都該
+有一個「怎樣算做完」的條件,而且 agent 自己判得出來(能分辨做完與沒做完),
+必要時還要**窮盡**(「每一個文字元素都檢查過」而不是「檢查文字」)。條件
+含糊招來的病叫 **premature completion**,診斷與解法見「撰寫層的失效模式」。
 
-剩餘 backlog:內容萃取、資料接口、座標 helper、a11y title/desc、
-色盲模擬。
+**leading word 是最省 token 的操舵方式。** 一個模型預訓練裡就有的緊湊概念,
+在文中重複出現,會累積出分散式定義,用最少 token 錨住一整片行為。本 skill
+兩個運作中的 leading word 是 **dial**(旋鈕拉動)與 **home**(旋鈕的固定
+原位:abstract / functional / dense)。dial 把「要不要加比喻」從品味變成有
+規則可依的決定;home 在工作流兩端各開一次火 —— step 1 **宣告**交在 home
+還是某個拉動,step 9 **驗證**真的交在那格,中間用 declare / declared 這條
+線縫起來。
 
-### loop 驗證 + output-quality baseline（2026-07 第三批）
+選 home 而非 base 有兩個理由,都可複用到別的 leading word:一,base 在本
+repo 已被 grid 的「base unit」占用,同一個詞背兩個意思會稀釋掛鉤;二,單一
+預訓練詞在多個決策點重複,比兩字詞組(base position)更容易累積分散式定義。
+先前試過「保留 base、原地補強」,被推翻 —— 記住這裡曾走過那條岔路,別再
+繞回去。核心教訓不變:一個只出現一次的核心概念最容易變成 no-op,leading
+word 要在每個決策點重複開火才站得住。
 
-1. **contrast loop 端到端驗證**:拿 HTTPS 測試圖跑
-   `check_contrast.py --svg` 抓到真 fail（L3 灰字 #8794a0 2.94、
-   來源行 #9aa6b1 2.35、response 線 2.35）→ 用 script 選過的替代色
-   修（L3 文字全 #5b6b78 5.21:1;response 線/箭頭 #71808c 3.85
-   過 graphic 門檻）→ 重跑 script 確認所有**文字** ≥5.2:1 → 重
-   render。剩下被 flag 的都是已知豁免類（#71808c graphic 過關、
-   #c9d4de 裝飾 lifeline、#e8683a accent 只當 badge、白/淡 surface
-   fill 誤報）。build→render→check→fix→re-check→re-render 整條
-   loop 證實可用。
+改寫時主動找機會**把重複的說法收攏成一個 leading word**:同一個意思在三處
+展開,或描述花一整句去繞一個概念,都是可以塌縮成一個詞的訊號。收穫是雙重的
+—— token 更少,而且 agent 有更利落的掛鉤。
 
-2. **output-quality.json（新）**:依 plain-speak schema
-   （eval_type/grading/note/evals[].assertions[criterion,must,ref]）。
-   8 個 scenario 各打一個 skill 宣稱的價值點:one-message、
-   hierarchy-one-hero、data-honesty(截軸誘餌)、format-recommend、
-   format-named-skip-ask、accessibility-contrast、bytebytego-explainer、
-   restyle-structure。deterministic 者加 `check` 欄（contrast script /
-   grep var()、g-id）。
-   **關鍵（回應「還沒證明 skill 讓輸出變好」）**:top-note 寫死
-   baseline 紀律 —— 每題 with-skill 與 vanilla 各跑一次、同 rubric
-   打分、skill 價值 = with−without 的 delta;若 assertion 只是描述
-   base model 本來就會做的事，不算證明有效。
-   已用 HTTPS 圖驗證 rubric 會**辨別**:同圖 id-6 contrast 過、
-   id-8 restyle-structure 不過（0 個 var(--)、7 個 inline hex、
-   0 個 semantic g-id，因它建於 restyle 規則之前）—— 證明 rubric 量
-   的是真實且獨立的屬性，非橡皮圖章。
+## 5. 撰寫層的失效模式
 
-尚未做:完整 with-vs-without baseline run（需能 render／diff／腳本跑
-產出 SVG，回 Claude Code 做）;把 deterministic `check` 串成自動
-grader;format 詢問邏輯的 behavior eval 併入時一起跑。
+用來診斷「這個 skill 怪怪的」時該往哪看:
 
-### 文字溢框防治（2026-07 第四批）
+- **premature completion** —— 步驟提早收手。先磨利完成條件(便宜、局部);
+  只有在條件本質上無法明確、而且確實觀察到搶快時,才用拆分把後續步驟移出
+  視線。
+- **duplication** —— 同一個意思出現在兩處。除了維護與 token 成本,還會讓
+  那個意思在資訊階梯上的**顯著度超過它的真實位階**。
+- **sediment** —— 陳舊的層層堆積。因為「加」感覺安全、「刪」感覺有風險,
+  這是任何沒有修剪紀律的 skill 的預設命運。
+- **sprawl** —— 就是太長,即使每一行都還活著且唯一。解法是資訊階梯:
+  把 reference 揭露到指標後面,並依分支或序列拆分。
+- **no-op** —— 模型本來就會照做的話,付了 context 成本卻沒改變任何行為。
+  測試:它相對於預設行為改變了什麼?**逐句**測而不是逐行測,失敗就刪掉
+  整句而不是修剪字詞,而且要狠 —— 大多數失敗的散文該刪,不是改寫。
+  弱的 leading word(agent 本來就大致做得到時說「要仔細」)也是 no-op,
+  解法是換更強的詞,不是換技巧。
+- **negation** —— 見「不可打破的不變量」第 10 條。
 
-使用者回報產出圖仍有文字超出物件框。根因:skill 早把這列為
-"#1 SVG failure mode" 但只「警告」、靠人眼 budget，不可靠 ——
-我自己的 HTTPS 測試圖就中招。優化 = 從警告升級成**工具強制**。
+## 6. 借用外部內容的規矩
 
-- 新增 `scripts/check_text_fit.py`（純 stdlib）。內嵌 Helvetica
-  advance-width 表(units/1000 em)估算字串寬度,CJK 以 1em 計。
-  mode A:`--text --size --max` 單行預檢;mode B:`--svg --pad`
-  掃全圖 —— 解析 nested `translate()`、找每個 `<text>` 所屬 rect、
-  比對是否超出卡片右緣(含 text-anchor middle/end)。scale/rotate
-  子樹標為 unchecked。
-- **實測比人眼準(雙向)**:跑 HTTPS 圖,**清掉**我以為會爆的
-  "server's public key…"(273px 進得了 314px 卡),卻**抓到我漏看的**
-  lane 副標溢框 +45px。修法:縮字 + 加寬 lane pill 220→250 →
-  重掃 0 溢出 → 重 render。
-- 串接:svg-construction.md text 段加**字數預算公式**
-  (`max_chars ≈ inner_width / (0.55 × font_size)`)＋強制跑 script;
-  pitfalls checklist、SKILL build step（與 contrast 並列的
-  render-and-inspect gate）、output-quality id-7 加 `text-fits-boxes`
-  criterion（附 `check`）。
+本 skill 有一部分改寫自 Anthropic 官方 `frontend-design`(Apache-2.0),
+`NOTICE` 記錄了範圍。日後再借:
 
-現在產出前有兩道 deterministic gate:text-fit + contrast，皆可腳本
-自動判。剩餘 backlog 同前（內容萃取、資料接口、座標 helper、
-a11y title/desc、色盲模擬）。
+1. 先確認授權,更新 `NOTICE`,寫明改寫方式。
+2. **逐段做適用性盤點**,不要整節搬。domain-general 的近乎逐字保留
+   (改寫比逐字更容易失真);web 專屬的(錯誤狀態、空畫面)排除 ——
+   抄進來是噪音不是嚴謹。
+3. 例子與詞彙改寫到本領域(把 web UI 換成圖表),原則本身不動。
 
-### 統一檢查 gate（2026-07 第五批）
+---
 
-把分散的 script 收斂成單一 gate:新增 `scripts/check.py`,一道指令
-給 PASS/FAIL 總判 + exit code,擋在「交付」前面。
-`python scripts/check.py out.svg --bg <canvas> --pad <n>`
+## 7. 修改流程
 
-- **HARD gate**(fail→exit 1):text-fit 溢框、文字對比 <WCAG（**精確版**:
-  解析每個 `<text>` 自己的顏色與其真實背景 —— 含 circle/ellipse 底 ——
-  消除 check_contrast.py 分不出 text/surface 的誤報）、font-family 未命名、
-  text 內含 emoji。
-- **SOFT gate**(warn→exit 0):restyle 結構（:root var／semantic g-id）。
-- 對比門檻誠實處理:bold ≥16px 視為 large text（3:1),讓「白字＋accent
-  badge」這種標準且可讀的樣式過關（WCAG large=18.66px bold,略放寬並註明）。
-- **雙向驗證 gate 會辨別**:修正版 HTTPS 圖 4 個 hard gate 全過（restyle
-  WARN);故意做壞的 SVG 抓到 4 個 hard fail（溢框+190px、2 個對比、
-  無 font、emoji 📊）exit 1。修過兩個自身誤報:circle 背景解析、emoji
-  regex 誤掃排版箭頭 →←。
-- 串接:SKILL build step 與 svg-construction.md checklist 都改成
-  「跑 gate,exit 0 才交付」;check_text_fit / check_contrast 保留供
-  iterate 時單獨用。gate 是 deliver 前的單一 enforcement 點。
+每次改動照這個順序,少一步就會有暗傷:
 
-### 產出品質 guard 正式化（2026-07 第六批）
+```bash
+# 1. 改 SKILL.md / references / scripts / evals
 
-先前 `check.py` 已存在,但只是 SKILL 裡「建議跑」的一步,且只管機械面。
-本批把它**升級成不可跳過的交付契約 + 補上判斷面**。
+# 2. 版本號:frontmatter version 每批必bump
+#    行為改變 → minor;措辭與修補 → patch
 
-- **兩層 guard**:機械面（script 自動判 exit code）+ 判斷面（step-9
-  自評,agent 自證）。gate 指令現在跑完會**印出判斷面 checklist**
-  （單一訊息／一個 L1 主宰／圖表誠實／非色彩單獨編碼／來源標註），
-  不影響 exit code —— 一道指令給齊兩層。
-- SKILL.md 新增獨立 **"## Delivery guard (do not skip)"** 段:明訂
-  「gate 未 PASS 且判斷面未逐項確認前,不得 present／交付」,並要求
-  交付時回報 gate 結果。HTML 產出走瀏覽器版同款判斷 guard。
-- 措辭去除 test-process narration,改成 principle-based（符合 CLAUDE.md
-  provenance 分離規範）。
+# 3. 產一張真圖驗證(不要只讀 diff)
+python3 scripts/check.py out.svg --bg "#F7F9FC" --pad 10
 
-至此 guard = 交付前的硬性 precondition,非可選建議。剩餘 backlog
-同前（內容萃取、資料接口、座標 helper、a11y title/desc、色盲模擬;
-及把 gate 接 pre-commit/CI 的版控強制,若要更硬)。
+# 4. 收尾檢查:開發語彙不得外洩到 skill 本體
+grep -rnE 'GAN|round [0-9]|benchmark|補強|比對〈|般化|eval #|recall' \
+  SKILL.md references/
 
-## 設計決策
+# 5. 孤兒檢查:每個 reference 都要能從 SKILL.md 到達
+for f in references/*.md; do
+  grep -q "$(basename $f)" SKILL.md || echo "ORPHAN: $f"; done
 
-1. **三層 hierarchy 是硬性規定**（不是建議）— 多於三層是最常見的
-   失敗模式，寫成硬規則比寫成 guideline 有效。
-2. **references 三分法**：layouts（決定骨架）/ charts（決定編碼）/
-   color-typography（決定皮膚），對應 procedure 的 2 / 5 / 6 步 —
-   讓 progressive disclosure 有清楚的載入時機。
-3. **輸出預設 SVG**：可攜（任何 agent 都能寫檔）、可無損轉檔、
-   一處改色。刻意不綁任何 host 的 artifact/widget 機制以維持
-   portability。
-4. **Skip 掉 deck 與 dashboard**：兩者的資訊密度預算與本 skill 的
-   極簡規則衝突，寧可 route 出去。
+# 6. 清掉 __pycache__ 再提交
+```
 
-## 尚未完成 / next steps
+**兩段式提交**:skill 與 evals 一個 commit,repo 根層的 `CLAUDE.md` /
+`DEVELOPMENT.md`(全域撰寫指南)另一個 commit。
 
-- [ ] **Stage 3–4（Test/Iterate）未跑**：evals/infographic-design/
-      prompts.json 已備 trigger cases，但尚未做 with-vs-without
-      baseline。先跑 3 個 positive prompts 的實際產出對照。
-- [ ] output-quality.json 未建 — 候選 assertions：squint-test proxy
-      （L1 元素面積/字級比）、bar 軸零基線、contrast 抽查、
-      色彩僅編碼檢查、來源標註存在。
-- [ ] description 未做 stage 5 優化 — 特別要驗證「單一 chart 請求」
-      的 negative cases 不誤觸。
-- [ ] 考慮 `scripts/`：contrast checker（hex pair → ratio）與
-      SVG bar-scale 驗算是 deterministic，適合腳本化。
-- [ ] 中文字型 stack（Noto Sans TC 等）尚未寫進
-      color-typography.md — 若主要用例是繁中圖表，應補。
+---
+
+## 8. 評測
+
+評測遵循官方 skill-creator 的標準,本節只記**原則與本 skill 專屬的部分**;
+流程細節不在這裡複述,需要時直接讀 skill-creator。
+
+檔案(官方版位:evals 放在 skill 目錄內):
+
+- `evals/evals.json` —— 任務題與可驗證陳述
+- `evals/trigger-queries.json` —— 觸發/不觸發查詢,供描述最佳化使用
+- `evals/judged-cases.md` —— 使用者已判定過的案例,質性評估用
+
+原則:
+
+1. **設計品質不要硬塞成 expectation。** 官方標準明講,主觀產出的技能適合
+   質性評估。`expectations` 只寫**客觀可驗**的陳述(長條是否從零起、
+   payload 是否在箭頭上、對比是否達標、文字是否溢框);「版面好不好看」
+   「密度會不會太高」屬於質性,走 `judged-cases.md`。
+   之前有一版塞了 31 條斷言而只有 4 條客觀,其餘由寫規則的同一模型判定
+   —— 那量的是內部一致性,不是品質。
+2. **陳述以讀者結果措辭,不以規則複讀措辭。**「讀者能只憑圖驗證推導」
+   可以由不知道規則的人盲評;「圖上有收斂箭頭」只是把規則再唸一次。
+3. **改進既有 skill 時,對照組是舊版快照,不是 vanilla。** 這個 skill
+   早就過了「有沒有比沒 skill 好」的階段;有意義的問題是「這版比上一版
+   好嗎」。
+4. **兩側必須平行且互不知情。** 對照組要由獨立 subagent 跑、與實驗組
+   同時派出。這是唯一能解掉污染的作法 —— 同一個 agent 先讀了 skill 再
+   假裝沒讀,產出的對照組沒有證據力。若環境不支援 subagent,只能採信
+   **負面發現**(「對照組有而我們沒有」不受污染影響),不可採信正面結論。
+5. **同一設定多跑幾次看變異。** 單次結果分不出真實差異與抽樣雜訊。
+6. **題目來源要在 skill 之外。** 從 skill 自己的宣稱反推題目,只會在
+   想得到的地方受檢驗。看 track record:一套題若從沒抓到過它不是為了抓
+   而設計的東西,那本身就是結論。
+7. **本 skill 專屬的客觀層是 `scripts/check.py`。** 錨在 WCAG、XML、
+   幾何、文字度量上,與作者無關,可無人值守跑。它衡量工藝地板,不衡量
+   品質 —— 全綠只代表沒有明顯壞掉。
+
+## 9. 環境陷阱
+
+- `cairosvg` 不解析 CSS `var()` —— 直接 render 會全黑。務必從已展開變數
+  的副本產圖(`check.py` 內部自行展開,不受影響)。
+- `grep -c` 命中 0 時 exit code 1,會在 `&&` 鏈裡中斷後續指令。
+- `sh` 沒有 process substitution。
+- 批次編輯腳本一律加 `assert`,否則錨點字串對不上時會靜默不改 ——
+  本專案已經因此漏寫過一次紀錄。
+- 提交前清 `scripts/__pycache__`。
+
+---
+
+## 10. 知識基礎的出處
+
+References 裡的具體數字(8px spacing、palette hex、type scale)是綜合
+下列來源後的**編輯決策**,不是引用,可依實測調整。
+
+- **版面與視覺層級**:Visme、Venngage、Piktochart、Toptal、Hull
+  University LibGuide(三層 hierarchy 上限)、F/Z reading patterns。
+- **圖表誠實性**:Tufte(data-ink ratio、chartjunk、graphical integrity)
+  ＋ Frank Elavsky 對 minimalism 的批判(別為了 ratio 犧牲對比)。
+- **無障礙**:WCAG 2.1 —— 文字 4.5:1(SC 1.4.3)、非文字圖形 3:1
+  (SC 1.4.11)、color-only encoding 禁令。
+- **60/30/10 色彩結構**:設計圈慣例,非單一出處。
+- **infographic 的定義與旋鈕模型**:Cairo《The Functional Art》
+  (visualization wheel 六軸、engineers vs journalists 兩端)、Kosara
+  (hand-crafted、self-contained)、Tufte–Holmes 的 chartjunk 之爭與
+  Bateman 等人的記憶性實驗(裝飾提升記憶但作者拒絕當通則)。
+- **ByteByteGo 風格**:wey-gu 的 gist ＋ Alex Xu 推文(工具為 draw.io,
+  招牌是連接線 flow 動畫)、ByteByteGo newsletter 原文(編號走查、
+  具體實體接地)、javinpaul 的解析(progressive reveal)。歸納出的簽名
+  = 編號走查焊在有向流上 + 一圖一點 + 具體範例實體 + 分類格狀變體;
+  刻意只留技法、不綁 draw.io。
+- **文案**:改寫自官方 `frontend-design` 的寫作段落(見 `NOTICE`)。
