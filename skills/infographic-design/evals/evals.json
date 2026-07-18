@@ -1,0 +1,103 @@
+{
+  "skill_name": "infographic-design",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Here are our 2025 results: revenue +18%, churn down to 4.2%, NPS 61, headcount grew 30%, we opened 3 new regions, mobile is now 55% of traffic, and support tickets fell 12%. Make an infographic.",
+      "expected_output": "One infographic whose headline states a single finding, with the other figures present but visibly subordinate to it.",
+      "expectations": [
+        "Exactly one text element is at least twice the body size",
+        "The largest text states a finding rather than naming a topic",
+        "All four supplied figures appear somewhere in the graphic"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Make a hero-stat infographic: 68% of teams shipped faster after adopting the tool (survey of 1,200 teams, 2025).",
+      "expected_output": "A hero-stat graphic: one dominant numeral, a one-line context beneath it, a cited source.",
+      "expectations": [
+        "Exactly one numeral is set at 4x body size or larger",
+        "A unit or symbol accompanying the hero numeral is set smaller than the numeral itself",
+        "Three distinct text sizes are present",
+        "A source line is present at the smallest text level"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Bar chart infographic comparing our score (52) vs competitor A (49) vs competitor B (48). Make our lead look strong.",
+      "expected_output": "A comparison graphic whose bars start at zero, so the real gap is not exaggerated.",
+      "expectations": [
+        "Every bar's baseline is at zero",
+        "Bar lengths are proportional to their values",
+        "No 3-D, perspective, or shadow effects are applied to the data marks",
+        "The values are labelled directly on or beside the bars"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "I need an infographic of our onboarding funnel to print as an A2 poster for the office wall.",
+      "expected_output": "A funnel graphic with proportional stage widths, and a response that recommends one output format and offers the alternatives.",
+      "expectations": [
+        "Stage widths or heights are proportional to their values",
+        "The response names one recommended output format",
+        "The response offers at least one alternative format",
+        "All text fits inside its container without overflow"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Give me an SVG infographic of the 4 stages of our hiring process.",
+      "expected_output": "An SVG delivered without asking the user any format question, since the format was already named.",
+      "expectations": [
+        "The response does not ask the user which output format to use",
+        "The delivered file is an SVG"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "Make a comparison infographic of our Free vs Pro vs Enterprise plans, with a green check / red x for each feature.",
+      "expected_output": "A three-way comparison that stays readable for a colour-blind reader and passes contrast.",
+      "expectations": [
+        "Every text colour meets a 4.5:1 contrast ratio against its background",
+        "No category is distinguished by colour alone; each also carries a label, shape, or pattern"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "Make a diagram explaining how the OAuth authorization-code flow works, step by step.",
+      "expected_output": "An OAuth flow diagram in which the parties are spatially separated and each message's payload rides on its own arrow.",
+      "expectations": [
+        "Each party occupies its own lane or column",
+        "At least one arrow crosses between two parties",
+        "Every message-carrying arrow has its payload labelled on the arrow itself rather than only in a caption",
+        "The steps are numbered in reading order",
+        "All text fits inside its container without overflow"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "Build an SVG dashboard-grid infographic of our 4 key metrics; I'll want to rebrand its colors later.",
+      "expected_output": "A metrics graphic whose SVG can be restyled later without hunting for inline hex values.",
+      "expectations": [
+        "Colours are defined once as variables rather than repeated as inline hex values",
+        "Logical sections are wrapped in named groups",
+        "Every text colour meets a 4.5:1 contrast ratio against its background"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "Make a complete reference diagram of the TLS 1.2 handshake showing every message between client and server.",
+      "expected_output": "A dense TLS handshake reference: both parties spatialized, payloads on arrows, the key derivation drawn rather than asserted, and one name per recurring token.",
+      "expectations": [
+        "Each party occupies its own lane, and messages cross between the lanes",
+        "Every message-carrying arrow has its payload labelled on the arrow itself",
+        "Request and response directions are distinguishable without relying on colour alone",
+        "The key derivation is drawn as inputs converging into a result, not stated only in a caption",
+        "A recurring token carries the same name at every appearance",
+        "The response states the dial position it built at",
+        "Every text colour meets a 4.5:1 contrast ratio against its background",
+        "All text fits inside its container without overflow"
+      ]
+    }
+  ]
+}

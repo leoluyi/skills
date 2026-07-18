@@ -143,8 +143,57 @@ Iterate on the SVG, re-render, re-check.
 - **PDF**: `cairosvg out.svg -o out.pdf` (vector, print-ready).
 - **PPTX/DOCX embedding**: go through the pptx/docx skill; embed the PNG (or
   SVG where the tool supports it), don't rebuild the graphic.
-- Web/HTML: inline the SVG directly or reference the `.svg` file — no
-  conversion needed.
+
+## HTML output (single file, animated flows)
+
+When the chosen format is **HTML**, wrap the SVG in a self-contained `.html`
+file and inline the SVG inside a `<figure>`. HTML is the one format that can
+carry motion, so it's where the ByteByteGo-style **flow animation** lives.
+
+**Default flow rule (apply automatically).** Give a connector `class="flow"`
+when the line means *directional flow* — data flow, request/response, a
+translation/compile pipeline, a message stream, anything moving with a
+direction. Leave it **unclassed (static)** when the line means *structure or
+belonging* — containment, membership, a comparison/mapping, or a feedback
+reference. Flow animates; structure holds still. (This mirrors the static-SVG
+rule in `bytebytego-style.md`, now realized as real motion instead of just an
+arrowhead.)
+
+**Minimum-spec baseline CSS** (must be present in every HTML output; the
+`prefers-reduced-motion` guard is required, so motion-sensitive users and
+static exports/print simply see dashed static arrows):
+
+```css
+@media (prefers-reduced-motion:no-preference){
+  figure svg .flow{stroke-dasharray:6 4;animation:dash 1.6s linear infinite}
+  @keyframes dash{to{stroke-dashoffset:-20}}
+}
+```
+
+**More than one kind of flow.** When a graphic carries two or more flow
+types — request vs response, data vs control, primary path vs background
+query — give each its own **dash pattern** as well as its own colour
+(`6 4` and `4 3` read as clearly different at a glance, and animate at
+different speeds). Colour alone fails the same readers it always fails, and
+also fails everyone once the graphic is printed or screenshotted in
+greyscale.
+
+**The page frame.** An HTML infographic is a *sheet*, not a web page: a
+centred column at the graphic's natural width, a page background a step
+away from the canvas colour so the sheet has an edge, the SVG at
+`width:100%; height:auto` so it scales down on a phone, and nothing else —
+no nav, no hero, no footer. The frame's whole job is to make the canvas
+look like a thing you could pin up.
+
+Notes: keep an `arrowhead` marker on `.flow` lines too, so direction still
+reads when motion is off. Everything else (palette `:root` vars, hierarchy
+classes, contrast, text-fit) applies unchanged — an HTML infographic is the
+same SVG with this stylesheet and, optionally, hover/toggle interactivity.
+Still run the judgment guard and check contrast/overflow in the browser (the
+Python gate reads `.svg` files, not `.html`).
+
+- Static SVG (delivered as `.svg`/PNG/PDF): no animation — encode direction
+  with arrowheads, numbered order, and the request/response colour split.
 
 ## Icons — use the vocabulary, don't freehand
 
@@ -158,7 +207,8 @@ round-stroke language so it looks native.
 
 ## Structuring for restyle
 
-Step 2 promises the user can rebrand the graphic later. That only holds if
+The skill promises the user can rebrand the graphic later (SKILL.md,
+"Building the output"). That only holds if
 the SVG is built so a rebrand touches *one* place, not fifty inline hexes.
 Rules:
 
@@ -204,5 +254,5 @@ agent asked to "change step 3's label" finds `<g id="step-3">` immediately.
 - [ ] Colour only via `:root` vars/classes — no inline hexes to hunt down?
 - [ ] Semantic `<g id>` groups + region comments for later editing?
 - [ ] Positions computed, not eyeballed? Gaps all multiples of the base unit?
-- [ ] **Ran the gate?** `python scripts/check.py out.svg --bg <canvas> --pad <n>` — text-fit + contrast + font + emoji; exit 0 to deliver.
+- [ ] **Ran the gate?** `python scripts/check.py out.svg --bg <canvas> --pad <n>` — hard-fails on xml/refs/canvas/text-fit/contrast/min-font (font, emoji, var-compat, restyle are advisories); exit 0 to deliver.
 - [ ] Rendered to PNG and actually looked at before delivering?

@@ -1,0 +1,70 @@
+{
+  "skill_name": "infographic-design",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我把這份 2025 台灣再生能源發電占比的數據做成一張資訊圖表，要能發到社群上。",
+      "should_trigger": true
+    },
+    {
+      "id": 2,
+      "query": "我想做一張「報稅新制懶人包」，重點是三個變動：免稅額調高、申報期限、線上流程，一頁看完。",
+      "should_trigger": true
+    },
+    {
+      "id": 3,
+      "query": "Make a visual explainer of how our CI/CD pipeline works, something I can pin in the team channel — steps from commit to production.",
+      "should_trigger": true
+    },
+    {
+      "id": 4,
+      "query": "Turn this pricing comparison of our three plans into a shareable one-pager graphic.",
+      "should_trigger": true
+    },
+    {
+      "id": 5,
+      "query": "這是我做的年度回顧圖表 SVG，幫我看哪裡設計上可以改，感覺很亂但說不出為什麼。",
+      "should_trigger": true
+    },
+    {
+      "id": 6,
+      "query": "Make a diagram explaining how HTTPS handshake works, step by step, that I can drop in our onboarding doc — the kind of numbered-flow visual ByteByteGo does.",
+      "should_trigger": true
+    },
+    {
+      "id": 7,
+      "query": "用 matplotlib 畫一張這個 DataFrame 的月營收長條圖，放進我報告的第三節。",
+      "should_trigger": false
+    },
+    {
+      "id": 8,
+      "query": "幫我把這份產品簡報做成 10 頁的 pptx，要有圖表跟重點整理。",
+      "should_trigger": false
+    },
+    {
+      "id": 9,
+      "query": "Build me a live dashboard in Grafana style showing our API latency, error rate, and throughput with auto-refresh.",
+      "should_trigger": false
+    },
+    {
+      "id": 10,
+      "query": "用白話跟主管解釋什麼是 message queue，不用做圖。",
+      "should_trigger": false
+    },
+    {
+      "id": 11,
+      "query": "學習總結成一張圖",
+      "should_trigger": true
+    },
+    {
+      "id": 12,
+      "query": "幫我把這份年度業績數字做成統計圖表，要能看出各季精確金額。",
+      "should_trigger": false
+    },
+    {
+      "id": 14,
+      "query": "這份文件的架構圖幫我設計一下，配色沿用文件現有的 token",
+      "should_trigger": true
+    }
+  ]
+}

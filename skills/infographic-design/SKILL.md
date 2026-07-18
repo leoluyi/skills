@@ -1,17 +1,23 @@
 ---
 name: infographic-design
 description: >-
-  Design polished, professional infographics as self-contained SVG or
-  single-file HTML. Use when the user asks for an infographic, 資訊圖表,
-  懶人包, 一頁式圖表/one-pager, 視覺化摘要, 圖解, a visual summary, a stats
-  sheet, a timeline/comparison/process ("how it works") graphic, a poster, or
-  says "把這些數據做成圖" / "make this visual / shareable" — even without the
-  word "infographic". Also use to review or improve an existing infographic
-  design ("幫我看這張圖表哪裡可以改"). Do NOT invoke for a single standalone
-  chart embedded in analysis output, for dashboards / BI tooling, for slide
-  decks (use a pptx workflow — an infographic is one self-contained canvas,
-  not a deck), or for explaining a term in plain language (use plain-speak).
-version: 0.1.0
+  Design polished, professional explanatory graphics as SVG or single-file
+  HTML. Use when the user asks for an infographic, 資訊圖表,
+  懶人包, 圖解, a one-pager, a visual summary, or a
+  timeline/comparison/process ("how it works") graphic — even without the
+  word "infographic" — and to review an existing one ("幫我看這張圖表哪裡
+  可以改"). Use for a learning recap when a teaching dialogue ends
+  ("學習總結成一張圖", "visual recap of what you taught me"); that route
+  needs no further prompting. Also use when another skill needs a figure
+  designed for a document it is producing. Do NOT invoke for a single
+  standalone chart embedded in analysis output, for dashboards / BI tooling,
+  for slide decks (use a pptx workflow), for explaining a term in plain
+  language (use plain-speak), or for data-dense charts where the numbers are
+  themselves the subject or precise scales matter (annual-results decks,
+  survey findings, statistical graphics) — hand those to a
+  data-visualization workflow. Quantities that serve as evidence inside an
+  explanation (a funnel's drop-off, a cache hit-rate) stay in scope.
+version: 0.9.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -24,233 +30,219 @@ metadata:
 
 # Infographic Design — 資訊圖表設計
 
-Turn information into a single self-contained visual that communicates one
-clear message in under 10 seconds of scanning. A viewer who spends 8 seconds
-should walk away with the headline takeaway; a viewer who spends 2 minutes
-should get the full supporting story. The three-level hierarchy below serves
-both readers at once — that is the core mechanism of this skill.
+Approach this as the design lead at a small studio known for infographics
+that could not be mistaken for anyone else's — the ByteByteGo-grade diagrams
+people save and repost because they made a mechanism *click*. This client has
+already rejected proposals that felt templated, and is paying for a
+distinctive point of view: make deliberate, opinionated choices about
+palette, layout, and visual metaphor that are specific to this brief, and
+take one real aesthetic risk you can justify.
 
-## When to use
+**Ground it in the subject.** If the brief does not pin down the subject, pin
+it yourself before designing: name one concrete subject, its audience, and
+the graphic's single job, and state your choice. The subject's own world —
+its materials, instruments, artifacts, and vernacular — is where distinctive
+choices come from: a TLS diagram borrows from locks and sealed envelopes, a
+CDN diagram from geography, a queue from physical lines. Build with the
+brief's real content throughout.
 
-- Use when the deliverable is **one visual canvas** carrying a message:
-  infographic, one-pager, visual explainer, timeline/comparison/process
-  graphic, stats poster, social-share visual.
-- Use when reviewing an existing infographic for design/communication quality.
-- Skip when the deliverable is a multi-slide deck, an interactive dashboard,
-  or a chart that lives inside a larger report — those have different
-  information-density budgets and this skill's rules would over-simplify them.
+**Structure is information.** Structural devices — numbering, lanes,
+dividers, badges — should encode something true about the content, not
+decorate it. Numbered markers (① ② ③) are appropriate only when the content
+actually is a sequence; lanes only when parties genuinely act separately.
+Question each device before incorporating it.
+
+An outline is not a layout. Three topics is not three equal blocks: that
+arrangement encodes the order you listed things in, which is a fact about
+your notes, not about the subject. Derive the arrangement from how the parts
+actually relate — what feeds what, what contains what, what loops back. The
+test: if this layout would be unchanged had the content been about something
+else entirely, it came from the outline, not the subject.
+
+For calibration: AI-generated infographics have a recognizable default look,
+and two of its tells are worth naming because no rule elsewhere will catch
+them — prose bullets dumped into boxes instead of being turned into visual
+relations, and the warm-cream-plus-terracotta palette (near #D97757 —
+Anthropic's own Claude accent, so it reads as a tell). These are defaults,
+not choices. Where the brief pins a direction, follow it exactly; where it
+leaves an axis free, don't spend that freedom on a default.
+
+## Process: plan, critique the plan, then build
+
+Work in two passes. First, brainstorm a compact plan from the brief: the one
+message, the dial position, a palette named as hex roles, the layout concept
+(one-sentence prose or an ASCII wireframe), and the **signature** — the
+single element this graphic will be remembered by (a derivation drawn as
+converging flows, a worked example threading every step, an unexpected but
+apt visual metaphor).
+
+Then review that plan against the brief before building: if any part reads
+like the generic default you would produce for any similar graphic — work
+through a similar prompt in your head to see if you arrive somewhere
+similar — revise that part. Only after confirming the plan is specific to
+this brief should you write SVG, following the plan exactly. Do this
+planning and iteration in your thinking; show the user the version you
+already believe in.
+
+**Spend your boldness in one place.** Let the signature element be the one
+memorable thing, keep everything around it quiet and disciplined, and cut
+any decoration that does not serve the brief. Before delivering, take one
+look and remove one accessory.
 
 ## Procedure
 
-Follow in order. Skipping step 1 is the most common cause of weak
-infographics — every later decision (layout, hierarchy, color) depends on it.
+### 1. Set the dials, then distill one message
 
-### 1. Distill ONE message
+Think in the six tensions of Cairo's visualization wheel (*The Functional
+Art*): abstraction–figuration, functionality–decoration, density–lightness,
+multidimensionality–unidimensionality, originality–familiarity,
+novelty–redundancy. This skill's **base position is fixed** at the end Cairo
+maps to scientists and engineers: abstract, functional, dense,
+multidimensional. Precision is the default — there is no per-request "mode"
+to pick, and density scales with how much the subject holds (a multi-party
+mechanism ⇒ real lanes, cross-party arrows, payloads on the arrows,
+derivations drawn as data-flow — `references/bytebytego-style.md`).
 
-Write a single sentence before touching visuals: "After seeing this, the
-viewer should understand ___." An infographic arguing two or three ideas
-loses all of them. If the material holds multiple stories, pick the strongest
-or propose a series. Cut every fact that doesn't serve the message; round
-numbers (68.37% → 68%) unless precision IS the point.
+What you decide per request is whether to *pull a dial* away from base, and
+every pull needs a purpose and a source:
 
-### 2. Pick the output format (recommend, then let the user choose)
+- **Retention pull** (toward redundancy + familiarity) — when the graphic
+  exists so someone *remembers*: teaching recaps, onboarding. This is the
+  Holmes move: dual naming and an analogy vocabulary are licensed here and
+  only here, and the second name must come from somewhere real — the
+  dialogue that taught it, the audience's own vernacular — never invented
+  at drawing time. Canonical case: `references/learn-loop-viz.md`.
+- **Simplification pull** (toward lightness + figuration) — only on an
+  explicit signal ("for laypeople", "one glance", a poster or social
+  brief). It trades density away, so it must be asked for, never assumed.
 
-Decide format *before* designing — the static-vs-interactive fork changes how
-you build, and the target platform sets dimensions (step 5). **Recommend a
-default with a one-line why, list the alternatives, and let the user pick.**
-If the user already named a format, skip the ask and use it. With no signal,
-default to SVG.
+No signal → stay at base and state the assumption in one line, without
+stopping.
 
-| Where it will live / intent | Recommended | Why | Also offer |
-|---|---|---|---|
-| General, unsure, will be reused & rebranded | **SVG** | scales to any size, restyles in one edit, agent-editable, converts to anything | PNG |
-| Interactive — hover reveals, toggles, scroll-story, animation | **HTML** (single file) | the only format that carries interaction | — |
-| Paste into chat / social / docs that don't render SVG | **PNG** | renders everywhere, flat | keep SVG source too |
-| Print, poster, or a formal one-pager to send | **PDF** | fixed physical size, print-ready | SVG source |
-| Must live inside a slide deck | **PPTX** (via the pptx skill) | native deck asset | PNG placed on a slide |
+Then write the one message: "After seeing this, the viewer should understand
+___." One sentence, before any drawing. Multiple stories → pick the strongest
+or propose a series.
 
-SVG is the **source of truth** for every static case: design in SVG, then
-convert to PNG/PDF at the end (see "Building the output"). Only HTML and PPTX
-change the actual build — HTML is designed natively, PPTX routes to the pptx
-skill. So in practice the ask is really two questions: *static or
-interactive?* and *which file do you want to walk away with?*
+### 2. Pick the output format
 
-### 3. Choose a layout archetype
+Recommend one, let the user choose: **SVG** (default; source of truth for
+PNG/PDF), **HTML** (single self-contained file when motion or interactivity
+earns its place — directional flow lines get `class="flow"`, structural lines
+stay still; baseline CSS in `references/svg-construction.md`), **PNG** social,
+**PDF** print, **PPTX** via the pptx skill.
 
-Match archetype to content shape, not aesthetics:
+One route skips this step: a learning recap (`references/learn-loop-viz.md`)
+is always a single self-contained animated HTML file. Don't offer the
+choice, don't ask for motion — build it and say what you built.
 
-| Content shape | Archetype |
-|---|---|
-| One dominant statistic + support | Hero-stat |
-| Events over time | Timeline |
-| Steps in a sequence | Process/flow |
-| Two+ options side by side | Comparison |
-| Many stats, equal weight | Dashboard grid |
-| Parts of a whole thing | Anatomical/labeled |
-| Ranked items | Ordered list |
-| Geographic data | Map-centric |
+**Embedded mode.** When the graphic is a figure inside a document another
+skill is producing, that skill owns the surface and this one owns the
+content. Every content rule still binds — archetype, density, payload on the
+arrow, one name per thing, honest quantities, the words. What yields, and
+only this:
 
-Read `references/layouts.md` for wireframes, dimensions per target platform,
-and reading-pattern rules (F vs Z) **before** laying anything out.
+- **The headline.** A standalone canvas carries its own takeaway at 2–3×
+  body size because it travels alone; a figure does not, and a second
+  headline under the host's own heading is the same point made twice on one
+  page. Keep the figure's largest text at the host's figure-title scale and
+  let the surrounding prose carry the takeaway.
+- **Colour and type** — the host's tokens and type scale replace step 7 and
+  `references/color-typography.md`.
+- **The wrapper** — no page frame, no centred column, no page background
+  (`references/svg-construction.md` describes a sheet delivered on its own).
+  Emit the figure element and let the host place it.
+- **Format, and the final check** — the host decides both; the step 9
+  delivery gate guards a standalone canvas and does not describe a figure
+  sitting in a page.
 
-For **technical/system explainers** (how a protocol, pipeline, or
-architecture works — a mechanism, not statistics), also read
-`references/bytebytego-style.md`. It captures the numbered-walkthrough style
-(badged step numbers welded onto a directional box-and-arrow flow, one-point
-diagrams, a worked example entity) that makes complex flows read as a
-sequence — layered on the Process/flow and Anatomical archetypes.
+Say which host you are building into and take its tokens.
+
+### 3. Choose the layout archetype
+
+Match the data's shape, then let the dial position set the density (see
+`references/layouts.md`): process/flow, comparison, hierarchy, timeline,
+part-whole, geo, hero-stat. For technical explainers read
+`references/bytebytego-style.md` — numbered walkthrough welded to the
+diagram, worked example, making abstract concepts visual. For a visual recap
+of a completed teaching dialogue also read `references/learn-loop-viz.md`.
 
 ### 4. Build the three-level hierarchy
 
-Exactly three levels — more confuses, fewer flattens:
+- **L1 — takeaway**: the headline, embedded *inside* the image (a reposted
+  image must still explain itself), phrased as the point — a question or a
+  finding, not a topic label. Biggest, boldest, 2–3× body size.
+- **L2 — sections**: subheads, key figures. L1+L2 alone tell the skeleton.
+- **L3 — support**: labels, captions, source. Quiet and small.
 
-- **L1 — takeaway**: headline + hero number/graphic. Biggest, boldest,
-  highest contrast, where the eye lands first. 2–3× larger than body content.
-- **L2 — sections**: subheads, key figures, chart titles. A reader of only
-  L1+L2 gets the full skeleton.
-- **L3 — support**: labels, captions, body text, sources. Quiet and small.
+One font family; vary size/weight/colour across levels. Most of the surface
+is text, and labels template as easily as layouts do — `references/words.md`.
 
-Assign every element a level before styling it. One font family; vary
-size/weight/color across levels rather than mixing fonts.
+### 5. Compose on a grid, spend whitespace
 
-### 5. Compose on a grid with generous whitespace
+8-pt grid, consistent gaps, ~40% air. Density never comes from compression —
+density is earned with a bigger canvas and more *relations*, not
+tighter packing.
 
-12-column grid landscape, 4–6 portrait; base spacing unit (8px) and only
-multiples of it everywhere. Target ~60% content / 40% air — cramped
-infographics read as untrustworthy. Group related items tightly, separate
-unrelated groups with whitespace before reaching for boxes or divider lines
-(proximity does the organizational work more cleanly).
+Density that is earned still has to be navigable. Past roughly one screen,
+a reader stops reading and starts *scanning back* — looking for the place
+they saw a thing before. Give them landmarks: an icon on every recurring
+node type (`references/icons.md`), and a surface treatment that means one
+thing consistently (`references/color-typography.md`). A wall of same-shaped
+text cards has no landmarks, so every re-find is a linear search.
 
-### 6. Visualize data honestly
+### 6. Visualize quantities honestly
 
-For each number pick the encoding that fits the comparison being made — a
-single big styled numeral often beats any chart. Hard rules: bar axes start
-at zero, no 3-D, no dual axes, area scales with value. Delete chartjunk.
-Read `references/charts.md` for the chart-selection table, big-number
-styling, and the full integrity rules.
+Quantities appear here as *evidence inside an explanation* — a funnel's
+drop-off, a hit-rate, a before/after — not as the subject itself (that work
+was handed off at the door). The honesty rules bind regardless of size:
 
-### 7. Apply color and type systems
+Zero-baseline bars, no 3-D, no dual axes, area scales by value not diameter.
+Round numbers unless precision is the point. Cite the source (small, L3).
+Embedded forms and hero numbers: `references/charts.md`.
 
-One dominant neutral / one theme color / one accent, ~60/30/10, accent
-reserved for the L1 takeaway (scarcity is what makes it pop). One font
-family, three text styles mapped to the three levels. Read
-`references/color-typography.md` for ready contrast-checked palettes, chart
-palette rules (categorical/sequential/diverging), and exact type scales.
+### 7. Colour and type
 
-### 8. Accessibility pass (non-negotiable)
+One neutral + one theme + one accent, ~60/30/10; the accent marks the single
+most important thing. Derive the palette from the subject's world (verified
+starting points, application principles, and type scales:
+`references/color-typography.md`) and contrast-check it before layout. Icons: inline vector from
+`references/icons.md`, one style throughout.
 
-- Text contrast ≥ 4.5:1; meaningful graphics ≥ 3:1 vs adjacent colors.
-- Never encode meaning in color alone — pair with label, position, pattern,
-  or icon. No red/green as sole differentiator.
-- Minimum text ~11–12px equivalent at intended viewing size.
-- Every chart title states its takeaway ("Sales doubled after launch"), not
-  its topic ("Sales 2023–2025").
+### 8. Accessibility
 
-### 9. Self-critique before delivering
+WCAG 4.5:1 for text (3:1 for large/graphic), never colour as the only
+channel — pair with label, position, or line-style. Respect
+`prefers-reduced-motion` in HTML output.
 
-Run and fix failures:
+### 9. Critique, then gate, then deliver
 
-1. Squint test — does the L1 element still dominate with eyes half-closed?
-2. 8-second test — can a first-time viewer state the message from a glance?
-3. Anything encoded in color alone?
-4. Margins/gaps consistent, everything on the grid?
-5. Any text that could become an icon, a number, or be deleted?
-6. Data source credited (small, L3, bottom)?
-7. Numbers add up; axes start where they claim?
+Critique the artifact as a reader first, not against your own rules: could
+someone who has never seen the brief state the message in 8 seconds, and
+*verify* the mechanism's core relation from the drawing alone (not from a
+caption asserting it)? Does the build match the declared dials — base
+position actually dense (lanes, payloads, derivations), a pulled dial
+actually justified by its purpose and source? Is anything colour-only, source-less, or
+fake-precise? When a real-world exemplar of this genre exists (a published
+ByteByteGo diagram, a chart you admire), hold your artifact next to it —
+external comparison catches what rule-checking can't. Fix what you find.
+
+Then run the deterministic gate as the final seatbelt — it catches
+reader-harming defects (parse errors, broken refs, clipped/overflowing text,
+contrast, tiny fonts), not design quality:
+
+```
+python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>
+```
+
+Exit 0 required before delivering. If it flags something, fix the cause
+(usually: cut words first, then shrink type, enlarge boxes only last — and
+never by eating the grid's gaps). Advisory warnings (font naming, emoji,
+var() renderer compat, restyle structure) are judgment calls, not blockers.
 
 ## Building the output
 
-Build in whatever the user chose in step 2. In practice:
-
-- **SVG, PNG, or PDF** → **build the SVG**; it is the source of truth for all
-  three. Deliver the SVG as-is, or convert at the end (recipes below). Every
-  static archetype is built this way.
-- **HTML** (interactive) → build a single self-contained `.html` file
-  natively; the SVG rules below about hierarchy, palette, and honesty still
-  apply, but layout/reveal logic lives in HTML/CSS/JS.
-- **PPTX** → build the SVG, then hand off to the pptx skill to place it.
-
-Deliver the source SVG alongside any converted file so the user can restyle
-later. Conversion recipes (run after render-and-inspect):
-
-- PNG: `cairosvg in.svg -o out.png -W 1600` (or `rsvg-convert -w 1600`) —
-  set width to ~2× the intended display width for crispness.
-- PDF (print): `cairosvg in.svg -o out.pdf` — size the `viewBox` to the real
-  page (e.g. A4 = 794×1123 at 96dpi) so it prints at true scale.
-
-Core SVG rules (full mechanics in `references/svg-construction.md`, which you
-should read before building your first SVG):
-
-- Fix a `viewBox` sized to the archetype (dimensions in
-  `references/layouts.md`); design at that size. If content doesn't fit,
-  cut content — never shrink whitespace or type.
-- Define palette + text styles once in a `<style>` block (CSS variables).
-- **SVG text does not wrap.** Break every line manually into separate
-  `<text>`/`<tspan>` lines and budget line length up front — overflow runs
-  silently off-canvas. This is the #1 SVG failure mode.
-- Inline vector icons, not emoji (emoji render inconsistently and clash in
-  style). Don't freehand them — use the construction grid + 30-icon starter
-  library in `references/icons.md` (paste `<symbol>`s, place with `<use>`,
-  colour via `currentColor`).
-- **Structure for restyle** (Step 2 promised it): one `:root` `<style>` block
-  of CSS variables for the whole palette/type scale, classes mapped to the
-  three hierarchy levels, semantic `<g id="…">` groups named by content, and
-  region comments — so a later rebrand is a five-line `:root` edit, not a
-  hex-hunt. Full pattern in `references/svg-construction.md`.
-- Set `font-family` explicitly everywhere; prefer system stacks (they survive
-  PNG/PDF conversion, where embedded web fonts often silently drop).
-- **Render-and-inspect before delivering**: convert the SVG to PNG
-  (`cairosvg` or `rsvg-convert`) and actually look at it. This is how you
-  catch text overflow, collisions, uneven spacing, and CJK tofu (□) that
-  aren't visible in the markup — run the step-9 checklist against the
-  rendered image, not the code.
-- **Run the quality gate before delivering** — one command, pass/fail:
-  `python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>`.
-  It hard-fails on text overflow, text below WCAG 4.5:1 (resolving each
-  label's real background), unnamed fonts, or emoji in text; it warns if the
-  SVG isn't structured for restyle. Fix every hard failure before delivering
-  (exit 0 = pass). The gate wraps `check_text_fit.py` and `check_contrast.py`,
-  which you can still run individually while iterating.
-- Export: SVG is the source of truth; convert to PNG/PDF as needed. Deck
-  embedding goes through a pptx workflow instead.
-
-## Delivery guard (do not skip)
-
-An infographic is only done when it passes the output-quality guard. This is a
-hard precondition for delivery, not a suggestion — **never present or hand off
-an infographic that hasn't passed both layers below.**
-
-1. **Deterministic gate** — run `python scripts/check.py out.svg --bg
-   "<canvas>" --pad <card-padding>`. It must exit 0 (PASS). It hard-fails on
-   text overflow, text under WCAG 4.5:1, unnamed fonts, or emoji in text. If
-   it fails, fix and re-run; do not deliver a FAIL.
-2. **Judgment guard** — the gate then prints a short self-attest checklist
-   (one message, one dominant L1, honest charts, no colour-only encoding,
-   source cited). These aren't machine-checkable; confirm each honestly and
-   fix any "no" before delivering.
-
-State the gate result to the user (e.g. "quality gate: PASS") when handing
-over. HTML output: run the same judgment guard and check contrast/overflow in
-the browser, since the SVG script won't apply. This guard is what keeps the
-skill's quality promises real rather than aspirational: SVG text doesn't wrap
-and low contrast hides in the markup, so the failures it catches — a caption
-overflowing its card, a grey label under 4.5:1 — are exactly the ones that
-survive a casual eyeball and reach the reader.
-
-## Reviewing an existing infographic
-
-Run the step-9 checklist plus: identify the intended one message (can't find
-one → finding #1), count hierarchy levels, check chart honesty (axis
-truncation, 3-D, dual axes), spot-check contrast ratios. Deliver findings
-ordered by impact, each with a concrete fix.
-
-## Why these rules
-
-Infographics are consumed in seconds, unaided — no presenter, no tooltip, no
-second page. Every rule above exists to survive that environment: one
-message because attention is a single-shot resource; three levels because
-scanning eyes triage, not read; whitespace and grids because perceived order
-is perceived credibility; integrity rules because a shareable graphic that
-misleads keeps misleading long after context is lost; accessibility because
-a graphic that fails 3:1 contrast or color-only encoding silently excludes
-part of every audience it reaches.
+Construction mechanics — text fitting (the #1 failure mode), CJK handling,
+`:root` var restyle structure, HTML wrapping with the flow-animation
+baseline, export recipes — live in `references/svg-construction.md`. Read it
+before writing SVG. Keep the palette in `:root` variables and group elements
+semantically (`<g id="step-1">`) so a restyle is a variable swap, not a hunt.
