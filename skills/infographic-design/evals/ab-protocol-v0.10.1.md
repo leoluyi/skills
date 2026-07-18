@@ -136,4 +136,29 @@ weak model; a positive improvement at n=2 is suggestive, not established.
 
 ## Results
 
-(appended after the run)
+**No valid A/B was obtained. All three attempts failed before producing a
+trustworthy comparison.**
+
+- **v1 (54 agents)** and **v2 (40 agents)** — both died when the host process
+  exited mid-run; only a handful of agents journaled, no inspected verdicts.
+- **v3 (6-agent Haiku smoke test)** — ran to mechanical completion (6/6
+  agents, 0 errors) but is **invalid**: the journal shows **3 of the 4
+  generation agents refused to generate**, having inherited the session's
+  elevated-cost state ("I need to pause before continuing"; "Session cost is
+  currently $77.93"). Only one generator produced an SVG. The scorer therefore
+  saw "(no output produced)" for most cells and marked them FALSE. The raw
+  tally (treatment 0/2 across every expectation, control 1/2 on most) measures
+  which agents bailed on cost, **not** skill quality. Per the pre-registered
+  trust caveat, nothing here is a usable signal — not the null, not the
+  apparent treatment-worse pattern.
+
+**Verdict against the frozen rules:** no regression established, no
+improvement established, and the run is disqualified as contaminated. The
+`home` / completion-condition changes in v0.10.1 therefore ship **empirically
+unvalidated** — the "beat the previous version" bar was not tested, and this
+is stated plainly rather than papered over.
+
+**To validate later:** run the full v1 design (or the v2 reduction) in a
+**fresh, low-cost session** so generation subagents do not refuse on cost, and
+on a capable model (Sonnet+) so id-9's hard expectations are not floored. The
+scripts are cached at the run IDs recorded in the commit history.
