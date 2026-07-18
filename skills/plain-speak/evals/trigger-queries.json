@@ -1,0 +1,90 @@
+{
+  "skill_name": "plain-speak",
+  "queries": [
+    {
+      "id": 1,
+      "query": "用白話解釋 idempotent 是什麼,我要在週會跟主管講。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/single-term"
+    },
+    {
+      "id": 2,
+      "query": "這段技術說明太硬了,幫我翻成人話,對象是不懂技術的產品經理:「服務改用 event-driven 架構,透過 message queue 解耦,達成最終一致性。」",
+      "should_trigger": true,
+      "category": "positive/zh-tw/rewrite-passage"
+    },
+    {
+      "id": 3,
+      "query": "Explain what a race condition is, in plain language for my PM.",
+      "should_trigger": true,
+      "category": "positive/en/explain-for-pm"
+    },
+    {
+      "id": 4,
+      "query": "My manager saw this in a report: 'the deploy failed on a database migration lock timeout'. What does that mean in non-technical terms?",
+      "should_trigger": true,
+      "category": "positive/en/explain-error"
+    },
+    {
+      "id": 5,
+      "query": "幫我把這句改成給高層看的白話版本,術語 (Kubernetes、autoscaling) 保留原文標註:「we hit HPA limits so pods stopped autoscaling under peak load」。",
+      "should_trigger": true,
+      "category": "positive/mixed/exec-summary-prep"
+    },
+    {
+      "id": 11,
+      "query": "老闆問 API 是什麼,幫我用他聽得懂的白話講一下。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/named-listener"
+    },
+    {
+      "id": 12,
+      "query": "幫我看這段給高層的白話寫得夠不夠白,非技術主管看不看得懂:「我們碰到 HPA 上限,pods 在尖峰負載下停止 autoscaling,導致部分請求 503。」",
+      "should_trigger": true,
+      "category": "positive/zh-tw/review-draft",
+      "note": "Review branch: grade an existing plain-language draft against the bar and fix. Should return the criterion checklist plus a corrected draft."
+    },
+    {
+      "id": 13,
+      "query": "Is this clear enough for a PM? 'We flipped the feature behind a canary and rolled it back after the error rate crossed the SLO.'",
+      "should_trigger": true,
+      "category": "positive/en/review-draft",
+      "note": "Review branch in English: check whether the draft lands for a non-technical reader, flag unglossed terms (canary, SLO), return checklist plus corrected draft."
+    },
+    {
+      "id": 6,
+      "query": "幫我把這段內部報告的 AI 味拿掉,像是「賦能」「全面提升」「不是…而是…」那種空話,改成正式但人話的中文。",
+      "should_trigger": false,
+      "category": "negative/voice-cleanup-routes-to-avoid-ai-writing-zh",
+      "note": "Voice/AI-ism cleanup of existing prose, not audience translation. Routes to avoid-ai-writing-zh."
+    },
+    {
+      "id": 7,
+      "query": "幫我擬一份系統汰換的簽呈,要有背景、方案比較、經費、風險跟建議事項。",
+      "should_trigger": false,
+      "category": "negative/whole-doc-structure-routes-to-formal-doc-structure",
+      "note": "Structuring a whole formal business document. Routes to formal-doc-structure, not term-level plain-speak."
+    },
+    {
+      "id": 8,
+      "query": "幫我寫招標規格書第三章「部署與發布」的需求清單,要含金絲雀部署。",
+      "should_trigger": false,
+      "category": "negative/rfp-routes-to-rfp-writing",
+      "note": "RFP structural authoring. Routes to rfp-writing."
+    },
+    {
+      "id": 9,
+      "query": "幫我實作一個 idempotent 的付款 API,要處理重試跟去重,用 Postgres 當儲存。",
+      "should_trigger": false,
+      "category": "negative/deep-technical-answer",
+      "note": "User wants an implementation for an engineer audience, not a plain-language explanation."
+    },
+    {
+      "id": 10,
+      "query": "今天中午吃什麼比較好?",
+      "should_trigger": false,
+      "category": "negative/casual-chat",
+      "note": "Casual conversation, no technical term to translate."
+    }
+  ]
+}

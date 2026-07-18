@@ -1,0 +1,41 @@
+{
+  "skill_name": "avoid-ai-writing-zh",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "用 --structure-signals detect 這段部落格草稿：「Docker 是一種容器化技術，可以將應用程式與其依賴打包在一起。使用 Docker 有許多好處，例如環境一致性與部署效率。開發者可以透過 Dockerfile 定義映像檔，並使用指令建置與執行。整體而言，Docker 是現代開發流程中常見的工具，各種團隊都能依需求採用。」（此段無 AI 空話病句，句子文法正確。）",
+      "expected_output": "Adversarial: text is free of Tier-1/2 word-level AI-isms but structurally voiceless. The structural layer must catch what the word list misses.",
+      "expectations": [
+        "flags-structural-absence: 偵測出結構級訊號的缺席：全文無立場（以「各種團隊都能依需求採用」「整體而言」收場）、零具體個人細節（沒有一個具體時間/次數/場景）、只解釋不造像（純定義式解釋，無自創比喻）。",
+        "does-not-fabricate-in-detect: detect 模式只指出缺席並建議作者補入，不自行捏造假的時間、次數或個人經驗來填補。",
+        "no-word-level-false-positives: 不把正確的技術陳述（容器化、Dockerfile、映像檔）誤標為 AI 空話；訊號指向結構而非個別用詞。"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "這段帶有 voice profile（casual、部落格聲音，作者刻意保留：第一人稱立場句、自創比喻、口語破格）：「第一次跑 K8s 那晚，我卡在 CrashLoopBackOff 卡到凌晨三點。老實說，這東西一開始就像一台你看不懂儀表板的太空船——每個燈都在閃，但你不知道哪個要命。後來才發現是 readinessProbe 設太嚴（對，就是這麼蠢）。」幫我把 AI 味拿掉，但風格照 profile 保留。",
+      "expected_output": "Adversarial: the declared positive features overlap with patterns the skill would otherwise flag (parenthetical hedging, first-person, colloquial breaks). The contract must protect them.",
+      "expectations": [
+        "preserves-declared-voice: 保留 profile 宣告的正向特徵：第一人稱立場句、自創比喻（太空船儀表板）、口語破格（「對，就是這麼蠢」「老實說」），不得當作 AI-ism 削平。",
+        "does-not-flatten-specifics: 保留具體個人細節（凌晨三點、CrashLoopBackOff、readinessProbe），不改寫成中性泛泛敘述。",
+        "still-removes-genuine-aiisms: 若文中出現真正的 AI 病句（空話、不是…而是…、至關重要）仍照常移除；契約保護的是宣告的聲音特徵，不是豁免所有規則。"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "detect 這篇觀點文（technical-blog，個人語氣）：「工程師該不該寫作，我的答案很明確：該。我自己就是靠寫落落長的排錯筆記，才把三年前那個把同事 code 蓋掉的凌晨三點記牢——寫作就像留給未來自己的一張紙條（雖然當下很煩）。」",
+      "expected_output": "Gating: a voice-bearing genre that actually carries stance/specifics/metaphor/口語破格 must NOT be flagged. Guards against false positives from the round-1 gate expansion (blunt/technical-blog auto-enable).",
+      "expectations": [
+        "no-false-positive-on-voiced-text: 不觸發結構級訊號：文中有明確立場（答案很明確：該）、具體細節（三年前、凌晨三點）、自創比喻（留給未來自己的紙條）、口語破格（（雖然當下很煩）），皆為真人 voice marker，不得誤標為 AI。"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "用 --structure-signals detect 這段真人技術教學：「這個地雷有兩個 Workaround。我認為第一種比較完美，可以應付各種狀況——記得 13 年前我也踩過一樣的坑（那時還沒有這個範本，只能手動設）。步驟是先在 Controllers 資料夾 Add > Controller，選 API Controller with actions。」（有立場、有具體、有口語破格，但無自創比喻，只用俗諺「地雷」。）",
+      "expected_output": "Adversarial: dense technical tutorial with 4/5 voice markers but no original metaphor. no-original-metaphor must not fire solo.",
+      "expectations": [
+        "metaphor-absence-does-not-flag-solo: 不因『只解釋不造像』單條就標記整篇為 voiceless；教學文缺自創比喻是常態，需與其他結構訊號成群才計入。此文其餘 voice marker 齊全，應判為 clean。"
+      ]
+    }
+  ]
+}

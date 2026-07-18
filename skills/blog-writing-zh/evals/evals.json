@@ -1,0 +1,273 @@
+{
+  "skill_name": "blog-writing-zh",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "幫我寫一篇介紹 SQLite WAL mode 的文章。（未指定任何風格）",
+      "expected_output": "menu / two-layer-contract",
+      "expectations": [
+        "type-first-single-select: 先以單選方式詢問或推薦「文章類型」（七選項之一），而不是直接問作者風味或逐八元素轟炸。",
+        "flavor-options-scoped: 第二層風味選項只列該類型建議的 2–3 位作者＋「無特定風味」，不得七個風味全列。",
+        "recipe-record-format: 產出文末的風格配方紀錄採「類型｜風味｜覆寫元素」格式。"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "用倉鼠敘事型幫我改寫這篇英文文章。",
+      "expected_output": "menu / legacy-mapping",
+      "expectations": [
+        "legacy-name-mapped-silently: 「倉鼠敘事型」直接映射為深度解讀型×倉鼠並開始工作，不向使用者追問風格問題。"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "寫一篇 Docker 多階段建置教學，教學實作型，但用情報員毒舌風味。",
+      "expected_output": "Adversarial: 高濃度風味不得破壞教學文可操作性。",
+      "expectations": [
+        "reproducibility-caps-persona: 教學步驟正文保持可重現四要素（前置條件/精確動作/預期結果/副作用），毒舌只出現在開頭、轉場或評論處，不混入步驟指令。",
+        "commands-copyable: 指令區塊可直接複製執行且附 why 註解，無玩梗污染。"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "寫一篇「如何在 macOS 用 launchd 排程腳本」教學，教學實作型×保哥。",
+      "expected_output": "tech-writing / operability-checklist",
+      "expectations": [
+        "four-elements-per-operation: 每個關鍵操作含前置條件、精確動作、預期結果（讀者可自我驗證）、副作用或善後。",
+        "intent-indexed: 操作以意圖為索引（想達成 X → 做 Y），非功能表順序。",
+        "non-applicability: 含「什麼時候不適用/不需要這樣做」的邊界說明或判斷標準。"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "寫一篇概念導讀型×Julia 風味的文章：解釋為什麼 git rebase 讓人害怕、其實在做什麼。",
+      "expected_output": "tech-writing / concept-clarity",
+      "expectations": [
+        "behavior-stated-concepts: 概念以「它決定了什麼行為」陳述（如 rebase 對 commit 的實際操作），非抽象定義堆疊。",
+        "confusion-named-not-blamed: 把困惑歸因於工具介面/術語的具體問題並具名化，不暗示讀者能力不足。",
+        "fear-routinized: 含至少一段「專家如何日常化處理可怕情境」的示範。"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "寫一篇「用 uv 取代 pip 的心得」，實測筆記型×Simon 風味。（使用者未提供任何實測數據或個人經歷）",
+      "expected_output": "Adversarial: Simon 風味要求量化證據，但證據不可捏造。",
+      "expectations": [
+        "no-fabricated-metrics: 不出現無來源的假量化（虛構的秒數/金額/版本實測值）；缺乏實測數據時先向使用者索取，或明確標注為待補/示意。",
+        "transferability-statement: 含結果適用前提或邊界的誠實聲明。"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "（附一段含 3 個數字與 2 個連結的英文公告）翻譯改寫成中文文章，深度解讀型×倉鼠。",
+      "expected_output": "rewrite / translation-fidelity",
+      "expectations": [
+        "facts-preserved: 來源中的所有數字與連結完整且未被改動。",
+        "source-disclosed: 文首標明翻譯來源與連結。",
+        "term-three-layer: 至少一個術語以「中譯（English）」首現，且至少一處關鍵概念加上原文沒有的白話註解。",
+        "editorial-lens-not-summary: 導讀段提供閱讀視角（值得看的點/代價），而非單純摘要。"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "寫一篇拆解某 AI 工具訂閱方案是否值得的文章，拆解評測型×情報員。",
+      "expected_output": "voice / rhythm-and-stance",
+      "expectations": [
+        "uneven-rhythm: 存在至少一個單句段落，段落長度不均質。",
+        "three-column-teardown: 主要功能以「廠商怎麼吹 vs 實際怎麼用 vs 哪裡是坑」結構拆解。",
+        "honest-reversal: 毒舌立場之外，對確實有價值的部分誠實承認（誠實反轉）。",
+        "no-signature-theft: 不照抄任何參考作者的個人簽名句。"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "（附一則含 wikilinks 與 frontmatter 的 bullet 筆記）改寫成 blog 文。",
+      "expected_output": "rewrite / obsidian-note",
+      "expectations": [
+        "single-thesis: 文章圍繞單一主張，未把筆記 bullet 平鋪成流水帳。",
+        "wikilinks-resolved: 輸出不含原樣 [[wikilink]] 語法。",
+        "frontmatter-stripped: YAML frontmatter 未進入文章。"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "任一 compose 任務完成後檢查輸出契約。",
+      "expected_output": "output / title-candidates",
+      "expectations": [
+        "title-candidates: 文末附 3–5 組標題＋副標備選，橫跨至少兩種標題公式，並標注適用場景。",
+        "pipeline-handoff: 完稿後明確提示 avoid-ai-writing-zh 終稿檢查（及必要時 avoid-china-writing）。"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "我想寫一篇文章跟公司的 PM 們解釋什麼是 MCP，他們完全不懂技術。該怎麼寫？",
+      "expected_output": "menu / preset-recommendation",
+      "expectations": [
+        "audience-driven-recommendation: 推薦明確的類型×風味組合（如概念導讀型×高見龍或Julia），且理由引用讀者屬性（非技術、要搞懂是什麼），不是引用主題領域。",
+        "one-main-one-backup: 只給 1 個主推薦＋至多 1 個備案，不列出全部七個類型要使用者自己挑。",
+        "terminology-calibrated: 建議中包含對非技術讀者的術語校準（白話翻譯句/劇情比喻、減少英文術語與指令）。"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "幫我把這篇關於 uv 的筆記寫成 blog。（筆記內容明顯是安裝步驟與指令）",
+      "expected_output": "menu / recommendation-inference-first",
+      "expectations": [
+        "infer-before-asking: 從素材推斷讀者目的（照著做→教學實作型）直接給推薦，不先拋問題清單；最多問一題補足無法推斷的資訊。"
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "寫一篇觀點倡議型文章：說服資深工程師開始帶新人。（使用者未提供任何個人經歷）",
+      "expected_output": "compose / testimony-elicitation-required",
+      "expectations": [
+        "must-ask-for-experience: 動筆前先向使用者索取 1–2 個真實經歷細節（帶人的具體場景/時間縱深），而非直接開寫；使用者說沒有時，文中不出現第一人稱見證段。",
+        "threshold-demolition: 若適用，論證包含門檻拆除（把目標行為重新定義為讀者已在做的事）作為承重論證之一。",
+        "concrete-proper-nouns: 平台/工具/書名使用具體專有名詞而非泛稱。"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "寫一篇「PostgreSQL 15 → 17 升級指南」，教學實作型×高見龍，工具書級深度。",
+      "expected_output": "tech-writing / upgrade-guide-moves",
+      "expectations": [
+        "reader-routing-opening: 開頭按讀者意圖分流（新裝 vs 升級 vs 只想看變了什麼），各給最短路徑。",
+        "qa-substructure: 至少一個主要變更後附 2–3 題真實使用場景的自問自答。",
+        "qualitative-verdict: 結尾含一句對此版本的定性總評（性格描述），非條列重述。",
+        "curiosity-sidebar: 含至少一段邊界實驗或「反著做會怎樣」的好奇支線。"
+      ]
+    },
+    {
+      "id": 15,
+      "prompt": "寫一篇「解決 Docker 容器無法連到 host 網路」的排錯教學，教學實作型×保哥。",
+      "expected_output": "tech-writing / troubleshooting-structure",
+      "expectations": [
+        "symptom-cause-fix-scope: 排錯段依序含：讀者可辨識的症狀描述、最可能主因的斷言、可複製修復指令＋註解、什麼情況會踩到的範圍界定。",
+        "tool-demystified: 若涉及包裝好的指令/工具，揭露它底下實際做了什麼。",
+        "danger-warning: 不可逆或安全風險步驟前以引用區塊警告。",
+        "edge-cases-sectioned: 跨平台或邊界情況收進獨立小節，不打斷主線。"
+      ]
+    },
+    {
+      "id": 16,
+      "prompt": "寫一篇解讀「為什麼 RAG 會產生幻覺」的文章，深度解讀型×倉鼠。",
+      "expected_output": "voice / circleghost-two-modes",
+      "expectations": [
+        "sensory-metaphor: 至少一個抽象機制以感官化比喻解釋（接到身體/生活經驗），再掛英文術語。",
+        "anchor-concepts-staked: 承重概念有明確立樁句（要求讀者先掌握才能繼續）並在後文回扣。",
+        "mode-positioned: 口語/顏文字密度與選題在輕實測↔硬解讀光譜的定位一致（硬解讀題收斂即興感）。"
+      ]
+    },
+    {
+      "id": 17,
+      "prompt": "寫一篇分析框架型×90s.pm 的文章：如何評估一家 SaaS 公司的護城河。",
+      "expected_output": "voice / 90spm-series-and-humility",
+      "expectations": [
+        "metaphor-system: 自建比喻系統貫穿全文並保持一致，不中途換喻。",
+        "humble-closing: 結尾誠實劃出方法論極限並交還讀者責任，不誇稱萬能。",
+        "reader-objection: 預判並接住讀者對『方法太理想、現實沒時間』的異議。",
+        "no-signature-theft: 不照抄『每個人終究是自己的 Portfolio Manager』等簽名句。"
+      ]
+    },
+    {
+      "id": 18,
+      "prompt": "拆解評測型×情報員，主題：某 AI 影片生成訂閱服務值不值得訂。",
+      "expected_output": "voice / aitrapadvisor-two-modes",
+      "expectations": [
+        "mode-positioned: 依主題（單一產品 vs 多則時事）定位在釣魚反轉或時事吐槽子模式，語氣與迷因密度相符。",
+        "cost-concretized: 技術/行銷主張換算成具體金額或訂閱費，讓衝擊落地。",
+        "honest-reversal: 毒舌之外對確有價值處誠實承認。"
+      ]
+    },
+    {
+      "id": 19,
+      "prompt": "概念導讀型×Julia，主題：為什麼 CORS 這麼難搞懂。",
+      "expected_output": "voice / jvns-two-modes",
+      "expectations": [
+        "mode-positioned: 依作者對主題熟悉度定位在打磨解惑或 live 探索，且姿態一致（探索型不假裝結論）。",
+        "honest-time-account: 含『花了 N 年/很久才懂』式的誠實時間帳，把難度歸於知識而非讀者。",
+        "peer-witness: 用『很多厲害的人也困惑』卸除讀者羞恥。"
+      ]
+    },
+    {
+      "id": 20,
+      "prompt": "實測筆記型×Simon，主題：過去半年我用過的 AI coding agents 速覽。（使用者未提供實測數據）",
+      "expected_output": "voice / simonwillison-recap",
+      "expectations": [
+        "length-tier-positioned: 依速覽定位篇幅檔位，狠砍到只剩轉折與判斷，不寫成巨型流水帳。",
+        "opinionated-section-names: 若分節，節名帶判斷而非中性標籤。",
+        "no-fabricated-metrics: 未提供數據時不捏造量化，先索取或標注待補。"
+      ]
+    },
+    {
+      "id": 21,
+      "prompt": "幫我寫一篇重要的觀點文，說服公司管理層投資 AI 工具訓練，這篇要拿去簡報用。",
+      "expected_output": "dual-draft / trigger-and-merge",
+      "expectations": [
+        "suggests-dual-draft: 因『重要＋要簡報＋觀點倡議』觸發雙稿建議，並一句話說明成本讓使用者確認，非直接單稿寫完。",
+        "axis-chosen: 啟動後讓使用者選分化軸線（結構/開場/深度檔位，附推薦），兩稿只沿一條軸分化且同風味。",
+        "single-voice-merge: 終版為單一風味的熔接稿（兩稿本就同風味），移植段落語氣一致非拼貼，附一句取捨說明。",
+        "structure-axis-default-for-argument: 論證/觀點類題目啟動雙稿時，預設首選推薦結構軸（附互補性理由），除非使用者另指定。"
+      ]
+    },
+    {
+      "id": 22,
+      "prompt": "隨手寫個三句話的 side project 更新貼文。",
+      "expected_output": "dual-draft / short-stays-single",
+      "expectations": [
+        "no-dual-draft: 短文不啟動雙稿、不提雙稿建議，直接單稿產出。"
+      ]
+    },
+    {
+      "id": 23,
+      "prompt": "（雙稿情境）兩稿對某工具的判斷相反，一稿推薦一稿保留。合併時如何處理？",
+      "expected_output": "dual-draft / merge-not-dilute",
+      "expectations": [
+        "no-diluted-stance: 選更有據的判斷講到底，不折衷成溫吞平衡稿。",
+        "fusion-not-collage: 移植段落改寫過渡使人稱與節奏一致，讀來像一個人寫的（兩稿同風味，接縫只需順節奏）。",
+        "fallback-to-single: 若合併版不如單獨一稿，直接交較強那稿並說明，不硬融。"
+      ]
+    },
+    {
+      "id": 24,
+      "prompt": "（agent 環境，可載入 sibling skills）寫完一篇高見龍對話型觀點文後的收尾行為。",
+      "expected_output": "pipeline / active-invocation",
+      "expectations": [
+        "actively-invokes: 完稿後主動載入並執行 avoid-ai-writing-zh（rewrite 模式），而非僅用文字提示使用者自己去跑。",
+        "voice-profile-passed: 交棒時把本次風味映射為 voice profile 傳給下游（高見龍 L3→casual），並明確要求保留刻意口語破格/立場句/自建比喻。",
+        "post-check: 取回下游結果後檢查聲音是否被誤削（金句/單句段/簽名句式），確認後才定稿；配方紀錄含 pipeline 欄。",
+        "graceful-degrade: 若環境無法跨 skill 調用，退為明確提示＋建議指令，不假裝已執行。",
+        "detect-first-flow: 交棒採 detect-first 三步：先 detect 拿命中清單→blog-writing-zh 過濾 intentional voice→只 rewrite 未豁免項；不直接 rewrite 全文。"
+      ]
+    },
+    {
+      "id": 25,
+      "prompt": "幫我寫一篇 TIL，記錄今天發現 fd 比 find 好用。",
+      "expected_output": "menu / length-tier",
+      "expectations": [
+        "length-tier-recommended: Step 1 選單納入長度檔位單選，並依類型（實測筆記/TIL）推薦短打或標準，附一句理由。",
+        "tier-honored: 產出篇幅落在選定檔位字數範圍，短打不擴寫成多節深文。",
+        "length-not-depth: 短打仍把單一重點講到位，不是把深文每節砍半。",
+        "recipe-record-length: 配方紀錄含長度檔位欄。"
+      ]
+    },
+    {
+      "id": 26,
+      "prompt": "寫一篇「從零建立個人知識管理系統」的完整教學。（內容天然含捕捉→整理→萃取→複習多個獨立階段，一篇會過長）",
+      "expected_output": "series / suggest-when-warranted",
+      "expectations": [
+        "suggests-series-after-draft: 交付單篇後主動附系列建議（因多階段獨立＋撐破長度），非前置就問；建議含大綱與這篇的定位。",
+        "outline-has-single-thesis-per-part: 大綱每篇有可通過『一句命題』的單一主張與暫定篇名，並標遞進關係。",
+        "consistent-flavor: 建議的系列各篇風味一致（沿用已寫這篇的風味），不逐篇換風味。"
+      ]
+    },
+    {
+      "id": 27,
+      "prompt": "寫一篇單一主張的觀點短文：為什麼工程師該寫測試。",
+      "expected_output": "series / stay-single-when-not-warranted",
+      "expectations": [
+        "no-series-noise: 單一主張短文交付後不建議拆系列（避免噪音），正常單篇收尾。"
+      ]
+    }
+  ]
+}

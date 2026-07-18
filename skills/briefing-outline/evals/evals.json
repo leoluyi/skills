@@ -1,0 +1,47 @@
+{
+  "skill_name": "briefing-outline",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "以下兩份來源文件，幫我做成說明提綱。\n\n《01_筆試辦法》\n筆試 90 分鐘，四種題型：選擇 20 題（每題 2 分）、問答 3 題（每題 10 分）、實作 2 題（每題 15 分）、情境 2 題（每題 5 分）。及格門檻 60 分，80 分以上列優先錄取。選擇題涵蓋 Linux、網路、API、容器基礎。情境一：服務升版後間歇失敗，附 12 行 Log 與 30 行設定檔，考生須依 Log 與設定判斷根因（權限、資源、版本設定差異）並決定是否回版；評分標準：多重根因判斷 3 分、處理順序 2 分、風險意識 2 分（其餘略）。\n\n《02_評選委員會》\n委員會五人：主委 1（功能長）、技術委員 2、人資委員 1、外部顧問 1，負責題型確認與錄取建議。",
+      "expected_output": "Trap: dumping the payload up. A regression that loses altitude discipline reproduces 配分/門檻/評分標準/Log/設定檔 or the full 情境 stem instead of pushing them down.",
+      "expectations": [
+        "drops-payload: Does NOT reproduce 配分 (2/10/15/5 分), 及格門檻 (60/80), 評分標準 rows, the 12-line Log, or the 30-line 設定檔. These are pushed down.",
+        "keeps-container-dimensions: Keeps the scoping dimensions — 90 分鐘 and the four type counts (選擇 20／問答 3／實作 2／情境 2) — and one 篩選構念/intent per type.",
+        "gloss-is-discriminating-point: The 情境一 line, if kept, encodes the discriminating point (根因：權限／資源／版本設定差異) — the answer key — not the full stem, Log, or 設定檔.",
+        "pointer-present: Each distilled section hands off with 「（詳《01_筆試辦法》）」/「（詳《02_評選委員會》）」 pointing down to the source."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "把這份面試辦法做成提綱段落。\n\n《面試辦法》口試含七個評估面向：學習敏捷、韌性、責任承擔、溝通合作、判斷力、加入動機、對 AI 的想法（每面向至少問三題）。另設一項 40 分鐘現場實作測驗：考生自備筆電，讀取查詢與候選文件，完成一段 RAG 流程——依相關度與權限過濾、組裝 prompt、呼叫模型、驗證回傳 JSON 並處理格式異常；為使全體條件一致，以現場離線模型模擬模組完成，允許使用 AI 輔助工具但考生須說明使用範圍並指出真正呼叫模型的段落。",
+      "expected_output": "Trap: uniform compression. A regression that treats altitude as a flat line either bloats the seven self-describing 面向 into paragraphs, or crushes the decision-bearing 實作測驗 down to one line.",
+      "expectations": [
+        "self-describing-collapses: The seven 評估面向 stay as a bare labeled list (or one line) — no per-面向 paragraph — because each name is self-explanatory.",
+        "decision-bearing-earns-room: The 40-分鐘實作測驗 gets more room than a single line: its flow is spelled out AND the policies the reader must weigh (公平性用離線模組、AI 輔助工具使用規則) are surfaced.",
+        "allocation-is-graduated: Room is allocated by what each item earns, not one-line-each and not one-paragraph-each uniformly."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "幫我做一段提綱說明訓練規模。\n\n《訓練計劃》授課分三塊：容器平台 72 小時、平台維運 56 小時、AI 模型與算力 64 小時；另有專案實作 96 小時，每週 8 小時。",
+      "expected_output": "Trap: fabricating an unanchored number. The source gives hours only — not 人數, not 週數, not 月數. 具體的 synthesis is allowed (compute the total the source leaves split), but inventing a load-bearing figure with no source is a fail.",
+      "expectations": [
+        "computed-total-correct: If a total is stated,授課 = 72+56+64 = 192 小時 and/or 含專案 = 288 小時 — arithmetic correct and derivable from the source's own numbers.",
+        "no-fabricated-number: Does NOT introduce a load-bearing number absent from the source (e.g. a specific 人數, 週數, or 月數 not given). Every number traces back.",
+        "altitude-held: Stays at scale/summary level (the hour totals and the three-block structure); does not drag in per-topic 課綱 detail the source doesn't even contain, and points down for the rest."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "三份來源，幫我排出說明提綱的大綱結構與各段開頭第一句。\n\n《01_招募》鎖定應屆新鮮人與 1–3 年工程人員兩個來源，每梯共 80 人。\n《02_訓練》為期 12 個月，分三階段逐段汰選。\n《03_甄選委員會》五人，負責招募條件確認、甄選流程與錄取建議。",
+      "expected_output": "Trap bundle: (a) MECE — the 80 人 figure or the committee's remit gets restated in two sections; (b) governance orphaned — the 委員會 (which governs 招募) placed after 訓練; (c) nested 槽狀 prose instead of flat labeled sections; (d) no purpose-first opening.",
+      "expectations": [
+        "mece-no-overlap: Each source's essence lives in exactly one section — the 80 人 headcount and the committee's remit each appear once, not restated across sections.",
+        "governance-placed-beside-phase: The 甄選委員會 section sits beside 招募/甄選 (the phase it governs), not stranded after 訓練.",
+        "purpose-first-openings: Each section's first sentence is an intent label (目的／要驗證／成果 or equivalent), not a detail dump.",
+        "flat-not-nested: Structure is flat labeled sections/bullet clusters, not nested 槽狀 paragraphs or interwoven A-vs-B comparison prose."
+      ]
+    }
+  ]
+}

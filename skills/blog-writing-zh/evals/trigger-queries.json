@@ -1,0 +1,89 @@
+{
+  "skill_name": "blog-writing-zh",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我寫一篇部落格文章，主題是「為什麼工程師應該學會用 AI 寫測試」，觀點倡議型、高見龍風味。",
+      "should_trigger": true,
+      "note": "trigger; skip menu entirely (type+flavor both specified)",
+      "category": "positive/compose/type-and-flavor-named"
+    },
+    {
+      "id": 2,
+      "query": "這是我 Obsidian 裡關於 n8n webhook 除錯的筆記（都是 bullet），幫我改寫成一篇可以發的 blog 文。",
+      "should_trigger": true,
+      "note": "trigger; recommend a type x flavor combo and confirm via single-select menu",
+      "category": "positive/rewrite/obsidian"
+    },
+    {
+      "id": 3,
+      "query": "把這篇 Anthropic 的英文官方公告翻譯改寫成中文電子報文章，像知識倉鼠那樣加導讀。",
+      "should_trigger": true,
+      "note": "trigger; map to 深度解讀型×倉鼠 without extra questions",
+      "category": "positive/rewrite/translation"
+    },
+    {
+      "id": 4,
+      "query": "用「保哥教學型」寫一篇 uv 安裝教學。",
+      "should_trigger": true,
+      "note": "trigger; legacy name maps to 教學實作型×保哥 automatically, no follow-up question about style",
+      "category": "positive/legacy-preset-name"
+    },
+    {
+      "id": 5,
+      "query": "我今天發現 ripgrep 的 --json flag 配 jq 很好用，幫我寫成一篇短短的 TIL 筆記文。",
+      "should_trigger": true,
+      "note": "trigger; route to 實測筆記型 (Simon flavor suggested)",
+      "category": "positive/til"
+    },
+    {
+      "id": 6,
+      "query": "隨手寫一篇 blog 聊聊我最近用 Claude Code 重構舊專案的心得，輕鬆一點就好",
+      "should_trigger": true,
+      "note": "trigger",
+      "category": "positive/compose/casual-phrasing"
+    },
+    {
+      "id": 7,
+      "query": "幫我寫一份給主管的專案進度簽呈。",
+      "should_trigger": false,
+      "note": "should NOT trigger — formal-doc-structure territory",
+      "category": "negative/formal-doc"
+    },
+    {
+      "id": 8,
+      "query": "這段文字幫我去掉 AI 味就好，結構不要動。",
+      "should_trigger": false,
+      "note": "should NOT trigger — avoid-ai-writing-zh territory",
+      "category": "negative/de-ai-only"
+    },
+    {
+      "id": 9,
+      "query": "用白話解釋什麼是 idempotent，我要跟 PM 講。",
+      "should_trigger": false,
+      "note": "should NOT trigger — plain-speak territory",
+      "category": "negative/plain-speak"
+    },
+    {
+      "id": 10,
+      "query": "我想寫一篇給高中生看的 AI 入門文，但不知道該用什麼風格跟結構，給我建議。",
+      "should_trigger": true,
+      "note": "trigger; preset recommendation flow (guidance is now an explicit capability)",
+      "category": "positive/style-guidance-request"
+    },
+    {
+      "id": 11,
+      "query": "這篇幫我用兩個版本寫再合起來，我要最好的版本。",
+      "should_trigger": true,
+      "note": "trigger; dual-draft mode explicitly requested",
+      "category": "positive/dual-draft-request"
+    },
+    {
+      "id": 12,
+      "query": "寫一篇 5000 字以上的 n8n 完整升級指南，越詳細越好。",
+      "should_trigger": true,
+      "note": "trigger; length tier = 工具書級, 教學實作型",
+      "category": "positive/length-request"
+    }
+  ]
+}

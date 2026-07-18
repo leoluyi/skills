@@ -1,0 +1,76 @@
+{
+  "skill_name": "avoid-china-writing",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我把這段產品說明的大陸用語改成台灣用語，像是視頻、屏幕、軟件、網絡、缺省那種，改成道地的台灣正體中文。",
+      "should_trigger": true,
+      "category": "positive/vocab/rewrite"
+    },
+    {
+      "id": 2,
+      "query": "幫我看這份文件有沒有大陸用詞跟簡體殘留，先標出來就好，不用改。",
+      "should_trigger": true,
+      "category": "positive/detect"
+    },
+    {
+      "id": 3,
+      "query": "直接編輯 readme.md，把裡面的陸用語跟互聯網黑話（賦能、抓手、對齊顆粒度）改成台灣正體中文。",
+      "should_trigger": true,
+      "category": "positive/edit-in-place"
+    },
+    {
+      "id": 4,
+      "query": "這段繁體中文裡好像混到簡體字（为、发、网络、软件、数据），幫我抓出來轉成正體。",
+      "should_trigger": true,
+      "category": "positive/simplified-leak"
+    },
+    {
+      "id": 5,
+      "query": "這份簡報滿滿的職場黑話，什麼對齊顆粒度、閉環、賦能、賽道，幫我改成正常的台灣中文。",
+      "should_trigger": true,
+      "category": "positive/corp-speak"
+    },
+    {
+      "id": 6,
+      "query": "把文章裡的外國譯名改成台灣慣用的，像奧巴馬、悉尼、硅谷、意大利。",
+      "should_trigger": true,
+      "category": "positive/transliteration"
+    },
+    {
+      "id": 7,
+      "query": "幫我把這段中文的 AI 味拿掉，像是「值得一提的是」「至關重要」「不是…而是…」那種。",
+      "should_trigger": false,
+      "category": "negative/ai-ism-cleanup",
+      "note": "AI-ism cleanup routes to avoid-ai-writing-zh, not cross-strait localization. Gate must not grab it."
+    },
+    {
+      "id": 8,
+      "query": "幫我把這份簽呈的結構重整，主旨、說明、擬辦分段。",
+      "should_trigger": false,
+      "category": "negative/formal-doc-structure",
+      "note": "Structural business-document authoring routes to formal-doc-structure."
+    },
+    {
+      "id": 9,
+      "query": "今天晚餐吃什麼比較好？",
+      "should_trigger": false,
+      "category": "negative/casual-chat",
+      "note": "Casual conversation."
+    },
+    {
+      "id": 10,
+      "query": "幫這段 Python 函式加上 docstring 跟行內註解。",
+      "should_trigger": false,
+      "category": "negative/code-comments",
+      "note": "Code commenting, not prose localization."
+    },
+    {
+      "id": 11,
+      "query": "幫我寫一首關於海邊黃昏的新詩，要有畫面感。",
+      "should_trigger": false,
+      "category": "negative/creative-writing",
+      "note": "Creative writing is out of scope."
+    }
+  ]
+}

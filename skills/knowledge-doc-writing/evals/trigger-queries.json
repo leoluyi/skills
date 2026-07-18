@@ -1,0 +1,67 @@
+{
+  "skill_name": "knowledge-doc-writing",
+  "queries": [
+    {
+      "id": 1,
+      "query": "我在自學 NVIDIA GPU Operator，我們要在 OpenShift 上建 AI 平台。幫我研究並寫一份知識文件，之後會放到團隊 wiki 給沒碰過 GPU 排程的同事看。",
+      "should_trigger": true
+    },
+    {
+      "id": 2,
+      "query": "我在自學 BFF pattern，幫我建立一份學習筆記，重點是跟 API Gateway 的差異——我們微服務團隊在評估要不要導入，筆記之後可能會整理給團隊參考。",
+      "should_trigger": true
+    },
+    {
+      "id": 3,
+      "query": "附上我今天跟 AI 討論 Quadlet 的對話紀錄，幫我整理成知識文件，個人筆記用就好。",
+      "should_trigger": true
+    },
+    {
+      "id": 4,
+      "query": "這則 vault 裡的 learning note（附上 permanent note 內容）我已經想清楚了，幫我轉成可以給團隊看的正式文件。",
+      "should_trigger": true
+    },
+    {
+      "id": 5,
+      "category": "negative/formal-doc-structure",
+      "query": "幫我擬一份系統汰換的簽呈，要有背景、方案比較、經費、風險跟建議事項。",
+      "should_trigger": false,
+      "note": "Formal internal business document authoring routes to formal-doc-structure."
+    },
+    {
+      "id": 6,
+      "category": "negative/rfp-writing",
+      "query": "幫我寫招標規格書第三章「部署與發布」的需求清單。",
+      "should_trigger": false,
+      "note": "RFP structural authoring routes to rfp-writing."
+    },
+    {
+      "id": 7,
+      "category": "negative/ai-ism-cleanup",
+      "query": "幫我把這段中文的 AI 味拿掉，像是「值得一提的是」「至關重要」那種空話，結構不用動。",
+      "should_trigger": false,
+      "note": "Pure language cleanup routes to avoid-ai-writing-zh, not document distillation."
+    },
+    {
+      "id": 8,
+      "category": "negative/plain-speak",
+      "query": "用白話跟不懂技術的主管解釋什麼是 RAG。",
+      "should_trigger": false,
+      "note": "Lowering one term for a non-technical audience routes to plain-speak."
+    },
+    {
+      "id": 9,
+      "category": "negative/learn-loop-interactive",
+      "query": "我想學 Kubernetes networking，帶我一步步互動學習。",
+      "should_trigger": false,
+      "note": "The interactive learning loop itself is learn-loop's job; this skill only picks up after distillation is done."
+    },
+    {
+      "id": 10,
+      "category": "negative/casual-chat",
+      "query": "今天晚餐吃什麼比較好？",
+      "should_trigger": false,
+      "note": "Casual conversation."
+    }
+  ]
+}

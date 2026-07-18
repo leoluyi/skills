@@ -1,0 +1,70 @@
+{
+  "skill_name": "avoid-ai-writing-zh",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我把這段內部報告改掉 AI 味，像是「賦能」「全面提升」「打造完整生態」那種空話，改成正式但人話的中文。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/rewrite"
+    },
+    {
+      "id": 2,
+      "query": "幫我看這份簽呈有沒有 AI 味的空話跟不是…而是…那種句型，先標出來就好，不用改。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/detect"
+    },
+    {
+      "id": 3,
+      "query": "Clean up the AI-isms in this blog intro — too many 'delve', 'leverage', and 'it's not X, it's Y' sentences.",
+      "should_trigger": true,
+      "category": "positive/en/rewrite"
+    },
+    {
+      "id": 4,
+      "query": "這份技術文件中英混雜，幫我把中文那段的 AI 味拿掉，英文技術術語 (API、Kubernetes) 保留。",
+      "should_trigger": true,
+      "category": "positive/mixed-zh-en"
+    },
+    {
+      "id": 5,
+      "query": "幫我直接編輯 draft.md，把裡面中文的 AI 寫作模式修掉，像是「值得一提的是」「至關重要」那些。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/edit-in-place"
+    },
+    {
+      "id": 6,
+      "query": "幫我寫一首關於海邊黃昏的新詩，要有畫面感。",
+      "should_trigger": false,
+      "category": "negative/creative-writing",
+      "note": "Creative writing is out of scope; not an AI-ism audit."
+    },
+    {
+      "id": 7,
+      "query": "幫我這段 Python 函式加上 docstring 跟行內註解。",
+      "should_trigger": false,
+      "category": "negative/code-comments",
+      "note": "Code commenting is not writing-quality AI-ism cleanup."
+    },
+    {
+      "id": 8,
+      "query": "今天晚餐你覺得吃什麼比較好？",
+      "should_trigger": false,
+      "category": "negative/casual-chat",
+      "note": "Casual conversation."
+    },
+    {
+      "id": 9,
+      "query": "幫我擬一份招標規格書第三章「部署與發布」底下的需求清單，要含金絲雀部署。",
+      "should_trigger": false,
+      "category": "negative/rfp-structural-authoring",
+      "note": "Structural RFP authoring routes to rfp-writing, not language cleanup. Gate must not grab it."
+    },
+    {
+      "id": 10,
+      "query": "這篇部落格草稿沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂。幫我用 --structure-signals 看是不是均質、沒立場、沒有具體例子。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/structure-signals",
+      "note": "Structural-signal detect on blog voice: no word-level AI-isms but structurally voiceless. Should trigger the 結構級訊號 layer under casual voice / --structure-signals."
+    }
+  ]
+}

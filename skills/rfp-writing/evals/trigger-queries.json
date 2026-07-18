@@ -1,0 +1,61 @@
+{
+  "skill_name": "rfp-writing",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我 review 這份 LLM 推論平台的需求規格書，看看章節擺放、附錄是否灌水、有沒有冗贅段落需要合併。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/review"
+    },
+    {
+      "id": 2,
+      "query": "我要寫一份地端 Kubernetes 平台的招標規格書，幫我擬第三章「部署與發布」底下的需求清單，要含金絲雀部署與自動回滾。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/draft-section"
+    },
+    {
+      "id": 3,
+      "query": "Help me draft an RFP for a vendor-supplied document indexing platform. Output should be Traditional Chinese, formal RFP style, with a section on storage and observability.",
+      "should_trigger": true,
+      "category": "positive/en/draft"
+    },
+    {
+      "id": 4,
+      "query": "這份 RFP 的 3.3 節寫得太散，幫我整併，並檢查與附錄 A 的引用是否一致。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/section-edit"
+    },
+    {
+      "id": 5,
+      "query": "幫我寫一份從 Oracle 11g 遷移到 PostgreSQL 16 的 migration plan，要包含切換步驟、驗證點與回滾流程。",
+      "should_trigger": false,
+      "category": "negative/migration-plan"
+    },
+    {
+      "id": 6,
+      "query": "幫我寫一份 ADR，記錄我們為什麼選 Kafka 而不是 SQS，要含 context、decision、consequences。",
+      "should_trigger": false,
+      "category": "negative/adr"
+    },
+    {
+      "id": 7,
+      "query": "幫我整理今天架構審查會議的紀錄，列出決議事項與後續行動項。",
+      "should_trigger": false,
+      "category": "negative/meeting-minutes"
+    },
+    {
+      "id": 8,
+      "query": "幫我潤飾這份內部技術文件，把 AI 味的詞彙（確保、賦能、進而那種）拿掉，改成正式但人話的中文。",
+      "should_trigger": false,
+      "category": "negative/general-formal-zh",
+      "note": "Should route to clean-ai-writing / avoid-ai-writing, not rfp-writing."
+    },
+    {
+      "id": 9,
+      "query": "我們公司要回應客戶的 RFP，幫我寫投標提案第二章的解決方案說明。",
+      "should_trigger": false,
+      "category": "negative/vendor-proposal",
+      "note": "Vendor-side proposal authoring is the inverse direction; rfp-writing is for the RFP issuer, not the responder."
+    }
+  ]
+}
