@@ -17,7 +17,7 @@ description: >-
   survey findings, statistical graphics) — hand those to a
   data-visualization workflow. Quantities that serve as evidence inside an
   explanation (a funnel's drop-off, a cache hit-rate) stay in scope.
-version: 0.10.0
+version: 0.10.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -96,14 +96,14 @@ look and remove one accessory.
 Think in the six tensions of Cairo's visualization wheel (*The Functional
 Art*): abstraction–figuration, functionality–decoration, density–lightness,
 multidimensionality–unidimensionality, originality–familiarity,
-novelty–redundancy. This skill's **base position is fixed** at the end Cairo
+novelty–redundancy. The dials' **home position is fixed** at the end Cairo
 maps to scientists and engineers: abstract, functional, dense,
 multidimensional. Precision is the default — there is no per-request "mode"
 to pick, and density scales with how much the subject holds (a multi-party
 mechanism ⇒ real lanes, cross-party arrows, payloads on the arrows,
 derivations drawn as data-flow — `references/bytebytego-style.md`).
 
-What you decide per request is whether to *pull a dial* away from base, and
+What you decide per request is whether to *pull a dial* away from home, and
 every pull needs a purpose and a source:
 
 - **Retention pull** (toward redundancy + familiarity) — when the graphic
@@ -116,8 +116,8 @@ every pull needs a purpose and a source:
   explicit signal ("for laypeople", "one glance", a poster or social
   brief). It trades density away, so it must be asked for, never assumed.
 
-No signal → stay at base. Either way, **declare the position** in one line —
-*base*, or the pull with its purpose and source — because step 9 checks the
+No signal → stay at home. Either way, **declare the position** in one line —
+*home*, or the pull with its purpose and source — because step 9 checks the
 build against what you declared here.
 
 Then write the one message: "After seeing this, the viewer should understand
@@ -246,8 +246,8 @@ position, or line-style — drop the graphic to grayscale and it still reads.
 Critique the artifact as a reader first, not against your own rules: could
 someone who has never seen the brief state the message in 8 seconds, and
 *verify* the mechanism's core relation from the drawing alone (not from a
-caption asserting it)? Does the build match the declared dials — base
-position actually dense (lanes, payloads, derivations), a pulled dial
+caption asserting it)? Does the build match the declared dials — home
+actually dense (lanes, payloads, derivations), a pulled dial
 actually justified by its purpose and source? Is anything colour-only, source-less, or
 fake-precise? When a real-world exemplar of this genre exists (a published
 ByteByteGo diagram, a chart you admire), hold your artifact next to it —
