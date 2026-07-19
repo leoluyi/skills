@@ -93,6 +93,24 @@
 
 既有的邊界（「只做語言層去 AI 味不動結構」歸 avoid-ai-writing-zh）本來就存在，模式 D 沒有新開一條規則，只是把它套用到一個新情境：品質升級子情境容易被「移除 AI 味」這句話拉去做純語感潤飾。分界依然是同一個——這次改動有沒有動到文件說了什麼、怎麼組織（模式 D 的工作），還是只動一句話怎麼講（avoid-ai-writing-zh 的工作）。模式 D 的品質升級只處理結構性缺陷（空洞的 What/Why、缺漏的「何時不該採用」、退化成名詞堆砌的條列），句子層級的 AI 味清理仍然留給完稿檢查階段委派給 avoid-ai-writing-zh，不在模式 D 裡代做。
 
+## v1.3.1 → v2.0.0（規劃中）：改用 Diátaxis 架構
+
+使用者決定不再自創骨架命名，改以 Diátaxis 框架為結構主軸（Option A：產出四類文件）。動筆前用 workflow 蒸餾了 diataxis.fr 全站 18 頁核心概念，成果與 refactor 計畫存在 `research/`：
+
+- `research/diataxis.md` — 全站 prose 蒸餾（總綱、四型、compass、map、complex hierarchies、兩對混淆、兩層品質、workflow、對四類產生器的含義）。這是 dev/authoring 參考，不是 runtime；若 refactor 後需要 runtime 版 Diátaxis 速查，另從此檔萃取一份去除 provenance 的 `references/diataxis.md`。
+- `research/diataxis-refactor-plan.md` — Option A 的 refactor 計畫、現有內容→四型對映、待決策項。
+
+（早期曾用 caveman 模式蒸餾，因壓縮丟失完整句與框架原意、且只涵蓋四型頁而缺 compass/map/quality/workflow，作廢改用 prose 全站版。）
+
+### Eval spec（先於 SKILL 改寫定案，2026-07-19）
+
+依 TDD 精神先把「四類產出該怎麼考」寫成 `evals/`，再改 SKILL.md。兩個決策：
+
+- **分區 baseline**（解決產品轉向與 repo「須贏過前一版」硬規的張力）：每個 eval case 標 `baseline` 欄。行為未被 pivot 動到的 case（learn 銜接 handoff、HTML inline SVG、Mode D 更新時效 point-patch）baseline=`v1.3.1`，gate=v2.0.0 不得回歸；四型區塊路由/邊界純度/缺型標記等新行為 baseline=`vanilla`，gate=v2.0.0 須贏過無 skill。理由：對 v1.3.1 跑四型 evals 會 trivially 失敗，該 gate 無意義；反之用舊 evals 判 v2.0.0 會把「五件套併入 explanation」這類正確 pivot 誤判為缺漏。
+- **Mode D 依意圖分流**：收到既有文件時 gate on 意圖而非動詞——`更新時效`/`併入新素材`→ point-patch 保留輸入原形狀（即使是 pre-v2.0.0 單一文件骨架也不強拆）；`重整`/`重構`→ 依 compass 整份路由進四型區塊。體現於 eval #7（point-patch）與 #8（重構→四型）。
+
+判準維度（positive case rubric）：compass 路由正確、每個在場區塊的邊界純度、缺型誠實（不搭空殼不捏造）、分離維持（不 blur）、functional quality（一手來源+時效）、保留的語言要求。新增兩條 leading-word 觸發防呆負例：`tutorial` 練習專案→learn-loop（trigger #15）、OpenAPI→reference 機械產生→非自學蒸餾（trigger #16）。
+
 ## 已知限制 / 後續可做
 
 - 分層結構（Application/Middleware/Infrastructure/Hardware）與 ADR 情境模組尚未各自跑過從零重產的完整測試迴圈，目前只在早期（patch 方法論修正之前）的 BFF 測試中驗證過 ADR 部分。下次遇到適合分層結構的主題（如 AI 平台或容器平台）時，應補一輪從零重產測試。

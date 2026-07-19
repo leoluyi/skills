@@ -1,101 +1,106 @@
 {
   "skill_name": "knowledge-doc-writing",
+  "baseline_strategy": "partitioned: cases tagged baseline=v1.3.1 are preserved behaviors (must not regress vs prior version); baseline=vanilla are pivoted/new four-block behaviors (must beat vanilla). See DEVELOPMENT.md v2.0.0 section.",
   "evals": [
     {
       "id": 1,
-      "prompt": "我在自學 NVIDIA GPU Operator，我們要在 OpenShift 上建 AI 平台。幫我研究並寫一份知識文件，之後會放到團隊 wiki 給沒碰過 GPU 排程的同事看。",
-      "expected_output": "scratch-gpu-operator-formal — input-C/從零自學/正式文件",
+      "baseline": "vanilla",
+      "prompt": "我在自學 NVIDIA GPU Operator，我們要在 OpenShift 上建 AI 平台。幫我研究並寫一份知識文件，之後會放到團隊 wiki 給沒碰過 GPU 排程的同事看。（我只讀過官方文件，還沒實際在叢集裝過）",
+      "expected_output": "scratch-gpu-operator — 從零研究/未實作/四型區塊/正式文件",
       "expectations": [
-        "正式文件模式",
-        "含 as-of 日期與版本範圍、前置知識地圖、元件以「概念名 — 完整句說明」條列呈現、與手動安裝的五件套比較（含何時不需要）、常見誤解（含過時說法標年代）、驗證步驟、官方一手來源",
-        "不含費曼檢核與待驗證清單，無第一人稱"
+        "compass 路由：運作原理、為何用 GPU Operator、與手動裝驅動/device-plugin 的取捨 → explanation；元件清單、CRD/參數、支援版本矩陣 → reference（mirror 產品結構）",
+        "explanation 區塊寫足：What/Why 論述、與手動安裝路徑的 alternatives-weighing（含何時不需要 Operator）、常見誤解（過時說法標年代）；此區塊允許帶判斷",
+        "reference 區塊 describe-only、中性、無 recipe 無意見",
+        "tutorial 與 how-to：因使用者只研究、未親手跑過 → 明列為缺口（標『需實際部署後補』），不捏造上手步驟、不搭空殼",
+        "functional quality：關鍵事實對一手官方來源查證、標 as-of 日期與版本範圍",
+        "保留語言要求：白話優先、術語保留英文、區塊內論述非名詞堆砌、正式文件無第一人稱、無 AI 味"
       ]
     },
     {
       "id": 2,
-      "prompt": "我在自學 BFF pattern，幫我建立一份學習筆記，重點是跟 API Gateway 的差異——我們微服務團隊在評估要不要導入，筆記之後可能會整理給團隊參考。",
-      "expected_output": "scratch-bff-mixed-comparison — input-C/從零自學/混合模式/辯證比較/ADR",
+      "baseline": "vanilla",
+      "prompt": "附上我這兩週在 lab 實際跑 Cilium 的操作紀錄（含我下的每條指令、踩到的雷、最後怎麼調通）。我從零安裝到會用都親手做過一遍，幫我整理成完整知識文件給團隊。",
+      "expected_output": "scratch-cilium-handson — 親手實作/四型齊全/邊界純度",
       "expectations": [
-        "混合模式（正文正式、附錄視使用者是否要求鷹架而定）",
-        "辯證比較五件套完整（含邊界判斷表、何時不該導入）",
-        "因涉及實際待決策，掛 ADR 情境模組，六段齊全，理由段回指前文已建立的事實",
-        "條列骨架＋段落關節平衡，非全表格或全段落敘事"
+        "四型區塊皆到位且互不混：tutorial（單一安全直線、消除意外、第一人稱複數祈使、不解釋不分支）／how-to（assume competence、goal-oriented、允許 if-then 分支、不教學不離題）／reference（describe-only、中性、mirror 產品結構、含旗標與參數）／explanation（why、weigh alternatives、可帶觀點、以 topic 為界）",
+        "分離維持：跑進 tutorial 的真實世界分支、跑進 reference 的論述各自抽出歸位；跨型內容用連結互指，不inline混寫",
+        "踩雷紀錄依可逆性分派：可逆/安全的放 tutorial 提示，不可逆/生產風險的放 how-to 警告",
+        "functional quality：指令與版本對一手來源查證、標 as-of",
+        "保留語言要求：白話、術語英文、論述非條列、無 AI 味"
       ]
     },
     {
       "id": 3,
-      "prompt": "附上我今天跟 AI 討論 Quadlet 的對話紀錄，幫我整理成知識文件，個人筆記用就好。對話裡有些地方我後來發現講錯了，整理時注意一下。",
-      "expected_output": "transcript-quadlet-notes — input-A/對話紀錄整理/學習筆記",
+      "baseline": "vanilla",
+      "prompt": "我在自學 BFF pattern，幫我建立一份知識文件，重點是跟 API Gateway 的差異——我們微服務團隊在評估要不要導入。（還在評估階段，沒有實作）",
+      "expected_output": "scratch-bff-comparison — 決策主題/五件套歸位 explanation",
       "expectations": [
-        "學習筆記模式",
-        "以對話最終確立的理解為主幹；對話中被推翻的說法轉為常見誤解並查證；懸而未決且使用者自己標記的問題依例外條款進待驗證清單，附具體驗證方法；對話關鍵事實抽查查證並標一手來源"
+        "辯證比較內容（邊界判斷表、與 API Gateway 的取捨、何時不該導入）寫在 explanation 區塊內作為 alternatives-weighing，不自成頂層骨架；此處允許明確表態（w 優於 z，because…）",
+        "決策理由（背景、選項、後果、依據）併入 explanation 論述，不另立獨立 ADR 模組；理由回指前文已建立的事實",
+        "reference：若整理 BFF 與 API Gateway 各自能力/責任邊界 → 中性條列",
+        "tutorial 與 how-to：評估階段未實作 → 明列為缺口，不硬生",
+        "條列骨架與段落關節平衡，非全表格或全段落敘事；functional quality 與語言要求保留"
       ]
     },
     {
       "id": 4,
-      "prompt": "（承上題 BFF 筆記）這個主題需要圖文並茂，另出一份 HTML 版。",
-      "expected_output": "html-svg-infographic — HTML 版產出/inline SVG/frontend-design",
+      "baseline": "vanilla",
+      "prompt": "附上我今天跟 AI 討論 Quadlet 的對話紀錄，幫我整理成知識文件，個人筆記用就好。對話裡有些地方我後來發現講錯了，整理時注意一下。",
+      "expected_output": "transcript-quadlet-notes — input-A/對話整理/學習筆記/四型區塊+opt-in附錄",
       "expectations": [
-        "所有圖表為 inline SVG，不用 canvas／點陣圖／Mermaid runtime／外部圖片",
-        "依 frontend-design 流程定 token system，SVG 配色與全文 CSS 變數一致",
-        "signature 元素承載內容洞察",
-        "尊重 prefers-reduced-motion，行動裝置可讀",
-        "Markdown 版仍為正本"
+        "compass 路由對話內容：最終確立的理解 → explanation 主幹；Quadlet 指令、unit 欄位語意 → reference；對話若含實際操作序列 → how-to，否則標缺口",
+        "被推翻的說法 → 轉為 explanation 內常見誤解 caveat 並查證；使用者自己標記懸而未決的問題 → 依例外條款進 explanation 附錄的待驗證清單（opt-in，附具體驗證方法）",
+        "學習筆記模式：允許第一人稱反思（費曼式自述屬 explanation 的 reflection-after-practice，opt-in）；對話關鍵事實抽查查證並標一手來源",
+        "分離維持與語言要求保留"
       ]
     },
     {
       "id": 5,
+      "baseline": "v1.3.1",
       "prompt": "這則 vault 裡的 learning note（附上 permanent note 內容）我已經想清楚了，幫我轉成可以給團隊看的正式文件。",
-      "expected_output": "learn-downstream-handoff — 銜接 learn skill",
+      "expected_output": "learn-downstream-handoff — 銜接 learn skill/四型區塊",
       "expectations": [
-        "不重做 distillation，vault 筆記裡已確立的理解直接作為文件主幹",
-        "補齊給第三方讀者的上下文（前置知識地圖、What/Why 論述背景）",
+        "不重做 distillation；vault 筆記裡已確立的理解直接作為 explanation 主幹",
+        "補齊給第三方讀者的上下文（explanation 開頭背景、前置知識地圖）；reference 從主題結構整理",
         "wikilinks 與 vault 專有格式（YAML block tags）改寫或移除",
-        "沿用 learn 已查證的來源，as-of 日期更新為出文件的時點"
+        "沿用 learn 已查證的來源，as-of 日期更新為出文件的時點",
+        "四型：素材撐得起才寫，缺型標缺口，不搭空殼"
       ]
     },
     {
       "id": 6,
-      "prompt": "這份 OpenShift GPU 排程知識文件是我半年前用這個 skill 寫的（附上），裡面版本寫 OpenShift 4.14、Podman 5.0，有些預設值和已淘汰的替代方案現在過期了。幫我更新時效，其他寫對的地方不要動。",
-      "expected_output": "refresh-own-gpu-doc — input-D/更新時效/定點修補",
+      "baseline": "v1.3.1",
+      "prompt": "（承上題 BFF 知識文件）這個主題需要圖文並茂，另出一份 HTML 版。",
+      "expected_output": "html-svg-infographic — HTML 版產出/inline SVG/frontend-design",
       "expectations": [
-        "先判斷輸入已是本 skill 骨架 → 走定點修補而非整份重產；動筆前先問保守改寫或從零重產",
+        "所有圖表為 inline SVG，不用 canvas／點陣圖／Mermaid runtime／外部圖片",
+        "依 frontend-design 流程定 token system，SVG 配色與全文 CSS 變數一致",
+        "signature 元素承載內容洞察；尊重 prefers-reduced-motion，行動裝置可讀",
+        "四型區塊在 HTML 中仍清楚分離呈現；Markdown 版仍為正本"
+      ]
+    },
+    {
+      "id": 7,
+      "baseline": "v1.3.1",
+      "prompt": "這份 OpenShift GPU 排程知識文件是我半年前用這個 skill 寫的（附上，已是四型區塊結構），裡面版本寫 OpenShift 4.14、Podman 5.0，有些預設值和已淘汰的替代方案現在過期了。幫我更新時效，其他寫對的地方不要動。",
+      "expected_output": "refresh-own-doc — Mode D/更新時效/point-patch",
+      "expectations": [
+        "判斷輸入已是本 skill（四型）骨架 → 走定點修補；意圖為『更新時效』→ point-patch，不因是四型文件就重構整份；動筆前先問保守改寫或從零重產",
         "版本號、預設值、已淘汰替代方案逐一對一手來源重新查證，不沿用舊文件斷言；as-of 日期更新為出文件時點",
         "使用者標記為寫對的段落原樣保留，不因改寫其他段落而被連帶改動",
         "產出改寫說明：列出 old→new 版本／預設值變更與對應來源、新增或移除的段落"
       ]
     },
     {
-      "id": 7,
-      "prompt": "附上一份我從網路上抓的 Gateway API 教學文（純功能羅列、沒有 What/Why、沒有比較 Ingress 的邊界），幫我重整成我們團隊知識文件的樣子。",
-      "expected_output": "restructure-foreign-gatewayapi — input-D/重構/整份重構",
-      "expectations": [
-        "先判斷輸入為外來格式（非本 skill 骨架）→ 走整份重構",
-        "產出 What/Why 論述與辯證比較五件套（含與 Ingress 的邊界判斷、何時不該用 Gateway API）",
-        "改寫說明列出新增與移除的段落結構，不是只給重寫後的正文",
-        "純語句層潤飾（去 AI 味）不在此步驟代做，留待 avoid-ai-writing-zh 完稿檢查"
-      ]
-    },
-    {
       "id": 8,
-      "prompt": "這是我現有的 service mesh 知識文件（附上），這是官方剛發布的新版 release note（附上）。幫我把新素材併進去，現有寫對的內容保留，不要整份重寫。",
-      "expected_output": "merge-new-material-servicemesh — input-D/併入新素材/保守改寫",
+      "baseline": "vanilla",
+      "prompt": "附上一份我從網路上抓的 Gateway API 教學文（純功能羅列、沒有 What/Why、沒有比較 Ingress 的邊界），幫我重整成我們團隊知識文件的樣子。",
+      "expected_output": "restructure-foreign-gatewayapi — Mode D/重整→四型區塊",
       "expectations": [
-        "動筆前先問保守改寫或從零重產，而非自行預設",
-        "既有文件中沒有對應新素材的段落原樣保留，不被整份重產覆蓋",
-        "release note 中的新內容確實併入對應章節",
-        "改寫說明區分「併入」「保留」「（若有）覆蓋」三類段落並各自交代理由"
-      ]
-    },
-    {
-      "id": 9,
-      "prompt": "這份我以前寫的 BFF 知識文件（附上）What/Why 很空、比較段缺「何時不該導入」、條列退化成名詞堆砌。幫我做品質升級。",
-      "expected_output": "quality-upgrade-bff — input-D/品質升級/定點修補",
-      "expectations": [
-        "補齊空洞的 What/Why 論述、補上缺漏的「何時不該導入」",
-        "名詞堆砌條列升級為完整句論述，其餘已寫對的段落不被連帶改寫",
-        "只做結構性修補；句子層級的 AI 味清理仍標記為留待 avoid-ai-writing-zh 完稿檢查，不在本次改寫內代做",
-        "產出改寫說明列出補齊／新增的段落"
+        "判斷輸入為外來格式（非本 skill 骨架）+ 意圖為『重整』→ 整份重構並依 compass 路由進四型區塊",
+        "外來純功能羅列 → reference（describe-only）；補上 What/Why 與 alternatives-weighing（與 Ingress 的邊界、何時不該用 Gateway API）→ explanation；原文若含真實上手步驟 → tutorial/how-to，否則明列缺口",
+        "改寫說明列出新增與移除的區塊結構（哪一型新增、原內容各歸哪型），不是只給重寫後的正文",
+        "純語句層潤飾（去 AI 味）不在此步驟代做，留待 avoid-ai-writing-zh 完稿檢查"
       ]
     }
   ]

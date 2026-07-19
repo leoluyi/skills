@@ -8,94 +8,103 @@
     },
     {
       "id": 2,
-      "query": "我在自學 BFF pattern，幫我建立一份學習筆記，重點是跟 API Gateway 的差異——我們微服務團隊在評估要不要導入，筆記之後可能會整理給團隊參考。",
+      "query": "附上我這兩週在 lab 實際跑 Cilium 的操作紀錄，我從零裝到會用都親手做過，幫我整理成完整知識文件給團隊。",
       "should_trigger": true
     },
     {
       "id": 3,
-      "query": "附上我今天跟 AI 討論 Quadlet 的對話紀錄，幫我整理成知識文件，個人筆記用就好。",
+      "query": "我在自學 BFF pattern，幫我建立一份知識文件，重點是跟 API Gateway 的差異——我們微服務團隊在評估要不要導入。",
       "should_trigger": true
     },
     {
       "id": 4,
-      "query": "這則 vault 裡的 learning note（附上 permanent note 內容）我已經想清楚了，幫我轉成可以給團隊看的正式文件。",
+      "query": "附上我今天跟 AI 討論 Quadlet 的對話紀錄，幫我整理成知識文件，個人筆記用就好。",
       "should_trigger": true
     },
     {
       "id": 5,
+      "query": "這則 vault 裡的 learning note（附上 permanent note 內容）我已經想清楚了，幫我轉成可以給團隊看的正式文件。",
+      "should_trigger": true
+    },
+    {
+      "id": 6,
+      "query": "這份 OpenShift GPU 排程知識文件是我半年前用這個 skill 寫的，裡面版本和預設值過期了，幫我更新時效，其他寫對的地方不要動。",
+      "should_trigger": true
+    },
+    {
+      "id": 7,
+      "query": "附上一份我從網路上抓的 Gateway API 教學文，功能羅列、沒有 What/Why，幫我重整成我們團隊知識文件的樣子。",
+      "should_trigger": true
+    },
+    {
+      "id": 8,
       "category": "negative/formal-doc-structure",
       "query": "幫我擬一份系統汰換的簽呈，要有背景、方案比較、經費、風險跟建議事項。",
       "should_trigger": false,
       "note": "Formal internal business document authoring routes to formal-doc-structure."
     },
     {
-      "id": 6,
+      "id": 9,
+      "category": "negative/formal-doc-structure",
+      "query": "幫我改寫這份舊的系統評估報告，補一下方案比較跟風險。",
+      "should_trigger": false,
+      "note": "Rewriting an existing administrative/business doc (評估報告) routes to formal-doc-structure — gate on document type, not the verb 改寫."
+    },
+    {
+      "id": 10,
       "category": "negative/rfp-writing",
       "query": "幫我寫招標規格書第三章「部署與發布」的需求清單。",
       "should_trigger": false,
       "note": "RFP structural authoring routes to rfp-writing."
     },
     {
-      "id": 7,
-      "category": "negative/ai-ism-cleanup",
+      "id": 11,
+      "category": "negative/avoid-ai-writing-zh",
       "query": "幫我把這段中文的 AI 味拿掉，像是「值得一提的是」「至關重要」那種空話，結構不用動。",
       "should_trigger": false,
       "note": "Pure language cleanup routes to avoid-ai-writing-zh, not document distillation."
     },
     {
-      "id": 8,
-      "category": "negative/plain-speak",
-      "query": "用白話跟不懂技術的主管解釋什麼是 RAG。",
-      "should_trigger": false,
-      "note": "Lowering one term for a non-technical audience routes to plain-speak."
-    },
-    {
-      "id": 9,
-      "category": "negative/learn-loop-interactive",
-      "query": "我想學 Kubernetes networking，帶我一步步互動學習。",
-      "should_trigger": false,
-      "note": "The interactive learning loop itself is learn-loop's job; this skill only picks up after distillation is done."
-    },
-    {
-      "id": 10,
-      "category": "negative/casual-chat",
-      "query": "今天晚餐吃什麼比較好？",
-      "should_trigger": false,
-      "note": "Casual conversation."
-    },
-    {
-      "id": 11,
-      "query": "這份 OpenShift GPU 排程知識文件是我半年前用這個 skill 寫的，裡面版本和預設值過期了，幫我更新時效，其他寫對的地方不要動。",
-      "should_trigger": true
-    },
-    {
       "id": 12,
-      "query": "附上一份我從網路上抓的 Gateway API 教學文，功能羅列、沒有 What/Why，幫我重整成我們團隊知識文件的樣子。",
-      "should_trigger": true
-    },
-    {
-      "id": 13,
-      "query": "這是我現有的 service mesh 知識文件，這是官方剛發布的新版 release note，幫我把新素材併進去，現有寫對的內容保留，不要整份重寫。",
-      "should_trigger": true
-    },
-    {
-      "id": 14,
-      "query": "這份我以前寫的 BFF 知識文件 What/Why 很空、比較段缺「何時不該導入」，幫我做品質升級。",
-      "should_trigger": true
-    },
-    {
-      "id": 15,
       "category": "negative/avoid-ai-writing-zh",
       "query": "幫我把這份知識文件的句子改順、去掉 AI 味，結構和內容完全不要動。",
       "should_trigger": false,
       "note": "Structure/content explicitly untouched — pure sentence-level cleanup routes to avoid-ai-writing-zh, not Mode D even though the input is an existing knowledge doc."
     },
     {
-      "id": 16,
-      "category": "negative/formal-doc-structure",
-      "query": "幫我改寫這份舊的系統評估報告，補一下方案比較跟風險。",
+      "id": 13,
+      "category": "negative/plain-speak",
+      "query": "用白話跟不懂技術的主管解釋什麼是 RAG。",
       "should_trigger": false,
-      "note": "Rewriting an existing administrative/business doc (評估報告) routes to formal-doc-structure, not mode D — gate on document type, not the verb 改寫."
+      "note": "Lowering one term for a non-technical audience routes to plain-speak."
+    },
+    {
+      "id": 14,
+      "category": "negative/learn-loop-interactive",
+      "query": "我想學 Kubernetes networking，帶我一步步互動學習。",
+      "should_trigger": false,
+      "note": "The interactive learning loop itself is learn-loop's job; this skill only picks up after distillation is done."
+    },
+    {
+      "id": 15,
+      "category": "negative/learn-loop-interactive",
+      "query": "帶我一步一步做一個 Rust 的 tutorial 練習專案，邊做邊教我。",
+      "should_trigger": false,
+      "note": "Guards the 'tutorial' leading word: interactive hands-on teaching is learn-loop, not authoring a tutorial block from already-distilled material."
+    },
+    {
+      "id": 16,
+      "category": "negative/mechanical-doc-gen",
+      "query": "從這份 OpenAPI spec 幫我機械產生一份 API reference 文件，把每個 endpoint 的參數列出來。",
+      "should_trigger": false,
+      "note": "Guards the 'reference' leading word: mechanical spec→doc generation is not self-learning distillation; this skill requires a learned topic plus source material to route via the compass."
+    },
+    {
+      "id": 17,
+      "category": "negative/casual-chat",
+      "query": "今天晚餐吃什麼比較好？",
+      "should_trigger": false,
+      "note": "Casual conversation."
     }
   ]
 }
