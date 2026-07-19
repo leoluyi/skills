@@ -53,6 +53,50 @@
         "wikilinks 與 vault 專有格式（YAML block tags）改寫或移除",
         "沿用 learn 已查證的來源，as-of 日期更新為出文件的時點"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "這份 OpenShift GPU 排程知識文件是我半年前用這個 skill 寫的（附上），裡面版本寫 OpenShift 4.14、Podman 5.0，有些預設值和已淘汰的替代方案現在過期了。幫我更新時效，其他寫對的地方不要動。",
+      "expected_output": "refresh-own-gpu-doc — input-D/更新時效/定點修補",
+      "expectations": [
+        "先判斷輸入已是本 skill 骨架 → 走定點修補而非整份重產；動筆前先問保守改寫或從零重產",
+        "版本號、預設值、已淘汰替代方案逐一對一手來源重新查證，不沿用舊文件斷言；as-of 日期更新為出文件時點",
+        "使用者標記為寫對的段落原樣保留，不因改寫其他段落而被連帶改動",
+        "產出改寫說明：列出 old→new 版本／預設值變更與對應來源、新增或移除的段落"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "附上一份我從網路上抓的 Gateway API 教學文（純功能羅列、沒有 What/Why、沒有比較 Ingress 的邊界），幫我重整成我們團隊知識文件的樣子。",
+      "expected_output": "restructure-foreign-gatewayapi — input-D/重構/整份重構",
+      "expectations": [
+        "先判斷輸入為外來格式（非本 skill 骨架）→ 走整份重構",
+        "產出 What/Why 論述與辯證比較五件套（含與 Ingress 的邊界判斷、何時不該用 Gateway API）",
+        "改寫說明列出新增與移除的段落結構，不是只給重寫後的正文",
+        "純語句層潤飾（去 AI 味）不在此步驟代做，留待 avoid-ai-writing-zh 完稿檢查"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "這是我現有的 service mesh 知識文件（附上），這是官方剛發布的新版 release note（附上）。幫我把新素材併進去，現有寫對的內容保留，不要整份重寫。",
+      "expected_output": "merge-new-material-servicemesh — input-D/併入新素材/保守改寫",
+      "expectations": [
+        "動筆前先問保守改寫或從零重產，而非自行預設",
+        "既有文件中沒有對應新素材的段落原樣保留，不被整份重產覆蓋",
+        "release note 中的新內容確實併入對應章節",
+        "改寫說明區分「併入」「保留」「（若有）覆蓋」三類段落並各自交代理由"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "這份我以前寫的 BFF 知識文件（附上）What/Why 很空、比較段缺「何時不該導入」、條列退化成名詞堆砌。幫我做品質升級。",
+      "expected_output": "quality-upgrade-bff — input-D/品質升級/定點修補",
+      "expectations": [
+        "補齊空洞的 What/Why 論述、補上缺漏的「何時不該導入」",
+        "名詞堆砌條列升級為完整句論述，其餘已寫對的段落不被連帶改寫",
+        "只做結構性修補；句子層級的 AI 味清理仍標記為留待 avoid-ai-writing-zh 完稿檢查，不在本次改寫內代做",
+        "產出改寫說明列出補齊／新增的段落"
+      ]
     }
   ]
 }

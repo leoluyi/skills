@@ -62,6 +62,40 @@
       "query": "今天晚餐吃什麼比較好？",
       "should_trigger": false,
       "note": "Casual conversation."
+    },
+    {
+      "id": 11,
+      "query": "這份 OpenShift GPU 排程知識文件是我半年前用這個 skill 寫的，裡面版本和預設值過期了，幫我更新時效，其他寫對的地方不要動。",
+      "should_trigger": true
+    },
+    {
+      "id": 12,
+      "query": "附上一份我從網路上抓的 Gateway API 教學文，功能羅列、沒有 What/Why，幫我重整成我們團隊知識文件的樣子。",
+      "should_trigger": true
+    },
+    {
+      "id": 13,
+      "query": "這是我現有的 service mesh 知識文件，這是官方剛發布的新版 release note，幫我把新素材併進去，現有寫對的內容保留，不要整份重寫。",
+      "should_trigger": true
+    },
+    {
+      "id": 14,
+      "query": "這份我以前寫的 BFF 知識文件 What/Why 很空、比較段缺「何時不該導入」，幫我做品質升級。",
+      "should_trigger": true
+    },
+    {
+      "id": 15,
+      "category": "negative/avoid-ai-writing-zh",
+      "query": "幫我把這份知識文件的句子改順、去掉 AI 味，結構和內容完全不要動。",
+      "should_trigger": false,
+      "note": "Structure/content explicitly untouched — pure sentence-level cleanup routes to avoid-ai-writing-zh, not Mode D even though the input is an existing knowledge doc."
+    },
+    {
+      "id": 16,
+      "category": "negative/formal-doc-structure",
+      "query": "幫我改寫這份舊的系統評估報告，補一下方案比較跟風險。",
+      "should_trigger": false,
+      "note": "Rewriting an existing administrative/business doc (評估報告) routes to formal-doc-structure, not mode D — gate on document type, not the verb 改寫."
     }
   ]
 }
