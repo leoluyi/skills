@@ -93,7 +93,7 @@
 
 既有的邊界（「只做語言層去 AI 味不動結構」歸 avoid-ai-writing-zh）本來就存在，模式 D 沒有新開一條規則，只是把它套用到一個新情境：品質升級子情境容易被「移除 AI 味」這句話拉去做純語感潤飾。分界依然是同一個——這次改動有沒有動到文件說了什麼、怎麼組織（模式 D 的工作），還是只動一句話怎麼講（avoid-ai-writing-zh 的工作）。模式 D 的品質升級只處理結構性缺陷（空洞的 What/Why、缺漏的「何時不該採用」、退化成名詞堆砌的條列），句子層級的 AI 味清理仍然留給完稿檢查階段委派給 avoid-ai-writing-zh，不在模式 D 裡代做。
 
-## v1.3.1 → v2.0.0（規劃中）：改用 Diátaxis 架構
+## v1.3.1 → v2.0.0（已實作 2026-07-20）：改用 Diátaxis 架構
 
 使用者決定不再自創骨架命名，改以 Diátaxis 框架為結構主軸（Option A：產出四類文件）。動筆前用 workflow 蒸餾了 diataxis.fr 全站 18 頁核心概念，成果與 refactor 計畫存在 `research/`：
 
@@ -110,6 +110,22 @@
 - **Mode D 依意圖分流**：收到既有文件時 gate on 意圖而非動詞——`更新時效`/`併入新素材`→ point-patch 保留輸入原形狀（即使是 pre-v2.0.0 單一文件骨架也不強拆）；`重整`/`重構`→ 依 compass 整份路由進四型區塊。體現於 eval #7（point-patch）與 #8（重構→四型）。
 
 判準維度（positive case rubric）：compass 路由正確、每個在場區塊的邊界純度、缺型誠實（不搭空殼不捏造）、分離維持（不 blur）、functional quality（一手來源+時效）、保留的語言要求。新增兩條 leading-word 觸發防呆負例：`tutorial` 練習專案→learn-loop（trigger #15）、OpenAPI→reference 機械產生→非自學蒸餾（trigger #16）。
+
+### SKILL.md 實作（2026-07-20）
+
+用 judge-panel workflow（4 個設計 lens 各出一版 spine → 5 維 rubric 評分 → 綜合）產生骨幹。背骨採 compass-router-first（評分最高），嫁接 minimalist-anti-sprawl（純度寫進完成準則、CSS 下沉、references 整併、leading-word 退役自創命名）、coverage-fidelity（可攜去 AI 味框架、缺口二元判準、三層承接跨型化）、iterative-workflow-first（功能性閘措辭、complete≠finished）。
+
+SKILL.md 收斂為 7 節（S0 前言 + S1 開工/Mode D 意圖閘 + S2 compass 路由 + S3 四型區塊 + S4 維持分離 + S5 語言格式含 HTML + S6 完稿檢查）。自創命名以四個 Diátaxis leading word 退役：五件套→explanation 的 weigh-alternatives、情境模組 ADR→explanation、自學消化模組→依型路由、論述紀律→explanation 的 discursive 屬性。
+
+實作期三個 open question 的定案（使用者授權代決）：
+
+1. **去 AI 味可攜化（唯一的 v1.3.1 行為變更）**：原本硬性以 `avoid-ai-writing-zh` 的 detect 當載重完稿門，違反 repo「sibling 不得載重」硬規。改為：**可用時優先呼叫 `avoid-ai-writing-zh`**（它是權威工具），不可載入時 fallback 到 SKILL.md S6 內建的精簡判準清單。sibling 為可選、非前置依賴，核心產出可獨立完成（符合硬規），可用時仍用最好的工具——不是把 sibling 降級成內建清單的加速器。
+2. **references 整併**：`modules.md` + `skeletons.md` 併入 `blocks.md`（依 Diátaxis 型別重排、消化模組全落 explanation），最終三個下沉檔 `blocks.md`／`rewrite.md`／`html.md`（約 67 行 CSS 從正文抽進 html.md 瘦身）。
+3. **迭代工作模式**：折進 S6 當子節（complete≠finished／由內而外生長／cycle-of-needs 覆蓋），不獨立成節，保持 spine tight。
+
+Mode D `rewrite.md` 出身辨識訊號已更新：v2.0.0 四型結構與 pre-v2.0.0 單一骨架都算「本 skill 骨架 → point-patch」，意圖分流短路 compass。
+
+**待辦（下次）**：跑 `evals/` 對照 baseline（preserved 對 v1.3.1、pivoted/new 對 vanilla），確認 v2.0.0 過關才可 merge——此為 repo 硬規 gate，push branch 非 merge，故本次先推分支留待 eval 驗證。`research/` 兩檔為 dev 材料，保留不進 runtime。
 
 ## 已知限制 / 後續可做
 
