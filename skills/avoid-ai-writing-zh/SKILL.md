@@ -571,6 +571,30 @@ Fix：攤開為完整推論——前提、因果、結論各自成句，承接�
 
 與英文版 Reasoning chain artifacts、Acknowledgment loops 同源：前者抓「首先／第一步」這類指紋詞，此處收錄的是委託場景復述、沒有指紋詞而以流暢中文寫出的過程外洩，以及併稿接縫。已在此標記者，不必在那兩條重複標記。
 
+#### 對讀者說教 — 第二人稱教練口吻
+
+說明文陳述「這套東西是什麼、怎麼運作」；教練口吻不陳述主題，反而把讀者當成被指導的「你」，對讀者的理解、選擇或行為下判斷、下指令。三種形態：
+
+- **對讀者下判斷** — 「你把 Claude 降級成陪練」「這個誠實訊號是 chat 從不給你的」「抹掉你哪裡不懂」，把主題的性質寫成對讀者本人的評斷。
+- **對讀者耳提面命** — 「記得留給自己」「別把難度交出去」，用祈使句叮嚀讀者該怎麼做，而非說明流程本身怎麼運作。
+- **反問句喊話收尾** — 「這篇的字，是你想過的，還是 AI 替你想的？」用對讀者的反問當段落結語，與警句式收尾同一家族。
+
+一份說明文的讀者是旁觀論述的人，不是被耳提面命的對象；文件陳述主題的性質，而非對著讀者本人下判斷。
+
+判準：這句的主詞是主題本身，還是「你」？當「你」是被下判斷或被喊話的對象（你哪裡不懂／你想過的／你該…），且把它改寫成第三人稱陳述後、論述不減損任何事實或推論，即為教練口吻，標記。
+
+Fix：主詞換回被解說的主題，或泛稱的主體（作者、使用者、一般情況）；把「對你的判斷」改寫成「主題的性質」。
+- 「這個誠實訊號是 chat 從不給你的」→「chat 介面不提供這個誠實訊號」
+- 「你把 Claude 降級成陪練，難度就留給自己」→「讓 Claude 只當陪練時，難度由學習者自己承擔」
+- 「判準沒變：這篇的字，是你想過的，還是 AI 替你想的」→「判準不變：文件裡的文字，出自作者想過的理解，還是 AI 代為產生」
+
+**Carve-out（register-scoped）：** 第二人稱本身不是病灶，強度隨文體而定。
+- **適用（voice-neutral／expository）**：docs／README、reference、知識文件正式模式、SOP、規格——這些該陳述主題，教練口吻是 off-register，標記。
+- **放寬（voice-bearing）**：`casual`／`blunt` voice、刻意對讀者說話的 blog、教學步驟的程序性第二人稱（「你會看到 CrashLoopBackOff」描述操作會發生什麼，主詞仍是流程，不是評斷讀者）、學習筆記的第一人稱與自問——皆合法，不標。
+- 判準：第二人稱是在描述**程序或操作會發生什麼**（留），還是評斷**讀者本人的理解或選擇**（標）。
+
+與「打破第四面牆」同一原理——成品陳述內容、不對人說話——差別只在對話對象是**讀者**而非委託者。破碎短句、警句兩條各自就其句法／收尾面向標記，此條只就第二人稱面向標記，不重複計。
+
 #### 結構級訊號（zh-TW 部落格聲音）
 
 **detect only。** 高見龍〈寫作吧，菜鳥工程師〉點名的病灶：「正確但沒有靈魂」——句子工整、用詞精準，卻少了真實經驗、踩過的坑、「我當初也卡在這」的共鳴。拔掉 AI 病句只是減法，得到乾淨但無聲的中性文；讀者仍覺得「像 AI 寫的」，往往不是殘留病句，而是缺少人味的**正向特徵**。這一節收錄結構級訊號——句子層看不到、要退一步看整篇才浮現的缺席。
@@ -687,6 +711,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - zh-TW 專有名詞過度翻譯（把無通行譯名的產品名／功能名／術語生造成逐字中文，如 house rules→房規）
 - Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
 - Breaking the fourth wall — consolidation seams (併稿接縫): pointing at a sibling document instead of stating the conclusion (詳《04_技術面試題目》, "see the other doc", 併入 02 人才徵選附件), a lazy back/forward reference standing in for content (比照前述, 同上, "as above"), or an orphaned pointer to a figure/table/section that didn't survive the merge (如圖, 如下表). Not an AI tell per se, but a standalone-readability defect from consolidating source documents.
+- zh-TW 對讀者說教／第二人稱教練口吻（expository 文體裡把主題性質寫成對讀者本人的判斷或喊話，如 抹掉你哪裡不懂／這篇的字是你想過的還是 AI 替你想的；register-scoped，casual／blog／教學步驟的程序性第二人稱不計）
 
 ### P2 — Stylistic polish (fix when time allows)
 - Generic conclusions ("The future looks bright")

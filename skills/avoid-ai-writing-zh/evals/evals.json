@@ -36,6 +36,16 @@
       "expectations": [
         "metaphor-absence-does-not-flag-solo: 不因『只解釋不造像』單條就標記整篇為 voiceless；教學文缺自創比喻是常態，需與其他結構訊號成群才計入。此文其餘 voice marker 齊全，應判為 clean。"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "detect 這段知識文件正文（docs／正式文件，說明一套 distillation 流程）：「差在骨幹是誰的話。這變體只在你真的親口答過時成立，文件主體是你的說法、AI 補的都上了標；那種退化是 AI 從頭合成、抹掉你哪裡不懂。判準沒變：這篇的字，是你想過的，還是 AI 替你想的。」",
+      "expected_output": "Adversarial: expository/voice-neutral register that apostrophizes the reader as a coach. 第二人稱教練口吻 must fire; it is register-scoped so it fires here yet not in the casual/blog reader-address of case 2.",
+      "expectations": [
+        "flags-second-person-coaching: 標記第二人稱教練口吻——「你真的親口答過」「抹掉你哪裡不懂」「你想過的／AI 替你想的」在正式說明文裡對讀者下判斷、喊話，主詞是『你』而非主題本身。",
+        "fix-converts-to-exposition: Fix 把主詞換回被解說的主題或泛稱主體（作者／使用者），改成第三人稱陳述，而非保留『你』。",
+        "also-flags-cooccurring-tells: 併同標記同段的破碎短句（分號並置、省略前提）與反問句收尾警句；此二條各就句法／收尾面向標記，第二人稱面向不重複計。"
+      ]
     }
   ]
 }
