@@ -1,0 +1,618 @@
+{
+  "name": "leoluyi/skills",
+  "repo": "https://github.com/leoluyi/skills",
+  "site": "https://leoluyi.github.io/skills/",
+  "count": 11,
+  "categories": [
+    {
+      "key": "zh-writing-quality",
+      "label": {
+        "en": "Traditional Chinese Writing Quality",
+        "zh": "繁中寫作品質"
+      },
+      "blurb": {
+        "en": "Strip AI tells, mainland-China wording, and jargon so Traditional Chinese and English read like a person wrote them.",
+        "zh": "去掉 AI 味、陸用語和術語黑話，讓中英文讀起來像真人寫的。"
+      },
+      "slugs": [
+        "avoid-ai-writing-zh",
+        "avoid-china-writing",
+        "plain-speak"
+      ]
+    },
+    {
+      "key": "business-docs",
+      "label": {
+        "en": "Taiwan Business Documents",
+        "zh": "台灣商務公文"
+      },
+      "blurb": {
+        "en": "Draft and review 簽呈, meeting records, assessment reports, RFPs, and briefing outlines in Taiwan corporate Traditional Chinese.",
+        "zh": "用台灣職場慣用的正體中文撰寫與審查簽呈、會議紀錄、評估報告、RFP 與說明提綱。"
+      },
+      "slugs": [
+        "briefing-outline",
+        "formal-doc-structure",
+        "rfp-writing"
+      ]
+    },
+    {
+      "key": "content-creation",
+      "label": {
+        "en": "Content Creation",
+        "zh": "內容創作"
+      },
+      "blurb": {
+        "en": "Turn notes or a bare topic into a human-voiced Taiwan-Chinese blog post, or a save-worthy infographic in SVG or HTML.",
+        "zh": "把筆記或一個題目變成有真人聲音的繁中部落格文，或做成讓人想收藏的資訊圖表。"
+      },
+      "slugs": [
+        "blog-writing-zh",
+        "infographic-design"
+      ]
+    },
+    {
+      "key": "technical-docs",
+      "label": {
+        "en": "Technical Documentation",
+        "zh": "技術文件"
+      },
+      "blurb": {
+        "en": "Distill research into one Diátaxis reference doc, writing only what the material supports and flagging the gaps.",
+        "zh": "把研究成果收斂成一份 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出。"
+      },
+      "slugs": [
+        "knowledge-doc-writing"
+      ]
+    },
+    {
+      "key": "knowledge-mgmt",
+      "label": {
+        "en": "Knowledge Management",
+        "zh": "知識管理"
+      },
+      "blurb": {
+        "en": "Learn a concept by being taught and quizzed, then file your own note into an Obsidian vault on PARA structure.",
+        "zh": "先教後考學懂一個概念，再把親手寫的筆記歸檔進 PARA 結構的 Obsidian 筆記庫。"
+      },
+      "slugs": [
+        "learn-loop",
+        "obsidian-vault"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "slug": "avoid-ai-writing-zh",
+      "emoji": "✍️",
+      "category": "zh-writing-quality",
+      "languages": [
+        "en",
+        "zh-TW",
+        "mixed"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "de-ai",
+        "traditional-chinese",
+        "ai-isms",
+        "zh-tw",
+        "editing",
+        "readme"
+      ],
+      "title": {
+        "en": "De-AI Writing (English + zh-TW)",
+        "zh": "去除 AI 味（中英雙語）"
+      },
+      "tagline": {
+        "en": "Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose",
+        "zh": "揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子"
+      },
+      "whenUse": {
+        "en": "Reach for it as a final de-AI pass before shipping a README, ADR, blog post, or any English/Chinese draft that reads machine-generated.",
+        "zh": "在 README、ADR、部落格或任何中英文草稿出稿前，當作去 AI 味的最後一關。"
+      },
+      "whenNot": {
+        "en": "Skip it when you need to compose a piece or give it a human voice from scratch, which is blog-writing-zh's job; this skill removes tells but does not create voice.",
+        "zh": "若要從零寫文章或替它注入個人聲音，改用 blog-writing-zh；本 skill 只除味，不造聲音。"
+      },
+      "highlights": {
+        "en": [
+          "Three modes: rewrite, detect-only audit, or edit a file in place with minimal fixes",
+          "Traditional Chinese layer flags 空話, 確保 filler, 破折號濫用, and over-translated proper nouns",
+          "Detect-only structure audit names what a soulless draft is missing, not just bad phrases",
+          "Signals not proof: tuned against false positives on non-native and technical writing"
+        ],
+        "zh": [
+          "三種模式：改寫、只標記、直接改檔",
+          "中文層抓空話、確保贅字、破折號濫用、生造譯名",
+          "偵測模式點出草稿缺什麼，不只挑錯句",
+          "只當訊號不當判決，避免誤傷非母語與技術寫作"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/avoid-ai-writing-zh/SKILL.md"
+    },
+    {
+      "slug": "avoid-china-writing",
+      "emoji": "🇹🇼",
+      "category": "zh-writing-quality",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "traditional-chinese",
+        "taiwan-localization",
+        "cross-strait",
+        "zh-tw",
+        "simplified-chinese",
+        "de-jargon"
+      ],
+      "title": {
+        "en": "Cross-Strait Chinese Localizer",
+        "zh": "台灣正體中文在地化"
+      },
+      "tagline": {
+        "en": "Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms",
+        "zh": "把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，術語不誤傷"
+      },
+      "whenUse": {
+        "en": "Reach for it when a Traditional Chinese draft carries mainland wording, corp-speak, or leaked Simplified characters and you need it to read naturally for a Taiwan audience.",
+        "zh": "當一份繁體中文稿子夾雜陸用語、互聯網黑話或簡體字，要改成台灣讀者自然的正體中文時使用。"
+      },
+      "whenNot": {
+        "en": "Not for stripping AI tells or polishing tone (use avoid-ai-writing-zh), formal business docs (formal-doc-structure), RFPs (rfp-writing), or plain-language rewrites (plain-speak).",
+        "zh": "不要用於去 AI 味或潤飾語氣（用 avoid-ai-writing-zh）、簽呈報告（用 formal-doc-structure）、RFP（用 rfp-writing）或白話翻譯（用 plain-speak）。"
+      },
+      "highlights": {
+        "en": [
+          "Catches 陸用語 across four axes: vocabulary, corp-speak jargon, leaked Simplified, transliterations",
+          "Three modes: detect-only audit, full rewrite, or in-place file edit",
+          "Ranks findings P0-P2 so you fix the loudest mainland-source giveaways first",
+          "Protects brand names, quotes, code, and genuine terms-of-art from over-correction"
+        ],
+        "zh": [
+          "四軸偵測：詞彙、職場黑話、簡體殘留、音譯專名",
+          "三種模式：只標不改、整段改寫、直接改檔案",
+          "P0–P2 分級，先改最明顯的陸源破綻",
+          "品牌名、引文、程式碼與術語自動保留不誤改"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/avoid-china-writing/SKILL.md"
+    },
+    {
+      "slug": "blog-writing-zh",
+      "emoji": "✍️",
+      "category": "content-creation",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "traditional-chinese",
+        "blog-writing",
+        "zh-tw",
+        "de-ai",
+        "newsletter",
+        "voice"
+      ],
+      "title": {
+        "en": "Traditional Chinese Blog Writer",
+        "zh": "繁中部落格寫作"
+      },
+      "tagline": {
+        "en": "Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it",
+        "zh": "把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文"
+      },
+      "whenUse": {
+        "en": "When you need to write or rewrite a Taiwan-Chinese blog post or newsletter, or turn Obsidian notes, talks, or foreign articles into a long-form zh-TW piece.",
+        "zh": "要寫或改寫繁中部落格文、電子報，或把 Obsidian 筆記、演講、外文文章變成中文長文時。"
+      },
+      "whenNot": {
+        "en": "Not for formal memos (formal-doc-structure), RFPs (rfp-writing), explaining a single term in plain language (plain-speak), or pure de-AI cleanup with no restructuring (avoid-ai-writing-zh).",
+        "zh": "正式簽呈用 formal-doc-structure、RFP 用 rfp-writing、單一術語白話解釋用 plain-speak、純去 AI 味不動結構用 avoid-ai-writing-zh。"
+      },
+      "highlights": {
+        "en": [
+          "Two modes: compose from a topic, or rewrite Obsidian notes, talks, and foreign sources",
+          "Voice recipes modeled on 7 studied Taiwan and English blogs, tuned by reader and goal",
+          "Length tiers, dual-draft merge for high-stakes pieces, and auto series-split suggestions",
+          "Ships the article plus 3-5 title/subtitle options, then runs a de-AI finishing pass"
+        ],
+        "zh": [
+          "兩種模式：從題目開寫，或改寫筆記、演講、外文來源",
+          "風味配方取樣自七個台灣與英文部落格，依讀者與目的調整",
+          "長度分檔、雙稿熔接、自動評估要不要拆成系列",
+          "成品一定附 3-5 組標題副標，並跑一輪去 AI 味收尾"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/blog-writing-zh/SKILL.md"
+    },
+    {
+      "slug": "briefing-outline",
+      "emoji": "📑",
+      "category": "business-docs",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "briefing-outline",
+        "traditional-chinese",
+        "executive-summary",
+        "document-distillation",
+        "taiwan-business",
+        "mece"
+      ],
+      "title": {
+        "en": "Briefing Outline",
+        "zh": "說明提綱"
+      },
+      "tagline": {
+        "en": "Distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into",
+        "zh": "把厚重的來源文件收斂成一份高空俯瞰的說明提綱，讓主管一眼掌握全貌、需要時再往下鑽"
+      },
+      "whenUse": {
+        "en": "Reach for it when you need to condense one or more source documents into a navigable briefing a manager or committee can grasp at a glance and drill into.",
+        "zh": "當你要把一份或多份來源文件收斂成主管或委員會能一眼掌握、又能往下鑽的說明提綱時使用。"
+      },
+      "whenNot": {
+        "en": "Not for authoring a single formal doc from scratch (use formal-doc-structure), an RFP (rfp-writing), lowering one term to a lay reader (plain-speak), or pure de-AI cleanup (avoid-ai-writing-zh).",
+        "zh": "不要用於從零撰寫單一正式文件（用 formal-doc-structure）、RFP（用 rfp-writing）、白話化單一術語（用 plain-speak）或純去 AI 味（用 avoid-ai-writing-zh）。"
+      },
+      "highlights": {
+        "en": [
+          "Handles one long report or many docs: each part gets its essence, then points down for detail",
+          "Cuts detail that belongs in the source (SOP, 逐條標準, 配分) so the outline stays stable when sources churn",
+          "MECE spine: every source maps to exactly one section, no overlap, full coverage",
+          "Re-sync mode re-runs only the sections whose source docs changed"
+        ],
+        "zh": [
+          "跨多份文件或一份長報告，每段給足精華再往下指路",
+          "把逐條標準、SOP、逐項配分等細節下沉回來源，提綱穩定不亂",
+          "MECE 骨架：每份來源只落在一個章節，不重不漏",
+          "來源改版時，只重跑受影響的章節"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/briefing-outline/SKILL.md"
+    },
+    {
+      "slug": "formal-doc-structure",
+      "emoji": "📄",
+      "category": "business-docs",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "traditional-chinese",
+        "taiwan",
+        "meeting-minutes",
+        "approval-memo",
+        "assessment-report",
+        "business-docs"
+      ],
+      "title": {
+        "en": "Formal Internal Doc Structure",
+        "zh": "正式公文結構"
+      },
+      "tagline": {
+        "en": "Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs",
+        "zh": "把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走"
+      },
+      "whenUse": {
+        "en": "Reach for it to write or fix an internal business document in Taiwan corporate Traditional Chinese: approval memo, meeting record, assessment report, project plan, or vendor communication.",
+        "zh": "要撰寫或修整公司內部的簽呈、會議紀錄、評估報告、專案規劃或廠商溝通文件時用它。"
+      },
+      "whenNot": {
+        "en": "Not for RFPs or bidding specs (use rfp-writing), pure language cleanup with no restructuring (use avoid-ai-writing-zh), or blog posts and marketing copy.",
+        "zh": "不要用在 RFP 或招標規格（改用 rfp-writing）、只做語言去 AI 味不動結構（改用 avoid-ai-writing-zh），或部落格與行銷文案。"
+      },
+      "highlights": {
+        "en": [
+          "Maps five reader needs (approve, assess, record, execute, coordinate) to a matching document template",
+          "Outputs a paste-ready draft with real sections, not a critique or an outline",
+          "Forces concrete owners, timelines, deliverables, and acceptance criteria into every activity",
+          "Runs a 10-point revision checklist plus an optional de-AI finishing pass before final output"
+        ],
+        "zh": [
+          "依五種讀者需求（核准、評估、紀錄、執行、協調）套對應的文件範本",
+          "直接產出可貼進文件的完整段落，不是給建議或列大綱",
+          "每項工作都要寫清楚負責單位、時程、交付物與驗收方式",
+          "收尾跑十點修訂檢查，並可選配去 AI 味的最後一道潤稿"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/formal-doc-structure/SKILL.md"
+    },
+    {
+      "slug": "infographic-design",
+      "emoji": "📊",
+      "category": "content-creation",
+      "languages": [
+        "zh-TW",
+        "en"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "infographic",
+        "svg",
+        "diagram",
+        "visual-communication",
+        "bytebytego",
+        "traditional-chinese"
+      ],
+      "title": {
+        "en": "Infographic Design",
+        "zh": "資訊圖表設計"
+      },
+      "tagline": {
+        "en": "Design explanatory graphics people save and repost, as clean SVG or a single HTML file",
+        "zh": "把主題做成讓人想收藏轉發的資訊圖表，輸出成乾淨的 SVG 或單一 HTML 檔案"
+      },
+      "whenUse": {
+        "en": "Reach for it when you need an infographic, one-pager, timeline, comparison, or how-it-works diagram, or a visual recap of something just taught.",
+        "zh": "需要資訊圖表、懶人包、one-pager、時間軸、比較圖或流程圖解，或把剛教完的內容總結成一張圖時使用。"
+      },
+      "whenNot": {
+        "en": "Skip it for standalone data charts, dashboards, BI tooling, slide decks, or plain-language term explanations; route those to a dataviz, pptx, or plain-speak flow instead.",
+        "zh": "純資料圖表、儀表板、BI 工具、投影片，或只想用白話解釋一個名詞時不要用它，改用 dataviz、pptx 或 plain-speak。"
+      },
+      "highlights": {
+        "en": [
+          "Plans the graphic and critiques that plan before building, so it isn't a templated default",
+          "Draws palette, layout, and visual metaphor from the subject's own world for a distinctive look",
+          "Three-level text hierarchy plus a deterministic gate that catches clipped text and weak contrast",
+          "Handles ByteByteGo-style technical explainers and animated HTML learning recaps"
+        ],
+        "zh": [
+          "先擬計畫再自我批判，才動手畫，避開樣板感的預設圖",
+          "配色、版面、視覺隱喻都取材自主題本身，做出獨特風格",
+          "三層文字階層加自動檢查，抓出爆版、文字被切、對比不足",
+          "支援 ByteByteGo 式技術圖解與動畫版學習總結 HTML"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/infographic-design/SKILL.md"
+    },
+    {
+      "slug": "knowledge-doc-writing",
+      "emoji": "📚",
+      "category": "technical-docs",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "diataxis",
+        "traditional-chinese",
+        "technical-docs",
+        "knowledge-base",
+        "self-learning",
+        "zh-tw"
+      ],
+      "title": {
+        "en": "Knowledge Doc Writing (Diátaxis)",
+        "zh": "Diátaxis 知識文件寫作"
+      },
+      "tagline": {
+        "en": "Turn research into one doc with four Diátaxis blocks, writing only what the material supports and flagging gaps",
+        "zh": "把研究成果整理成四型 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出"
+      },
+      "whenUse": {
+        "en": "When you want to distill a technical topic you studied or researched into one lasting reference doc split into tutorial, how-to, reference, and explanation.",
+        "zh": "當你想把自學或研究過的技術主題，整理成可長期參考、tutorial／how-to／reference／explanation 四型分離的知識文件時。"
+      },
+      "whenNot": {
+        "en": "Not for internal memos or reports (use formal-doc-structure), RFPs (use rfp-writing), blog posts (use blog-writing-zh), or language-only de-AI cleanup (use avoid-ai-writing-zh).",
+        "zh": "不要用於簽呈／評估報告（用 formal-doc-structure）、RFP（用 rfp-writing）、部落格（用 blog-writing-zh）、或只做語言層去 AI 味（用 avoid-ai-writing-zh）。"
+      },
+      "highlights": {
+        "en": [
+          "Compass router assigns each material chunk to exactly one of four Diátaxis blocks",
+          "Writes only blocks the material supports and lists the rest as gaps, no fabricated filler",
+          "Four input modes: chat logs, raw sources, from-scratch research, existing-doc rewrites",
+          "Primary-source checks with as-of dating, plus a de-AI pass before shipping"
+        ],
+        "zh": [
+          "compass 兩問把每段素材路由到唯一一型區塊",
+          "素材撐得起才寫，撐不起的型明列為缺口，不捏造空殼",
+          "支援四種輸入：對話紀錄、原始資料、從零研究、既有文件改寫",
+          "強制查一手來源並標 as-of 時效，出稿前做去 AI 味"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/knowledge-doc-writing/SKILL.md"
+    },
+    {
+      "slug": "learn-loop",
+      "emoji": "🔁",
+      "category": "knowledge-mgmt",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": true,
+      "tags": [
+        "obsidian",
+        "learning-loop",
+        "retrieval-practice",
+        "knowledge-management",
+        "note-taking",
+        "source-verification"
+      ],
+      "title": {
+        "en": "Learn Loop",
+        "zh": "結構化學習迴圈"
+      },
+      "tagline": {
+        "en": "Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault",
+        "zh": "先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian"
+      },
+      "whenUse": {
+        "en": "Reach for it when you want to genuinely learn a new technical concept and crystallize it into a permanent Obsidian note, not just skim an explanation.",
+        "zh": "當你想真正學懂一個新技術概念，並把它結晶成 Obsidian vault 裡的長期筆記時使用。"
+      },
+      "whenNot": {
+        "en": "Skip it for reorganizing an already-distilled doc into Diátaxis blocks (use knowledge-doc-writing) or for a quick one-off explanation with no note to keep.",
+        "zh": "不要用於把已 distill 完的文件重整成 Diátaxis 區塊（改用 knowledge-doc-writing），或只想要一次性的口頭解釋。"
+      },
+      "highlights": {
+        "en": [
+          "Teaches from verified primary sources, then quizzes you with retrieval questions",
+          "Never ghostwrites your note: you write it from memory while it pokes holes as a skeptic",
+          "Sorts each note into evergreen vs reference, wiring up wikilinks, MOCs, and frontmatter",
+          "Temp-vault fallback on machines without your vault, packaged to merge back later"
+        ],
+        "zh": [
+          "從查證過的一手來源開講，再用回想題考你",
+          "不代寫筆記：你憑記憶寫，它只當懷疑論者挑洞",
+          "自動分流 evergreen／reference，接好 wikilink 與 MOC",
+          "沒有 vault 的機器改走 temp-vault，打包好之後併回"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/learn-loop/SKILL.md"
+    },
+    {
+      "slug": "obsidian-vault",
+      "emoji": "🗂️",
+      "category": "knowledge-mgmt",
+      "languages": [
+        "mixed"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "obsidian",
+        "wikilinks",
+        "para",
+        "johnny-decimal",
+        "note-taking",
+        "knowledge-management"
+      ],
+      "title": {
+        "en": "Obsidian Vault Notes",
+        "zh": "Obsidian 筆記庫"
+      },
+      "tagline": {
+        "en": "Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks",
+        "zh": "在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構"
+      },
+      "whenUse": {
+        "en": "Reach for it when you want to find, create, or organize notes in your Obsidian vault.",
+        "zh": "要在 Obsidian 筆記庫裡搜尋、新增或整理筆記時用它。"
+      },
+      "whenNot": {
+        "en": "Not for turning notes into a blog post (use blog-writing-zh) or a structured technical doc (use knowledge-doc-writing).",
+        "zh": "不是把筆記寫成部落格（用 blog-writing-zh）或技術文件（用 knowledge-doc-writing）的工具。"
+      },
+      "highlights": {
+        "en": [
+          "Search the whole vault by filename or content, skipping .obsidian internals",
+          "Create notes in the right PARA / Johnny-Decimal folder with YAML frontmatter",
+          "Link notes with [[wikilinks]] and a ## Related section; dangling links are fine",
+          "Find every backlink to a note with a single grep"
+        ],
+        "zh": [
+          "依檔名或內容搜尋整個筆記庫，略過 .obsidian",
+          "在對的資料夾新增筆記，帶好 frontmatter",
+          "用 [[wikilinks]] 串接筆記，空連結也 OK",
+          "一行 grep 找出任何筆記的反向連結"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/obsidian-vault/SKILL.md"
+    },
+    {
+      "slug": "plain-speak",
+      "emoji": "🗣️",
+      "category": "zh-writing-quality",
+      "languages": [
+        "zh-TW",
+        "en"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "plain-language",
+        "traditional-chinese",
+        "jargon-translation",
+        "audience-translation",
+        "zh-tw",
+        "explain-to-pm"
+      ],
+      "title": {
+        "en": "Plain Speak: Jargon into Plain Language",
+        "zh": "把技術術語翻成白話"
+      },
+      "tagline": {
+        "en": "Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back",
+        "zh": "把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話"
+      },
+      "whenUse": {
+        "en": "Reach for it when you need to explain a technical term, code snippet, error, or dense engineering text to a non-technical reader, or to check whether a plain-language draft actually lands.",
+        "zh": "當你要把技術術語、程式碼、錯誤訊息或工程長文講給非技術讀者聽，或想檢查白話草稿夠不夠白時使用。"
+      },
+      "whenNot": {
+        "en": "Not for de-AI voice cleanup (avoid-ai-writing-zh), structuring a whole formal doc like a 簽呈 or 報告 (formal-doc-structure), or an RFP (rfp-writing).",
+        "zh": "不要用於潤飾語氣、去 AI 味（用 avoid-ai-writing-zh），編排整份簽呈或報告（用 formal-doc-structure），或 RFP（用 rfp-writing）。"
+      },
+      "highlights": {
+        "en": [
+          "Pins the exact reader first: a CFO gets 財務影響, a salesperson gets 客戶好處",
+          "Delivers one repeat-test line: what it does and what it's for, no jargon",
+          "Reviews an existing draft against a 9-point checklist, marking each pass/fail",
+          "Glosses terms inline (idempotent 冪等) and cuts empty modifiers like 大幅優化"
+        ],
+        "zh": [
+          "先鎖定讀者：CFO 談財務、業務談客戶好處，同一術語講法不同",
+          "產出一句能複述的話：做什麼、為什麼，不靠術語解術語",
+          "可審既有白話草稿，九項檢查逐條標 pass/fail",
+          "就地標註術語（冪等），砍掉「大幅優化」這類空話"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/plain-speak/SKILL.md"
+    },
+    {
+      "slug": "rfp-writing",
+      "emoji": "📋",
+      "category": "business-docs",
+      "languages": [
+        "zh-TW"
+      ],
+      "invokeOnly": false,
+      "tags": [
+        "rfp",
+        "procurement",
+        "requirement-spec",
+        "traditional-chinese",
+        "zh-tw",
+        "de-ai"
+      ],
+      "title": {
+        "en": "Technical RFP Writing & Review",
+        "zh": "技術 RFP 撰寫與審查"
+      },
+      "tagline": {
+        "en": "Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler",
+        "zh": "站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語"
+      },
+      "whenUse": {
+        "en": "Reach for it when you draft or review a technical RFP (需求規格書 / 招標規格) as the issuing organization, not the bidder.",
+        "zh": "當你要以招標方身分撰寫或審查技術 RFP（需求規格書／招標規格）時使用。"
+      },
+      "whenNot": {
+        "en": "Skip it for vendor bid responses (投標提案), migration/test plans, ADRs, meeting minutes, or pure de-AI cleanup (use avoid-ai-writing-zh).",
+        "zh": "投標提案、遷移／測試計畫、ADR、會議紀錄或純去 AI 味潤稿不要用（改用 avoid-ai-writing-zh）。"
+      },
+      "highlights": {
+        "en": [
+          "Structural audit that fixes misplaced sections, merges thin ones, and kills appendix bloat",
+          "Pain-point filter deletes requirements already met by general infrastructure",
+          "Language rules force every bullet into a full what/why sentence with section context",
+          "Strips AI filler (確保, 從而, 賦能) while keeping legitimate RFP notation"
+        ],
+        "zh": [
+          "結構審查：修正錯置章節、合併過薄段落、刪除附錄灌水",
+          "痛點過濾：一般基礎設施已涵蓋的需求就刪掉，只留領域專屬項目",
+          "語言規則：每條需求都寫成說明 what/why 的完整句，段落先給脈絡",
+          "禁用清單清掉『確保、從而、賦能』等 AI 填充，但保留正規 RFP 寫法"
+        ]
+      },
+      "skillUrl": "https://github.com/leoluyi/skills/blob/main/skills/rfp-writing/SKILL.md"
+    }
+  ]
+}

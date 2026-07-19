@@ -1,0 +1,621 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Skills — Traditional Chinese writing, de-AI editing &amp; Taiwan business docs for Claude Code, Cursor &amp; Codex</title>
+<meta name="description" content="Claude Code / agent skills for Traditional Chinese (Taiwan) writing, de-AI editing, and business docs, plus English infographic and knowledge-doc skills.">
+<meta name="keywords" content="claude code skills, agent skills, traditional chinese writing, taiwan localization, zh-tw, de-ai writing, ai writing detector, simplified to traditional chinese, cross-strait chinese, taiwan business documents, rfp writing, diataxis documentation, infographic design, obsidian notes, plain language, blog writing, codex skills, agentskills, Claude Code 技能, 繁體中文寫作, 去除 AI 味, 台灣在地化, 正體中文, 陸用語轉換, 簽呈範本, 評估報告, RFP 撰寫, 資訊圖表, Obsidian 筆記, 白話文, 部落格寫作, Diátaxis 文件">
+<meta name="author" content="Lu Yi">
+<link rel="canonical" href="https://leoluyi.github.io/skills/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://leoluyi.github.io/skills/">
+<meta property="og:title" content="Claude Skills — Traditional Chinese writing, de-AI editing &amp; Taiwan business docs for Claude Code, Cursor &amp; Codex">
+<meta property="og:description" content="Claude Code / agent skills for Traditional Chinese (Taiwan) writing, de-AI editing, and business docs, plus English infographic and knowledge-doc skills.">
+<meta property="og:site_name" content="Claude Skills by leoluyi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Claude Skills — Traditional Chinese writing, de-AI editing &amp; Taiwan business docs for Claude Code, Cursor &amp; Codex">
+<meta name="twitter:description" content="Claude Code / agent skills for Traditional Chinese (Taiwan) writing, de-AI editing, and business docs, plus English infographic and knowledge-doc skills.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%E2%9C%A8</text></svg>">
+<link rel="stylesheet" href="assets/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Claude Skills by leoluyi",
+  "description": "Claude Code / agent skills for Traditional Chinese (Taiwan) writing, de-AI editing, and business docs, plus English infographic and knowledge-doc skills.",
+  "url": "https://leoluyi.github.io/skills/",
+  "numberOfItems": 11,
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "De-AI Writing (English + zh-TW)",
+        "description": "Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/avoid-ai-writing-zh/SKILL.md",
+        "keywords": "de-ai, traditional-chinese, ai-isms, zh-tw, editing, readme"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Cross-Strait Chinese Localizer",
+        "description": "Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/avoid-china-writing/SKILL.md",
+        "keywords": "traditional-chinese, taiwan-localization, cross-strait, zh-tw, simplified-chinese, de-jargon"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Traditional Chinese Blog Writer",
+        "description": "Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/blog-writing-zh/SKILL.md",
+        "keywords": "traditional-chinese, blog-writing, zh-tw, de-ai, newsletter, voice"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Briefing Outline",
+        "description": "Distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/briefing-outline/SKILL.md",
+        "keywords": "briefing-outline, traditional-chinese, executive-summary, document-distillation, taiwan-business, mece"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 5,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Formal Internal Doc Structure",
+        "description": "Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/formal-doc-structure/SKILL.md",
+        "keywords": "traditional-chinese, taiwan, meeting-minutes, approval-memo, assessment-report, business-docs"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Infographic Design",
+        "description": "Design explanatory graphics people save and repost, as clean SVG or a single HTML file",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/infographic-design/SKILL.md",
+        "keywords": "infographic, svg, diagram, visual-communication, bytebytego, traditional-chinese"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 7,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Knowledge Doc Writing (Diátaxis)",
+        "description": "Turn research into one doc with four Diátaxis blocks, writing only what the material supports and flagging gaps",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/knowledge-doc-writing/SKILL.md",
+        "keywords": "diataxis, traditional-chinese, technical-docs, knowledge-base, self-learning, zh-tw"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 8,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Learn Loop",
+        "description": "Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/learn-loop/SKILL.md",
+        "keywords": "obsidian, learning-loop, retrieval-practice, knowledge-management, note-taking, source-verification"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 9,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Obsidian Vault Notes",
+        "description": "Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/obsidian-vault/SKILL.md",
+        "keywords": "obsidian, wikilinks, para, johnny-decimal, note-taking, knowledge-management"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 10,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Plain Speak: Jargon into Plain Language",
+        "description": "Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/plain-speak/SKILL.md",
+        "keywords": "plain-language, traditional-chinese, jargon-translation, audience-translation, zh-tw, explain-to-pm"
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 11,
+      "item": {
+        "@type": "CreativeWork",
+        "name": "Technical RFP Writing & Review",
+        "description": "Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler",
+        "url": "https://github.com/leoluyi/skills/blob/main/skills/rfp-writing/SKILL.md",
+        "keywords": "rfp, procurement, requirement-spec, traditional-chinese, zh-tw, de-ai"
+      }
+    }
+  ]
+}
+</script>
+<script>
+  // set lang/theme before paint to avoid a flash
+  (function () {
+    var r = document.documentElement;
+    try {
+      var l = localStorage.getItem("cs-lang"); if (l) r.setAttribute("data-lang", l);
+      var t = localStorage.getItem("cs-theme"); if (t) r.setAttribute("data-theme", t);
+    } catch (e) {}
+    if (!r.getAttribute("data-lang")) r.setAttribute("data-lang", "en");
+  })();
+</script>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="https://leoluyi.github.io/skills/">
+      <span class="logo" aria-hidden="true">&#10024;</span>
+      <span>Claude Skills</span>
+    </a>
+    <div class="header-spacer"></div>
+    <label class="header-search">
+      <span class="search-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span>
+      <input id="search" type="search" placeholder="Search skills…" aria-label="Search skills">
+    </label>
+    <div class="seg" role="group" aria-label="Language">
+      <button data-lang-val="en" aria-pressed="true">EN</button>
+      <button data-lang-val="zh" aria-pressed="false">繁中</button>
+    </div>
+    <button id="theme-toggle" class="icon-btn" aria-label="Toggle color theme" title="Toggle theme">
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+    </button>
+    <a class="icon-btn" href="https://github.com/leoluyi/skills" aria-label="GitHub repository" title="GitHub"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <span class="eyebrow"><span class="l-en">Portable SKILL.md skills · Claude Code · Cursor · Codex</span><span class="l-zh">可攜 SKILL.md 技能 · Claude Code · Cursor · Codex</span></span>
+    <h1><span class="l-en">Claude Code skills that write Traditional Chinese like a real person</span><span class="l-zh">讓 Claude 寫出像真人的正體中文</span></h1>
+    <p class="sub"><span class="l-en">Portable skills for de-AI Traditional Chinese editing, Taiwan localization, and business docs, plus English infographics and Diátaxis knowledge docs, running on Claude Code, Cursor, and Codex.</span><span class="l-zh">一套可在 Claude Code、Cursor、Codex 上通用的技能，涵蓋去 AI 味、陸用語在地化、台灣商務公文，以及英文資訊圖表與 Diátaxis 知識文件。</span></p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/leoluyi/skills"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.786 1.401 8.169L12 18.896l-7.335 3.869 1.401-8.169L.132 9.21l8.2-1.192z"/></svg><span class="l-en">Star on GitHub</span><span class="l-zh">在 GitHub 上按星</span></a>
+      <a class="btn btn-ghost" href="#catalog"><span class="l-en">Browse skills</span><span class="l-zh">瀏覽技能</span></a>
+    </div>
+    <div class="install">
+      <code>npx skills add https://github.com/leoluyi/skills -g -a claude-code -y</code>
+      <button class="copy-btn" data-copy="npx skills add https://github.com/leoluyi/skills -g -a claude-code -y" aria-label="Copy install command">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span class="copy-label"><span class="l-en">Copy</span><span class="l-zh">複製</span></span>
+      </button>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>11</b><span><span class="l-en">Skills</span><span class="l-zh">個技能</span></span></div>
+      <div class="stat"><b>5</b><span><span class="l-en">Categories</span><span class="l-zh">分類</span></span></div>
+      <div class="stat"><b>3</b><span><span class="l-en">Agents supported</span><span class="l-zh">支援平台</span></span></div>
+      <div class="stat"><b>MIT</b><span><span class="l-en">Open source</span><span class="l-zh">開源授權</span></span></div>
+    </div>
+  </section>
+
+  <section class="catalog" id="catalog">
+    <div class="wrap">
+      <div class="section-head">
+        <h2><span class="l-en">Skill catalog</span><span class="l-zh">技能目錄</span></h2>
+        <p><span class="l-en">Search or filter by category. Click a card for when to use it — and when not.</span><span class="l-zh">用搜尋或分類篩選。點開卡片看何時該用、何時不該用。</span></p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter by category">
+      <button class="chip" data-cat="all" aria-pressed="true"><span class="l-en">All</span><span class="l-zh">全部</span><span class="count">11</span></button>
+      <button class="chip" data-cat="zh-writing-quality" aria-pressed="false"><span class="l-en">Traditional Chinese Writing Quality</span><span class="l-zh">繁中寫作品質</span><span class="count">3</span></button>
+      <button class="chip" data-cat="business-docs" aria-pressed="false"><span class="l-en">Taiwan Business Documents</span><span class="l-zh">台灣商務公文</span><span class="count">3</span></button>
+      <button class="chip" data-cat="content-creation" aria-pressed="false"><span class="l-en">Content Creation</span><span class="l-zh">內容創作</span><span class="count">2</span></button>
+      <button class="chip" data-cat="technical-docs" aria-pressed="false"><span class="l-en">Technical Documentation</span><span class="l-zh">技術文件</span><span class="count">1</span></button>
+      <button class="chip" data-cat="knowledge-mgmt" aria-pressed="false"><span class="l-en">Knowledge Management</span><span class="l-zh">知識管理</span><span class="count">2</span></button>
+      </div>
+    <section class="cat-group" data-cat="zh-writing-quality">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Traditional Chinese Writing Quality</span><span class="l-zh">繁中寫作品質</span></h3>
+      <p class="cat-blurb"><span class="l-en">Strip AI tells, mainland-China wording, and jargon so Traditional Chinese and English read like a person wrote them.</span><span class="l-zh">去掉 AI 味、陸用語和術語黑話，讓中英文讀起來像真人寫的。</span></p>
+      <div class="grid">
+      <article class="card" data-cat="zh-writing-quality" data-search="avoid-ai-writing-zh de-ai writing (english + zh-tw) 去除 ai 味（中英雙語） catches the tells that make english and traditional chinese read as machine-written, then rewrites them into human prose 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 de-ai traditional-chinese ai-isms zh-tw editing readme">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">✍️</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">De-AI Writing (English + zh-TW)</span><span class="l-zh">去除 AI 味（中英雙語）</span>
+              <code class="slug">avoid-ai-writing-zh</code>
+            </h3>
+            <div class="badges"><span class="badge lang">EN</span><span class="badge lang">繁中</span><span class="badge lang">中英</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose</span><span class="l-zh">揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it as a final de-AI pass before shipping a README, ADR, blog post, or any English/Chinese draft that reads machine-generated.</span><span class="l-zh">在 README、ADR、部落格或任何中英文草稿出稿前，當作去 AI 味的最後一關。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Skip it when you need to compose a piece or give it a human voice from scratch, which is blog-writing-zh's job; this skill removes tells but does not create voice.</span><span class="l-zh">若要從零寫文章或替它注入個人聲音，改用 blog-writing-zh；本 skill 只除味，不造聲音。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Three modes: rewrite, detect-only audit, or edit a file in place with minimal fixes</span><span class="l-zh">三種模式：改寫、只標記、直接改檔</span></li>
+        <li><span class="l-en">Traditional Chinese layer flags 空話, 確保 filler, 破折號濫用, and over-translated proper nouns</span><span class="l-zh">中文層抓空話、確保贅字、破折號濫用、生造譯名</span></li>
+        <li><span class="l-en">Detect-only structure audit names what a soulless draft is missing, not just bad phrases</span><span class="l-zh">偵測模式點出草稿缺什麼，不只挑錯句</span></li>
+        <li><span class="l-en">Signals not proof: tuned against false positives on non-native and technical writing</span><span class="l-zh">只當訊號不當判決，避免誤傷非母語與技術寫作</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#de-ai</span><span class="tag">#traditional-chinese</span><span class="tag">#ai-isms</span><span class="tag">#zh-tw</span><span class="tag">#editing</span><span class="tag">#readme</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/avoid-ai-writing-zh/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="zh-writing-quality" data-search="avoid-china-writing cross-strait chinese localizer 台灣正體中文在地化 strips mainland-china wording, jargon, and leaked simplified from traditional chinese and rewrites it into natural taiwan usage without over-correcting real terms 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，術語不誤傷 traditional-chinese taiwan-localization cross-strait zh-tw simplified-chinese de-jargon">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">🇹🇼</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Cross-Strait Chinese Localizer</span><span class="l-zh">台灣正體中文在地化</span>
+              <code class="slug">avoid-china-writing</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms</span><span class="l-zh">把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，術語不誤傷</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when a Traditional Chinese draft carries mainland wording, corp-speak, or leaked Simplified characters and you need it to read naturally for a Taiwan audience.</span><span class="l-zh">當一份繁體中文稿子夾雜陸用語、互聯網黑話或簡體字，要改成台灣讀者自然的正體中文時使用。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for stripping AI tells or polishing tone (use avoid-ai-writing-zh), formal business docs (formal-doc-structure), RFPs (rfp-writing), or plain-language rewrites (plain-speak).</span><span class="l-zh">不要用於去 AI 味或潤飾語氣（用 avoid-ai-writing-zh）、簽呈報告（用 formal-doc-structure）、RFP（用 rfp-writing）或白話翻譯（用 plain-speak）。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Catches 陸用語 across four axes: vocabulary, corp-speak jargon, leaked Simplified, transliterations</span><span class="l-zh">四軸偵測：詞彙、職場黑話、簡體殘留、音譯專名</span></li>
+        <li><span class="l-en">Three modes: detect-only audit, full rewrite, or in-place file edit</span><span class="l-zh">三種模式：只標不改、整段改寫、直接改檔案</span></li>
+        <li><span class="l-en">Ranks findings P0-P2 so you fix the loudest mainland-source giveaways first</span><span class="l-zh">P0–P2 分級，先改最明顯的陸源破綻</span></li>
+        <li><span class="l-en">Protects brand names, quotes, code, and genuine terms-of-art from over-correction</span><span class="l-zh">品牌名、引文、程式碼與術語自動保留不誤改</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#traditional-chinese</span><span class="tag">#taiwan-localization</span><span class="tag">#cross-strait</span><span class="tag">#zh-tw</span><span class="tag">#simplified-chinese</span><span class="tag">#de-jargon</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/avoid-china-writing/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="zh-writing-quality" data-search="plain-speak plain speak: jargon into plain language 把技術術語翻成白話 turn a technical term, snippet, or dense paragraph into one line your pm, exec, or customer can actually repeat back 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 plain-language traditional-chinese jargon-translation audience-translation zh-tw explain-to-pm">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">🗣️</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Plain Speak: Jargon into Plain Language</span><span class="l-zh">把技術術語翻成白話</span>
+              <code class="slug">plain-speak</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span><span class="badge lang">EN</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back</span><span class="l-zh">把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when you need to explain a technical term, code snippet, error, or dense engineering text to a non-technical reader, or to check whether a plain-language draft actually lands.</span><span class="l-zh">當你要把技術術語、程式碼、錯誤訊息或工程長文講給非技術讀者聽，或想檢查白話草稿夠不夠白時使用。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for de-AI voice cleanup (avoid-ai-writing-zh), structuring a whole formal doc like a 簽呈 or 報告 (formal-doc-structure), or an RFP (rfp-writing).</span><span class="l-zh">不要用於潤飾語氣、去 AI 味（用 avoid-ai-writing-zh），編排整份簽呈或報告（用 formal-doc-structure），或 RFP（用 rfp-writing）。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Pins the exact reader first: a CFO gets 財務影響, a salesperson gets 客戶好處</span><span class="l-zh">先鎖定讀者：CFO 談財務、業務談客戶好處，同一術語講法不同</span></li>
+        <li><span class="l-en">Delivers one repeat-test line: what it does and what it's for, no jargon</span><span class="l-zh">產出一句能複述的話：做什麼、為什麼，不靠術語解術語</span></li>
+        <li><span class="l-en">Reviews an existing draft against a 9-point checklist, marking each pass/fail</span><span class="l-zh">可審既有白話草稿，九項檢查逐條標 pass/fail</span></li>
+        <li><span class="l-en">Glosses terms inline (idempotent 冪等) and cuts empty modifiers like 大幅優化</span><span class="l-zh">就地標註術語（冪等），砍掉「大幅優化」這類空話</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#plain-language</span><span class="tag">#traditional-chinese</span><span class="tag">#jargon-translation</span><span class="tag">#audience-translation</span><span class="tag">#zh-tw</span><span class="tag">#explain-to-pm</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/plain-speak/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="cat-group" data-cat="business-docs">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Taiwan Business Documents</span><span class="l-zh">台灣商務公文</span></h3>
+      <p class="cat-blurb"><span class="l-en">Draft and review 簽呈, meeting records, assessment reports, RFPs, and briefing outlines in Taiwan corporate Traditional Chinese.</span><span class="l-zh">用台灣職場慣用的正體中文撰寫與審查簽呈、會議紀錄、評估報告、RFP 與說明提綱。</span></p>
+      <div class="grid">
+      <article class="card" data-cat="business-docs" data-search="briefing-outline briefing outline 說明提綱 distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into 把厚重的來源文件收斂成一份高空俯瞰的說明提綱，讓主管一眼掌握全貌、需要時再往下鑽 briefing-outline traditional-chinese executive-summary document-distillation taiwan-business mece">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">📑</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Briefing Outline</span><span class="l-zh">說明提綱</span>
+              <code class="slug">briefing-outline</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into</span><span class="l-zh">把厚重的來源文件收斂成一份高空俯瞰的說明提綱，讓主管一眼掌握全貌、需要時再往下鑽</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when you need to condense one or more source documents into a navigable briefing a manager or committee can grasp at a glance and drill into.</span><span class="l-zh">當你要把一份或多份來源文件收斂成主管或委員會能一眼掌握、又能往下鑽的說明提綱時使用。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for authoring a single formal doc from scratch (use formal-doc-structure), an RFP (rfp-writing), lowering one term to a lay reader (plain-speak), or pure de-AI cleanup (avoid-ai-writing-zh).</span><span class="l-zh">不要用於從零撰寫單一正式文件（用 formal-doc-structure）、RFP（用 rfp-writing）、白話化單一術語（用 plain-speak）或純去 AI 味（用 avoid-ai-writing-zh）。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Handles one long report or many docs: each part gets its essence, then points down for detail</span><span class="l-zh">跨多份文件或一份長報告，每段給足精華再往下指路</span></li>
+        <li><span class="l-en">Cuts detail that belongs in the source (SOP, 逐條標準, 配分) so the outline stays stable when sources churn</span><span class="l-zh">把逐條標準、SOP、逐項配分等細節下沉回來源，提綱穩定不亂</span></li>
+        <li><span class="l-en">MECE spine: every source maps to exactly one section, no overlap, full coverage</span><span class="l-zh">MECE 骨架：每份來源只落在一個章節，不重不漏</span></li>
+        <li><span class="l-en">Re-sync mode re-runs only the sections whose source docs changed</span><span class="l-zh">來源改版時，只重跑受影響的章節</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#briefing-outline</span><span class="tag">#traditional-chinese</span><span class="tag">#executive-summary</span><span class="tag">#document-distillation</span><span class="tag">#taiwan-business</span><span class="tag">#mece</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/briefing-outline/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="business-docs" data-search="formal-doc-structure formal internal doc structure 正式公文結構 turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs 把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走 traditional-chinese taiwan meeting-minutes approval-memo assessment-report business-docs">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">📄</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Formal Internal Doc Structure</span><span class="l-zh">正式公文結構</span>
+              <code class="slug">formal-doc-structure</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs</span><span class="l-zh">把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it to write or fix an internal business document in Taiwan corporate Traditional Chinese: approval memo, meeting record, assessment report, project plan, or vendor communication.</span><span class="l-zh">要撰寫或修整公司內部的簽呈、會議紀錄、評估報告、專案規劃或廠商溝通文件時用它。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for RFPs or bidding specs (use rfp-writing), pure language cleanup with no restructuring (use avoid-ai-writing-zh), or blog posts and marketing copy.</span><span class="l-zh">不要用在 RFP 或招標規格（改用 rfp-writing）、只做語言去 AI 味不動結構（改用 avoid-ai-writing-zh），或部落格與行銷文案。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Maps five reader needs (approve, assess, record, execute, coordinate) to a matching document template</span><span class="l-zh">依五種讀者需求（核准、評估、紀錄、執行、協調）套對應的文件範本</span></li>
+        <li><span class="l-en">Outputs a paste-ready draft with real sections, not a critique or an outline</span><span class="l-zh">直接產出可貼進文件的完整段落，不是給建議或列大綱</span></li>
+        <li><span class="l-en">Forces concrete owners, timelines, deliverables, and acceptance criteria into every activity</span><span class="l-zh">每項工作都要寫清楚負責單位、時程、交付物與驗收方式</span></li>
+        <li><span class="l-en">Runs a 10-point revision checklist plus an optional de-AI finishing pass before final output</span><span class="l-zh">收尾跑十點修訂檢查，並可選配去 AI 味的最後一道潤稿</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#traditional-chinese</span><span class="tag">#taiwan</span><span class="tag">#meeting-minutes</span><span class="tag">#approval-memo</span><span class="tag">#assessment-report</span><span class="tag">#business-docs</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/formal-doc-structure/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="business-docs" data-search="rfp-writing technical rfp writing &amp; review 技術 rfp 撰寫與審查 draft and review technical rfps from the issuer&#x27;s side, cutting redundant sections, appendix bloat, and ai filler 站在招標方立場撰寫與審查技術 rfp，砍掉重複章節、附錄灌水與 ai 填充語 rfp procurement requirement-spec traditional-chinese zh-tw de-ai">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">📋</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Technical RFP Writing &amp; Review</span><span class="l-zh">技術 RFP 撰寫與審查</span>
+              <code class="slug">rfp-writing</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler</span><span class="l-zh">站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when you draft or review a technical RFP (需求規格書 / 招標規格) as the issuing organization, not the bidder.</span><span class="l-zh">當你要以招標方身分撰寫或審查技術 RFP（需求規格書／招標規格）時使用。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Skip it for vendor bid responses (投標提案), migration/test plans, ADRs, meeting minutes, or pure de-AI cleanup (use avoid-ai-writing-zh).</span><span class="l-zh">投標提案、遷移／測試計畫、ADR、會議紀錄或純去 AI 味潤稿不要用（改用 avoid-ai-writing-zh）。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Structural audit that fixes misplaced sections, merges thin ones, and kills appendix bloat</span><span class="l-zh">結構審查：修正錯置章節、合併過薄段落、刪除附錄灌水</span></li>
+        <li><span class="l-en">Pain-point filter deletes requirements already met by general infrastructure</span><span class="l-zh">痛點過濾：一般基礎設施已涵蓋的需求就刪掉，只留領域專屬項目</span></li>
+        <li><span class="l-en">Language rules force every bullet into a full what/why sentence with section context</span><span class="l-zh">語言規則：每條需求都寫成說明 what/why 的完整句，段落先給脈絡</span></li>
+        <li><span class="l-en">Strips AI filler (確保, 從而, 賦能) while keeping legitimate RFP notation</span><span class="l-zh">禁用清單清掉『確保、從而、賦能』等 AI 填充，但保留正規 RFP 寫法</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#rfp</span><span class="tag">#procurement</span><span class="tag">#requirement-spec</span><span class="tag">#traditional-chinese</span><span class="tag">#zh-tw</span><span class="tag">#de-ai</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/rfp-writing/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="cat-group" data-cat="content-creation">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Content Creation</span><span class="l-zh">內容創作</span></h3>
+      <p class="cat-blurb"><span class="l-en">Turn notes or a bare topic into a human-voiced Taiwan-Chinese blog post, or a save-worthy infographic in SVG or HTML.</span><span class="l-zh">把筆記或一個題目變成有真人聲音的繁中部落格文，或做成讓人想收藏的資訊圖表。</span></p>
+      <div class="grid">
+      <article class="card" data-cat="content-creation" data-search="blog-writing-zh traditional chinese blog writer 繁中部落格寫作 turn notes, a talk, or a bare topic into a taiwan-chinese blog post that reads like a real person wrote it 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 traditional-chinese blog-writing zh-tw de-ai newsletter voice">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">✍️</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Traditional Chinese Blog Writer</span><span class="l-zh">繁中部落格寫作</span>
+              <code class="slug">blog-writing-zh</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it</span><span class="l-zh">把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">When you need to write or rewrite a Taiwan-Chinese blog post or newsletter, or turn Obsidian notes, talks, or foreign articles into a long-form zh-TW piece.</span><span class="l-zh">要寫或改寫繁中部落格文、電子報，或把 Obsidian 筆記、演講、外文文章變成中文長文時。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for formal memos (formal-doc-structure), RFPs (rfp-writing), explaining a single term in plain language (plain-speak), or pure de-AI cleanup with no restructuring (avoid-ai-writing-zh).</span><span class="l-zh">正式簽呈用 formal-doc-structure、RFP 用 rfp-writing、單一術語白話解釋用 plain-speak、純去 AI 味不動結構用 avoid-ai-writing-zh。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Two modes: compose from a topic, or rewrite Obsidian notes, talks, and foreign sources</span><span class="l-zh">兩種模式：從題目開寫，或改寫筆記、演講、外文來源</span></li>
+        <li><span class="l-en">Voice recipes modeled on 7 studied Taiwan and English blogs, tuned by reader and goal</span><span class="l-zh">風味配方取樣自七個台灣與英文部落格，依讀者與目的調整</span></li>
+        <li><span class="l-en">Length tiers, dual-draft merge for high-stakes pieces, and auto series-split suggestions</span><span class="l-zh">長度分檔、雙稿熔接、自動評估要不要拆成系列</span></li>
+        <li><span class="l-en">Ships the article plus 3-5 title/subtitle options, then runs a de-AI finishing pass</span><span class="l-zh">成品一定附 3-5 組標題副標，並跑一輪去 AI 味收尾</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#traditional-chinese</span><span class="tag">#blog-writing</span><span class="tag">#zh-tw</span><span class="tag">#de-ai</span><span class="tag">#newsletter</span><span class="tag">#voice</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/blog-writing-zh/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="content-creation" data-search="infographic-design infographic design 資訊圖表設計 design explanatory graphics people save and repost, as clean svg or a single html file 把主題做成讓人想收藏轉發的資訊圖表，輸出成乾淨的 svg 或單一 html 檔案 infographic svg diagram visual-communication bytebytego traditional-chinese">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">📊</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Infographic Design</span><span class="l-zh">資訊圖表設計</span>
+              <code class="slug">infographic-design</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span><span class="badge lang">EN</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Design explanatory graphics people save and repost, as clean SVG or a single HTML file</span><span class="l-zh">把主題做成讓人想收藏轉發的資訊圖表，輸出成乾淨的 SVG 或單一 HTML 檔案</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when you need an infographic, one-pager, timeline, comparison, or how-it-works diagram, or a visual recap of something just taught.</span><span class="l-zh">需要資訊圖表、懶人包、one-pager、時間軸、比較圖或流程圖解，或把剛教完的內容總結成一張圖時使用。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Skip it for standalone data charts, dashboards, BI tooling, slide decks, or plain-language term explanations; route those to a dataviz, pptx, or plain-speak flow instead.</span><span class="l-zh">純資料圖表、儀表板、BI 工具、投影片，或只想用白話解釋一個名詞時不要用它，改用 dataviz、pptx 或 plain-speak。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Plans the graphic and critiques that plan before building, so it isn't a templated default</span><span class="l-zh">先擬計畫再自我批判，才動手畫，避開樣板感的預設圖</span></li>
+        <li><span class="l-en">Draws palette, layout, and visual metaphor from the subject's own world for a distinctive look</span><span class="l-zh">配色、版面、視覺隱喻都取材自主題本身，做出獨特風格</span></li>
+        <li><span class="l-en">Three-level text hierarchy plus a deterministic gate that catches clipped text and weak contrast</span><span class="l-zh">三層文字階層加自動檢查，抓出爆版、文字被切、對比不足</span></li>
+        <li><span class="l-en">Handles ByteByteGo-style technical explainers and animated HTML learning recaps</span><span class="l-zh">支援 ByteByteGo 式技術圖解與動畫版學習總結 HTML</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#infographic</span><span class="tag">#svg</span><span class="tag">#diagram</span><span class="tag">#visual-communication</span><span class="tag">#bytebytego</span><span class="tag">#traditional-chinese</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/infographic-design/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="cat-group" data-cat="technical-docs">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Technical Documentation</span><span class="l-zh">技術文件</span></h3>
+      <p class="cat-blurb"><span class="l-en">Distill research into one Diátaxis reference doc, writing only what the material supports and flagging the gaps.</span><span class="l-zh">把研究成果收斂成一份 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出。</span></p>
+      <div class="grid">
+      <article class="card" data-cat="technical-docs" data-search="knowledge-doc-writing knowledge doc writing (diátaxis) diátaxis 知識文件寫作 turn research into one doc with four diátaxis blocks, writing only what the material supports and flagging gaps 把研究成果整理成四型 diátaxis 知識文件，素材撐得起才寫，缺口據實標出 diataxis traditional-chinese technical-docs knowledge-base self-learning zh-tw">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">📚</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Knowledge Doc Writing (Diátaxis)</span><span class="l-zh">Diátaxis 知識文件寫作</span>
+              <code class="slug">knowledge-doc-writing</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Turn research into one doc with four Diátaxis blocks, writing only what the material supports and flagging gaps</span><span class="l-zh">把研究成果整理成四型 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">When you want to distill a technical topic you studied or researched into one lasting reference doc split into tutorial, how-to, reference, and explanation.</span><span class="l-zh">當你想把自學或研究過的技術主題，整理成可長期參考、tutorial／how-to／reference／explanation 四型分離的知識文件時。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for internal memos or reports (use formal-doc-structure), RFPs (use rfp-writing), blog posts (use blog-writing-zh), or language-only de-AI cleanup (use avoid-ai-writing-zh).</span><span class="l-zh">不要用於簽呈／評估報告（用 formal-doc-structure）、RFP（用 rfp-writing）、部落格（用 blog-writing-zh）、或只做語言層去 AI 味（用 avoid-ai-writing-zh）。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Compass router assigns each material chunk to exactly one of four Diátaxis blocks</span><span class="l-zh">compass 兩問把每段素材路由到唯一一型區塊</span></li>
+        <li><span class="l-en">Writes only blocks the material supports and lists the rest as gaps, no fabricated filler</span><span class="l-zh">素材撐得起才寫，撐不起的型明列為缺口，不捏造空殼</span></li>
+        <li><span class="l-en">Four input modes: chat logs, raw sources, from-scratch research, existing-doc rewrites</span><span class="l-zh">支援四種輸入：對話紀錄、原始資料、從零研究、既有文件改寫</span></li>
+        <li><span class="l-en">Primary-source checks with as-of dating, plus a de-AI pass before shipping</span><span class="l-zh">強制查一手來源並標 as-of 時效，出稿前做去 AI 味</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#diataxis</span><span class="tag">#traditional-chinese</span><span class="tag">#technical-docs</span><span class="tag">#knowledge-base</span><span class="tag">#self-learning</span><span class="tag">#zh-tw</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/knowledge-doc-writing/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      </div>
+    </section>
+    <section class="cat-group" data-cat="knowledge-mgmt">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Knowledge Management</span><span class="l-zh">知識管理</span></h3>
+      <p class="cat-blurb"><span class="l-en">Learn a concept by being taught and quizzed, then file your own note into an Obsidian vault on PARA structure.</span><span class="l-zh">先教後考學懂一個概念，再把親手寫的筆記歸檔進 PARA 結構的 Obsidian 筆記庫。</span></p>
+      <div class="grid">
+      <article class="card" data-cat="knowledge-mgmt" data-search="learn-loop learn loop 結構化學習迴圈 get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your obsidian vault 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 obsidian obsidian learning-loop retrieval-practice knowledge-management note-taking source-verification">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">🔁</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Learn Loop</span><span class="l-zh">結構化學習迴圈</span>
+              <code class="slug">learn-loop</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span><span class="badge invoke"><span class="l-en">Invoke-only</span><span class="l-zh">手動叫用</span></span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault</span><span class="l-zh">先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when you want to genuinely learn a new technical concept and crystallize it into a permanent Obsidian note, not just skim an explanation.</span><span class="l-zh">當你想真正學懂一個新技術概念，並把它結晶成 Obsidian vault 裡的長期筆記時使用。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Skip it for reorganizing an already-distilled doc into Diátaxis blocks (use knowledge-doc-writing) or for a quick one-off explanation with no note to keep.</span><span class="l-zh">不要用於把已 distill 完的文件重整成 Diátaxis 區塊（改用 knowledge-doc-writing），或只想要一次性的口頭解釋。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Teaches from verified primary sources, then quizzes you with retrieval questions</span><span class="l-zh">從查證過的一手來源開講，再用回想題考你</span></li>
+        <li><span class="l-en">Never ghostwrites your note: you write it from memory while it pokes holes as a skeptic</span><span class="l-zh">不代寫筆記：你憑記憶寫，它只當懷疑論者挑洞</span></li>
+        <li><span class="l-en">Sorts each note into evergreen vs reference, wiring up wikilinks, MOCs, and frontmatter</span><span class="l-zh">自動分流 evergreen／reference，接好 wikilink 與 MOC</span></li>
+        <li><span class="l-en">Temp-vault fallback on machines without your vault, packaged to merge back later</span><span class="l-zh">沒有 vault 的機器改走 temp-vault，打包好之後併回</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#obsidian</span><span class="tag">#learning-loop</span><span class="tag">#retrieval-practice</span><span class="tag">#knowledge-management</span><span class="tag">#note-taking</span><span class="tag">#source-verification</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/learn-loop/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="knowledge-mgmt" data-search="obsidian-vault obsidian vault notes obsidian 筆記庫 search, create, and link notes in an obsidian vault that stays on para / johnny-decimal structure and wikilinks 在 obsidian 筆記庫搜尋、新增與串連筆記，維持 para 結構 obsidian wikilinks para johnny-decimal note-taking knowledge-management">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">🗂️</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Obsidian Vault Notes</span><span class="l-zh">Obsidian 筆記庫</span>
+              <code class="slug">obsidian-vault</code>
+            </h3>
+            <div class="badges"><span class="badge lang">中英</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks</span><span class="l-zh">在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">Reach for it when you want to find, create, or organize notes in your Obsidian vault.</span><span class="l-zh">要在 Obsidian 筆記庫裡搜尋、新增或整理筆記時用它。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for turning notes into a blog post (use blog-writing-zh) or a structured technical doc (use knowledge-doc-writing).</span><span class="l-zh">不是把筆記寫成部落格（用 blog-writing-zh）或技術文件（用 knowledge-doc-writing）的工具。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Search the whole vault by filename or content, skipping .obsidian internals</span><span class="l-zh">依檔名或內容搜尋整個筆記庫，略過 .obsidian</span></li>
+        <li><span class="l-en">Create notes in the right PARA / Johnny-Decimal folder with YAML frontmatter</span><span class="l-zh">在對的資料夾新增筆記，帶好 frontmatter</span></li>
+        <li><span class="l-en">Link notes with [[wikilinks]] and a ## Related section; dangling links are fine</span><span class="l-zh">用 [[wikilinks]] 串接筆記，空連結也 OK</span></li>
+        <li><span class="l-en">Find every backlink to a note with a single grep</span><span class="l-zh">一行 grep 找出任何筆記的反向連結</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#obsidian</span><span class="tag">#wikilinks</span><span class="tag">#para</span><span class="tag">#johnny-decimal</span><span class="tag">#note-taking</span><span class="tag">#knowledge-management</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/obsidian-vault/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      </div>
+    </section>
+      <p class="no-results" hidden><span class="l-en">No skills match your search.</span><span class="l-zh">沒有符合搜尋的技能。</span></p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div><span class="l-en">Built by Lu Yi · MIT licensed</span><span class="l-zh">作者 Lu Yi · MIT 授權</span></div>
+    <nav class="foot-links">
+      <a href="https://github.com/leoluyi/skills">GitHub</a>
+      <a href="https://github.com/leoluyi/skills/blob/main/README.md">README</a>
+      <a href="https://github.com/leoluyi/skills/blob/main/DEVELOPMENT.md"><span class="l-en">Authoring guide</span><span class="l-zh">撰寫指南</span></a>
+      <a href="skills.json">skills.json</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/app.js"></script>
