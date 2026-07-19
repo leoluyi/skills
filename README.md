@@ -9,9 +9,9 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#quick-start)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
-[![Live catalog](https://img.shields.io/badge/live-catalog-000?style=flat-square&logo=github)](https://leoluyi.github.io/skills/)
+[![Live catalog](https://img.shields.io/badge/live-catalog-000?style=flat-square&logo=github)](https://leoluyi.tw/skills/)
 
-**English** · [繁體中文](#繁體中文) · [Live catalog ↗](https://leoluyi.github.io/skills/)
+**English** · [繁體中文](#繁體中文) · [Live catalog ↗](https://leoluyi.tw/skills/)
 
 </div>
 
@@ -63,7 +63,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 
 ### Skill catalog
 
-11 skills across 5 categories. Browse the [interactive catalog ↗](https://leoluyi.github.io/skills/) or read any [`SKILL.md`](skills/) directly.
+11 skills across 5 categories. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 #### 🈺 Traditional Chinese Writing Quality
 
@@ -136,7 +136,7 @@ npx skills update --all
 
 ### 技能目錄
 
-11 個技能、5 個分類。可看[互動式目錄 ↗](https://leoluyi.github.io/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+11 個技能、5 個分類。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 #### 🈺 繁中寫作品質
 
