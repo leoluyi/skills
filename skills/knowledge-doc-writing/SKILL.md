@@ -47,7 +47,7 @@ metadata:
 
 **Mode D 意圖閘**（收到既有文件時，先過此閘，gate on 意圖不 gate on 動詞）：
 
-- **先過主題篩**：本模式只收技術知識文件。簽呈、會議紀錄、評估報告等行政文件即使格式再「外來」，轉交 `formal-doc-structure`——動詞是「改寫」不改變歸屬。
+- **先過主題篩**：本模式只收技術知識文件。簽呈、會議紀錄、評估報告等行政文件即使格式再「外來」，轉交 `formal-doc-structure`：動詞是「改寫」，不改變歸屬。
 - **意圖＝更新時效／併入新素材 → 定點修補（point-patch）**：保留輸入原形（即使原檔是本 skill 之前的四型或單一骨架），只改被時效／新素材影響的部分。**point-patch 路徑不進入 S2 compass，不重排整份。**
 - **意圖＝重整／重構 → 交 S2 compass 重建四型區塊**：把素材依 compass 重新路由。
 - 動筆前先問保守改寫或從零重產，不自行假設。文件出身辨識訊號（本 skill 骨架 vs 外來教學文／feature list／AI 代筆稿——流暢≠有骨架）、判錯的不對稱代價、四情境（重構／更新時效／併入新素材／品質升級）各自邊界、改寫說明格式，見 [references/rewrite.md](references/rewrite.md)。
@@ -78,23 +78,23 @@ metadata:
 
 ## S3. 四型區塊：撐得起才寫、寫足寫純
 
-依 S2 指派結果，**只寫有素材支撐的區塊**，每型守其邊界。缺口型只留一行缺口註記，不寫散文。四型完整產生規則、好壞示範、五件套 recipe、消化模組寫法、opt-in 附錄格式，見 [references/blocks.md](references/blocks.md)——**動手寫任一區塊前先讀它**。以下是各型邊界規格（純度不靠下沉檔，寫進完成準則）：
+依 S2 指派結果，**只寫有素材支撐的區塊**，每型守其邊界。缺口型只留一行缺口註記，不寫散文。四型完整產生規則、好壞示範、五件套 recipe、消化模組寫法、opt-in 附錄格式，見 [references/blocks.md](references/blocks.md)：**動手寫任一區塊前先讀它**。以下是各型邊界規格（純度不靠下沉檔，寫進完成準則）：
 
 - **explanation**（understanding-oriented，唯一可帶判斷的區塊）：What/Why 三段論述（功能定位／解決的問題／主要功能要求，寫成完整句段落，非名詞條列）＋**辯證比較五件套作 internal recipe**（定義→行為職責邊界→比較分析→邊界判斷表→決策框架，含「何時不該採用」有實質內容），**不自成頂層骨架**；ADR 決策理由（背景／選項／後果／依據）織入論述、回指前文事實，不另立獨立模組；心智模型與類比、常見誤解、論述紀律（每個判斷句有前文／理由／來源）。opt-in 附錄住此（見下）。
 - **reference**（information-oriented）：**describe-only**、中性、mirror 產品結構、含旗標與參數；無 recipe、無意見、無論述。
 - **tutorial**（learning-oriented）：單一安全直線、消除意外、第一人稱複數祈使（We…／Notice that…）；不解釋、不追求完整、不放真實世界分支。
 - **how-to**（task-oriented）：assume competence、goal-oriented、允許 if-then 條件分支；不教學、不離題；標題精確說出展示什麼。
 
-**opt-in 模組**（費曼式自述、待驗證問題清單）：預設關閉，住在 **explanation 區塊的附錄**，寫法在 blocks.md。放 explanation 由 compass 象限背書——費曼＝reflection-after-practice＝cognition＋at-study；待驗證＝理解缺口的工作紀錄，同屬 understanding-oriented。兩個啟用門：(a) 使用者明確要求（「幫我檢核理解／加費曼自述／待驗證清單」）；(b) 例外條款——輸入素材（如對話紀錄）內含使用者自己標記、不收就會遺失的未解問題，此時待驗證清單照收，每題附具體「怎麼驗證」。正式文件模式一律不出現。
+**opt-in 模組**（費曼式自述、待驗證問題清單）：預設關閉，住在 **explanation 區塊的附錄**，寫法在 blocks.md。放 explanation 由 compass 象限背書：費曼＝reflection-after-practice＝cognition＋at-study；待驗證＝理解缺口的工作紀錄，同屬 understanding-oriented。兩個啟用門：(a) 使用者明確要求（「幫我檢核理解／加費曼自述／待驗證清單」）；(b) 例外條款——輸入素材（如對話紀錄）內含使用者自己標記、不收就會遺失的未解問題，此時待驗證清單照收，每題附具體「怎麼驗證」。正式文件模式一律不出現。
 
-**完成準則**：凡有素材支撐的型皆寫到其邊界純度——reference 無論述無 recipe；explanation 為論述、五件套為內部 recipe（頂層出現獨立五件套骨架即失敗）、「何時不該採用」有實質內容；tutorial 為單一安全直線、無真實世界分支、無解釋；how-to 假設已具能力、允許 if-then、不教學；缺口型逐一為一行缺口註記；opt-in 模組僅在啟用時出現於 explanation 附錄、正式文件模式不出現。
+**完成準則**：凡有素材支撐的型皆寫到其邊界純度：reference 無論述無 recipe；explanation 為論述、五件套為內部 recipe（頂層出現獨立五件套骨架即失敗）、「何時不該採用」有實質內容；tutorial 為單一安全直線、無真實世界分支、無解釋；how-to 假設已具能力、允許 if-then、不教學；缺口型逐一為一行缺口註記；opt-in 模組僅在啟用時出現於 explanation 附錄、正式文件模式不出現。
 
 ## S4. 維持區塊分離
 
 寫完後自審 map 預測的**兩對相鄰混淆**（相鄰型共享一維，最易混）：
 
-- **tutorial ↔ how-to**（同屬 action，差在 **at-study vs at-work**）——最致命，擋在新手面前。把跑進 tutorial 的真實世界分支抽回 how-to。
-- **reference ↔ explanation**（同含 propositional knowledge，差在 **describe vs discuss**）——把跑進 reference 的論述抽回 explanation。
+- **tutorial ↔ how-to**（同屬 action，差在 **at-study vs at-work**）：最致命，擋在新手面前。把跑進 tutorial 的真實世界分支抽回 how-to。
+- **reference ↔ explanation**（同含 propositional knowledge，差在 **describe vs discuss**）：把跑進 reference 的論述抽回 explanation。
 
 跨型內容改為**連結互指**，不 inline 混寫。兩對的分辨測試細節見 [references/blocks.md](references/blocks.md)。
 
@@ -104,7 +104,7 @@ metadata:
 
 跨型共用、與路由無關的規則，寫任一區塊時皆套用：
 
-- **白話優先，讀者一遍讀懂**。用平實的話講清楚，勝過堆術語、繞公文腔、寫長難句。正式文件模式收斂的是口吻（客觀陳述、不用第一人稱），不是把句子寫難——規格手冊風格照樣白話。白話不等於簡寫：名詞與動詞都用完整的詞、語句寫成完整句。
+- **白話優先，讀者一遍讀懂**。用平實的話講清楚，勝過堆術語、繞公文腔、寫長難句。正式文件模式收斂的是口吻（客觀陳述、不用第一人稱），不是把句子寫難；規格手冊風格照樣白話。白話不等於簡寫：名詞與動詞都用完整的詞、語句寫成完整句。
 - **術語保留英文**（API、sidecar、control plane）是台灣技術寫作慣例；無定譯的專有名詞不生造中文譯名。
 - **三層承接**（章節／段落／條列，適用所有區塊的條列，不限 explanation）：章節開頭一句交代與前節關係；段落間用承接詞或回指交代因果；條列前有**引導句**（交代這份清單是什麼的集合、並列窮舉／依序／互斥）、順序有意義就**明說**、後有**收束句**接回論述。檢驗法：打亂順序重讀若讀不出差別、引導句卻聲稱有順序，代表該層級的邏輯關係不存在。
 - **一句話開頭 + 一段話總結**：開頭收一個 blockquote（一句話定義＋文件範圍行＋「更新至 YYYY-MM」）；文末收一段話總結（三行內講完定義、強弱項、決策法則）。
@@ -117,7 +117,7 @@ metadata:
 
 ## S6. 完稿檢查：功能性先於深層
 
-兩層品質閘，寫作期即累積、交件前收斂。**deep quality is conditional upon functional quality**——順序不能顛倒。
+兩層品質閘，寫作期即累積、交件前收斂。**deep quality is conditional upon functional quality**，順序不能顛倒。
 
 ### 功能性品質（硬約束，先過）
 
@@ -134,7 +134,7 @@ accuracy／completeness／consistency／usefulness／precision。逐項：
 ### cycle-of-needs 覆蓋與 complete≠finished
 
 - **四型覆蓋檢查**：一個技術主題天然產生四種需求（想上手／想完成任務／想查參數／想懂原理）。確認四型皆「覆蓋或明列缺口」，無靜默遺漏；無空殼區塊。
-- **complete ≠ finished**：文件永遠在演化，但隨時可以是 complete——對使用者有用、符合現階段、結構健康。每型當下有用即可獨立發布，**由內而外從最撐得起的型長出，不先搭四殼再填**。
+- **complete ≠ finished**：文件永遠在演化，但隨時可以是 complete：對使用者有用、符合現階段、結構健康。每型當下有用即可獨立發布，**由內而外從最撐得起的型長出，不先搭四殼再填**。
 
 ### deep quality（功能性全過後才評）
 
