@@ -119,7 +119,7 @@ SKILL.md 收斂為 7 節（S0 前言 + S1 開工/Mode D 意圖閘 + S2 compass �
 
 實作期三個 open question 的定案（使用者授權代決）：
 
-1. **去 AI 味可攜化（唯一的 v1.3.1 行為變更）**：原本硬性以 `avoid-ai-writing-zh` 的 detect 當載重完稿門，違反 repo「sibling 不得載重」硬規。改為 SKILL.md S6 內建一份精簡去 AI 味判準清單為真相來源，有 sibling 則跑其 detect 加速、否則跑內建清單。sibling 不可載入時核心產出仍完成。
+1. **去 AI 味可攜化（唯一的 v1.3.1 行為變更）**：原本硬性以 `avoid-ai-writing-zh` 的 detect 當載重完稿門，違反 repo「sibling 不得載重」硬規。改為：**可用時優先呼叫 `avoid-ai-writing-zh`**（它是權威工具），不可載入時 fallback 到 SKILL.md S6 內建的精簡判準清單。sibling 為可選、非前置依賴，核心產出可獨立完成（符合硬規），可用時仍用最好的工具——不是把 sibling 降級成內建清單的加速器。
 2. **references 整併**：`modules.md` + `skeletons.md` 併入 `blocks.md`（依 Diátaxis 型別重排、消化模組全落 explanation），最終三個下沉檔 `blocks.md`／`rewrite.md`／`html.md`（約 67 行 CSS 從正文抽進 html.md 瘦身）。
 3. **迭代工作模式**：折進 S6 當子節（complete≠finished／由內而外生長／cycle-of-needs 覆蓋），不獨立成節，保持 spine tight。
 
