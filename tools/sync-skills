@@ -4,6 +4,27 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$REPO_ROOT/skills"
 
+# --force/-f: replace real directories (non-symlinks) at the destination with
+# per-skill symlinks instead of skipping them with a WARN. Destructive — the
+# existing directory is removed, so only use it when this repo is the source of
+# truth for those skills.
+FORCE=0
+for arg in "$@"; do
+  case "$arg" in
+    -f|--force) FORCE=1 ;;
+    -h|--help)
+      echo "usage: sync-skills [-f|--force]"
+      echo "  -f, --force   replace real directories at the destination with symlinks"
+      exit 0
+      ;;
+    *)
+      echo "error: unknown argument: $arg" >&2
+      echo "usage: sync-skills [-f|--force]" >&2
+      exit 2
+      ;;
+  esac
+done
+
 # Per-tool skills trees to bridge. Each gets its own per-skill symlinks so this
 # repo stays the single source of truth across tools:
 #   ~/.claude/skills — Claude Code (also read by Cursor)
@@ -38,7 +59,13 @@ sync_tree() {
       ln -sfn "$skill_path" "$target"
       echo "linked: $dst/$name"
     elif [[ -e "$target" ]]; then
-      echo "WARN: $target is a real directory, not a symlink — skipping. Remove or rename it manually if you want sync-skills to manage it." >&2
+      if [[ "$FORCE" -eq 1 ]]; then
+        rm -rf -- "$target"
+        ln -s "$skill_path" "$target"
+        echo "replaced (real dir): $dst/$name"
+      else
+        echo "WARN: $target is a real directory, not a symlink — skipping. Re-run with -f/--force to replace it, or remove/rename it manually." >&2
+      fi
     else
       ln -s "$skill_path" "$target"
       echo "linked: $dst/$name"
