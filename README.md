@@ -2,11 +2,11 @@
 
 # My Skills
 
-**My personal collection of portable agent skills and tooling.**
+**Agent skills that write Traditional Chinese like a real person — straight from my `~/.skills`.**
 
 [![Skills](https://img.shields.io/badge/skills-11-6d4aff?style=flat-square)](#skill-catalog)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
-[![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#quick-start)
+[![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-second-setup)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
 [![Live catalog](https://img.shields.io/badge/live-catalog-000?style=flat-square&logo=github)](https://leoluyi.tw/skills/)
 
@@ -20,6 +20,15 @@ Today the skills lean toward **Traditional Chinese writing** — de-AI editing, 
 
 ---
 
+## Why these exist
+
+Most AI-writing tooling assumes English. For a **Taiwan** audience it leaves gaps these skills close:
+
+- **English-only defaults.** De-AI editors, tone checkers, and style tools are tuned for English and miss the tells in Chinese entirely.
+- **Generic zh, not Taiwan zh.** "Chinese" support usually means mainland usage. These write the way people actually write in Taiwan.
+- **Leaked mainland wording & Simplified.** 陸用語, 互聯網黑話, and stray 簡體字 slip into Traditional Chinese; the localizer catches them without over-correcting real terms.
+- **AI tells & corporate jargon.** The uniform rhythm, hedging, and filler that give machine text away — stripped, in both languages.
+
 ## What's here
 
 - **Portable by design.** Every skill runs on Claude Code *and* Codex (and any [agentskills.io](https://agentskills.io)-compatible agent). No external tools or APIs required; tool-specific power is never load-bearing.
@@ -27,7 +36,9 @@ Today the skills lean toward **Traditional Chinese writing** — de-AI editing, 
 - **Earns its place.** A skill ships only if it beats its no-skill baseline on a real eval. No bar-clearing eval, no skill.
 - **Currently writing-heavy.** The catalog below is Taiwan-first Chinese writing — de-AI editing, 陸用語 → 台灣用語 localization, plain-language rewrites, blogs, and 簽呈/RFP/評估報告 docs — plus infographics and Diátaxis knowledge docs. Scope is open, not fixed.
 
-## Quick start
+## 30-second setup
+
+Two paths — a networked one-liner, or offline per-skill symlinks (below).
 
 Install every skill onto a machine with one command:
 
@@ -60,7 +71,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 
 ## Skill catalog
 
-11 skills across 5 categories. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+11 skills across 5 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing Quality
 

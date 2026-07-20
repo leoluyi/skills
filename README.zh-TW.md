@@ -2,11 +2,11 @@
 
 # My Skills
 
-**我個人的可攜 agent 技能與工具集合。**
+**寫出像真人的正體中文的 agent 技能——直接來自我的 `~/.skills`。**
 
 [![Skills](https://img.shields.io/badge/skills-11-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
-[![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#快速開始)
+[![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
 [![Live catalog](https://img.shields.io/badge/live-catalog-000?style=flat-square&logo=github)](https://leoluyi.tw/skills/)
 
@@ -20,6 +20,15 @@
 
 ---
 
+## 為什麼有這些
+
+市面上的 AI 寫作工具幾乎都預設英文。對**台灣**讀者來說，它們留下的缺口正是這些技能要補的：
+
+- **只顧英文**：去 AI 味、語氣檢查、風格工具都對著英文調校，完全抓不到中文裡的破綻。
+- **通用中文，不是台灣中文**：所謂的「中文」支援通常是大陸用法。這些技能照台灣人實際的寫法寫。
+- **混進來的陸用語與簡體**：陸用語、互聯網黑話、殘留簡體字會滲進正體中文；在地化技能抓得出來，又不誤傷真正的術語。
+- **AI 味與職場黑話**：那種一致的節奏、模稜兩可和填充語——中英文都幫你清掉。
+
 ## 這裡有什麼
 
 - **天生可攜**：每個技能都能在 Claude Code 和 Codex（以及任何相容 [agentskills.io](https://agentskills.io) 的 agent）上跑。不需外部工具或 API，工具專屬功能不會是必要條件。
@@ -27,7 +36,9 @@
 - **要贏過 baseline**：技能要在真實 eval 上贏過「不用技能」才會上架。沒過 eval，不上架。
 - **目前以寫作為主**：下面的目錄是台灣優先的中文寫作——去 AI 味、陸用語轉台灣用語、白話翻譯、部落格、簽呈／RFP／評估報告——再加上資訊圖表與 Diátaxis 知識文件。範圍是開放的，不是固定的。
 
-## 快速開始
+## 30 秒安裝
+
+兩條路——連網一行指令，或離線的逐一技能 symlink（見下方）。
 
 一行指令，把所有技能裝到一台機器：
 
@@ -55,7 +66,7 @@ tools/sync-skills
 
 ## 技能目錄
 
-11 個技能、5 個分類。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+11 個技能、5 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作品質
 
