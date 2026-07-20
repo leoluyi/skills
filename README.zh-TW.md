@@ -65,6 +65,7 @@ tools/sync-skills
 
 `tools/sync-skills` 會把每個 `skills/<name>/` 分別連進 `~/.claude/skills/<name>/`（Claude Code、Cursor）與 `~/.agents/skills/<name>/`（Codex、OpenHands），拒絕覆蓋真實目錄，並清掉失效的連結。
 
+<!-- CATALOG:START -->
 ## 技能目錄
 
 11 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
@@ -101,6 +102,7 @@ tools/sync-skills
 |---|---|
 | **結構化學習迴圈**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian |
 | **Obsidian 筆記庫**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | 在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構 |
+<!-- CATALOG:END -->
 
 ---
 
@@ -137,6 +139,7 @@ tools/sync-skills
 | `tools/sync-skills` | 為每個技能建立 symlink，連進 `~/.claude/skills/`（Claude Code、Cursor）**與** `~/.agents/skills/`（Codex、OpenHands）。離線／內網替代做法。 |
 | `tools/archive-skill <name>` | 用 `git mv` 把技能（含 evals）搬進 `_archive/`。 |
 | `tools/usage-report [days]` | 統計 `~/.claude/projects/` transcript 裡的技能觸發次數。預設 90 天。 |
+| `tools/build-docs` | 從 `skills/*/catalog.md` 重新產生 `docs/index.html`、`docs/skills.json`，以及兩份 README 的技能目錄表格。 |
 
 硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[engineering-guidelines.md](engineering-guidelines.md)**。要貢獻，先看 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
 

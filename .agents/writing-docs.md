@@ -1,83 +1,60 @@
 # Writing catalog entries
 
-This repo has no per-skill hosted docs page. The equivalent surface is a **catalog entry** — three artifacts, kept in sync, describing the same skill:
+This repo has no per-skill hosted docs page. The equivalent surface is a **catalog entry** — one Markdown source file that `tools/build-docs` renders into every surface that shows it:
 
-- **`README.md`** — one row in the `## Skill catalog` table, under the matching `###` category heading. English.
-- **`README.zh-TW.md`** — the mirrored row in the Traditional Chinese translation of the same README. Full parity, not a stub.
-- **`docs/index.html`** — one `<article class="card">`, plus its filter entry, in the interactive catalog at `https://leoluyi.tw/skills/`.
-- **`docs/skills.json`** — the machine-readable twin of the same card content (used by `npx skills` and any tool reading the catalog programmatically).
+- **`skills/<slug>/catalog.md`** — the single source of truth. YAML front matter holding the skill's bilingual title, tagline, when-to-use / when-not, and highlights.
+- **`README.md`** / **`README.zh-TW.md`** — the `## Skill catalog` / `## 技能目錄` sections, generated between `<!-- CATALOG:START -->` / `<!-- CATALOG:END -->` markers.
+- **`docs/index.html`** — the interactive catalog at `https://leoluyi.tw/skills/`. Generated; not committed (gitignored, built by CI).
+- **`docs/skills.json`** — the machine-readable twin (used by `npx skills` and any tool reading the catalog programmatically). Generated; not committed.
 
-None of these is generated from the others — no build script produces them from `SKILL.md`. Editing one and forgetting the rest is the standard way this drifts; treat all four writes (three files, since the two READMEs are one edit each) as one change.
+`docs/catalog.yml` holds the four category definitions (bilingual label + blurb, and an optional `readmeNote`) that every skill's `category` field points into.
 
-Act whenever a skill is added, renamed, recategorized, or has its trigger/description changed enough that the one-liner or highlights go stale.
+Act whenever a skill is added, renamed, recategorized, or has its trigger/description changed enough that the tagline or highlights go stale — edit `skills/<slug>/catalog.md`, then run:
 
-## The four surfaces
+```bash
+uv run tools/build-docs
+```
 
-### `README.md` row
+This regenerates `docs/index.html`, `docs/skills.json`, and both README catalog sections in one pass. Commit the `catalog.md` change and the regenerated READMEs; `docs/index.html` / `docs/skills.json` are rebuilt by the GitHub Pages workflow (`.github/workflows/pages.yml`) on every push to `main`, so don't hand-edit or commit them.
+
+## `skills/<slug>/catalog.md`
 
 ```markdown
-| **<Display Name>**<br>[`<slug>`](skills/<slug>/SKILL.md) | <one-line what-it-does> |
+---
+emoji: "✍️"
+category: <catalog.yml category key>
+order: <int — position within the category's card/table list>
+languages: [en, zh-TW, mixed]   # any subset; drives the EN/繁中/中英 badges, in this order
+tags: [tag-one, tag-two, ...]
+title:    { en: "<Display Name>", zh: "<顯示名稱>" }
+tagline:  { en: "<one-liner>", zh: "<一句話>" }         # used verbatim as the README row too
+whenUse:  { en: "...", zh: "..." }
+whenNot:  { en: "...", zh: "..." }
+highlights:
+  en: ["...", "...", "...", "..."]   # 3-5 bullets naming actual mechanisms, never adjectives
+  zh: ["...", "...", "...", "..."]
+---
 ```
 
-Append `` `invoke-only` `` after the link when the skill sets `disable-model-invocation: true` in its frontmatter (the repo's actual invocation split — see the frontmatter, not a separate doc convention). Place the row under the correct `###` category heading; if none fits, that is a signal to propose a new category, not to force-fit one.
+`invokeOnly` is **not** a field here — the generator reads it straight from the skill's own `SKILL.md` frontmatter (`disable-model-invocation: true`), so there is nothing to keep in sync.
 
-### `README.zh-TW.md` row
+**"When to use" / "When not to"** mirror the skill's own routing lines — if `SKILL.md`'s description already states "不要用於 X（用 Y）", that boundary belongs here verbatim in substance, not reinvented. **Highlights** are 3-5 bullets naming the skill's actual mechanisms (modes, gates, what it protects against) — never marketing adjectives with nothing behind them.
 
-Same row, in Traditional Chinese, in the matching category section of that file. This is a parallel document, not a linked reference — every English README edit needs its zh-TW twin or the two drift out of parity.
+`tagline` is the **only** description surfaced everywhere (card, `skills.json`, README row, and the page's JSON-LD `description`). Keep it accurate to all four; don't write a shorter "card" version and a longer "README" version — that duplication is exactly the drift this generator exists to remove.
 
-### `docs/index.html` card
+## `docs/catalog.yml`
 
-```html
-<article class="card" data-cat="<category-key>" data-search="<slug> <name-en> <name-zh> <tagline-en> <tagline-zh> <tags...>">
-  <div class="card-top">
-    <div class="emoji" aria-hidden="true"><emoji></div>
-    <div>
-      <h3 class="card-title"><span class="l-en"><Name></span><span class="l-zh"><名稱></span>
-        <code class="slug"><slug></code>
-      </h3>
-      <div class="badges"><span class="badge lang"><繁中|EN></span><!-- + <span class="badge invoke"><span class="l-en">Invoke-only</span><span class="l-zh">手動叫用</span></span> if invoke-only --></div>
-    </div>
-  </div>
-  <p class="tagline"><span class="l-en"><one-liner></span><span class="l-zh"><一句話>></span></p>
-  <details>
-    <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
-    <div class="detail-block">
-      <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
-      <p><span class="l-en">...</span><span class="l-zh">...</span></p>
-      <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
-      <p><span class="l-en">...</span><span class="l-zh">...</span></p>
-      <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
-      <ul>
-        <li><span class="l-en">...</span><span class="l-zh">...</span></li>
-      </ul>
-    </div>
-  </details>
-  <div class="tags"><span class="tag">#tag</span>...</div>
-  <div class="card-foot">
-    <a href="https://github.com/leoluyi/skills/blob/main/skills/<slug>/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
-  </div>
-</article>
-```
-
-Every span comes in an `.l-en`/`.l-zh` pair — never English-only or zh-only prose inside a card; the page's language toggle depends on both existing. `data-cat` must be one of the existing keys in the `.filters` block (currently `zh-writing-quality`, `business-docs`, `docs-design`, `knowledge-mgmt`) or a newly added one, wired into the filter buttons at the same time. `data-search` is the free-text index the client-side search matches against — pack it with the slug, both-language names, both-language tagline, and tag words; this is the one field that tolerates redundancy, since it exists purely to be matched, never read.
-
-**"When to use" / "When not to"** mirror the skill's own routing lines — if the `SKILL.md` description already states "不要用於 X（用 Y）", that boundary belongs here verbatim in substance, not reinvented. **Highlights** are 3-5 bullets naming the skill's actual mechanisms (modes, gates, what it protects against) — never marketing adjectives with nothing behind them.
-
-### `docs/skills.json` entry
-
-Add the skill's slug to its category's `slugs` array, and add its full record to the flat entry list (mirrors the card's `l-en`/`l-zh` fields plus `skillUrl`). Bump the top-level `count`. Keep field order and nesting consistent with neighboring entries — this file has no schema validation, so a malformed entry fails silently at read time, not at write time.
+Add a category here before pointing any skill's `category` field at it — the generator hard-fails on an unknown category key. `readmeNote` is optional: a short bilingual sentence rendered under the `###` heading in the README only (used today for `docs-design`'s "no Chinese required" note); omit it unless a category genuinely needs an editorial aside beyond its `blurb`.
 
 ## Conventions
 
-- Explain the **why** and the **boundary**, not the mechanism. A card orients a reader deciding whether to reach for this skill; it never reproduces `SKILL.md`'s internal steps or reference tables.
-- Bilingual is not optional on any of the four surfaces. A skill that is English-only in practice (e.g. `infographic-design`) still gets both `.l-en`/`.l-zh` spans on the card — the *site* is bilingual even where a given skill's own output isn't.
-- Keep the entry itself low-load: a tagline that already says the job doesn't need a Highlights bullet restating it in other words.
+- Bilingual is not optional — every text field needs both `en` and `zh`; the generator validates this and fails loudly rather than emitting a half-empty card.
+- `order` controls display order within a category (cards, filters, README table rows); it does not need to be dense or globally unique, only locally ordered.
+- The flat `skills` array inside `docs/skills.json` (and the page's JSON-LD `itemListElement`) is sorted alphabetically by slug, independent of category/`order` — this matches the pre-generator format and is what any external consumer parsing that array should expect.
 
 ## Done when
 
-- All four surfaces (`README.md`, `README.zh-TW.md`, `docs/index.html` card + filters, `docs/skills.json`) mention the skill, agree on its name, category, and one-liner, and none is missing.
-- The `invoke-only` tag/badge is present on all three surfaces if and only if the skill's frontmatter sets `disable-model-invocation: true`.
-- Every link (`skills/<slug>/SKILL.md` in READMEs, the full GitHub URL in the card and `skills.json`) resolves.
-- `docs/skills.json`'s top-level `count` matches the actual number of skills, and the new slug appears in exactly one category's `slugs` array.
-- The card's `data-cat` matches an existing (or newly wired) filter key, and `data-search` includes the slug, both-language name, and both-language tagline.
-- "When to use" / "When not to" reflect the skill's real routing boundary against its nearest siblings, not a generic description.
+- `uv run tools/build-docs` exits 0 with no validation errors, and its "generated N skills across M categories" line matches the actual count.
+- `git diff` shows the expected `catalog.md` change plus the regenerated `README.md` / `README.zh-TW.md` catalog sections — nothing else.
+- The `invoke-only` badge/table-suffix appears if and only if the skill's `SKILL.md` sets `disable-model-invocation: true`.
+- Every link (`skills/<slug>/SKILL.md` in READMEs, the full GitHub URL in `skillUrl`) resolves.

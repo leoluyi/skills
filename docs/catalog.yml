@@ -1,0 +1,32 @@
+site:
+  name: leoluyi/skills
+  repo: https://github.com/leoluyi/skills
+  site: https://leoluyi.tw/skills/
+
+categories:
+  - key: zh-writing-quality
+    label: { en: "Traditional Chinese Writing", zh: "繁中寫作" }
+    blurb:
+      en: "Clean AI tells, mainland-China wording, and jargon, or draft a blog from scratch, so Traditional Chinese reads like a person wrote it."
+      zh: "去掉 AI 味、陸用語和術語黑話，或從零寫出一篇部落格，讓繁體中文讀起來像真人寫的。"
+
+  - key: business-docs
+    label: { en: "Taiwan Business Documents", zh: "台灣商務公文" }
+    blurb:
+      en: "Draft and review 簽呈, meeting records, assessment reports, RFPs, and briefing outlines in Taiwan corporate Traditional Chinese."
+      zh: "用台灣職場慣用的正體中文撰寫與審查簽呈、會議紀錄、評估報告、RFP 與說明提綱。"
+
+  - key: docs-design
+    label: { en: "Docs & Design", zh: "文件與設計" }
+    blurb:
+      en: "Language-agnostic professional tools: save-worthy explanatory graphics in SVG or HTML, and engineering-grade Diátaxis knowledge docs."
+      zh: "跨語言的專業工具：讓人想收藏的說明圖表（SVG 或 HTML），以及工程等級的 Diátaxis 知識文件。"
+    readmeNote:
+      en: "Language-agnostic professional tools that stand on their own — no Chinese required."
+      zh: "跨語言的專業工具，能獨當一面，不需要中文也能用。"
+
+  - key: knowledge-mgmt
+    label: { en: "Knowledge Management", zh: "知識管理" }
+    blurb:
+      en: "Learn a concept by being taught and quizzed, then file your own note into an Obsidian vault on PARA structure."
+      zh: "先教後考學懂一個概念，再把親手寫的筆記歸檔進 PARA 結構的 Obsidian 筆記庫。"

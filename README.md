@@ -70,6 +70,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 
 </details>
 
+<!-- CATALOG:START -->
 ## Skill catalog
 
 11 skills across 4 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
@@ -106,6 +107,7 @@ Language-agnostic professional tools that stand on their own — no Chinese requ
 |---|---|
 | **Learn Loop**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault |
 | **Obsidian Vault Notes**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks |
+<!-- CATALOG:END -->
 
 ---
 
@@ -142,6 +144,7 @@ tools/sync-skills
 | `tools/sync-skills` | Per-skill symlinks into `~/.claude/skills/` (Claude Code, Cursor) **and** `~/.agents/skills/` (Codex, OpenHands). Offline / airgapped fallback. |
 | `tools/archive-skill <name>` | `git mv` a skill (and its evals) to `_archive/`. |
 | `tools/usage-report [days]` | Count skill triggers in `~/.claude/projects/` transcripts. Default 90 days. |
+| `tools/build-docs` | Regenerate `docs/index.html`, `docs/skills.json`, and both READMEs' catalog tables from `skills/*/catalog.md`. |
 
 The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full authoring guide — anatomy, frontmatter gotchas, naming, portability, and test discipline — is in **[engineering-guidelines.md](engineering-guidelines.md)**. To contribute, start with **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 

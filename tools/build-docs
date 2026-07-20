@@ -1,0 +1,337 @@
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.11"
+# dependencies = ["pyyaml"]
+# ///
+"""Generate docs/index.html, docs/skills.json, and the README catalog
+tables from skills/<slug>/catalog.md + docs/catalog.yml.
+
+skills/<slug>/catalog.md (front matter only) is the single source of truth
+for a skill's public-facing 說明. Nothing else should be hand-edited for a
+routine catalog update — see .agents/writing-docs.md.
+
+Usage:
+  uv run tools/build-docs           # write docs/index.html, docs/skills.json,
+                                     # and the catalog sections of both READMEs
+  uv run tools/build-docs --check   # write nothing; exit 1 if outputs would change
+"""
+from __future__ import annotations
+
+import html
+import json
+import re
+import sys
+from pathlib import Path
+
+import yaml
+
+REPO = Path(__file__).resolve().parent.parent
+SKILLS_DIR = REPO / "skills"
+DOCS_DIR = REPO / "docs"
+CATALOG_YML = DOCS_DIR / "catalog.yml"
+TEMPLATE = DOCS_DIR / "index.template.html"
+
+LANG_BADGE = {"en": "EN", "zh-TW": "繁中", "mixed": "中英"}
+BILINGUAL_FIELDS = ("title", "tagline", "whenUse", "whenNot")
+MARKER_RE = {
+    "en": re.compile(r"(<!-- CATALOG:START -->\n).*?(\n<!-- CATALOG:END -->)", re.S),
+    "zh": re.compile(r"(<!-- CATALOG:START -->\n).*?(\n<!-- CATALOG:END -->)", re.S),
+}
+
+
+def split_frontmatter(text: str) -> dict:
+    m = re.match(r"^---\n(.*?)\n---\n?", text, re.S)
+    if not m:
+        raise ValueError("missing frontmatter block")
+    return yaml.safe_load(m.group(1)) or {}
+
+
+def load_skill(catalog_path: Path) -> dict:
+    slug = catalog_path.parent.name
+    data = split_frontmatter(catalog_path.read_text(encoding="utf-8"))
+
+    for field in BILINGUAL_FIELDS:
+        val = data.get(field)
+        if not isinstance(val, dict) or "en" not in val or "zh" not in val:
+            raise ValueError(f"{slug}: field '{field}' needs both en and zh")
+    hl = data.get("highlights")
+    if not isinstance(hl, dict) or "en" not in hl or "zh" not in hl:
+        raise ValueError(f"{slug}: 'highlights' needs both en and zh lists")
+
+    skill_md = catalog_path.parent / "SKILL.md"
+    fm = split_frontmatter(skill_md.read_text(encoding="utf-8"))
+    invoke_only = bool(fm.get("disable-model-invocation", False))
+
+    return {
+        "slug": slug,
+        "emoji": data["emoji"],
+        "category": data["category"],
+        "order": data.get("order", 0),
+        "languages": data["languages"],
+        "invokeOnly": invoke_only,
+        "tags": data["tags"],
+        "title": data["title"],
+        "tagline": data["tagline"],
+        "whenUse": data["whenUse"],
+        "whenNot": data["whenNot"],
+        "highlights": data["highlights"],
+        "skillUrl": f"https://github.com/leoluyi/skills/blob/main/skills/{slug}/SKILL.md",
+    }
+
+
+def load_catalog() -> tuple[dict, list[dict], list[dict]]:
+    cat_doc = yaml.safe_load(CATALOG_YML.read_text(encoding="utf-8"))
+    site = cat_doc["site"]
+    categories = cat_doc["categories"]
+    cat_keys = {c["key"] for c in categories}
+
+    skills = []
+    for catalog_path in sorted(SKILLS_DIR.glob("*/catalog.md")):
+        skill = load_skill(catalog_path)
+        if skill["category"] not in cat_keys:
+            raise ValueError(f"{skill['slug']}: unknown category '{skill['category']}'")
+        skills.append(skill)
+    skills.sort(key=lambda s: (
+        [c["key"] for c in categories].index(s["category"]),
+        s["order"],
+        s["slug"],
+    ))
+    return site, categories, skills
+
+
+# ---- skills.json -----------------------------------------------------------
+
+def build_skills_json(site: dict, categories: list[dict], skills: list[dict]) -> str:
+    out_categories = []
+    for cat in categories:
+        slugs = [s["slug"] for s in skills if s["category"] == cat["key"]]
+        out_categories.append({
+            "key": cat["key"],
+            "label": cat["label"],
+            "blurb": cat["blurb"],
+            "slugs": slugs,
+        })
+    out_skills = []
+    for s in sorted(skills, key=lambda s: s["slug"]):
+        out_skills.append({
+            "slug": s["slug"],
+            "emoji": s["emoji"],
+            "category": s["category"],
+            "languages": s["languages"],
+            "invokeOnly": s["invokeOnly"],
+            "tags": s["tags"],
+            "title": s["title"],
+            "tagline": s["tagline"],
+            "whenUse": s["whenUse"],
+            "whenNot": s["whenNot"],
+            "highlights": s["highlights"],
+            "skillUrl": s["skillUrl"],
+        })
+    doc = {
+        "name": site["name"],
+        "repo": site["repo"],
+        "site": site["site"],
+        "count": len(skills),
+        "categories": out_categories,
+        "skills": out_skills,
+    }
+    return json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
+
+
+# ---- index.html --------------------------------------------------------
+
+def search_text(s: dict) -> str:
+    parts = [s["slug"], s["title"]["en"], s["title"]["zh"],
+              s["tagline"]["en"], s["tagline"]["zh"], *s["tags"]]
+    return html.escape(" ".join(parts).lower(), quote=True)
+
+
+def render_badges(s: dict) -> str:
+    badges = "".join(f'<span class="badge lang">{LANG_BADGE[lang]}</span>' for lang in s["languages"])
+    if s["invokeOnly"]:
+        badges += ('<span class="badge invoke"><span class="l-en">Invoke-only</span>'
+                   '<span class="l-zh">手動叫用</span></span>')
+    return badges
+
+
+def render_card(s: dict) -> str:
+    e = lambda t: html.escape(t, quote=False)
+    li = "".join(
+        f'        <li><span class="l-en">{e(en)}</span><span class="l-zh">{e(zh)}</span></li>\n'
+        for en, zh in zip(s["highlights"]["en"], s["highlights"]["zh"])
+    )
+    tags = "".join(f'<span class="tag">#{e(t)}</span>' for t in s["tags"])
+    return f"""      <article class="card" data-cat="{s['category']}" data-search="{search_text(s)}">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">{s['emoji']}</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">{e(s['title']['en'])}</span><span class="l-zh">{e(s['title']['zh'])}</span>
+              <code class="slug">{s['slug']}</code>
+            </h3>
+            <div class="badges">{render_badges(s)}</div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">{e(s['tagline']['en'])}</span><span class="l-zh">{e(s['tagline']['zh'])}</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">{e(s['whenUse']['en'])}</span><span class="l-zh">{e(s['whenUse']['zh'])}</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">{e(s['whenNot']['en'])}</span><span class="l-zh">{e(s['whenNot']['zh'])}</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+{li.rstrip(chr(10))}
+            </ul>
+          </div>
+        </details>
+        <div class="tags">{tags}</div>
+        <div class="card-foot">
+          <a href="{s['skillUrl']}"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>"""
+
+
+def render_cards(categories: list[dict], skills: list[dict]) -> str:
+    e = lambda t: html.escape(t, quote=False)
+    sections = []
+    for cat in categories:
+        cat_skills = [s for s in skills if s["category"] == cat["key"]]
+        if not cat_skills:
+            continue
+        cards = "\n".join(render_card(s) for s in cat_skills)
+        sections.append(f"""    <section class="cat-group" data-cat="{cat['key']}">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">{e(cat['label']['en'])}</span><span class="l-zh">{e(cat['label']['zh'])}</span></h3>
+      <p class="cat-blurb"><span class="l-en">{e(cat['blurb']['en'])}</span><span class="l-zh">{e(cat['blurb']['zh'])}</span></p>
+      <div class="grid">
+{cards}
+      </div>
+    </section>""")
+    return "\n".join(sections)
+
+
+def render_filters(categories: list[dict], skills: list[dict]) -> str:
+    e = lambda t: html.escape(t, quote=False)
+    chips = [
+        f'      <button class="chip" data-cat="all" aria-pressed="true">'
+        f'<span class="l-en">All</span><span class="l-zh">全部</span>'
+        f'<span class="count">{len(skills)}</span></button>'
+    ]
+    for cat in categories:
+        count = sum(1 for s in skills if s["category"] == cat["key"])
+        chips.append(
+            f'      <button class="chip" data-cat="{cat["key"]}" aria-pressed="false">'
+            f'<span class="l-en">{e(cat["label"]["en"])}</span>'
+            f'<span class="l-zh">{e(cat["label"]["zh"])}</span>'
+            f'<span class="count">{count}</span></button>'
+        )
+    return ('      <div class="filters" role="group" aria-label="Filter by category">\n'
+            + "\n".join(chips) + "\n      </div>")
+
+
+def render_itemlist(skills: list[dict]) -> str:
+    items = []
+    for i, s in enumerate(sorted(skills, key=lambda s: s["slug"]), 1):
+        items.append({
+            "@type": "ListItem",
+            "position": i,
+            "item": {
+                "@type": "CreativeWork",
+                "name": s["title"]["en"],
+                "description": s["tagline"]["en"],
+                "url": s["skillUrl"],
+                "keywords": ", ".join(s["tags"]),
+            },
+        })
+    return json.dumps(items, ensure_ascii=False, indent=2)
+
+
+def build_index_html(categories: list[dict], skills: list[dict]) -> str:
+    tpl = TEMPLATE.read_text(encoding="utf-8")
+    tpl = tpl.replace("__SKILL_COUNT__", str(len(skills)))
+    tpl = tpl.replace("__CATEGORY_COUNT__", str(len(categories)))
+    tpl = tpl.replace("__ITEMLIST_JSON__", render_itemlist(skills))
+    tpl = tpl.replace("__CATALOG_FILTERS__", render_filters(categories, skills))
+    tpl = tpl.replace("__CATALOG_CARDS__", render_cards(categories, skills))
+    return tpl
+
+
+# ---- README catalog section ------------------------------------------------
+
+def build_readme_section(lang: str, categories: list[dict], skills: list[dict]) -> str:
+    heading = "## Skill catalog" if lang == "en" else "## 技能目錄"
+    intro = (
+        f"{len(skills)} skills across {len(categories)} categories. Most fire automatically "
+        "when a task matches their trigger; ones marked `invoke-only` you call by name. "
+        "Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any "
+        "[`SKILL.md`](skills/) directly."
+        if lang == "en" else
+        f"{len(skills)} 個技能、{len(categories)} 個分類。多數會在任務命中 trigger 時自動載入；"
+        "標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，"
+        "或直接讀任何一份 [`SKILL.md`](skills/)。"
+    )
+    what_col = "What it does" if lang == "en" else "做什麼"
+
+    blocks = [heading, "", intro]
+    for cat in categories:
+        cat_skills = [s for s in skills if s["category"] == cat["key"]]
+        if not cat_skills:
+            continue
+        blocks.append("")
+        blocks.append(f"### {cat['label'][lang if lang == 'en' else 'zh']}")
+        note = cat.get("readmeNote")
+        if note:
+            blocks.append("")
+            blocks.append(note[lang if lang == "en" else "zh"])
+        blocks.append("")
+        blocks.append(f"| Skill | {what_col} |")
+        blocks.append("|---|---|")
+        for s in cat_skills:
+            name = s["title"][lang if lang == "en" else "zh"]
+            tagline = s["tagline"][lang if lang == "en" else "zh"]
+            suffix = " `invoke-only`" if s["invokeOnly"] else ""
+            blocks.append(
+                f"| **{name}**<br>[`{s['slug']}`](skills/{s['slug']}/SKILL.md){suffix} | {tagline} |"
+            )
+    return "\n".join(blocks)
+
+
+def write_readme(path: Path, lang: str, categories: list[dict], skills: list[dict]) -> None:
+    text = path.read_text(encoding="utf-8")
+    section = build_readme_section(lang, categories, skills)
+    new_text, n = MARKER_RE[lang].subn(lambda m: m.group(1) + section + m.group(2), text, count=1)
+    if n != 1:
+        raise ValueError(f"{path}: CATALOG markers not found")
+    path.write_text(new_text, encoding="utf-8")
+
+
+def main() -> None:
+    check_only = "--check" in sys.argv
+    site, categories, skills = load_catalog()
+
+    skills_json = build_skills_json(site, categories, skills)
+    index_html = build_index_html(categories, skills)
+
+    targets = {
+        DOCS_DIR / "skills.json": skills_json,
+        DOCS_DIR / "index.html": index_html,
+    }
+
+    if check_only:
+        changed = [p for p, content in targets.items() if not p.exists() or p.read_text(encoding="utf-8") != content]
+        if changed:
+            print("out of date:", *[str(p) for p in changed], file=sys.stderr)
+            sys.exit(1)
+        return
+
+    for path, content in targets.items():
+        path.write_text(content, encoding="utf-8")
+
+    write_readme(REPO / "README.md", "en", categories, skills)
+    write_readme(REPO / "README.zh-TW.md", "zh", categories, skills)
+
+    print(f"generated {len(skills)} skills across {len(categories)} categories")
+
+
+if __name__ == "__main__":
+    main()
