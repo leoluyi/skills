@@ -51,6 +51,10 @@ A skill goes through seven stages. Most die at stage 3.
 
 kebab-case, action-flavored, specific over generic: `oracle-exadata-cutover` not `migration`, `rfp-writing` not `documents`.
 
+## Invocation modes
+
+Every skill is **model-invoked** (agent or user can fire it — the default) or **user-invoked** (only the human typing its name, via `disable-model-invocation: true`). The catalog marks the latter `invoke-only`. Which to pick, and how it changes what the `description` is written for, is in [`.agents/invocation.md`](.agents/invocation.md). Caveat for this repo: `disable-model-invocation` is a Claude-Code field Codex reads as a no-op (see [Portability](#portability)), so user-invoked is not yet enforced on the Codex side — a skill that must never auto-fire can't rely on the flag alone across tools.
+
 ## Authoring rules
 
 - **Write the description pushy.** Name the explicit phrases that should fire it and what should not. Vague descriptions either misfire on unrelated prompts or silently never load.
@@ -150,6 +154,10 @@ Evals follow the official `skill-creator` standard: `skills/<name>/evals/evals.j
 - `tools/usage-report` quarterly. Zero hits in 90 days → archive candidate (`tools/archive-skill <name>`).
 - Fires too often on wrong prompts → tighten the description. Fires too rarely on right ones → make the description pushier or add trigger phrases.
 - Archive aggressively. The repo is supposed to feel small.
+
+## Catalog upkeep
+
+The repo has no per-skill hosted docs page; a skill's public face is its **catalog entry**, spread across synced surfaces — a row in `README.md` and its `README.zh-TW.md` twin, a card (plus filter entry) in `docs/index.html`, and an entry in `docs/skills.json`. None is generated from the others, so adding, renaming, or recategorizing a skill touches all of them, and dropping one is how they drift. Templates for each surface and the done-checklist are in [`.agents/writing-docs.md`](.agents/writing-docs.md).
 
 ## Keep development-process noise out of skill content
 
