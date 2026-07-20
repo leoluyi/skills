@@ -3,6 +3,7 @@
 > Diátaxis derives four kinds of documentation from two axes of craft, and gives you a compass to decide which one you are writing at any moment.
 >
 > Source: <https://diataxis.fr/> (whole site, by Daniele Procida). Content confirmed as of 2026-07.
+> Diátaxis is licensed CC BY-SA 4.0 (<https://creativecommons.org/licenses/by-sa/4.0/>). This distilled summary is a derivative of that material and is likewise made available under CC BY-SA 4.0, attributed to Daniele Procida.
 
 ---
 

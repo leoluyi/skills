@@ -1,6 +1,7 @@
 # Diátaxis 全站蒸餾
 
-來源：https://diataxis.fr/ 全站 18 頁
+來源：https://diataxis.fr/ 全站 18 頁（作者 Daniele Procida）
+授權：Diátaxis 採 CC BY-SA 4.0（https://creativecommons.org/licenses/by-sa/4.0/）。本蒸餾為衍生內容，同以 CC BY-SA 4.0 釋出，署名 Daniele Procida。
 
 ---
 

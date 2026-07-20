@@ -1,0 +1,16 @@
+This skill is a bilingual fork; its parts carry different authorship.
+
+- The English detection layer ("English AI-isms" and the language-agnostic
+  structural rules in SKILL.md, plus references/english-phrase-rules.md) is
+  rebased verbatim from "avoid-ai-writing" by Conor Bronsdon, licensed under the
+  MIT License. That upstream copyright and permission notice is preserved in the
+  LICENSE file in this directory.
+
+- The Traditional-Chinese layer ("Traditional Chinese AI-isms" and
+  references/zh-phrase-rules.md) and the skill's own framing are original work
+  by Lu Yi, MIT-licensed (see the repository-root LICENSE).
+
+- Some Taiwan-usage entries in references/zh-phrase-rules.md (the 翻譯腔
+  patterns) were informed by "speak-human-tw" by Raymond Hou (雷蒙三十),
+  licensed under the MIT License. Those entries are our own rewrite, not copied
+  text.

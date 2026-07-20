@@ -150,4 +150,13 @@ The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full author
 
 ## License
 
-[MIT](LICENSE) © Lu Yi. Some skills adapt upstream work under their own attribution — see each skill's `SKILL.md` and `NOTICE`.
+[MIT](LICENSE) © Lu Yi. Individual skills that build on third-party work carry their own `LICENSE`/`NOTICE` and are credited below.
+
+## Sources & acknowledgments
+
+Some skills stand on prior work. Credit and licenses:
+
+- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** by Conor Bronsdon (MIT) — `avoid-ai-writing-zh` rebases its English detection layer verbatim from this project; the upstream MIT notice ships in [`skills/avoid-ai-writing-zh/LICENSE`](skills/avoid-ai-writing-zh/LICENSE).
+- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** by Raymond Hou (雷蒙三十) (MIT) — informed some Taiwan-usage entries in `avoid-ai-writing-zh` (翻譯腔) and `avoid-china-writing` (陸用語 term table). Those entries are our own rewrite, not copied text.
+- **[Diátaxis](https://diataxis.fr/)** by Daniele Procida ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)) — `knowledge-doc-writing` is structured on the Diátaxis four-type model (tutorial / how-to / reference / explanation). The framework is Procida's work; the distilled study notes under `skills/knowledge-doc-writing/research/` are a derivative and are made available under CC BY-SA 4.0.
+- **frontend-design** by Anthropic (Apache-2.0) — `infographic-design` adapts portions; see [`skills/infographic-design/NOTICE`](skills/infographic-design/NOTICE).

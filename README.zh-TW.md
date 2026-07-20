@@ -145,4 +145,13 @@ tools/sync-skills
 
 ## 授權
 
-[MIT](LICENSE) © Lu Yi。部分技能改編自上游作品，各有其署名，詳見各技能的 `SKILL.md` 與 `NOTICE`。
+[MIT](LICENSE) © Lu Yi。建構於第三方作品的個別技能各有自己的 `LICENSE`／`NOTICE`，並列於下方鳴謝。
+
+## 來源與鳴謝
+
+部分技能立基於既有作品，署名與授權如下：
+
+- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** — Conor Bronsdon（MIT）。`avoid-ai-writing-zh` 的英文偵測層逐字沿用此專案；上游 MIT 授權隨 [`skills/avoid-ai-writing-zh/LICENSE`](skills/avoid-ai-writing-zh/LICENSE) 一併附上。
+- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** — Raymond Hou（雷蒙三十）（MIT）。啟發了 `avoid-ai-writing-zh`（翻譯腔）與 `avoid-china-writing`（陸用語對照表）的部分台灣用語條目；條目均為自行改寫，非照抄原文。
+- **[Diátaxis](https://diataxis.fr/)** — Daniele Procida（[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）。`knowledge-doc-writing` 以 Diátaxis 四型模型（tutorial／how-to／reference／explanation）為結構主軸；框架本身為 Procida 所有，`skills/knowledge-doc-writing/research/` 下的蒸餾筆記為衍生內容，以 CC BY-SA 4.0 釋出。
+- **frontend-design** — Anthropic（Apache-2.0）。`infographic-design` 改編其部分內容，詳見 [`skills/infographic-design/NOTICE`](skills/infographic-design/NOTICE)。
