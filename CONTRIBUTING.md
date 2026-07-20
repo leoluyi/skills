@@ -10,7 +10,7 @@ worth reporting.
 
 1. Read **[CLAUDE.md](CLAUDE.md)** — the hard, always-loaded rules. Breaking one
    of these is an automatic no.
-2. Read **[DEVELOPMENT.md](DEVELOPMENT.md)** — the full authoring guide: skill
+2. Read **[engineering-guidelines.md](engineering-guidelines.md)** — the full authoring guide: skill
    anatomy, the frontmatter gotchas, naming, portability, and test discipline.
 
 ## The bar every skill has to clear
@@ -45,7 +45,7 @@ Scaffold a new skill with `tools/new-skill <kebab-name>`.
 ## 送 PR 之前
 
 1. 讀 **[CLAUDE.md](CLAUDE.md)**：永遠載入的硬規則，違反其中一條會直接退回。
-2. 讀 **[DEVELOPMENT.md](DEVELOPMENT.md)**：完整的撰寫指南，包含 skill 結構、
+2. 讀 **[engineering-guidelines.md](engineering-guidelines.md)**：完整的撰寫指南，包含 skill 結構、
    frontmatter 陷阱、命名、可攜性與測試紀律。
 
 ## 每個 skill 都要過的門檻

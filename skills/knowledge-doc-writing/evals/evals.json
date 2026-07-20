@@ -1,6 +1,6 @@
 {
   "skill_name": "knowledge-doc-writing",
-  "baseline_strategy": "partitioned: cases tagged baseline=v1.3.1 are preserved behaviors (must not regress vs prior version); baseline=vanilla are pivoted/new four-block behaviors (must beat vanilla). See DEVELOPMENT.md v2.0.0 section.",
+  "baseline_strategy": "partitioned: cases tagged baseline=v1.3.1 are preserved behaviors (must not regress vs prior version); baseline=vanilla are pivoted/new four-block behaviors (must beat vanilla). See design-notes.md v2.0.0 section.",
   "evals": [
     {
       "id": 1,

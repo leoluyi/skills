@@ -126,7 +126,7 @@ tools/sync-skills
 ├── README.md
 ├── README.zh-TW.md    # Traditional Chinese README
 ├── CLAUDE.md          # hard rules (always loaded) — the forbidden directives
-├── DEVELOPMENT.md     # full authoring guide
+├── engineering-guidelines.md     # full authoring guide
 ├── CONTRIBUTING.md    # how to contribute (EN + 繁中)
 ├── backlog.md         # ideas not yet drafted
 ├── skills/            # active skills — each is a SKILL.md folder
@@ -143,7 +143,7 @@ tools/sync-skills
 | `tools/archive-skill <name>` | `git mv` a skill (and its evals) to `_archive/`. |
 | `tools/usage-report [days]` | Count skill triggers in `~/.claude/projects/` transcripts. Default 90 days. |
 
-The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full authoring guide — anatomy, frontmatter gotchas, naming, portability, and test discipline — is in **[DEVELOPMENT.md](DEVELOPMENT.md)**. To contribute, start with **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full authoring guide — anatomy, frontmatter gotchas, naming, portability, and test discipline — is in **[engineering-guidelines.md](engineering-guidelines.md)**. To contribute, start with **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ## License
 

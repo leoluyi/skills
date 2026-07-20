@@ -1,4 +1,4 @@
-# infographic-design — 開發指南
+# infographic-design — 開發筆記
 
 給接續開發此 skill 的人或 agent。SKILL.md 與 references/ 依 repo 規範不含
 開發過程,所以「為什麼長這樣」「改的時候要守什麼」寫在這裡。
@@ -118,7 +118,7 @@ word 要在每個決策點重複開火才站得住。
 
 ## 5. 借用外部內容的規矩
 
-借用規矩見根層 DEVELOPMENT.md 的「Borrow battle-tested content verbatim」。
+借用規矩見根層 engineering-guidelines.md 的「Borrow battle-tested content verbatim」。
 本 skill 的借用紀錄:文案段落改寫自 Anthropic 官方 `frontend-design`
 (Apache-2.0),`NOTICE` 記錄了範圍;domain-general 的近乎逐字保留,web
 專屬的(錯誤狀態、空畫面)排除 —— 抄進來是噪音不是嚴謹。
@@ -150,7 +150,7 @@ for f in references/*.md; do
 ```
 
 **兩段式提交**:skill 與 evals 一個 commit,repo 根層的 `CLAUDE.md` /
-`DEVELOPMENT.md`(全域撰寫指南)另一個 commit。
+`engineering-guidelines.md`(全域撰寫指南)另一個 commit。
 
 ---
 

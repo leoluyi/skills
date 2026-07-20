@@ -7,7 +7,7 @@ The Claude app (claude.ai > Settings > Capabilities > Skills) reads only the
 richer multi-platform frontmatter and, in one case, a description longer than
 the limit. This script produces clean upload packages without touching source:
 
-  * copies each skill to dist/<name>/ (dropping .DS_Store / DEVELOPMENT.md)
+  * copies each skill to dist/<name>/ (dropping .DS_Store / design-notes.md)
   * rewrites frontmatter down to name / description / license
   * substitutes a trimmed description when scripts/app-skill-overrides/<name>.txt
     exists (used when the source description exceeds 1024 chars)
@@ -42,7 +42,7 @@ DEFAULT_SKILLS = [
 
 KEEP_KEYS = ("name", "description", "license")
 DESC_LIMIT = 1024
-IGNORE = shutil.ignore_patterns(".DS_Store", "DEVELOPMENT.md", "*.swp", "*.swo")
+IGNORE = shutil.ignore_patterns(".DS_Store", "design-notes.md", "*.swp", "*.swo")
 
 
 def split_frontmatter(text: str) -> tuple[str, str]:

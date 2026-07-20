@@ -1,6 +1,6 @@
 # Developing skills in this repo
 
-The repo-wide authoring guide. The always-loaded `CLAUDE.md` carries only the hard prohibitions; this file is the reference behind them. (`<skill>/DEVELOPMENT.md`, same name one tier down, is a *per-skill* dev-notes file: iteration log, method, provenance for that one skill.)
+The repo-wide authoring guide. The always-loaded `CLAUDE.md` carries only the hard prohibitions; this file is the reference behind them. (`<skill>/design-notes.md` is a *per-skill* dev-notes file: iteration log, method, provenance for that one skill.)
 
 Formatting convention for this file: one paragraph per line, no hard wraps.
 
@@ -68,7 +68,7 @@ A skill's words compete for the model's attention, and their *register* sets the
 - **State each rule once, at the strongest tier.** If a check already enforces something objectively, restating it as prose adds zero enforcement and teaches the model to read the passage as a checklist. Keep prose for what checks can't catch — factual tells, taste, judgment — and phrase it generatively: a derivation method that fires at decision time beats a passive list of things to avoid.
 - **Steer positive.** Naming a banned behaviour makes it more available, not less. State the target behaviour so the banned one is never spoken; keep a prohibition only where it genuinely can't be phrased positively, paired with what to do instead.
 - **Put a rule where every affected path passes through.** Craft written into a special-case section only fires on that case — usually only a clause or two is actually specific, and the rest belongs upstream with a pointer back. When two rules conflict, resolve it in writing where the general rule lives: name the purpose that licenses the exception and the source its content must come from, and cross-reference both ways.
-- **Borrow battle-tested content verbatim.** When a proven source covers domain-general ground your skill needs, check the license, then import near-verbatim with attribution (a `NOTICE` file in the skill dir; provenance in the skill's `DEVELOPMENT.md`). Paraphrase regresses proven prose toward the mean. Adapt only where the domain genuinely diverges.
+- **Borrow battle-tested content verbatim.** When a proven source covers domain-general ground your skill needs, check the license, then import near-verbatim with attribution (a `NOTICE` file in the skill dir; provenance in the skill's `design-notes.md`). Paraphrase regresses proven prose toward the mean. Adapt only where the domain genuinely diverges.
 - **Two external standards, one tie-break.** How to *write* a skill follows `writing-great-skills`; how to *evaluate* one follows the official `skill-creator`. Where they overlap, `writing-great-skills` wins.
 
 Smell test across versions: `grep -ciE '\bmust\b|\bnever\b|hard-fail|checklist|verify' skills/<name>/SKILL.md` — a rising count signals bloat, independent of line count.
@@ -153,7 +153,7 @@ Evals follow the official `skill-creator` standard: `skills/<name>/evals/evals.j
 
 ## Keep development-process noise out of skill content
 
-`SKILL.md` and everything under `references/` are runtime instructions the model loads when the skill fires. They must read as "how to do the task", never "how this skill was built". Keep the **insight**, drop the **derivation**: iteration provenance (round numbers, eval IDs, precision/recall figures), derivation narrative ("comparing A and B showed…"), and headers named after how a technique was derived all go. Provenance belongs in the skill's `DEVELOPMENT.md`, `evals/judged-cases.md`, commit messages, or `backlog.md`.
+`SKILL.md` and everything under `references/` are runtime instructions the model loads when the skill fires. They must read as "how to do the task", never "how this skill was built". Keep the **insight**, drop the **derivation**: iteration provenance (round numbers, eval IDs, precision/recall figures), derivation narrative ("comparing A and B showed…"), and headers named after how a technique was derived all go. Provenance belongs in the skill's `design-notes.md`, `evals/judged-cases.md`, commit messages, or `backlog.md`.
 
 Finishing check before finalizing a skill edit:
 
@@ -161,7 +161,7 @@ Finishing check before finalizing a skill edit:
 grep -rnE 'GAN|round [0-9]|benchmark|補強|補充樣本|比對〈|對照[^，。]*〈|可般化|般化|來自對照|eval #|FP ?=|recall' skills/<name>/
 ```
 
-Hits inside `SKILL.md` or `references/` are noise — move them to the dev docs above. Hits inside `DEVELOPMENT.md`, `judged-cases.md`, or eval fixtures are fine; that is where provenance lives.
+Hits inside `SKILL.md` or `references/` are noise — move them to the dev docs above. Hits inside `design-notes.md`, `judged-cases.md`, or eval fixtures are fine; that is where provenance lives.
 
 ## Skill self-sufficiency and dependency direction
 

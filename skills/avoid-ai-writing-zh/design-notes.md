@@ -1,4 +1,4 @@
-# DEVELOPMENT — avoid-ai-writing-zh
+# Design notes — avoid-ai-writing-zh
 
 Maintainer notes — provenance and build process for this one skill.
 

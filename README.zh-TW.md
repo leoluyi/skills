@@ -121,7 +121,7 @@ tools/sync-skills
 ├── README.md
 ├── README.zh-TW.md    # 繁體中文 README
 ├── CLAUDE.md          # 硬規則（永遠載入）——禁止事項
-├── DEVELOPMENT.md     # 完整撰寫指南
+├── engineering-guidelines.md     # 完整撰寫指南
 ├── CONTRIBUTING.md    # 如何貢獻（英文＋繁中）
 ├── backlog.md         # 還沒動筆的點子
 ├── skills/            # 上架技能——每個是一個 SKILL.md 資料夾
@@ -138,7 +138,7 @@ tools/sync-skills
 | `tools/archive-skill <name>` | 用 `git mv` 把技能（含 evals）搬進 `_archive/`。 |
 | `tools/usage-report [days]` | 統計 `~/.claude/projects/` transcript 裡的技能觸發次數。預設 90 天。 |
 
-硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[DEVELOPMENT.md](DEVELOPMENT.md)**。要貢獻，先看 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
+硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[engineering-guidelines.md](engineering-guidelines.md)**。要貢獻，先看 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
 
 ## 授權
 

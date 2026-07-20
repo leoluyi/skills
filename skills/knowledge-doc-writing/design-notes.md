@@ -1,4 +1,4 @@
-# Development notes — knowledge-doc-writing
+# Design notes — knowledge-doc-writing
 
 這份記錄本 skill 的開發過程、設計理由與規則演化——provenance 與迭代日誌。
 

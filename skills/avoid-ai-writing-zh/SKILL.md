@@ -8,7 +8,7 @@ compatibility: Any AI coding assistant that supports agentskills.io SKILL.md for
 metadata:
   author: Conor Bronsdon
   adapted_by: Lu Yi
-  adaptation: Traditional Chinese (Taiwan) layer added on top of the upstream avoid-ai-writing English layer; see DEVELOPMENT.md.
+  adaptation: Traditional Chinese (Taiwan) layer added on top of the upstream avoid-ai-writing English layer; see design-notes.md.
   tags: writing editing voice quality zh-tw traditional-chinese
   agentskills_spec: "1.0"
   openclaw:
