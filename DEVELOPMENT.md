@@ -81,31 +81,31 @@ A skill's language is a per-layer decision, made three times:
 - **Body (instruction layer): English by default.** Denser per token, sharper imperative semantics, and consistent with the first-party skills loaded beside it, so instructions don't fight each other.
 - **Verbatim-output content: written directly in the target language.** Document templates, phrasing tables, term blacklists, fixed option copy, example outputs — anything emitted as-is. Routing these through English and expecting the model to translate produces both semantic drift and language leakage.
 
-### Preventing language leakage
+### The leakage guard
 
 An English body becomes the ambient register of the context, and the model follows it. Prose rarely leaks — the user's native-language request anchors it. What leaks is the short strings the model improvises because the skill never specified them (option labels, headings in generated documents); the classic symptom is native-language body text under English headings.
 
-The cure is an output-language rule at the top of the body that enumerates its scope — "respond in Traditional Chinese" alone gets read as covering prose only. Standard block:
+Any skill that emits non-English output carries a **leakage guard**: a fixed `## Output Language` block at the top of the body. It names its own scope — "respond in Traditional Chinese" alone gets read as covering prose only — and its last paragraph severs the body-language → output-language mimicry path. Canonical text:
 
 ```markdown
 ## Output Language
 
-Match the language of the user's request, and apply it to *all* user-facing output — question prompts, option labels, progress messages, section headings in generated documents, table column names — not just prose. If the user explicitly asks for another language, that wins.
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
 
 Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
 
 The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
 ```
 
-The last paragraph does the real work — it severs the "body language → output language" mimicry path.
-
-The block is locale-neutral. If a skill has a locale convention, append it as its own paragraph before the last — e.g.:
+If a skill has a locale convention, append it as its own paragraph before the last:
 
 ```markdown
 If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
 ```
 
-Acceptance check: run the full flow once and verify the improvised strings — option labels, every heading in the generated document, interstitial status text — came out in the target language.
+The guard is copied text — `SKILL.md` can't import — so **this file is its single source of truth**. When you change the canonical wording, `rg -l '## Output Language' skills/` and update every copy.
+
+Acceptance check: run the full flow once and verify the improvised strings — option labels, every generated-document heading, interstitial status text — came out in the target language.
 
 ## Scripted checks — severity and trust
 
