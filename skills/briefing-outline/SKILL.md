@@ -19,6 +19,16 @@ A 說明提綱 sits at a fixed **altitude**: high enough to see the whole body o
 
 The recurring failure is drift below altitude — dragging in 逐項標準、逐條規則、逐步操作、完整明細 that belong in the source. Hold altitude and the 提綱 stays readable and stable when sources churn.
 
+## Output Language
+
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
+
+Language follows the request, not the source material. When the sources are in English but the user writes in Chinese, the 提綱 stays Chinese.
+
+If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
+
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
+
 ## Steps
 
 1. **Inventory the sources.** List every source and one line on what each holds — a source being a separate document, or (for a single long report) one of its sections. Separate any **umbrella overview** (a peer 設立計畫／總說明, or the report's own 摘要／總則) from the **detail sources**: the umbrella lends the spine; the detail sources are what you point down to. Completion: every source accounted for.

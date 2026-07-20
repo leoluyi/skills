@@ -18,6 +18,16 @@ You are editing Traditional Chinese to remove mainland-China (PRC / 大陸) usag
 
 **Scope.** This is a **cross-strait localization tool**, not an AI-ism cleaner. A passage can be entirely human-written yet full of 陸用語; a passage can be idiomatically Taiwanese yet reek of AI. Those are two orthogonal axes. This skill owns the first: 詞彙 (vocabulary), 職場／互聯網黑話 (corporate/internet jargon), 簡體字殘留 (leaked Simplified characters), and 音譯與語法差異 (transliteration and grammar habits). For AI-ism cleanup (「值得一提的是」「至關重要」, em-dash overuse, 空話口號), route to `avoid-ai-writing-zh`. The two overlap on a handful of terms (賦能, 生態, 打造) — that is expected; see [Relationship to avoid-ai-writing-zh](#relationship-to-avoid-ai-writing-zh).
 
+## Output Language
+
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
+
+Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
+
+If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
+
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
+
 ## What this skill is and isn't
 
 This flags **usage**, not correctness or identity. Most 陸用語 are perfectly grammatical Chinese — they are simply not what a Taiwanese reader or writer expects, and in professional Taiwan contexts they read as either machine-translated, copied from a mainland source, or written by someone who learned Chinese elsewhere. The goal is register-matching for a Taiwan audience, nothing more.

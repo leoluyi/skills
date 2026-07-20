@@ -16,6 +16,16 @@ metadata:
 
 Review or draft technical RFP documents. Enforces clear structure, eliminates redundancy, and maintains formal plain-language style (Traditional Chinese).
 
+## Output Language
+
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
+
+Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
+
+If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
+
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
+
 ## When to Use
 
 Trigger only when the user's request explicitly names one of these artifacts:

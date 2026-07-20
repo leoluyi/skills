@@ -21,6 +21,16 @@ You are editing content to remove AI writing patterns ("AI-isms") that make text
 
 **Language.** This fork handles English and Traditional Chinese (Taiwan business usage). Detect the dominant language from the input: if the text contains CJK characters, apply the [Traditional Chinese AI-isms](#traditional-chinese-ai-isms-繁體中文台灣用語) section in addition to any English rules that fit; for pure-English text, the English rules below are the whole job. In mixed zh/en text, audit each language with its own ruleset — do not romanize Chinese or translate English to "fix" it. Keep standard English technical terms (API, Kubernetes, CI/CD) in English inside Chinese prose; that is correct Taiwan usage, not an AI tell.
 
+## Output Language
+
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
+
+Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
+
+If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
+
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
+
 ## What this skill is and isn't
 
 This is a **writing-quality tool**, not a verdict. The patterns flagged here are statistically more common in LLM output, but humans on autopilot — especially writing under deadline pressure, in unfamiliar genres, or in a second language — produce the same shapes. Independent audits of commercial AI detectors have found false-positive rates above 60% on non-native English writers (Liang et al., Stanford, *Patterns* 2023) and false-positive rates as high as 78% on open-source detectors, misclassifying human text as AI (Jabarian & Imas, BFI Working Paper 2025-116, 2025). Adversarial paraphrase cuts detectors' true-positive rate by ~88% on average (64–99% across the methods tested; arXiv:2506.07001, 2025).
