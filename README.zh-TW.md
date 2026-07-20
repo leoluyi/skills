@@ -25,21 +25,21 @@
 市面上的 AI 寫作工具幾乎都預設英文。對**台灣**讀者來說，它們留下的缺口正是這些技能要補的：
 
 - **只顧英文**：去 AI 味、語氣檢查、風格工具都對著英文調校，完全抓不到中文裡的破綻。
-- **通用中文，不是台灣中文**：所謂的「中文」支援通常是大陸用法。這些技能照台灣人實際的寫法寫。
+- **通用中文，不是台灣中文**：所謂的「中文」支援通常是大陸用法。這些技能是照著台灣人實際的書寫習慣寫成的。
 - **混進來的陸用語與簡體**：陸用語、互聯網黑話、殘留簡體字會滲進正體中文；在地化技能抓得出來，又不誤傷真正的術語。
 - **AI 味與職場黑話**：那種一致的節奏、模稜兩可和填充語，中英文都一起清掉。
 
 ## 這裡有什麼
 
 - **天生可攜**：每個技能都能在 Claude Code 和 Codex（以及任何相容 [agentskills.io](https://agentskills.io) 的 agent）上跑。不需外部工具或 API，工具專屬功能不會是必要條件。
-- **自足**：每個技能都能獨立完成自己的工作，提到姊妹技能只是選用的指路，不是前置條件。
-- **要贏過 baseline**：技能要在真實 eval 上贏過「不用技能」才會上架。沒過 eval，不上架。
+- **自足**：每個技能都能獨立完成自己的工作，提到其他相關技能只是額外參考，不是前置條件。
+- **要贏過 baseline**：技能要在真實 eval 上贏過「不用技能」才會上架。
 - **目前以寫作為主**：下面的目錄是台灣優先的中文寫作，涵蓋去 AI 味、陸用語轉台灣用語、白話翻譯、部落格、簽呈／RFP／評估報告。範圍是開放的，不是固定的。
 - **兩個走得更遠的**：[`infographic-design`](skills/infographic-design/SKILL.md)（設計系統級的說明圖表）與 [`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md)（Diátaxis 文件紀律）是專業、跨語言、能獨當一面的工具，不需要中文也能用。
 
 ## 30 秒安裝
 
-兩條路：連網一行指令，或離線的逐一技能 symlink（見下方）。
+兩條路：線上環境用一行指令安裝；離線或內網環境則改用逐一技能的 symlink（見下方）。
 
 一行指令，把所有技能裝到一台機器：
 
@@ -68,14 +68,14 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-11 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+11 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
 | Skill | 做什麼 |
 |---|---|
 | **去除 AI 味（中英雙語）**<br>[`avoid-ai-writing-zh`](skills/avoid-ai-writing-zh/SKILL.md) | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
-| **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，術語不誤傷 |
+| **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，又不誤傷真正的術語 |
 | **把技術術語翻成白話**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 |
 | **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
 
@@ -141,7 +141,7 @@ tools/sync-skills
 | `tools/usage-report [days]` | 統計 `~/.claude/projects/` transcript 裡的技能觸發次數。預設 90 天。 |
 | `tools/build-docs` | 從 `skills/*/catalog.md` 重新產生 `docs/index.html`、`docs/skills.json`，以及兩份 README 的技能目錄表格。 |
 
-硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[engineering-guidelines.md](engineering-guidelines.md)**。要貢獻，先看 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
+硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[engineering-guidelines.md](engineering-guidelines.md)**。想貢獻的話，請先讀 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
 
 ## 授權
 

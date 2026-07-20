@@ -2,7 +2,7 @@
 name: avoid-ai-writing-zh
 description: >-
   Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. Also runs a detect-only structure-signals audit for a draft that carries no obvious AI-isms yet still reads as AI-written — uniform rhythm, no stance, no concrete examples, 「正確但沒有靈魂」— naming what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
-version: 1.3.0
+version: 1.4.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -525,12 +525,20 @@ Fix：換成單義動詞，補上受詞與方式。
 
 AI 在濃縮、摘要或翻譯時，會把完整句子壓成電報式短語——省略主詞、丟掉受詞、把名詞截成單字、拿掉量詞助詞——例如「分享後存同一夾」。語氣像順手記的便條，但讀者得自己補回被省略的成分：「存」的是什麼？（檔案）「同一夾」是哪種夾？（資料夾）。看似精簡，實則把還原語意的工作丟回給讀者，句子也讀來突兀不完整。
 
-判準：把句子攤開，主詞、動詞、受詞是否齊全、名詞是否為完整詞？受詞缺席、名詞被截成單字（夾←資料夾、庫←資料庫）、或動詞缺席（以名詞片語代替動作，如「服務間自動 mTLS 加密」——自動做什麼？），即為過度簡寫，標記。條列項的說明文字同樣適用此條，不因出現在 bullet 裡而豁免。
+判準：把句子攤開，主詞、動詞、受詞是否齊全、名詞是否為完整詞、句架是否完足？下列任一成立即為過度簡寫，標記——
+- 受詞缺席，或名詞被截成單字（夾←資料夾、庫←資料庫）；
+- 動詞缺席，以名詞片語代替動作（「服務間自動 mTLS 加密」——自動做什麼？）；
+- 動詞裸用：動詞在，但主詞與受詞雙缺，只剩光桿動詞片語（「不誤傷」——誰不誤傷什麼？「先擋起來」——擋誰？）；
+- 繫詞／句架省略：主詞在，但「是…的」「照…寫成的」這類句架被抽掉，句子以動詞硬收、讀來像被切斷（「這些技能照台灣人實際的寫法寫」——句尾「寫法寫」懸空，缺「是照著…寫成的」的架）。
 
-Fix：補回省略成分，名詞用完整詞，寫成完整句型。
+條列項與目錄表格的說明文字同樣適用此條，不因出現在 bullet 或表格儲存格裡而豁免——濃縮體裁豁免的是省略推論步驟（見破碎短句堆疊 carve-out），不豁免句子成分殘缺。
+
+Fix：補回省略成分，名詞用完整詞，句架寫足，成為完整句型。
 - 「分享後存同一夾」→「將檔案分享到同一個資料夾」
 - 「跑完打包上傳」→「測試跑完後，將產出物打包並上傳到發布區」
 - 「服務間自動 mTLS 加密，不必改程式」→「mesh 自動為服務之間的連線套用 mTLS 加密，應用程式不必修改自己的程式碼就能得到加密」
+- 「術語不誤傷」→「不會把真正的術語誤判成該改的詞」
+- 「這些技能照台灣人實際的寫法寫」→「這些技能是照著台灣人實際的書寫習慣寫成的」
 
 與前一節「口語化萬能動詞」互補而不重疊：萬能動詞抓的是動詞語意含糊（補／撐／串可代入多種動作），此條抓的是句子成分被省略、名詞被截斷。已在此標記者不必在那條重複標記。
 
@@ -578,6 +586,28 @@ Fix：攤開為完整推論——前提、因果、結論各自成句，承接�
 與「過度簡寫」互補而不重疊：那條抓句子成分（主詞、受詞）缺席，此條抓論證步驟（前提、因果）缺席。已在此標記者不必在那條重複標記。
 
 **Carve-out：** 摘要、表格儲存格、條列重點、一頁總結等以濃縮為體裁的區塊不標——濃縮是那些區塊的職責；此條只適用於正文論述段。
+
+#### 口號式短句（對仗口號、零資訊重述）
+
+AI 產生中文時，常把一句話收成口號體——短、對仗、擲地有聲，卻不承載新資訊。兩種形態：
+
+- **零資訊重述**：前一句已經把事情講完整，再補一句對仗短句收尾，只是換句話說（「技能要在真實 eval 上贏過『不用技能』才會上架。沒過 eval，不上架。」——後句沒有加任何前句沒說的東西）。這是 Treadmill effect 的句級版：看似俐落，實則原地踏步。
+- **口號代替說明**：在該展開說明的位置（安裝步驟、貢獻方式、選項比較）只丟一組對仗片語頂替（「連網一行指令，或離線的逐一技能 symlink」）——讀者接收到節奏，接收不到怎麼做。
+
+誘因：英文段 Rhythm and uniformity 鼓勵長短句交錯、容許 3–8 字的 punchy 短句；中文生成時常把這條誤解成「越對仗越好」，於是退化成口號。故本條的界線正是要把節奏與口號分開。
+
+判準：兩問。（一）刪掉這句，前後文有沒有少掉任何事實、主張或步驟？沒有，就是零資訊重述。（二）這句是否出現在該說明之處，卻只給對仗片語、不給可執行的內容？是，就是口號代替說明。承載新資訊的短句是節奏，不標；只有節奏、沒有新資訊的才標。
+
+Fix：零資訊重述——直接刪。口號代替說明——攤開成完整句，把片語背後的實際內容寫出來。
+- 「…才會上架。沒過 eval，不上架。」→ 刪去後句
+- 「連網一行指令，或離線的逐一技能 symlink」→「線上安裝只需一行指令；離線或內網環境則改用逐一技能的 symlink（見下方）」
+
+**Carve-out：**
+- 承載新資訊的短句是好節奏，保留：「範圍是開放的，不是固定的」在前文列舉範圍後補一句邊界，加了新的界定，不是重述。
+- 標語體裁本就以口號為體——簡報標題頁、tagline、行銷文案、口號牆——不標。
+- 引文、標題不標。
+
+與警句式評語同族（那條抓破折號收尾的自我加值評語，此條抓無破折號的對仗口號），與破碎短句堆疊互補（那條抓正文論述段連續三句以上的推論鏈斷裂，此條抓單句或成對的零資訊口號）。已在此標記者不必在那兩條重複標記。
 
 #### 打破第四面牆 — 工作情境外洩 / 生成過程外洩
 
@@ -678,6 +708,28 @@ Fix：還原英文原文；首次出現可用「英文原文（簡短白話說�
 - 知識文件首次定義時中英並列（中文（English）或 English（中文說明））是好習慣，不算過度翻譯。
 - 有疑義時以「同行能否辨識、能否搜尋得到」為準，而非以「是否為專有名詞」為準。
 
+#### 翻譯腔（英文句式直譯）
+
+前一條抓的是「詞」被生造成中文；此條抓的是「句子」被英文語序與搭配牽著走。AI 產生中文時，常把腦中的英文句架逐字投影成中文——句子文法沒錯、每個詞也看得懂，但語序、搭配、虛詞的用法是那句英文的影子，台灣同行口頭不會這樣講。三種形態：
+
+- **句式直譯**：整句是英文句型的鏡像。「要貢獻，先看 CONTRIBUTING.md」是 “To contribute, see CONTRIBUTING.md” 的逐字投影——「要＋動詞」對 “To＋原形動詞” 的目的狀語，「先看」對 “see”。中文會說「想貢獻的話，請先讀 CONTRIBUTING.md」。
+- **搭配直譯**：詞組是英文搭配的直譯。「指名叫用」← “invoke by name”、「選用的指路」← “optional pointer”——這些搭配在中文裡不成詞，讀者得先還原成英文才懂。
+- **修飾語直譯**：把英文的前置定語硬搬成中文的「的」字結構。「姊妹技能只是選用的指路」← “sibling skills are just optional pointers”——「選用的」當定語、「指路」當名詞，都是英文語序的殘留。
+
+判準：三條同時成立才標，避免誤傷——（一）把這句逐字回譯成英文，得到的是通順自然的英文句；（二）中文的語序或搭配是那句英文的投影，不是中文本來的說法；（三）台灣同行講同一件事不會這樣措辭。三者皆是，即為翻譯腔，標記。
+
+Fix：**禁止原文直翻，一律用改寫的方式。** 修法不是把英文翻得更順——逐字翻再潤飾，出來的還是翻譯腔。要丟開原句，只留下它要表達的意思，用中文重新想「若一開始是一個台灣人就用中文寫，這件事會怎麼講」，再落筆。先抓意思、再按中文語序與搭配重寫，不要對著英文一個詞一個詞換。
+- 「要貢獻，先看 CONTRIBUTING.md」→「想貢獻的話，請先讀 CONTRIBUTING.md」
+- 「標了 invoke-only 的要指名叫用」→「標了 invoke-only 的技能，要輸入名稱才會啟動」
+- 「姊妹技能只是選用的指路」→「提到其他相關技能只是額外參考，不是前置條件」（「指路」在中文不成詞，改回自然說法）
+
+**Carve-out：**
+- 已通行的技術借譯不是翻譯腔：呼叫、載入、部署、使用案例（use case）、回呼（callback）等詞在台灣已通行，照用。本條抓的是包著這些詞的中文句架，不是詞本身。
+- 中文夾用英文術語（API、Kubernetes、invoke-only）本身不是翻譯腔——那是正確台灣用法（見本節開頭 Language 說明）。問題只在承載它的中文句式是否為英文投影。
+- 正式引用外部來源的既定譯法（法規、標準條文的官方中譯）照用。
+
+與「專有名詞過度翻譯」互補而不重疊：那條在詞層（單一名詞被生造），此條在句／搭配層（句架與詞組被直譯）。同一句可能同時中「過度簡寫」（成分殘缺）——各就各的面向標，已在此標記者不必在那條重複標記。
+
 #### Abstract claim → concrete substance
 
 The highest-value Chinese fix: AI states intent where a person states deliverables. Replace abstraction with output, owner, schedule, evidence.
@@ -742,6 +794,8 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - zh-TW 過度簡寫（省略主詞受詞、截斷名詞，如 存同一夾←將檔案存到同一個資料夾），寫成完整句型
 - zh-TW 空降斷言開場（段落／小節開頭丟一個指涉未交代之物的 term／claim，如「三個失效機制，全部指向同一件事」）
 - zh-TW 專有名詞過度翻譯（把無通行譯名的產品名／功能名／術語生造成逐字中文，如 house rules→房規）
+- zh-TW 口號式短句（對仗口號零資訊重述，如「…才會上架。沒過 eval，不上架。」；或口號代替說明，如「連網一行指令，或離線的逐一技能 symlink」）
+- zh-TW 翻譯腔（英文句式／搭配直譯，如「要貢獻，先看 X」← To contribute, see X；「選用的指路」← optional pointer）
 - Breaking the fourth wall — process narration (the author's step-by-step deliberation written out as prose, no CoT fingerprint words)
 - Breaking the fourth wall — consolidation seams (併稿接縫): pointing at a sibling document instead of stating the conclusion (詳《04_技術面試題目》, "see the other doc", 併入 02 人才徵選附件), a lazy back/forward reference standing in for content (比照前述, 同上, "as above"), or an orphaned pointer to a figure/table/section that didn't survive the merge (如圖, 如下表). Not an AI tell per se, but a standalone-readability defect from consolidating source documents.
 - zh-TW 對讀者說教／第二人稱教練口吻（expository 文體裡把主題性質寫成對讀者本人的判斷或喊話，如 抹掉你哪裡不懂／這篇的字是你想過的還是 AI 替你想的；register-scoped，casual／blog／教學步驟的程序性第二人稱不計）
@@ -805,6 +859,7 @@ Rules not listed in the table apply at full strength across all profiles.
 | Social endorsement closers | strict (the LinkedIn share-post tell) | strict | strict | strict | skip | relaxed (1 OK in a DM) |
 | Hedge-stacked predictions | strict | strict | relaxed ("could" is hedged accuracy) | **extra strict** | relaxed | skip |
 | Real/actual inflation | strict | strict | strict | **extra strict** | relaxed | skip |
+| 口號式短句 (zh) | relaxed (punchy hooks OK) | strict | strict | strict | strict | skip |
 
 **Technical-blog word table exceptions:** These terms have legitimate technical meaning and should not be flagged in technical context: `robust`, `comprehensive`, `seamless`, `ecosystem`, `leverage` (when discussing actual platform leverage/APIs), `facilitate`, `underpin`, `streamline`. Still flag: `delve`, `tapestry`, `beacon`, `embark`, `testament to`, `game-changer`, `harness`.
 

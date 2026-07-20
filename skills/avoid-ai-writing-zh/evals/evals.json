@@ -57,6 +57,37 @@
         "facts-preserved-via-reframe: 段落 A 三個判斷／指令背後的實質主張——驗證目標要先想清楚、範本硬套說不出道理是常見失誤、斷言要能一句話講出道理——改寫後仍在，未被連語氣一起砍掉。",
         "hollow-paragraph-flagged-not-fabricated: 段落 B 扣除教練口吻後無實質內容，輸出以標記句處理（如「此段扣除教練口吻後無實質內容，建議作者補入具體經驗」），不得捏造原文沒有的經驗或例子去填滿這段，也不得靜默留空段或直接整段刪除。"
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "detect 這段 README 草稿（docs 語境）：「技能要在真實 eval 上贏過『不用技能』才會上架。沒過 eval，不上架。安裝有兩條路：連網一行指令，或離線的逐一技能 symlink。範圍是開放的，不是固定的。」",
+      "expected_output": "Adversarial: mixes two slogan-style tells (zero-info restatement, slogan-replaces-explanation) with one legitimate punchy short sentence that must NOT be flagged. Guards the rhythm-vs-slogan boundary.",
+      "expectations": [
+        "flags-zero-info-restatement: 標記「沒過 eval，不上架。」為零資訊重述——前句已說明 eval 通過才上架，此對仗短句未加任何新資訊，建議刪除。",
+        "flags-slogan-replacing-explanation: 標記「連網一行指令，或離線的逐一技能 symlink」為口號代替說明——在該講安裝步驟處只給對仗片語，Fix 應攤開成可執行的完整句。",
+        "no-false-positive-on-informative-short-sentence: 不標記「範圍是開放的，不是固定的」——此短句在前文之後補上新的邊界界定，是承載新資訊的節奏，非口號；同時不得誤觸『不是…而是…』contrarian（此為事實邊界 carve-out）。"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "rewrite 這段（docs 語境）：「要貢獻，先看 CONTRIBUTING.md。姊妹技能只是選用的指路，不是前置條件；標了 invoke-only 的要指名叫用。技能在本機直接呼叫，不需另外部署伺服器。」",
+      "expected_output": "Adversarial: three translation-ese tells (calqued sentence, calqued modifier, calqued collocation) alongside two established technical loans (呼叫/部署) that must NOT be flagged as translation-ese.",
+      "expectations": [
+        "flags-calqued-syntax: 標記「要貢獻，先看 CONTRIBUTING.md」為句式直譯（To contribute, see X 的逐字投影），Fix 改為中文語序（如「想貢獻的話，請先讀 CONTRIBUTING.md」）。",
+        "flags-calqued-collocation-and-modifier: 標記「選用的指路」（optional pointer）與「指名叫用」（invoke by name）為搭配／修飾語直譯，Fix 用台灣同行實際說法重寫。",
+        "no-false-positive-on-established-loans: 不把「呼叫」「部署」誤標為翻譯腔——兩者為已通行技術借譯，carve-out 明列照用；本條抓的是句架而非通行詞。",
+        "does-not-strip-english-terms: 保留 CONTRIBUTING.md、invoke-only 等英文術語，不硬翻成中文。"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "rewrite 這段（docs 語境）：「這份指南照團隊實際的做法寫，遇到專有名詞不誤傷。資安設定沿用既有範本即可。」",
+      "expected_output": "Adversarial: exercises the two 過度簡寫 forms added in this version (bare-verb, copula/frame elision) plus a carve-out guard on an established abbreviation. Span-patch, not paragraph rewrite.",
+      "expectations": [
+        "flags-copula-elision: 標記「照團隊實際的做法寫」為繫詞／句架省略——句尾「做法寫」懸空，缺「是照著…寫成的」的架；Fix 補足句架（如「是照著團隊實際的做法寫成的」）。",
+        "flags-bare-verb: 標記「專有名詞不誤傷」為動詞裸用——主詞受詞雙缺；Fix 補回受詞（如「不會把真正的專有名詞誤判成該改的詞」）。",
+        "no-false-positive-on-established-abbrev: 不把「資安」誤標為過度簡寫——通行固定簡稱，carve-out 明列照用；「資安設定沿用既有範本即可」句子完整，不動。"
+      ]
     }
   ]
 }

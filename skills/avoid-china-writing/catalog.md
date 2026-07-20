@@ -9,7 +9,7 @@ title:
   zh: "台灣正體中文在地化"
 tagline:
   en: "Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms"
-  zh: "把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，術語不誤傷"
+  zh: "把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，又不誤傷真正的術語"
 whenUse:
   en: "Reach for it when a Traditional Chinese draft carries mainland wording, corp-speak, or leaked Simplified characters and you need it to read naturally for a Taiwan audience."
   zh: "當一份繁體中文稿子夾雜陸用語、互聯網黑話或簡體字，要改成台灣讀者自然的正體中文時使用。"

@@ -57,6 +57,6 @@ Two blocks inside the rebased-verbatim layers are ours. Re-insert both on every 
 Organized to mirror the English division:
 
 - **對應英文分類** — short zh rules that directly parallel an English category (Contrarian, Copula inflation, Excessive adjective stacking, Slash enumeration, Synonym cycling, Formulaic challenge, Negative framing). Bodies carry「與英文版 X 同源」cross-refs.
-- **zh 特有補充（英文缺的）** — fuller zh-authored rules with no direct English one-liner, or that need more complete handling: 空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, plus the abstract→concrete rewrite table. Ends with the Allowed-patterns carve-out table (governs the whole zh section).
+- **zh 特有補充（英文缺的）** — fuller zh-authored rules with no direct English one-liner, or that need more complete handling: 空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 口號式短句, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, 翻譯腔, plus the abstract→concrete rewrite table. Ends with the Allowed-patterns carve-out table (governs the whole zh section).
 
 When our fork was cut it stripped upstream's provenance lines from the shared categories (per the root `CLAUDE.md` convention). The verbatim rebase re-introduces them into the English layer only; the zh layer stays convention-clean.

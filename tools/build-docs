@@ -267,7 +267,7 @@ def build_readme_section(lang: str, categories: list[dict], skills: list[dict]) 
         "[`SKILL.md`](skills/) directly."
         if lang == "en" else
         f"{len(skills)} 個技能、{len(categories)} 個分類。多數會在任務命中 trigger 時自動載入；"
-        "標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，"
+        "標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，"
         "或直接讀任何一份 [`SKILL.md`](skills/)。"
     )
     what_col = "What it does" if lang == "en" else "做什麼"

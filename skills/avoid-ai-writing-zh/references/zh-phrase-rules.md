@@ -2,7 +2,7 @@
 
 The six enumerable word/phrase → replacement lookup tables for the Traditional Chinese section of `avoid-ai-writing-zh`. Load this file when auditing CJK text and you need a concrete「這個詞→換成這個」lookup — empty slogans, the 確保 filler family, significance-inflation words, AI sentence templates, individual-term substitutions, and Taiwan term preferences.
 
-Everything else in the zh layer stays inline in `SKILL.md` under 「Traditional Chinese AI-isms」: the behavioral rules that need judgment rather than lookup (空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, and the contrarian / copula / adjective-stacking micro-rules), the abstract→concrete rewrite table, and the do-not-flag Allowed-patterns carve-outs. Apply both together.
+Everything else in the zh layer stays inline in `SKILL.md` under 「Traditional Chinese AI-isms」: the behavioral rules that need judgment rather than lookup (空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 口號式短句, 翻譯腔, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, and the contrarian / copula / adjective-stacking micro-rules), the abstract→concrete rewrite table, and the do-not-flag Allowed-patterns carve-outs. Apply both together.
 
 ## Empty slogans (空話／口號) — always replace
 
@@ -55,6 +55,22 @@ AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中�
 | 節奏（用於時程／進度語境，如「專案節奏」「開發節奏」） | 把英文 rhythm／cadence 的譬喻套到時程上；中文應直接指明時間規劃 | 期程（時間規劃）／排程（具體時間表，依語境擇一） | 真正描述音樂、運動、敘事的「節奏感」時保留 |
 | 編排（用於 orchestration，如「服務編排」「流程編排」） | orchestration 直譯為「編排」偏向版面／內容編排語意，與調度資源、協調流程的原意不符 | 調度 | 描述版面、內容、表演、課程「編排」時保留 |
 | 跳（用於 network hop，如「多一跳」「少一跳」「每跳延遲」） | network hop 的直譯；圈外讀者不知道「跳」的是什麼，句中也沒有動作與對象 | 寫明動作與對象：「請求多經過一個轉發節點（network hop）」「每經過一個節點就增加一段轉發延遲」 | 明確面向網路工程讀者、且文中已定義 hop 一詞時，可用「hop」原文 |
+
+## 負面案例對照（承 SKILL.md 判準）
+
+判斷型規則（口號式短句、翻譯腔、過度簡寫）的定型負面案例對照。遇到相同句型可直接套用下表；句型不同、或不確定是否觸發，仍回 `SKILL.md` 依各規則判準處理。左欄是要抓的負面案例，中欄標出病灶與對應的 inline 規則，右欄是改法。
+
+| 負面案例（flag） | 病灶 | Fix |
+|---|---|---|
+| …才會上架。沒過 eval，不上架。 | 口號式短句（零資訊重述）：後句只是前句換句話說 | 刪去後句 |
+| 連網一行指令，或離線的逐一技能 symlink | 口號式短句（口號代替說明）：該說明處只給對仗片語 | 線上環境用一行指令安裝；離線或內網環境則改用逐一技能的 symlink |
+| 要貢獻，先看 CONTRIBUTING.md | 翻譯腔（句式直譯 ← To contribute, see X） | 想貢獻的話，請先讀 CONTRIBUTING.md |
+| 指名叫用 | 翻譯腔（搭配直譯 ← invoke by name） | 輸入名稱手動啟動 |
+| 選用的指路 | 翻譯腔（修飾語直譯 ← optional pointer；「指路」在中文不成詞） | 額外參考 |
+| 術語不誤傷 | 過度簡寫（動詞裸用：主詞受詞雙缺） | 不會把真正的術語誤判成該改的詞 |
+| 這些技能照台灣人實際的寫法寫 | 過度簡寫（繫詞省略：句尾「寫法寫」懸空，缺「是…寫成的」句架） | 這些技能是照著台灣人實際的書寫習慣寫成的 |
+
+翻譯腔的通則是**禁止原文直翻、一律改寫**：先抓意思，再想「若一開始是一個台灣人就用中文寫，這件事會怎麼講」，不要對著英文逐詞替換。
 
 ## Taiwan term preferences (zh-TW, not zh-CN)
 
