@@ -2,7 +2,7 @@
 
 # My Skills
 
-**寫出像真人的正體中文的 agent 技能——直接來自我的 `~/.skills`。**
+**寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
 [![Skills](https://img.shields.io/badge/skills-11-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
@@ -14,9 +14,9 @@
 
 </div>
 
-我個人的 `~/.skills` repo——我日常在 **Claude Code、Cursor、Codex** 上用的 [`SKILL.md`](https://agentskills.io) 技能、腳本與工具。這是個人工具箱，不是單一用途的產品：它跟著我的工作需要往任何方向長，放在這裡都是公開的，因為對別人可能也有用。
+我個人的 `~/.skills` repo，是我日常在 **Claude Code、Cursor、Codex** 上用的 [`SKILL.md`](https://agentskills.io) 技能、腳本與工具。這是個人工具箱，不是單一用途的產品：它跟著我的工作需要往任何方向長，放在這裡都是公開的，因為對別人可能也有用。
 
-目前技能偏向**繁體中文寫作**——去 AI 味、台灣在地化、商務公文——因為這正是 GitHub 上少有人做的一塊：讓文字讀起來對**台灣**讀者自然，去掉 AI 味、去掉陸用語、去掉職場黑話。其他技能與工具跟它們並存，之後也會陸續加進來。
+目前技能偏向**繁體中文寫作**（去 AI 味、台灣在地化、商務公文），因為這正是 GitHub 上少有人做的一塊：讓文字讀起來對**台灣**讀者自然，去掉 AI 味、去掉陸用語、去掉職場黑話。其他技能與工具跟它們並存，之後也會陸續加進來。
 
 ---
 
@@ -27,19 +27,19 @@
 - **只顧英文**：去 AI 味、語氣檢查、風格工具都對著英文調校，完全抓不到中文裡的破綻。
 - **通用中文，不是台灣中文**：所謂的「中文」支援通常是大陸用法。這些技能照台灣人實際的寫法寫。
 - **混進來的陸用語與簡體**：陸用語、互聯網黑話、殘留簡體字會滲進正體中文；在地化技能抓得出來，又不誤傷真正的術語。
-- **AI 味與職場黑話**：那種一致的節奏、模稜兩可和填充語——中英文都幫你清掉。
+- **AI 味與職場黑話**：那種一致的節奏、模稜兩可和填充語，中英文都一起清掉。
 
 ## 這裡有什麼
 
 - **天生可攜**：每個技能都能在 Claude Code 和 Codex（以及任何相容 [agentskills.io](https://agentskills.io) 的 agent）上跑。不需外部工具或 API，工具專屬功能不會是必要條件。
 - **自足**：每個技能都能獨立完成自己的工作，提到姊妹技能只是選用的指路，不是前置條件。
 - **要贏過 baseline**：技能要在真實 eval 上贏過「不用技能」才會上架。沒過 eval，不上架。
-- **目前以寫作為主**：下面的目錄是台灣優先的中文寫作——去 AI 味、陸用語轉台灣用語、白話翻譯、部落格、簽呈／RFP／評估報告。範圍是開放的，不是固定的。
-- **兩個走得更遠的**：[`infographic-design`](skills/infographic-design/SKILL.md)（設計系統級的說明圖表）與 [`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md)（Diátaxis 文件紀律）是專業、跨語言、能獨當一面的工具——不需要中文也能用。
+- **目前以寫作為主**：下面的目錄是台灣優先的中文寫作，涵蓋去 AI 味、陸用語轉台灣用語、白話翻譯、部落格、簽呈／RFP／評估報告。範圍是開放的，不是固定的。
+- **兩個走得更遠的**：[`infographic-design`](skills/infographic-design/SKILL.md)（設計系統級的說明圖表）與 [`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md)（Diátaxis 文件紀律）是專業、跨語言、能獨當一面的工具，不需要中文也能用。
 
 ## 30 秒安裝
 
-兩條路——連網一行指令，或離線的逐一技能 symlink（見下方）。
+兩條路：連網一行指令，或離線的逐一技能 symlink（見下方）。
 
 一行指令，把所有技能裝到一台機器：
 
@@ -90,13 +90,13 @@ tools/sync-skills
 | Skill | 做什麼 |
 |---|---|
 | **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
-| **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | 設計系統級的說明圖表——時間軸、比較、流程圖——輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
+| **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
 
 ### 技術文件
 
 | Skill | 做什麼 |
 |---|---|
-| **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | 以 Diátaxis 模型寫工程等級的知識文件——tutorial、how-to、reference、explanation——素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
+| **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
 
 ### 知識管理
 
@@ -141,8 +141,8 @@ tools/sync-skills
 | `tools/archive-skill <name>` | 用 `git mv` 把技能（含 evals）搬進 `_archive/`。 |
 | `tools/usage-report [days]` | 統計 `~/.claude/projects/` transcript 裡的技能觸發次數。預設 90 天。 |
 
-硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南——結構、frontmatter 陷阱、命名、可攜性、測試紀律——在 **[DEVELOPMENT.md](DEVELOPMENT.md)**。要貢獻，先看 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
+硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[DEVELOPMENT.md](DEVELOPMENT.md)**。要貢獻，先看 **[CONTRIBUTING.md](CONTRIBUTING.md)**。
 
 ## 授權
 
-[MIT](LICENSE) © Lu Yi。部分技能改編自上游作品，各有其署名——見各技能的 `SKILL.md` 與 `NOTICE`。
+[MIT](LICENSE) © Lu Yi。部分技能改編自上游作品，各有其署名，詳見各技能的 `SKILL.md` 與 `NOTICE`。
