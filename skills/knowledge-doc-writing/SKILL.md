@@ -23,125 +23,135 @@ metadata:
     emoji: "📚"
 ---
 
-# Knowledge Doc Writing — 自學知識文件（Diátaxis 四型）
+# Knowledge Doc Writing — Turning Self-Study into Diátaxis Four-Type Docs
 
-把一個技術主題（自學所得、對話紀錄、或原始資料）整理成**一份文件、四個清楚分離的 Diátaxis 區塊**：tutorial（帶著讀者第一次上手）、how-to（引導已具能力者完成任務）、reference（查參數與結構）、explanation（What/Why 論述與取捨決策）。四個區塊彼此不混，跨型內容用連結互指，不 inline 混寫。
+Turn a technical topic (self-study output, conversation transcripts, or raw source material) into **one document with four cleanly separated Diátaxis sections**: tutorial (walks a first-time reader through hands-on use), how-to (guides an already-competent reader through a task), reference (looks up parameters and structure), explanation (What/Why argumentation and trade-off decisions). The four sections never mix — cross-type content is cross-linked, never inlined.
 
-**素材撐得起才寫**：用 compass 兩問把每段素材路由到對應區塊，有素材支撐的型寫足寫純，撐不起的型（研究過但未實際跑過，常缺 tutorial/how-to）明列為缺口、標待補條件，**不捏造、不搭空殼**。
+**Only write what the material can support.** Use the compass's two questions to route each piece of material to its section; a section with material support gets written fully and stays pure, and a section that can't be supported (often tutorial/how-to, when the topic was researched but never hands-on) is listed as an explicit gap with the condition needed to fill it — **never fabricate, never build an empty shell**.
 
-**預設技術脈絡**：金融業企業級架構、Kubernetes / OpenShift、微服務、AI 平台、RHEL + rootless Podman + Quadlet。範例與比較對象優先取自這個語境，讓文件貼近實際工作而非教科書通例。此語境在此宣告一次，各節引用不重述。
+**Default technical context:** enterprise architecture in financial services, Kubernetes / OpenShift, microservices, AI platforms, RHEL + rootless Podman + Quadlet. Draw examples and comparisons from this context first, so the document reads like real work rather than a textbook generality. Declared once here; later sections reference it without restating it.
 
-全文白話優先、術語保留英文（見 S5）。
+Plain language throughout; keep established terms in English (see S5).
 
-## S1. 開工前：定位、輸入模式、Mode D 意圖閘
+## Output Language
 
-動筆前一次問完，不確定就問使用者：
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
 
-1. **文件定位** — 學習筆記（可第一人稱、可留疑問）／正式文件（客觀陳述、規格手冊風格、無第二人稱教練口吻）／混合（正文正式、學習鷹架收文末附錄）。定位決定第一人稱與 opt-in 姿態。
-2. **輸入模式**：
-   - **A 對話紀錄整理** — 以對話中反覆修正後的最終理解為素材；中途被推翻的說法轉 explanation 常見誤解並查證；懸而未決且使用者自標的問題，依 opt-in 例外收進 explanation 附錄待驗證清單。
-   - **B 原始資料整理** — 官方文件、spec、會議記錄；這是重組不是摘要，交給 S2 compass 依「服務哪種需求」重排，不照原文功能目錄排。
-   - **C 從零研究產出** — 使用者只給主題名稱；**先做來源研究再動筆**（見 S6 一手來源），快速演進的主題優先近 12–18 個月資料。
-   - **D 既有文件改寫** — 見下方意圖閘。
-3. **learn 銜接**（屬 A/B 變形，鐵律）：本 skill 是 `learn-loop` 下游，**不得跨越分工線**。distillation（把資料消化成自己的話、判斷懂沒懂）永遠是 learn 的職責、由使用者親手做；本 skill 拿到的是已 distill 完成的理解，只負責寫成對外文件。vault 已確立的理解直接作 explanation 主幹，不重做消化；補齊第三方讀者上下文；`[[wikilinks]]` 與 YAML block tags 改寫或移除；沿用 learn 已查證來源，as-of 更新為出文件時點。
+Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
 
-**Mode D 意圖閘**（收到既有文件時，先過此閘，gate on 意圖不 gate on 動詞）：
+If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
 
-- **先過主題篩**：本模式只收技術知識文件。簽呈、會議紀錄、評估報告等行政文件即使格式再「外來」，轉交 `formal-doc-structure`：動詞是「改寫」，不改變歸屬。
-- **意圖＝更新時效／併入新素材 → 定點修補（point-patch）**：保留輸入原形（即使原檔是本 skill 之前的四型或單一骨架），只改被時效／新素材影響的部分。**point-patch 路徑不進入 S2 compass，不重排整份。**
-- **意圖＝重整／重構 → 交 S2 compass 重建四型區塊**：把素材依 compass 重新路由。
-- 動筆前先問保守改寫或從零重產，不自行假設。文件出身辨識訊號（本 skill 骨架 vs 外來教學文／feature list／AI 代筆稿——流暢≠有骨架）、判錯的不對稱代價、四情境（重構／更新時效／併入新素材／品質升級）各自邊界、改寫說明格式，見 [references/rewrite.md](references/rewrite.md)。
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
 
-**完成準則**：定位與輸入模式已判定，不確定項已動筆前一次問完；若為模式 D，文件出身與意圖分流方向（point-patch／compass 重建）已分類，且已問保守改寫或從零重產。判為 point-patch 卻仍跑 compass 重排、或 learn 銜接卻重做 distillation，即為失敗。
+## S1. Before Starting: Positioning, Input Mode, the Mode D Intent Gate
 
-## S2. Compass 路由：每段素材指派到唯一區塊、缺型標缺口
+Ask everything up front, before writing a word; when unsure, ask the user:
 
-這是承載性路由器，四型區塊都是它的下游。對**每段素材**各問兩題：
+1. **Document positioning** — learning notes (first person allowed, open questions allowed) / formal document (objective statement, spec-manual register, no second-person coaching voice) / hybrid (formal body, learning scaffolding collected in a closing appendix). Positioning decides both the first-person voice and the opt-in modules' posture.
+2. **Input mode:**
+   - **A — Distilling a conversation transcript.** The material is the final, repeatedly-corrected understanding reached in the conversation; a claim that got overturned mid-conversation becomes an explanation common-misconception entry, verified against sources; a question left open and self-flagged by the user goes into the explanation appendix's to-verify list under the opt-in exception (see S3).
+   - **B — Organizing raw source material.** Official docs, specs, meeting notes — this is a *reorganization*, not a summary; hand it to the S2 compass to reorder by "which need it serves," not by the source's own table of contents.
+   - **C — Researching a topic from scratch.** The user gives only a topic name; **do the source research before writing a word** (see S6, primary sources), and for fast-moving topics prefer material from the last 12–18 months.
+   - **D — Rewriting an existing document.** See the intent gate below.
+3. **Handoff from `learn-loop`** (a variant of A/B, a hard rule): this skill is downstream of `learn-loop` and **must not cross that division of labor**. Distillation — digesting material into one's own words, judging whether it's actually understood — is always `learn`'s job, done by the user's own hand; what this skill receives is already-distilled understanding, and its only job is writing it up for an external reader. Understanding already settled in the vault becomes the explanation backbone directly, without redoing the distillation; fill in context for third-party readers; rewrite or drop `[[wikilinks]]` and YAML block tags; carry forward `learn`'s already-verified sources, updating the as-of date to publication time.
 
-1. **action 還是 cognition？** — 要讀者去「做」（動作導向），還是增進理解（認知導向）。
-2. **acquisition 還是 application？** — 服務讀者習得技能的階段（at study，學習中），還是已有技能要運用的階段（at work，工作中）。
+**Mode D intent gate** (when handed an existing document, clear this gate first — gate on *intent*, not on the verb used):
 
-兩答案機械式指向唯一一型：
+- **Topic filter first.** This mode only accepts technical knowledge documents. Administrative documents — 簽呈, meeting minutes, evaluation reports — route to `formal-doc-structure` even in a format that looks "foreign" to it: the verb is "rewrite," but that doesn't change ownership.
+- **Intent = refresh currency / fold in new material → point-patch.** Keep the input's original shape (even if it was already this skill's four-type structure, or a single-block draft) and change only the parts affected by staleness or new material. **The point-patch path never enters the S2 compass and never reorders the whole document.**
+- **Intent = reorganize / restructure → hand to the S2 compass to rebuild the four sections.** Re-route the material through the compass.
+- Before writing, ask whether this is a conservative rewrite or a from-scratch reproduction — don't assume. See [references/rewrite.md](references/rewrite.md) for the document-provenance signals (this skill's own scaffold vs. an outside tutorial / feature list / AI-ghostwritten draft — fluency ≠ having a scaffold), the asymmetric cost of misjudging it, the boundaries of the four scenarios (restructure / refresh currency / fold in new material / quality upgrade), and the rewrite-note format.
 
-| | acquisition（學習中） | application（工作中） |
+**Completion criterion:** positioning and input mode are both determined, with every uncertainty asked up front before writing starts; for Mode D, the document's provenance and intent branch (point-patch vs. compass rebuild) are classified, and conservative-rewrite-vs-reproduce has been asked. Classifying as point-patch but still running the compass reorder, or handling a `learn` handoff by redoing the distillation, is a failure.
+
+## S2. Compass Routing: Assign Every Piece of Material to Exactly One Section, Flag Gaps for Unsupported Types
+
+This is the load-bearing router; all four sections are downstream of it. For **every piece of material**, ask two questions:
+
+1. **Action or cognition?** — does it have the reader *do* something (action-oriented), or build understanding (cognition-oriented)?
+2. **Acquisition or application?** — does it serve the reader while they're acquiring the skill (at study), or while they're applying a skill they already have (at work)?
+
+The two answers mechanically point to exactly one type:
+
+| | Acquisition (at study) | Application (at work) |
 |---|---|---|
-| **action（做）** | Learning → **tutorial** | Goals → **how-to** |
-| **cognition（想）** | Understanding → **explanation** | Information → **reference** |
+| **Action** | Learning → **tutorial** | Goals → **how-to** |
+| **Cognition** | Understanding → **explanation** | Information → **reference** |
 
-產出一張可稽核的**素材→區塊指派表**。規則：
+Produce an auditable **material → section assignment table**. Rules:
 
-- **同段橫跨兩象限＝拆分訊號**：拆開分別歸位，不 inline 混寫。
-- **沒有素材路由進的象限＝缺口**：標為待補（如「需實際部署後補」），不捏造內容填充。
-- **踩雷／步驟依可逆性次分派**：可逆、安全的操作 → tutorial 提示；不可逆、生產風險的 → how-to 警告。
+- **One passage spanning two quadrants is a split signal:** split it and place each half in its own section — never inline-mix.
+- **A quadrant with no material routed into it is a gap:** mark it as pending (e.g. "pending actual deployment"), never fabricate content to fill it.
+- **Sub-route pitfalls/steps by reversibility:** reversible, safe operations → a tutorial callout; irreversible, production-risk operations → a how-to warning.
 
-**完成準則**：文件中每一段素材都經兩題判定、指派到四型其中恰一型並記入指派表；橫跨兩象限的素材已拆開歸位；四型每一型皆已明確標為「有素材支撐」或「缺口＋待補條件」，二者擇一無第三態。無指派表背書而逕自開寫任一區塊即為失敗。
+**Completion criterion:** every piece of material in the document has been run through both questions, assigned to exactly one of the four types, and logged in the assignment table; material spanning two quadrants has been split and placed; every one of the four types is explicitly marked either "material-supported" or "gap + pending condition" — no third state. Starting to write any section without the assignment table backing it is a failure.
 
-## S3. 四型區塊：撐得起才寫、寫足寫純
+## S3. The Four Sections: Only Write What the Material Supports, Write Each to Full Purity
 
-依 S2 指派結果，**只寫有素材支撐的區塊**，每型守其邊界。缺口型只留一行缺口註記，不寫散文。四型完整產生規則、好壞示範、五件套 recipe、消化模組寫法、opt-in 附錄格式，見 [references/blocks.md](references/blocks.md)：**動手寫任一區塊前先讀它**。以下是各型邊界規格（純度不靠下沉檔，寫進完成準則）：
+Per the S2 assignment, **only write sections with material support**, and hold each to its boundary. A gap-type section gets one line noting the gap, not prose. The full generation rules for all four types, good/bad examples, the five-piece comparison recipe, digestion-module technique, and the opt-in appendix format live in [references/blocks.md](references/blocks.md) — **read it before writing any section**. Below are the boundary specs per type (purity isn't delegated to the linked file — it's written into the completion criterion):
 
-- **explanation**（understanding-oriented，唯一可帶判斷的區塊）：What/Why 三段論述（功能定位／解決的問題／主要功能要求，寫成完整句段落，非名詞條列）＋**辯證比較五件套作 internal recipe**（定義→行為職責邊界→比較分析→邊界判斷表→決策框架，含「何時不該採用」有實質內容），**不自成頂層骨架**；ADR 決策理由（背景／選項／後果／依據）織入論述、回指前文事實，不另立獨立模組；心智模型與類比、常見誤解、論述紀律（每個判斷句有前文／理由／來源）。opt-in 附錄住此（見下）。
-- **reference**（information-oriented）：**describe-only**、中性、mirror 產品結構、含旗標與參數；無 recipe、無意見、無論述。
-- **tutorial**（learning-oriented）：單一安全直線、消除意外、第一人稱複數祈使（We…／Notice that…）；不解釋、不追求完整、不放真實世界分支。
-- **how-to**（task-oriented）：assume competence、goal-oriented、允許 if-then 條件分支；不教學、不離題；標題精確說出展示什麼。
+- **explanation** (understanding-oriented, the only section allowed to carry judgment): a three-part What/Why argument (positioning / the problem it solves / core functional requirements — written as full-sentence paragraphs, not noun-phrase bullets) **plus a five-piece comparative recipe as an internal device** (definition → behavioral/responsibility boundary → comparative analysis → boundary-judgment table → decision framework, including substantive content on "when not to use this" — **it never becomes its own top-level scaffold**); ADR-style decision rationale (context / options / consequences / basis) woven into the argument and pointing back to earlier stated facts, not broken out as a separate module; mental models and analogies, common misconceptions, and argumentative discipline (every judgment sentence has prior context, a stated reason, or a source). The opt-in appendix lives here (see below).
+- **reference** (information-oriented): **describe-only**, neutral, mirrors the product's own structure, includes flags and parameters; no recipe, no opinion, no argument.
+- **tutorial** (learning-oriented): a single safe straight line, surprises eliminated, first-person-plural imperative voice ("We…" / "Notice that…"); no explaining, no chasing completeness, no real-world branching.
+- **how-to** (task-oriented): assume competence, goal-oriented, if-then conditional branching allowed; no teaching, no digression; the heading states exactly what it demonstrates.
 
-**opt-in 模組**（費曼式自述、待驗證問題清單）：預設關閉，住在 **explanation 區塊的附錄**，寫法在 blocks.md。放 explanation 由 compass 象限背書：費曼＝reflection-after-practice＝cognition＋at-study；待驗證＝理解缺口的工作紀錄，同屬 understanding-oriented。兩個啟用門：(a) 使用者明確要求（「幫我檢核理解／加費曼自述／待驗證清單」）；(b) 例外條款——輸入素材（如對話紀錄）內含使用者自己標記、不收就會遺失的未解問題，此時待驗證清單照收，每題附具體「怎麼驗證」。正式文件模式一律不出現。
+**Opt-in modules** (a Feynman-style self-explanation, a to-verify question list): off by default, living in **the explanation section's appendix**; the write-up technique is in blocks.md. Placing them under explanation is backed by the compass quadrant: Feynman = reflection-after-practice = cognition + at-study; to-verify = a working record of understanding gaps, likewise understanding-oriented. Two triggers turn it on: (a) the user explicitly asks for it ("check my understanding" / "add a Feynman self-explanation" / "add a to-verify list"); (b) the exception clause — the input material (e.g. a conversation transcript) contains an unresolved question the user flagged themselves and would otherwise be lost, in which case the to-verify list is included regardless, with a concrete "how to verify this" attached to each item. Never appears in formal-document mode.
 
-**完成準則**：凡有素材支撐的型皆寫到其邊界純度：reference 無論述無 recipe；explanation 為論述、五件套為內部 recipe（頂層出現獨立五件套骨架即失敗）、「何時不該採用」有實質內容；tutorial 為單一安全直線、無真實世界分支、無解釋；how-to 假設已具能力、允許 if-then、不教學；缺口型逐一為一行缺口註記；opt-in 模組僅在啟用時出現於 explanation 附錄、正式文件模式不出現。
+**Completion criterion:** every section with material support is written to its boundary's purity — reference carries no argument and no recipe; explanation is argumentative prose with the five-piece recipe kept internal (a standalone five-piece scaffold appearing at the top level is a failure), and "when not to use this" has substantive content; tutorial is a single safe straight line with no real-world branching and no explaining; how-to assumes competence, allows if-then, and doesn't teach; every gap-type section is a single one-line gap note; opt-in modules appear in the explanation appendix only when triggered, and never in formal-document mode.
 
-## S4. 維持區塊分離
+## S4. Keeping the Sections Separated
 
-寫完後自審 map 預測的**兩對相鄰混淆**（相鄰型共享一維，最易混）：
+After drafting, self-check against the **two adjacent-pair confusions** the map predicts (adjacent types share one dimension, so they're the easiest to blur):
 
-- **tutorial ↔ how-to**（同屬 action，差在 **at-study vs at-work**）：最致命，擋在新手面前。把跑進 tutorial 的真實世界分支抽回 how-to。
-- **reference ↔ explanation**（同含 propositional knowledge，差在 **describe vs discuss**）：把跑進 reference 的論述抽回 explanation。
+- **tutorial ↔ how-to** (both action, differing on **at-study vs. at-work**): the most damaging blur — it blocks a beginner. Pull any real-world branching that leaked into tutorial back out into how-to.
+- **reference ↔ explanation** (both carry propositional knowledge, differing on **describe vs. discuss**): pull any argument that leaked into reference back out into explanation.
 
-跨型內容改為**連結互指**，不 inline 混寫。兩對的分辨測試細節見 [references/blocks.md](references/blocks.md)。
+Turn cross-type content into a **cross-link**, never inline-mixed content. Detailed discrimination tests for both pairs are in [references/blocks.md](references/blocks.md).
 
-**完成準則**：兩對相鄰混淆自審皆已執行；無區塊含他型內容（tutorial 內無真實世界分支、reference 內無論述）；每處跨型指涉皆為連結而非 inline 段落。自審被跳過或殘留任一 blur 即為失敗。
+**Completion criterion:** both adjacent-pair self-checks have been run; no section contains content belonging to another type (no real-world branching inside tutorial, no argument inside reference); every cross-type reference is a link, not an inline paragraph. Skipping the self-check, or leaving either blur in place, is a failure.
 
-## S5. 語言與格式（含 HTML 版）
+## S5. Language and Formatting (Including the HTML Edition)
 
-跨型共用、與路由無關的規則，寫任一區塊時皆套用：
+Rules shared across all types, independent of routing — apply them no matter which section you're writing:
 
-- **白話優先，讀者一遍讀懂**。用平實的話講清楚，勝過堆術語、繞公文腔、寫長難句。正式文件模式收斂的是口吻（客觀陳述、不用第一人稱），不是把句子寫難；規格手冊風格照樣白話。白話不等於簡寫：名詞與動詞都用完整的詞、語句寫成完整句。
-- **術語保留英文**（API、sidecar、control plane）是台灣技術寫作慣例；無定譯的專有名詞不生造中文譯名。
-- **三層承接**（章節／段落／條列，適用所有區塊的條列，不限 explanation）：章節開頭一句交代與前節關係；段落間用承接詞或回指交代因果；條列前有**引導句**（交代這份清單是什麼的集合、並列窮舉／依序／互斥）、順序有意義就**明說**、後有**收束句**接回論述。檢驗法：打亂順序重讀若讀不出差別、引導句卻聲稱有順序，代表該層級的邏輯關係不存在。
-- **一句話開頭 + 一段話總結**：開頭收一個 blockquote（一句話定義＋文件範圍行＋「更新至 YYYY-MM」）；文末收一段話總結（三行內講完定義、強弱項、決策法則）。
-- **架構與決策路徑畫 Mermaid**（flowchart），標註要能獨立讀懂，Markdown 為正本；學習筆記可少量 emoji 點綴（✅❌⚠️），正式模式收斂。
-- **相關但不展開的鄰近主題**收文末「延伸參考」：定位、一句話對比、時效近況（授權變更、專案存廢）。
+- **Plain language first — the reader gets it on one pass.** Say it plainly rather than stacking jargon, hedging in bureaucratic register, or writing long, tangled sentences. Formal-document mode tightens the *voice* (objective statement, no first person), not the sentence difficulty — a spec-manual register is still plain. Plain doesn't mean abbreviated: use full nouns and full verbs, and write in complete sentences.
+- **Keep established terms in English** (API, sidecar, control plane) — standard practice in Taiwan technical writing; don't invent a Chinese translation for a term with no settled one.
+- **Three-layer continuity** (section / paragraph / list — applies to lists in every section, not just explanation): open a section with one line stating its relationship to the previous one; connect paragraphs with a transition word or a backward reference that carries the causality; every list gets a **lead-in sentence** (stating what kind of collection this is — parallel/exhaustive, sequential, or mutually exclusive), states the ordering explicitly when order is meaningful, and closes with a **wrap-up sentence** tying it back into the argument. Test: if shuffling the list and re-reading makes no readable difference while the lead-in claims an order, that ordering relationship doesn't actually exist at that level.
+- **One-line opener + one-paragraph closer**: open with a blockquote (one-sentence definition + a scope line + "Updated through YYYY-MM"); close with a one-paragraph summary (definition, strengths/weaknesses, and the decision rule, in three lines or fewer).
+- **Diagram architecture and decision paths as Mermaid** (flowchart), with labels readable on their own; Markdown is the source of record. Learning-notes mode allows sparing emoji accents (✅❌⚠️); formal mode drops them.
+- **Related-but-not-expanded neighboring topics** go in a closing "Further reading": positioning, a one-sentence comparison, and any currency note (license changes, project status).
 
-**HTML 版**：Markdown 為預設輸出正本。使用者要圖文並茂時才另出 HTML 版，規則見 [references/html.md](references/html.md)——所有圖表 inline SVG（不用 canvas／點陣／Mermaid runtime／外部圖片）、套固定模板 CSS、四型在 HTML 中仍分離、依 frontend-design／infographic-design 定 token 且只用於圖不用於外殼。
+**HTML edition:** Markdown is the default output and the source of record. Produce an HTML edition only when the user asks for a richly illustrated version; rules are in [references/html.md](references/html.md) — every diagram is inline SVG (no canvas, no raster images, no Mermaid runtime, no external images), a fixed template CSS applies, the four types stay separated in the HTML too, and any design tokens set via `frontend-design`/`infographic-design` are used only for figures, never for the page shell.
 
-**完成準則**：全文白話一遍讀懂、術語保留英文；每個區塊的條列有引導句與收束句、順序有意義時已明說；開頭有一句話 blockquote、文末有一段話總結；架構／決策以 Mermaid 呈現且可獨立讀懂；僅在使用者要 HTML 版時才依 html.md 產出，屆時四型仍分離、圖表為 inline SVG、Markdown 版仍為正本。
+**Completion criterion:** the whole document reads plainly on one pass, with established terms kept in English; every list in every section has a lead-in and a wrap-up sentence, with meaningful ordering stated explicitly; there's a one-sentence blockquote opener and a one-paragraph closer; architecture and decisions are rendered in Mermaid and readable on their own; an HTML edition is produced only when the user asked for one, and when it is, the four types stay separated, diagrams are inline SVG, and the Markdown edition remains the source of record.
 
-## S6. 完稿檢查：功能性先於深層
+## S6. Final Check: Functional Quality Before Depth
 
-兩層品質閘，寫作期即累積、交件前收斂。**deep quality is conditional upon functional quality**，順序不能顛倒。
+Two quality gates, accumulated throughout writing and closed out before delivery. **Deep quality is conditional upon functional quality** — the order cannot be reversed.
 
-### 功能性品質（硬約束，先過）
+### Functional Quality (Hard Constraints, Clear These First)
 
-accuracy／completeness／consistency／usefulness／precision。逐項：
+Accuracy / completeness / consistency / usefulness / precision. Item by item:
 
-- **一手來源可追**。優先序：官方文件／spec ＞ 原始論文與設計提案（KEP／RFC）＞ 專案維護者文章 ＞ 二手教學。二手只補視角，關鍵事實回一手確認。
-- **標 as-of 日期與版本範圍**。「Ingress 已被 Gateway API 取代」沒有版本範圍就是錯的；行為隨版本變的主題寫明適用版本（`OpenShift 4.14+`、`Podman 5.x`）。
-- **標記過時說法**。廣為流傳但已過時的講法寫進 explanation 常見誤解，註明從哪版起不成立。
-- **無編造 URL 或來源**；不確定就寫不確定。**無空降主張**：每個判斷句有前文依據、當場理由、或來源三者之一。
-- **範例不豁免**：使用者提供的範例句與正文同標準受檢，破碎短語照抓照改。
+- **Every claim traces to a primary source.** Priority order: official docs/spec > original papers and design proposals (KEP/RFC) > project-maintainer writing > secondhand tutorials. Secondhand sources only add perspective — confirm key facts against a primary source.
+- **Mark the as-of date and version range.** "Ingress has been replaced by Gateway API" is simply wrong without a version range; for anything whose behavior changed across versions, state the applicable version (`OpenShift 4.14+`, `Podman 5.x`).
+- **Flag outdated claims.** A widely-repeated but now-outdated claim goes into explanation's common-misconceptions entry, noting which version it stopped being true from.
+- **No fabricated URLs or sources**; when unsure, say so. **No unearned assertions**: every judgment sentence carries at least one of prior context, a stated reason, or a source.
+- **Examples aren't exempt**: example sentences supplied by the user are held to the same standard as the body text — flag and fix broken phrasing in them too.
 
-**去 AI 味**：**可用時優先呼叫 `avoid-ai-writing-zh`**（它是語言判準的權威來源，用它跑 detect／edit），把全文掃到清零並回報發現／修復／殘留。它是可選、非前置依賴，不可載入時 fallback 到下列內建精簡判準清單完成，核心產出不受阻。內建清單：破碎短句、頓號堆砌、破折號濫用（連接用「——」每千字一次為上限，條列「概念名 — 說明」分隔符不計）、空降主張、動詞缺席、警句式評語、樣板標題（「深入探討」「全面解析」「揭秘」）、第二人稱教練口吻（正式與混合模式視為違規，學習筆記放寬第一人稱與自問）。
+**De-AI pass:** **call `avoid-ai-writing-zh` first when it's available** — it's the authoritative source for the language judgment call, so run its detect/edit modes — sweep the whole document to zero and report what was found / fixed / remaining. It's optional, not a hard dependency: when it can't be loaded, fall back to the built-in condensed checklist below so the core deliverable is never blocked. Built-in checklist: fragmented short phrases, 頓號 (Chinese enumeration comma) stacking, dash overuse (connective「——」capped at once per thousand characters; the「concept — explanation」bullet separator doesn't count), unearned assertions, missing verbs, aphoristic commentary, templated headings (「深入探討」「全面解析」「揭秘」), second-person coaching voice (a violation in formal and hybrid modes, relaxed to allow first person and self-questioning in learning-notes mode).
 
-### cycle-of-needs 覆蓋與 complete≠finished
+### Cycle-of-Needs Coverage, and Complete ≠ Finished
 
-- **四型覆蓋檢查**：一個技術主題天然產生四種需求（想上手／想完成任務／想查參數／想懂原理）。確認四型皆「覆蓋或明列缺口」，無靜默遺漏；無空殼區塊。
-- **complete ≠ finished**：文件永遠在演化，但隨時可以是 complete：對使用者有用、符合現階段、結構健康。每型當下有用即可獨立發布，**由內而外從最撐得起的型長出，不先搭四殼再填**。
+- **Four-type coverage check**: a technical topic naturally generates four needs (wanting to get hands-on, wanting to complete a task, wanting to look up a parameter, wanting to understand why). Confirm every type is either "covered" or "explicitly listed as a gap" — no silent omissions, no empty-shell sections.
+- **Complete ≠ finished**: a document is always evolving, but it can be complete at any point in time — useful to the user, matched to the current stage, structurally sound. Each type is independently publishable once it's currently useful; **grow it from the inside out, starting from whichever type the material best supports — don't scaffold all four shells first and fill them later.**
 
-### deep quality（功能性全過後才評）
+### Deep Quality (Assessed Only After Functional Quality Fully Passes)
 
-flow、beauty、anticipating-user。不得以美補救功能缺陷。依 mode 組織貼合需求、守住區塊邊界保住 flow。
+Flow, beauty, anticipating the user. Beauty must never patch over a functional defect. Organize by mode to fit the need, and hold the section boundaries to preserve flow.
 
-### 改寫說明（僅模式 D）
+### Rewrite Notes (Mode D Only)
 
-交付一份改寫說明（格式見 [references/rewrite.md](references/rewrite.md)）：結構變動、時效性事實更正（舊值→新值＋來源）、內容併入／保留／覆蓋的取捨。沒有這份清單就宣稱改完，視同未檢查。
+Deliver a rewrite note (format in [references/rewrite.md](references/rewrite.md)): structural changes, currency-fact corrections (old value → new value + source), and the trade-offs behind folding in / keeping / overwriting content. Declaring the rewrite done without this note counts as not having checked.
 
-**完成準則**：功能性檢查全部通過「在」任何深層潤飾之前（來源可追、as-of 已標、版本敏感有範圍、無編造來源、無空降主張）；去 AI 味違規清單已產出、修復至零並回報，範例句同受檢；cycle-of-needs 四型皆覆蓋或明列缺口；無空殼區塊；模式 D 已交付改寫說明。功能性未過即進行 flow 潤飾，或缺口既未填也未標，即為失敗。
+**Completion criterion:** every functional check passes *before* any deep-quality polish (sources traceable, as-of dates marked, version-sensitive claims scoped, no fabricated sources, no unearned assertions); the de-AI violation list has been produced, fixed to zero, and reported, with example sentences held to the same check; all four cycle-of-needs types are either covered or explicitly listed as gaps; no empty-shell sections; Mode D has delivered its rewrite note. Polishing flow before functional quality passes, or leaving a gap neither filled nor marked, is a failure.
