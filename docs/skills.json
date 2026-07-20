@@ -7,17 +7,18 @@
     {
       "key": "zh-writing-quality",
       "label": {
-        "en": "Traditional Chinese Writing Quality",
-        "zh": "繁中寫作品質"
+        "en": "Traditional Chinese Writing",
+        "zh": "繁中寫作"
       },
       "blurb": {
-        "en": "Strip AI tells, mainland-China wording, and jargon so Traditional Chinese and English read like a person wrote them.",
-        "zh": "去掉 AI 味、陸用語和術語黑話，讓中英文讀起來像真人寫的。"
+        "en": "Clean AI tells, mainland-China wording, and jargon, or draft a blog from scratch, so Traditional Chinese reads like a person wrote it.",
+        "zh": "去掉 AI 味、陸用語和術語黑話，或從零寫出一篇部落格，讓繁體中文讀起來像真人寫的。"
       },
       "slugs": [
         "avoid-ai-writing-zh",
         "avoid-china-writing",
-        "plain-speak"
+        "plain-speak",
+        "blog-writing-zh"
       ]
     },
     {
@@ -37,31 +38,17 @@
       ]
     },
     {
-      "key": "content-creation",
+      "key": "docs-design",
       "label": {
-        "en": "Content Creation",
-        "zh": "內容創作"
+        "en": "Docs & Design",
+        "zh": "文件與設計"
       },
       "blurb": {
-        "en": "Turn notes or a bare topic into a human-voiced Taiwan-Chinese blog post, or a save-worthy infographic in SVG or HTML.",
-        "zh": "把筆記或一個題目變成有真人聲音的繁中部落格文，或做成讓人想收藏的資訊圖表。"
+        "en": "Language-agnostic professional tools: save-worthy explanatory graphics in SVG or HTML, and engineering-grade Diátaxis knowledge docs.",
+        "zh": "跨語言的專業工具：讓人想收藏的說明圖表（SVG 或 HTML），以及工程等級的 Diátaxis 知識文件。"
       },
       "slugs": [
-        "blog-writing-zh",
-        "infographic-design"
-      ]
-    },
-    {
-      "key": "technical-docs",
-      "label": {
-        "en": "Technical Documentation",
-        "zh": "技術文件"
-      },
-      "blurb": {
-        "en": "Distill research into one Diátaxis reference doc, writing only what the material supports and flagging the gaps.",
-        "zh": "把研究成果收斂成一份 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出。"
-      },
-      "slugs": [
+        "infographic-design",
         "knowledge-doc-writing"
       ]
     },
@@ -183,7 +170,7 @@
     {
       "slug": "blog-writing-zh",
       "emoji": "✍️",
-      "category": "content-creation",
+      "category": "zh-writing-quality",
       "languages": [
         "zh-TW"
       ],
@@ -327,7 +314,7 @@
     {
       "slug": "infographic-design",
       "emoji": "📊",
-      "category": "content-creation",
+      "category": "docs-design",
       "languages": [
         "zh-TW",
         "en"
@@ -376,7 +363,7 @@
     {
       "slug": "knowledge-doc-writing",
       "emoji": "📚",
-      "category": "technical-docs",
+      "category": "docs-design",
       "languages": [
         "zh-TW"
       ],

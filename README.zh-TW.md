@@ -44,7 +44,7 @@
 一行指令，把所有技能裝到一台機器：
 
 ```bash
-npx skills add https://github.com/leoluyi/skills -g -a claude-code -y
+npx skills add https://github.com/leoluyi/skills -g -a '*' -y
 ```
 
 之後更新：
@@ -67,15 +67,16 @@ tools/sync-skills
 
 ## 技能目錄
 
-11 個技能、5 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+11 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的要指名叫用。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
-### 繁中寫作品質
+### 繁中寫作
 
 | Skill | 做什麼 |
 |---|---|
 | **去除 AI 味（中英雙語）**<br>[`avoid-ai-writing-zh`](skills/avoid-ai-writing-zh/SKILL.md) | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
 | **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，術語不誤傷 |
 | **把技術術語翻成白話**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 |
+| **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
 
 ### 台灣商務公文
 
@@ -85,17 +86,13 @@ tools/sync-skills
 | **正式公文結構**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | 把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走 |
 | **技術 RFP 撰寫與審查**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | 站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語 |
 
-### 內容創作
+### 文件與設計
+
+跨語言的專業工具，能獨當一面，不需要中文也能用。
 
 | Skill | 做什麼 |
 |---|---|
-| **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
 | **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
-
-### 技術文件
-
-| Skill | 做什麼 |
-|---|---|
 | **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
 
 ### 知識管理

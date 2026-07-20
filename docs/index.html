@@ -192,14 +192,14 @@
       <a class="btn btn-ghost" href="#catalog"><span class="l-en">Browse skills</span><span class="l-zh">瀏覽技能</span></a>
     </div>
     <div class="install">
-      <code>npx skills add https://github.com/leoluyi/skills -g -a claude-code -y</code>
-      <button class="copy-btn" data-copy="npx skills add https://github.com/leoluyi/skills -g -a claude-code -y" aria-label="Copy install command">
+      <code>npx skills add https://github.com/leoluyi/skills -g -a '*' -y</code>
+      <button class="copy-btn" data-copy="npx skills add https://github.com/leoluyi/skills -g -a '*' -y" aria-label="Copy install command">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg><span class="copy-label"><span class="l-en">Copy</span><span class="l-zh">複製</span></span>
       </button>
     </div>
     <div class="stats">
       <div class="stat"><b>11</b><span><span class="l-en">Skills</span><span class="l-zh">個技能</span></span></div>
-      <div class="stat"><b>5</b><span><span class="l-en">Categories</span><span class="l-zh">分類</span></span></div>
+      <div class="stat"><b>4</b><span><span class="l-en">Categories</span><span class="l-zh">分類</span></span></div>
       <div class="stat"><b>3</b><span><span class="l-en">Agents supported</span><span class="l-zh">支援平台</span></span></div>
       <div class="stat"><b>MIT</b><span><span class="l-en">Open source</span><span class="l-zh">開源授權</span></span></div>
     </div>
@@ -240,15 +240,14 @@
       </div>
       <div class="filters" role="group" aria-label="Filter by category">
       <button class="chip" data-cat="all" aria-pressed="true"><span class="l-en">All</span><span class="l-zh">全部</span><span class="count">11</span></button>
-      <button class="chip" data-cat="zh-writing-quality" aria-pressed="false"><span class="l-en">Traditional Chinese Writing Quality</span><span class="l-zh">繁中寫作品質</span><span class="count">3</span></button>
+      <button class="chip" data-cat="zh-writing-quality" aria-pressed="false"><span class="l-en">Traditional Chinese Writing</span><span class="l-zh">繁中寫作</span><span class="count">4</span></button>
       <button class="chip" data-cat="business-docs" aria-pressed="false"><span class="l-en">Taiwan Business Documents</span><span class="l-zh">台灣商務公文</span><span class="count">3</span></button>
-      <button class="chip" data-cat="content-creation" aria-pressed="false"><span class="l-en">Content Creation</span><span class="l-zh">內容創作</span><span class="count">2</span></button>
-      <button class="chip" data-cat="technical-docs" aria-pressed="false"><span class="l-en">Technical Documentation</span><span class="l-zh">技術文件</span><span class="count">1</span></button>
+      <button class="chip" data-cat="docs-design" aria-pressed="false"><span class="l-en">Docs &amp; Design</span><span class="l-zh">文件與設計</span><span class="count">2</span></button>
       <button class="chip" data-cat="knowledge-mgmt" aria-pressed="false"><span class="l-en">Knowledge Management</span><span class="l-zh">知識管理</span><span class="count">2</span></button>
       </div>
     <section class="cat-group" data-cat="zh-writing-quality">
-      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Traditional Chinese Writing Quality</span><span class="l-zh">繁中寫作品質</span></h3>
-      <p class="cat-blurb"><span class="l-en">Strip AI tells, mainland-China wording, and jargon so Traditional Chinese and English read like a person wrote them.</span><span class="l-zh">去掉 AI 味、陸用語和術語黑話，讓中英文讀起來像真人寫的。</span></p>
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Traditional Chinese Writing</span><span class="l-zh">繁中寫作</span></h3>
+      <p class="cat-blurb"><span class="l-en">Clean AI tells, mainland-China wording, and jargon, or draft a blog from scratch, so Traditional Chinese reads like a person wrote it.</span><span class="l-zh">去掉 AI 味、陸用語和術語黑話，或從零寫出一篇部落格，讓繁體中文讀起來像真人寫的。</span></p>
       <div class="grid">
       <article class="card" data-cat="zh-writing-quality" data-search="avoid-ai-writing-zh de-ai writing (english + zh-tw) 去除 ai 味（中英雙語） catches the tells that make english and traditional chinese read as machine-written, then rewrites them into human prose 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 de-ai traditional-chinese ai-isms zh-tw editing readme">
         <div class="card-top">
@@ -344,6 +343,38 @@
         <div class="tags"><span class="tag">#plain-language</span><span class="tag">#traditional-chinese</span><span class="tag">#jargon-translation</span><span class="tag">#audience-translation</span><span class="tag">#zh-tw</span><span class="tag">#explain-to-pm</span></div>
         <div class="card-foot">
           <a href="https://github.com/leoluyi/skills/blob/main/skills/plain-speak/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+        </div>
+      </article>
+      <article class="card" data-cat="zh-writing-quality" data-search="blog-writing-zh traditional chinese blog writer 繁中部落格寫作 turn notes, a talk, or a bare topic into a taiwan-chinese blog post that reads like a real person wrote it 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 traditional-chinese blog-writing zh-tw de-ai newsletter voice">
+        <div class="card-top">
+          <div class="emoji" aria-hidden="true">✍️</div>
+          <div>
+            <h3 class="card-title"><span class="l-en">Traditional Chinese Blog Writer</span><span class="l-zh">繁中部落格寫作</span>
+              <code class="slug">blog-writing-zh</code>
+            </h3>
+            <div class="badges"><span class="badge lang">繁中</span></div>
+          </div>
+        </div>
+        <p class="tagline"><span class="l-en">Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it</span><span class="l-zh">把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文</span></p>
+        <details>
+          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
+          <div class="detail-block">
+            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
+            <p><span class="l-en">When you need to write or rewrite a Taiwan-Chinese blog post or newsletter, or turn Obsidian notes, talks, or foreign articles into a long-form zh-TW piece.</span><span class="l-zh">要寫或改寫繁中部落格文、電子報，或把 Obsidian 筆記、演講、外文文章變成中文長文時。</span></p>
+            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
+            <p><span class="l-en">Not for formal memos (formal-doc-structure), RFPs (rfp-writing), explaining a single term in plain language (plain-speak), or pure de-AI cleanup with no restructuring (avoid-ai-writing-zh).</span><span class="l-zh">正式簽呈用 formal-doc-structure、RFP 用 rfp-writing、單一術語白話解釋用 plain-speak、純去 AI 味不動結構用 avoid-ai-writing-zh。</span></p>
+            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
+            <ul>
+        <li><span class="l-en">Two modes: compose from a topic, or rewrite Obsidian notes, talks, and foreign sources</span><span class="l-zh">兩種模式：從題目開寫，或改寫筆記、演講、外文來源</span></li>
+        <li><span class="l-en">Voice recipes modeled on 7 studied Taiwan and English blogs, tuned by reader and goal</span><span class="l-zh">風味配方取樣自七個台灣與英文部落格，依讀者與目的調整</span></li>
+        <li><span class="l-en">Length tiers, dual-draft merge for high-stakes pieces, and auto series-split suggestions</span><span class="l-zh">長度分檔、雙稿熔接、自動評估要不要拆成系列</span></li>
+        <li><span class="l-en">Ships the article plus 3-5 title/subtitle options, then runs a de-AI finishing pass</span><span class="l-zh">成品一定附 3-5 組標題副標，並跑一輪去 AI 味收尾</span></li>
+            </ul>
+          </div>
+        </details>
+        <div class="tags"><span class="tag">#traditional-chinese</span><span class="tag">#blog-writing</span><span class="tag">#zh-tw</span><span class="tag">#de-ai</span><span class="tag">#newsletter</span><span class="tag">#voice</span></div>
+        <div class="card-foot">
+          <a href="https://github.com/leoluyi/skills/blob/main/skills/blog-writing-zh/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
         </div>
       </article>
       </div>
@@ -450,43 +481,11 @@
       </article>
       </div>
     </section>
-    <section class="cat-group" data-cat="content-creation">
-      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Content Creation</span><span class="l-zh">內容創作</span></h3>
-      <p class="cat-blurb"><span class="l-en">Turn notes or a bare topic into a human-voiced Taiwan-Chinese blog post, or a save-worthy infographic in SVG or HTML.</span><span class="l-zh">把筆記或一個題目變成有真人聲音的繁中部落格文，或做成讓人想收藏的資訊圖表。</span></p>
+    <section class="cat-group" data-cat="docs-design">
+      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Docs &amp; Design</span><span class="l-zh">文件與設計</span></h3>
+      <p class="cat-blurb"><span class="l-en">Language-agnostic professional tools: save-worthy explanatory graphics in SVG or HTML, and engineering-grade Diátaxis knowledge docs.</span><span class="l-zh">跨語言的專業工具：讓人想收藏的說明圖表（SVG 或 HTML），以及工程等級的 Diátaxis 知識文件。</span></p>
       <div class="grid">
-      <article class="card" data-cat="content-creation" data-search="blog-writing-zh traditional chinese blog writer 繁中部落格寫作 turn notes, a talk, or a bare topic into a taiwan-chinese blog post that reads like a real person wrote it 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 traditional-chinese blog-writing zh-tw de-ai newsletter voice">
-        <div class="card-top">
-          <div class="emoji" aria-hidden="true">✍️</div>
-          <div>
-            <h3 class="card-title"><span class="l-en">Traditional Chinese Blog Writer</span><span class="l-zh">繁中部落格寫作</span>
-              <code class="slug">blog-writing-zh</code>
-            </h3>
-            <div class="badges"><span class="badge lang">繁中</span></div>
-          </div>
-        </div>
-        <p class="tagline"><span class="l-en">Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it</span><span class="l-zh">把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文</span></p>
-        <details>
-          <summary><span class="l-en">What it does</span><span class="l-zh">細節</span></summary>
-          <div class="detail-block">
-            <h4><span class="l-en">When to use</span><span class="l-zh">何時使用</span></h4>
-            <p><span class="l-en">When you need to write or rewrite a Taiwan-Chinese blog post or newsletter, or turn Obsidian notes, talks, or foreign articles into a long-form zh-TW piece.</span><span class="l-zh">要寫或改寫繁中部落格文、電子報，或把 Obsidian 筆記、演講、外文文章變成中文長文時。</span></p>
-            <h4><span class="l-en">When not to</span><span class="l-zh">何時不要</span></h4>
-            <p><span class="l-en">Not for formal memos (formal-doc-structure), RFPs (rfp-writing), explaining a single term in plain language (plain-speak), or pure de-AI cleanup with no restructuring (avoid-ai-writing-zh).</span><span class="l-zh">正式簽呈用 formal-doc-structure、RFP 用 rfp-writing、單一術語白話解釋用 plain-speak、純去 AI 味不動結構用 avoid-ai-writing-zh。</span></p>
-            <h4><span class="l-en">Highlights</span><span class="l-zh">重點</span></h4>
-            <ul>
-        <li><span class="l-en">Two modes: compose from a topic, or rewrite Obsidian notes, talks, and foreign sources</span><span class="l-zh">兩種模式：從題目開寫，或改寫筆記、演講、外文來源</span></li>
-        <li><span class="l-en">Voice recipes modeled on 7 studied Taiwan and English blogs, tuned by reader and goal</span><span class="l-zh">風味配方取樣自七個台灣與英文部落格，依讀者與目的調整</span></li>
-        <li><span class="l-en">Length tiers, dual-draft merge for high-stakes pieces, and auto series-split suggestions</span><span class="l-zh">長度分檔、雙稿熔接、自動評估要不要拆成系列</span></li>
-        <li><span class="l-en">Ships the article plus 3-5 title/subtitle options, then runs a de-AI finishing pass</span><span class="l-zh">成品一定附 3-5 組標題副標，並跑一輪去 AI 味收尾</span></li>
-            </ul>
-          </div>
-        </details>
-        <div class="tags"><span class="tag">#traditional-chinese</span><span class="tag">#blog-writing</span><span class="tag">#zh-tw</span><span class="tag">#de-ai</span><span class="tag">#newsletter</span><span class="tag">#voice</span></div>
-        <div class="card-foot">
-          <a href="https://github.com/leoluyi/skills/blob/main/skills/blog-writing-zh/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
-        </div>
-      </article>
-      <article class="card" data-cat="content-creation" data-search="infographic-design infographic design 資訊圖表設計 design explanatory graphics people save and repost, as clean svg or a single html file 把主題做成讓人想收藏轉發的資訊圖表，輸出成乾淨的 svg 或單一 html 檔案 infographic svg diagram visual-communication bytebytego traditional-chinese">
+      <article class="card" data-cat="docs-design" data-search="infographic-design infographic design 資訊圖表設計 design explanatory graphics people save and repost, as clean svg or a single html file 把主題做成讓人想收藏轉發的資訊圖表，輸出成乾淨的 svg 或單一 html 檔案 infographic svg diagram visual-communication bytebytego traditional-chinese">
         <div class="card-top">
           <div class="emoji" aria-hidden="true">📊</div>
           <div>
@@ -518,13 +517,7 @@
           <a href="https://github.com/leoluyi/skills/blob/main/skills/infographic-design/SKILL.md"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
         </div>
       </article>
-      </div>
-    </section>
-    <section class="cat-group" data-cat="technical-docs">
-      <h3 class="cat-title"><span class="dot" aria-hidden="true"></span><span class="l-en">Technical Documentation</span><span class="l-zh">技術文件</span></h3>
-      <p class="cat-blurb"><span class="l-en">Distill research into one Diátaxis reference doc, writing only what the material supports and flagging the gaps.</span><span class="l-zh">把研究成果收斂成一份 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出。</span></p>
-      <div class="grid">
-      <article class="card" data-cat="technical-docs" data-search="knowledge-doc-writing knowledge doc writing (diátaxis) diátaxis 知識文件寫作 turn research into one doc with four diátaxis blocks, writing only what the material supports and flagging gaps 把研究成果整理成四型 diátaxis 知識文件，素材撐得起才寫，缺口據實標出 diataxis traditional-chinese technical-docs knowledge-base self-learning zh-tw">
+      <article class="card" data-cat="docs-design" data-search="knowledge-doc-writing knowledge doc writing (diátaxis) diátaxis 知識文件寫作 turn research into one doc with four diátaxis blocks, writing only what the material supports and flagging gaps 把研究成果整理成四型 diátaxis 知識文件，素材撐得起才寫，缺口據實標出 diataxis traditional-chinese technical-docs knowledge-base self-learning zh-tw">
         <div class="card-top">
           <div class="emoji" aria-hidden="true">📚</div>
           <div>

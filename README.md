@@ -44,7 +44,7 @@ Two paths — a networked one-liner, or offline per-skill symlinks (below).
 Install every skill onto a machine with one command:
 
 ```bash
-npx skills add https://github.com/leoluyi/skills -g -a claude-code -y
+npx skills add https://github.com/leoluyi/skills -g -a '*' -y
 ```
 
 Update later:
@@ -72,15 +72,16 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 
 ## Skill catalog
 
-11 skills across 5 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+11 skills across 4 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
-### Traditional Chinese Writing Quality
+### Traditional Chinese Writing
 
 | Skill | What it does |
 |---|---|
 | **De-AI Writing (English + zh-TW)**<br>[`avoid-ai-writing-zh`](skills/avoid-ai-writing-zh/SKILL.md) | Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose |
 | **Cross-Strait Chinese Localizer**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms |
 | **Plain Speak: Jargon into Plain Language**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back |
+| **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
 
 ### Taiwan Business Documents
 
@@ -90,17 +91,13 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 | **Formal Internal Doc Structure**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs |
 | **Technical RFP Writing & Review**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler |
 
-### Content Creation
+### Docs & Design
+
+Language-agnostic professional tools that stand on their own — no Chinese required.
 
 | Skill | What it does |
 |---|---|
-| **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
 | **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | Design-system-grade explanatory graphics — timelines, comparisons, process diagrams — as clean, self-contained SVG or a single HTML file. Language-agnostic; built to be saved and reshared |
-
-### Technical Documentation
-
-| Skill | What it does |
-|---|---|
 | **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | Engineering-grade knowledge docs on the Diátaxis model — tutorial, how-to, reference, explanation — writing only what the material supports and flagging the gaps honestly. A discipline that travels across domains |
 
 ### Knowledge Management
