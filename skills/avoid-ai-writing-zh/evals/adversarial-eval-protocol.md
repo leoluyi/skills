@@ -1,4 +1,4 @@
-# Benchmark Protocol — avoid-ai-writing-zh 對抗式迭代流程
+# Adversarial Eval Protocol — avoid-ai-writing-zh 對抗式迭代流程
 
 用 GAN 的原理找 skill 盲點與過度觸發的標準流程。每次想優化偵測規則
 （或調整 gating）時跑一輪。與 blog-writing-zh 的「同題對照」互補：
@@ -37,8 +37,8 @@ skill 是 prompt／規則集，不是權重，所以「訓練」= 規則精修�
 5. **般化判斷**（沿用 blog-writing-zh 守則）：對每個 patch 問——
    - 這是**通用招**（可般化寫進規則）還是只吻合這一篇語料的**過擬合**？
    - 這條 carve-out 會不會反手放掉真正的 AI 味？（FP 與 recall 的取捨）
-   - 每條 patch 附一條對應 eval assertion（prompts.json 或 output-quality.json）。
-6. **收斂與紀錄**：連續兩輪無新的般化規則 → 該輪主題視為成熟。於下方 log 加一行。
+   - 每條 patch 附一條對應 eval assertion（trigger-queries.json 或 evals.json）。
+6. **收斂與紀錄**：連續兩輪無新的般化規則 → 該輪主題視為成熟。於 `design-notes.md` 的對抗迭代 log 加一行。
 
 ## 判斷守則
 
@@ -63,9 +63,7 @@ harness 自動化 fan-out：generator 產 AI 桶、evaluator 跑判別器與 jud
 用真人桶量各文體的 false-positive rate：FP 可接受的文體才納入 auto-enable，
 其餘維持 opt-in。**先有數據再放寬 gate，不憑感覺改。**
 
-## Log
+## 迭代 log
 
-| 日期 | 真人桶 | AI 桶 | FP / recall | 主要發現 | Patch |
-|---|---|---|---|---|---|
-| 2026-07-17 | 5 篇：觀點（高見龍）、教學（保哥/miniasp）、newsletter（倉鼠）、docs（工程會使用手冊）、公文規格（工程會資安要求） | 3 篇自生 zh-TW voiceless 文（觀點／教學／分析，無 Tier-1 詞級病句） | voice-bearing 真人 FP=0/3；voice-neutral 若誤啟用 FP=2/2；AI recall=3/3 | (1) 判準應為 voice-bearing vs voice-neutral，非 blog vs 非 blog——真人觀點/教學/newsletter 穩定帶齊 stance/specifics/metaphor/口語破格；docs/公文本就均質須維持排除。(2) AI voiceless 文常無詞級病句，詞表會漏標，結構層才抓得到（層的價值驗證）。(3) 密集教學文（保哥）缺自創比喻卻為真人 →『只解釋不造像』不可單獨觸發。樣本小（n=3/3），round 2 應擴語料。 | gating 從 casual-only 擴為 voice-bearing 文體集；只解釋不造像加 technical-blog 成群才觸發 carve-out；eval #3 #4 |
-| 2026-07-20 | n/a（此輪測 rewrite 機制而非 detect gating，非真人桶對照） | 1 組合成 prompt：docs 語境三句連續教練口吻段（含實質內容）＋一段扣除語氣後無實質內容 | rewrite-mode baseline vs new，非 FP/recall 指標 | span-local baseline 在無實質內容段落捏造了原文沒有的主張（「斷言若講不出道理，就稱不上是驗證」）以避免留空；new 版正確輸出挖空標記句、不代筆。含實質內容段落兩版皆寫出連貫第三人稱改寫，此樣本未能區分 no-residual-seam 這一半（模型即使無顯性機制也可能自然寫得連貫，需更長／更多句的段落才能穩定逼出接縫）。 | 新增 `### Scope ladder` 語言無關段落＋兩條硬規則（reframe-not-delete、flag-hollow-don't-ghostwrite）；eval #6 |
+歷次對抗迭代的紀錄（FP/recall、發現、對應 patch）移至 `design-notes.md` 的
+「Adversarial iteration log」一節，不留在本文件。

@@ -72,3 +72,12 @@ Reference material the zh rules were informed by (not rebased from — the rules
 `research/` holds faithful distillations of outside source material for authoring reference. **These are dev/authoring material, not runtime** — they carry provenance headers and source citations, and must not be surfaced into `SKILL.md` or `references/`. If a distillation later informs a shipped rule, promote a provenance-stripped extract into the rule body and add attribution here + in `NOTICE`/`README`.
 
 - **`research/ai-sentence-patterns-zh.md`** — paraphrased distillation of 朱宥勳〈對「AI腔」厭煩了嗎？分析AI生成文字的經典句型｜文字診療室〉(YouTube, 2026-01-30). Faithful to the source's own argument, deliberately not rewritten through this repo's existing rule categories. Centres on the 「這不是⋯⋯而是⋯⋯」 pattern — its 定義+區分 rationale, the 引號自創說法 sub-form, the 形式≠內容 danger, 審美疲勞, and a 手工感/語言風格 humanization ladder (A/B/C rewrites). Not yet promoted into any rule.
+
+## Adversarial iteration log (rule-tuning rounds)
+
+The method lives in `evals/adversarial-eval-protocol.md`. Each row = one GAN-style round; the `eval #N` in the Patch column maps to `id: N` in `evals/evals.json`.
+
+| 日期 | 真人桶 | AI 桶 | FP / recall | 主要發現 | Patch |
+|---|---|---|---|---|---|
+| 2026-07-17 | 5 篇：觀點（高見龍）、教學（保哥/miniasp）、newsletter（倉鼠）、docs（工程會使用手冊）、公文規格（工程會資安要求） | 3 篇自生 zh-TW voiceless 文（觀點／教學／分析，無 Tier-1 詞級病句） | voice-bearing 真人 FP=0/3；voice-neutral 若誤啟用 FP=2/2；AI recall=3/3 | (1) 判準應為 voice-bearing vs voice-neutral，非 blog vs 非 blog——真人觀點/教學/newsletter 穩定帶齊 stance/specifics/metaphor/口語破格；docs/公文本就均質須維持排除。(2) AI voiceless 文常無詞級病句，詞表會漏標，結構層才抓得到（層的價值驗證）。(3) 密集教學文（保哥）缺自創比喻卻為真人 →『只解釋不造像』不可單獨觸發。樣本小（n=3/3），round 2 應擴語料。 | gating 從 casual-only 擴為 voice-bearing 文體集；只解釋不造像加 technical-blog 成群才觸發 carve-out；eval #3 #4 |
+| 2026-07-20 | n/a（此輪測 rewrite 機制而非 detect gating，非真人桶對照） | 1 組合成 prompt：docs 語境三句連續教練口吻段（含實質內容）＋一段扣除語氣後無實質內容 | rewrite-mode baseline vs new，非 FP/recall 指標 | span-local baseline 在無實質內容段落捏造了原文沒有的主張（「斷言若講不出道理，就稱不上是驗證」）以避免留空；new 版正確輸出挖空標記句、不代筆。含實質內容段落兩版皆寫出連貫第三人稱改寫，此樣本未能區分 no-residual-seam 這一半（模型即使無顯性機制也可能自然寫得連貫，需更長／更多句的段落才能穩定逼出接縫）。 | 新增 `### Scope ladder` 語言無關段落＋兩條硬規則（reframe-not-delete、flag-hollow-don't-ghostwrite）；eval #6 |
