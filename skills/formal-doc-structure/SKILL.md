@@ -16,6 +16,16 @@ metadata:
 
 Produce internal business documents that help a reader decide, approve, assign work, review risk, brief management, communicate with a vendor, or verify completion. The output is a usable draft — complete sections that paste straight into a document — not a critique.
 
+## Output Language
+
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
+
+Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
+
+If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
+
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
+
 ## When to use
 
 Use when the request names one of these artifacts (or a clear equivalent):

@@ -1,6 +1,6 @@
-# Diátaxis 全站蒸餾（prose 版，取代舊 caveman 版）
+# Diátaxis 全站蒸餾
 
-來源：https://diataxis.fr/ 全站 18 頁 · 用途：knowledge-doc-writing 改用 Diátaxis 架構（Option A）的依據
+來源：https://diataxis.fr/ 全站 18 頁
 
 ---
 
@@ -131,7 +131,7 @@ Diátaxis 對兩層作用不同：**無法 create 功能性品質，但能 expos
 
 ---
 
-## 8. 對「四類文件產生器」的具體含義（給 refactor）
+## 8. 對「四類文件產生器」的具體含義
 
 1. **四型各需獨立產生規則**，不是一個模板套四次。各型的規則見 §1／§5。
 2. **compass 當路由器**：把自學主題的每段素材先問兩題再分派；同段橫跨兩象限＝拆分訊號，不塞同一份。

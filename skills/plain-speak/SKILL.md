@@ -53,11 +53,15 @@ Sibling skills own the adjacent axes — hand off rather than half-do their job:
 lowering AI-ish *voice* in prose → `avoid-ai-writing-zh`; organizing a whole
 formal *document* → `formal-doc-structure`; an *RFP* → `rfp-writing`.
 
-## Output language
+## Output Language
 
-Match the user's request language. Keep each technical term in its native form
-the first time you introduce it — write "idempotent(冪等)", not a translated-away
-version — because the reader may have to recognize it elsewhere.
+Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
+
+Language follows the request, not the source material.
+
+Keep each technical term in its native form the first time you introduce it — write "idempotent(冪等)", not a translated-away version — because the reader may have to recognize it elsewhere.
+
+The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
 
 ## How to respond
 
@@ -142,7 +146,7 @@ the same length discipline as a translate. No section headers.
 - **No unglossed acronyms or jargon.** Never let an abbreviation or term of art
   (SaaS、CI/CD、五字訣…) carry the meaning of a sentence. Replace it with the
   plain idea; keep the term only as a parenthetical label the reader can match
-  later — as with "idempotent(冪等)" in Output language above.
+  later — as with "idempotent(冪等)" in Output Language above.
 - **Never narrate the plainness.** The output must not contain self-referential
   framing like「白話講」「白話來說」「白話說」「說白了」「簡單來說」「講白一點」
   or English equivalents ("in plain terms", "simply put"). The whole deliverable
