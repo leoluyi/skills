@@ -95,6 +95,5 @@ Julia（DNS 解惑＋gzip 探索）、Simon（年度回顧＋速覽）。
 - 加能力：先看 SKILL.md 的 Workflow（Step 1–6）現有結構，新能力
   盡量掛成某個 Step 的子項或正交模組（像 dual-draft 那樣），
   不要打亂主流程。
-- 每次改動都補一條對應 eval assertion（見 output-quality.json 慣例，
-  每條有 criterion / must / ref 指回 SKILL 或 reference 章節）。
-- 版本號在 SKILL.md frontmatter，改動後 bump。
+- 每次改動都補一條對應 eval assertion（本 skill 的 output-quality.json
+  慣例：每條有 criterion / must / ref 指回 SKILL 或 reference 章節）。

@@ -1,6 +1,6 @@
 # Development notes — knowledge-doc-writing
 
-這份記錄開發過程與規則演化的理由。SKILL.md 與 references/ 只保留給模型在執行任務時看的「怎麼做」，不放「怎麼來的」；provenance 放這裡。
+這份記錄本 skill 的開發過程、設計理由與規則演化——provenance 與迭代日誌。
 
 ## 起源
 
