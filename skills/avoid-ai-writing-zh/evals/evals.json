@@ -46,6 +46,17 @@
         "fix-converts-to-exposition: Fix 把主詞換回被解說的主題或泛稱主體（作者／使用者），改成第三人稱陳述，而非保留『你』。",
         "also-flags-cooccurring-tells: 併同標記同段的破碎短句（分號並置、省略前提）與反問句收尾警句；此二條各就句法／收尾面向標記，第二人稱面向不重複計。"
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "用 rewrite 模式改寫這段技術文件正文（docs 語境，說明撰寫測試的方法）：「你寫測試前得先想清楚你到底在驗證什麼。你常常自己都說不出來，只是照著範本硬套。你要學會的第一件事，是把斷言寫成一句話講得出道理的主張。」\n\n同文件另一段：「老實說，你自己心裡有數。這不是我在說教，是你該面對的事實。」",
+      "expected_output": "Adversarial: multi-sentence 教練口吻 paragraphs in an expository register. Paragraph A carries real content across three consecutive second-person sentences — span-only patching (fixing one sentence, leaving neighbors with 你) must not pass; the whole paragraph must be rewritten coherently with zero residual second-person address and no fact lost. Paragraph B carries no content once the coaching address is stripped — must be flagged as hollow, not fabricated or silently emptied.",
+      "expectations": [
+        "paragraph-rewritten-as-unit: 段落 A 的三句一起改寫成連貫的第三人稱／泛稱陳述，改寫後任何一句都不殘留「你」作為被評斷或被喊話的對象。",
+        "no-residual-seam: 不是只修其中一句、鄰句仍留「你」；改寫前後的段落讀起來像同一人一次寫成，主詞不跳動。",
+        "facts-preserved-via-reframe: 段落 A 三個判斷／指令背後的實質主張——驗證目標要先想清楚、範本硬套說不出道理是常見失誤、斷言要能一句話講出道理——改寫後仍在，未被連語氣一起砍掉。",
+        "hollow-paragraph-flagged-not-fabricated: 段落 B 扣除教練口吻後無實質內容，輸出以標記句處理（如「此段扣除教練口吻後無實質內容，建議作者補入具體經驗」），不得捏造原文沒有的經驗或例子去填滿這段，也不得靜默留空段或直接整段刪除。"
+      ]
     }
   ]
 }

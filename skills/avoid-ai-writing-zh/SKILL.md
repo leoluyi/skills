@@ -2,7 +2,7 @@
 name: avoid-ai-writing-zh
 description: >-
   Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. Also runs a detect-only structure-signals audit for a draft that carries no obvious AI-isms yet still reads as AI-written — uniform rhythm, no stance, no concrete examples, 「正確但沒有靈魂」— naming what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
-version: 1.2.1
+version: 1.3.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -51,7 +51,7 @@ This skill operates in one of three modes:
 - You're auditing text you don't want altered (published content, someone else's writing, reference material)
 - You want a quick scan without waiting for a full rewrite
 
-**`edit`** — Edit a file in place rather than returning rewritten text. Use this when the writer points you at a file ("clean up `draft.md`", "fix the AI-isms in this file directly") and wants the file changed, not a copy to paste back. Make **minimal, targeted edits** with the Edit tool — change the flagged spans, not the whole document. **Preserve passages that are already human**: if a paragraph has no tells, leave it untouched. **Don't edit quoted material, code blocks, or text attributed to someone else** — flag those instead of rewriting them. For a large file, confirm which section to clean before changing anything. After editing, re-read the file and confirm the flagged patterns are resolved.
+**`edit`** — Edit a file in place rather than returning rewritten text. Use this when the writer points you at a file ("clean up `draft.md`", "fix the AI-isms in this file directly") and wants the file changed, not a copy to paste back. Make **minimal, targeted edits** with the Edit tool — change the flagged spans, not the whole document. Exception: for the tone/stance/rhythm features on the [scope ladder](#scope-ladder) list, "the flagged span" is the whole paragraph — replace it as a unit with the Edit tool, not just the sentence containing the tell. **Preserve passages that are already human**: if a paragraph has no tells, leave it untouched. **Don't edit quoted material, code blocks, or text attributed to someone else** — flag those instead of rewriting them. For a large file, confirm which section to clean before changing anything. After editing, re-read the file and confirm the flagged patterns are resolved.
 
 Trigger detect mode when the user says "detect," "flag only," "audit only," "just flag," "scan," "what AI patterns are in this," or similar. Trigger edit mode when the user names a file and asks you to fix or clean it in place. Default to rewrite mode if not specified.
 
@@ -64,7 +64,7 @@ Trigger detect mode when the user says "detect," "flag only," "audit only," "jus
 In **rewrite** mode, your job is to:
 
 1. **Audit it**: identify every AI-ism present, citing the specific text
-2. **Rewrite it**: return a clean version with all AI-isms removed
+2. **Rewrite it**: return a clean version with all AI-isms removed. Most fixes are span patches; tone/stance/rhythm features listed in the [scope ladder](#scope-ladder) get a paragraph rewrite instead — read that section before rewriting any flagged instance of those features
 3. **Show a diff summary**: briefly list what you changed and why
 
 In **detect** mode, your job is to:
@@ -116,6 +116,29 @@ This is the first of four stylometric signals on the roadmap. The others (senten
 ### When to rewrite from scratch vs. patch
 
 If the text has 5+ flagged vocabulary hits across multiple categories, 3+ distinct pattern categories triggered, and uniform sentence/paragraph length, patching individual phrases won't fix it — the structure itself is AI-generated. Advise a full rewrite: state the core point in one sentence, then rebuild from there.
+
+### Scope ladder
+
+Fix operates at one of three scopes, smallest to largest:
+
+1. **Span patch** — default. Lexical AI-isms (em-dash overuse, 頓號-string enumeration, hollow intensifiers, vague catch-all verbs, and the like): swap only the flagged span; neighboring sentences stay untouched.
+2. **Paragraph rewrite** — the tone/stance/rhythm features listed below. Patching one sentence in these leaves the paragraph broken: fix the flagged sentence back to third person and the next sentence is still addressing the reader as 你, producing a mismatched seam. Rewrite the whole paragraph as one unit instead — **read the full document first** to establish the argument's through-line and pronoun references, then rewrite the paragraph so its subject, references, and flow of argument stay consistent with its neighbors.
+3. **Rewrite from scratch** — the existing 5+/3+ gate above.
+
+**Paragraph-rewrite feature list** (kept in one place; the individual rule sections below cross-reference back here instead of repeating it):
+
+- 對讀者說教／第二人稱教練口吻 (see [對讀者說教](#對讀者說教--第二人稱教練口吻))
+- 打破第四面牆 (see [打破第四面牆](#打破第四面牆--工作情境外洩--生成過程外洩))
+- 空降斷言開場 (see [空降斷言開場](#空降斷言開場沒頭沒腦丟一個-term-或-claim))
+- 空降主張 (see [空降主張](#空降主張文中無依據的判斷句))
+- 警句式評語 (see [警句式評語](#警句式評語破折號收尾的自我加值))
+- 破碎短句堆疊 (see [破碎短句堆疊](#破碎短句堆疊推論鏈斷裂))
+- Contrarian framing (不是…而是… and its kin) when it props up an entire paragraph (see [Contrarian structure](#contrarian-structure--不是而是--不僅更)) — a single-sentence instance still gets a span patch; escalate only when the whole paragraph's argument leans on the frame
+
+**Two hard rules for paragraph rewrite:**
+
+- **Reframe, don't delete.** Rewrite the flagged tonal sentence into third-person exposition, keeping the fact, claim, or inference it carries — 「這個誠實訊號是 chat 從不給你的」→「chat 介面不提供這個誠實訊號」, zero substance lost. Delete outright only a genuinely fact-free sentence (a bare aphorism, a rhetorical-question closer with nothing under it).
+- **Flag hollow paragraphs — don't ghostwrite, don't leave a gap.** If stripping the tone leaves nothing standing, the paragraph was tone all the way down (one shape of the treadmill effect). Don't invent experience, detail, or judgment the original never supplied to fill the gap — that's voice injection, outside this skill's scope (see the division of labor in [結構級訊號](#結構級訊號zh-tw-部落格聲音)). Don't silently emit an empty paragraph or delete it either — flag it in place, in the user's output language, e.g. 「此段扣除〈feature name〉後無實質內容，建議作者補入具體經驗」, and hand it to the author or to `blog-writing-zh`.
 
 ---
 
@@ -593,7 +616,7 @@ Fix：攤開為完整推論——前提、因果、結論各自成句，承接�
 
 判準：這句的主詞是主題本身，還是「你」？當「你」是被下判斷或被喊話的對象（你哪裡不懂／你想過的／你該…），且把它改寫成第三人稱陳述後、論述不減損任何事實或推論，即為教練口吻，標記。
 
-Fix：主詞換回被解說的主題，或泛稱的主體（作者、使用者、一般情況）；把「對你的判斷」改寫成「主題的性質」。
+Fix：主詞換回被解說的主題，或泛稱的主體（作者、使用者、一般情況）；把「對你的判斷」改寫成「主題的性質」。這是 [scope ladder](#scope-ladder) 清單內的特徵，走段落級改寫——單句示意如下，實際下筆時整段一起重寫，避免鄰句殘留「你」造成接縫錯亂。
 - 「這個誠實訊號是 chat 從不給你的」→「chat 介面不提供這個誠實訊號」
 - 「你把 Claude 降級成陪練，難度就留給自己」→「讓 Claude 只當陪練時，難度由學習者自己承擔」
 - 「判準沒變：這篇的字，是你想過的，還是 AI 替你想的」→「判準不變：文件裡的文字，出自作者想過的理解，還是 AI 代為產生」
@@ -841,13 +864,13 @@ Return your response in four sections:
 A bulleted list of every AI-ism identified, with the offending text quoted.
 
 **2. Rewritten version**
-The full rewritten content. Preserve the original structure, intent, and all specific technical details. Only change what the guidelines require.
+The full rewritten content. Preserve the original structure, intent, and all specific technical details. Only change what the guidelines require. For [scope ladder](#scope-ladder) features, the affected paragraph is rewritten as a coherent unit informed by the full-document context — not patched sentence by sentence.
 
 **3. What changed**
 A brief summary of the major edits made. Not every word, just the meaningful changes.
 
 **4. Second-pass audit**
-Re-read the rewritten version from section 2. Identify any remaining AI tells that survived the first pass — recycled transitions, lingering inflation, copula avoidance, filler phrases, or anything else from the categories above. Fix them, return the corrected text inline, and note what changed in this pass. If the rewrite is clean, say so.
+Re-read the rewritten version from section 2. Identify any remaining AI tells that survived the first pass — recycled transitions, lingering inflation, copula avoidance, filler phrases, or anything else from the categories above. Also check paragraph-rewrite output specifically: any residual seam (a neighboring sentence still addressing "你" after the flagged sentence was fixed, or a subject that jumps between the rewritten span and its neighbors) or a paragraph hollowed out to near-nothing instead of flagged per the [scope ladder](#scope-ladder)'s flag-hollow-don't-ghostwrite rule. Fix them, return the corrected text inline, and note what changed in this pass. If the rewrite is clean, say so.
 
 ### Detect mode
 
@@ -864,7 +887,7 @@ For each flag, note whether it's a clear problem or a judgment call. Some AI-ass
 After editing the file in place, return a short report — not the full file:
 
 **1. Edits made**
-A bulleted list of the changes, each with the file location and the before → after. Only the spans you touched.
+A bulleted list of the changes, each with the file location and the before → after. Only the spans you touched — for [scope ladder](#scope-ladder) features, "span" means the whole paragraph you rewrote.
 
 **2. Verification**
 Confirm you re-read the file and the flagged patterns are resolved. Note anything you deliberately left alone because it was already human or intentional.

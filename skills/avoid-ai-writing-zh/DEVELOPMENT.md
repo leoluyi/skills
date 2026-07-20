@@ -1,6 +1,6 @@
 # DEVELOPMENT — avoid-ai-writing-zh
 
-Maintainer notes. None of this belongs in `SKILL.md` or `references/` (those are runtime instructions the model loads); provenance and process live here.
+Maintainer notes — provenance and build process for this one skill.
 
 ## What this skill is, structurally
 
@@ -9,8 +9,8 @@ A bilingual (English + Traditional-Chinese) fork of the English-only `avoid-ai-w
 ```
 SKILL.md
   ## What this skill is / ## Modes           — our framing (not upstream)
-  ## Language-agnostic structural rules       — rebased from upstream (rhythm, TTR, reshuffle, treadmill, when-to-rewrite)
-  ## English AI-isms                          — rebased from upstream, verbatim, inline
+  ## Language-agnostic structural rules       — rebased from upstream (rhythm, TTR, reshuffle, treadmill, when-to-rewrite) + one local addition (scope ladder, see below)
+  ## English AI-isms                          — rebased from upstream, verbatim, inline + one local addition (breaking the fourth wall, see below)
   ## Traditional Chinese AI-isms              — our layer: 對應英文分類 + zh 特有補充
   ## Severity tiers / Context profiles / …    — our framing
 
@@ -40,18 +40,17 @@ The English AI-isms section and the language-agnostic structural rules are pulle
 1. `git clone --depth 1 https://github.com/conorbronsdon/avoid-ai-writing` to a scratch dir.
 2. Parse its `## What to remove or fix` into `### ` blocks.
 3. Route: `Words and phrases to replace` → `english-phrase-rules.md`; the five language-agnostic blocks (Rhythm and uniformity, Vocabulary diversity, Paragraph-reshuffle immunity, Treadmill effect, When to rewrite) → our `## Language-agnostic structural rules`; everything else → `## English AI-isms` inline, in upstream order.
-4. Re-insert the one local addition (below), then update the version/commit line above.
+4. Re-insert the two local additions (below — `### Scope ladder` after the language-agnostic blocks, `### Breaking the fourth wall` after `Acknowledgment loops`), then update the version/commit line above.
 
 The scratch scripts used for the last rebase (`split_eng.py`, `rebase_eng2.py`, delta analysis) are throwaway — regenerate as needed.
 
-## The one local English addition on top of upstream
+## Local additions on top of upstream
 
-**`### Breaking the fourth wall`** (inserted after `Acknowledgment loops`). Not in upstream. Retained deliberately because:
+Two blocks inside the rebased-verbatim layers are ours. Re-insert both on every rebase (named in the workflow above); don't let an upstream diff overwrite either.
 
-- It is load-bearing in our Severity tiers (referenced as a P0 credibility killer).
-- It fires on English/mixed software-dev docs (README/ADR/CONTRIBUTING) — the zh twin `打破第四面牆` is gated on "text contains CJK" and won't cover pure-English docs.
+**`### Scope ladder`** — in the language-agnostic section, after `When to rewrite from scratch vs. patch`. Upstream's Fix guidance is uniformly span-local; this repo needed a second tier because several zh-authored tonal/stance features (第二人稱教練口吻, 打破第四面牆, 空降斷言／空降主張, 警句式評語, 破碎短句堆疊, contrarian-framed paragraphs) break when patched sentence-by-sentence: fixing the flagged sentence while a neighbor still carries the same tell produces a paragraph with a mismatched subject. The section defines the paragraph-rewrite tier plus its two governing rules (reframe-not-delete, flag-hollow-don't-ghostwrite) and is the single source of truth the affected rule bodies (e.g. 對讀者說教) point back to. It stays English like the rest of that section; the inline zh names are proper-noun cross-references, not translation.
 
-Keep re-inserting it on every rebase. Its zh twin (`打破第四面牆 — 工作情境外洩／生成過程外洩`) is the fuller treatment and is the namesake of the root `CLAUDE.md` authoring convention (`打破第四面牆 / 生成過程外洩`).
+**`### Breaking the fourth wall`** — in the English AI-isms section, after `Acknowledgment loops`. Load-bearing in our Severity tiers (a P0 credibility killer), and it fires on English/mixed software-dev docs (README/ADR/CONTRIBUTING) where the zh twin `打破第四面牆` — gated on "text contains CJK" — won't reach. That zh twin (`打破第四面牆 — 工作情境外洩／生成過程外洩`) is the fuller treatment and the namesake of the root `CLAUDE.md` authoring convention.
 
 ## The zh layer
 
@@ -61,7 +60,3 @@ Organized to mirror the English division:
 - **zh 特有補充（英文缺的）** — fuller zh-authored rules with no direct English one-liner, or that need more complete handling: 空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, plus the abstract→concrete rewrite table. Ends with the Allowed-patterns carve-out table (governs the whole zh section).
 
 When our fork was cut it stripped upstream's provenance lines from the shared categories (per the root `CLAUDE.md` convention). The verbatim rebase re-introduces them into the English layer only; the zh layer stays convention-clean.
-
-## Finishing check
-
-Before finalizing a zh edit, run the root-`CLAUDE.md` grep over `SKILL.md` + `references/`. Hits inside the **English** layer that are upstream attributions are expected (see verbatim note above); hits inside the **zh** layer are noise and should move here.
