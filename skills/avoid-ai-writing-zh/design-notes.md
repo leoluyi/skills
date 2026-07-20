@@ -66,3 +66,9 @@ When our fork was cut it stripped upstream's provenance lines from the shared ca
 Reference material the zh rules were informed by (not rebased from — the rules are our own rewrite):
 
 - **speak-human-tw** — https://github.com/Raymondhou0917/speak-human-tw (`references/taiwan-localization.md`). Source for the 翻譯腔 additions in `zh-phrase-rules.md`: 長定語鏈 (「一個能…的 X」→ 短句) and 介詞框架堆疊 (基於／通過…來…). That doc's bulk is 陸用語 term substitution, which is `avoid-china-writing`'s axis, not this skill's — only the translate-ese layer was taken here.
+
+## Research notes (dev material, not runtime)
+
+`research/` holds faithful distillations of outside source material for authoring reference. **These are dev/authoring material, not runtime** — they carry provenance headers and source citations, and must not be surfaced into `SKILL.md` or `references/`. If a distillation later informs a shipped rule, promote a provenance-stripped extract into the rule body and add attribution here + in `NOTICE`/`README`.
+
+- **`research/ai-sentence-patterns-zh.md`** — paraphrased distillation of 朱宥勳〈對「AI腔」厭煩了嗎？分析AI生成文字的經典句型｜文字診療室〉(YouTube, 2026-01-30). Faithful to the source's own argument, deliberately not rewritten through this repo's existing rule categories. Centres on the 「這不是⋯⋯而是⋯⋯」 pattern — its 定義+區分 rationale, the 引號自創說法 sub-form, the 形式≠內容 danger, 審美疲勞, and a 手工感/語言風格 humanization ladder (A/B/C rewrites). Not yet promoted into any rule.
