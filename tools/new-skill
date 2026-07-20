@@ -75,17 +75,40 @@ cat > "$EVAL_DIR/evals.json" <<EOF
 }
 EOF
 
+cat > "$EVAL_DIR/trigger-queries.json" <<EOF
+{
+  "skill_name": "$NAME",
+  "queries": [
+    {
+      "id": 1,
+      "query": "[TODO: realistic user message that SHOULD fire this skill]",
+      "should_trigger": true,
+      "category": "positive/[TODO]"
+    },
+    {
+      "id": 2,
+      "query": "[TODO: lookalike message that must NOT fire it]",
+      "should_trigger": false,
+      "category": "negative/[TODO]",
+      "note": "[TODO: why this must not trigger]"
+    }
+  ]
+}
+EOF
+
 sed "s/{{SKILL_NAME}}/$NAME/g" "$REPO_ROOT/tools/templates/regression-protocol.md" \
   > "$EVAL_DIR/regression-protocol.md"
 
 echo "created:"
 echo "  $SKILL_DIR/SKILL.md"
 echo "  $EVAL_DIR/evals.json"
+echo "  $EVAL_DIR/trigger-queries.json"
 echo "  $EVAL_DIR/regression-protocol.md"
 echo
 echo "next steps:"
 echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji"
 echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
-echo "  3. add at least one realistic prompt to skills/$NAME/evals/evals.json"
-echo "     and fill in the TODO ship gates in evals/regression-protocol.md"
+echo "  3. add at least one realistic prompt to skills/$NAME/evals/evals.json,"
+echo "     fill in the TODO ship gates in evals/regression-protocol.md,"
+echo "     and flesh out evals/trigger-queries.json (then check with 'tools/run-eval $NAME')"
 echo "  4. run 'tools/sync-skills' if airgapped, otherwise consumers pick it up via 'npx skills update --all'"

@@ -40,7 +40,7 @@ The `description` is an unquoted YAML plain scalar, and YAML does not decode `\u
 A skill goes through seven stages. Most die at stage 3.
 
 1. **Capture** — friction hit twice → add a one-liner to `backlog.md`. Don't draft yet.
-2. **Draft** — `tools/new-skill <kebab-name>` scaffolds `skills/<name>/SKILL.md` plus `skills/<name>/evals/evals.json` and `evals/regression-protocol.md` (from `tools/templates/`; fill in the TODO ship gates per the skill's ethos).
+2. **Draft** — `tools/new-skill <kebab-name>` scaffolds `skills/<name>/SKILL.md` plus `skills/<name>/evals/` (`evals.json`, `trigger-queries.json`, and `regression-protocol.md` from `tools/templates/`; fill in the TODO ship gates per the skill's ethos).
 3. **Test** — write 3+ realistic prompts, run each **with** the skill and **without**. See [Test discipline](#test-discipline).
 4. **Iterate** — adjust the body until with-skill beats the baseline on every prompt. If you can't get there, cut it.
 5. **Optimize the description** — rewrite the trigger gate until the agent invokes it on the right prompts and *not* on lookalike-but-wrong ones.
