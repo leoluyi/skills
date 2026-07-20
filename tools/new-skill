@@ -75,12 +75,17 @@ cat > "$EVAL_DIR/evals.json" <<EOF
 }
 EOF
 
+sed "s/{{SKILL_NAME}}/$NAME/g" "$REPO_ROOT/tools/templates/regression-protocol.md" \
+  > "$EVAL_DIR/regression-protocol.md"
+
 echo "created:"
 echo "  $SKILL_DIR/SKILL.md"
 echo "  $EVAL_DIR/evals.json"
+echo "  $EVAL_DIR/regression-protocol.md"
 echo
 echo "next steps:"
 echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji"
 echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
 echo "  3. add at least one realistic prompt to skills/$NAME/evals/evals.json"
+echo "     and fill in the TODO ship gates in evals/regression-protocol.md"
 echo "  4. run 'tools/sync-skills' if airgapped, otherwise consumers pick it up via 'npx skills update --all'"
