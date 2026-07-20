@@ -34,7 +34,8 @@
 - **天生可攜**：每個技能都能在 Claude Code 和 Codex（以及任何相容 [agentskills.io](https://agentskills.io) 的 agent）上跑。不需外部工具或 API，工具專屬功能不會是必要條件。
 - **自足**：每個技能都能獨立完成自己的工作，提到姊妹技能只是選用的指路，不是前置條件。
 - **要贏過 baseline**：技能要在真實 eval 上贏過「不用技能」才會上架。沒過 eval，不上架。
-- **目前以寫作為主**：下面的目錄是台灣優先的中文寫作——去 AI 味、陸用語轉台灣用語、白話翻譯、部落格、簽呈／RFP／評估報告——再加上資訊圖表與 Diátaxis 知識文件。範圍是開放的，不是固定的。
+- **目前以寫作為主**：下面的目錄是台灣優先的中文寫作——去 AI 味、陸用語轉台灣用語、白話翻譯、部落格、簽呈／RFP／評估報告。範圍是開放的，不是固定的。
+- **兩個走得更遠的**：[`infographic-design`](skills/infographic-design/SKILL.md)（設計系統級的說明圖表）與 [`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md)（Diátaxis 文件紀律）是專業、跨語言、能獨當一面的工具——不需要中文也能用。
 
 ## 30 秒安裝
 
@@ -89,13 +90,13 @@ tools/sync-skills
 | Skill | 做什麼 |
 |---|---|
 | **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
-| **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | 把主題做成讓人想收藏轉發的資訊圖表，輸出成乾淨的 SVG 或單一 HTML 檔案 |
+| **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | 設計系統級的說明圖表——時間軸、比較、流程圖——輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
 
 ### 技術文件
 
 | Skill | 做什麼 |
 |---|---|
-| **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | 把研究成果整理成四型 Diátaxis 知識文件，素材撐得起才寫，缺口據實標出 |
+| **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | 以 Diátaxis 模型寫工程等級的知識文件——tutorial、how-to、reference、explanation——素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
 
 ### 知識管理
 

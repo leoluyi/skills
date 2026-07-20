@@ -34,7 +34,8 @@ Most AI-writing tooling assumes English. For a **Taiwan** audience it leaves gap
 - **Portable by design.** Every skill runs on Claude Code *and* Codex (and any [agentskills.io](https://agentskills.io)-compatible agent). No external tools or APIs required; tool-specific power is never load-bearing.
 - **Self-sufficient.** Each skill does its own job standalone; sibling skills are optional pointers, never prerequisites.
 - **Earns its place.** A skill ships only if it beats its no-skill baseline on a real eval. No bar-clearing eval, no skill.
-- **Currently writing-heavy.** The catalog below is Taiwan-first Chinese writing — de-AI editing, 陸用語 → 台灣用語 localization, plain-language rewrites, blogs, and 簽呈/RFP/評估報告 docs — plus infographics and Diátaxis knowledge docs. Scope is open, not fixed.
+- **Currently writing-heavy.** The catalog below is Taiwan-first Chinese writing — de-AI editing, 陸用語 → 台灣用語 localization, plain-language rewrites, blogs, and 簽呈/RFP/評估報告 docs. Scope is open, not fixed.
+- **Two that travel further.** [`infographic-design`](skills/infographic-design/SKILL.md) (design-system-grade explanatory graphics) and [`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) (the Diátaxis documentation discipline) are professional, language-agnostic tools that stand on their own — no Chinese required.
 
 ## 30-second setup
 
@@ -94,13 +95,13 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 | Skill | What it does |
 |---|---|
 | **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
-| **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | Design explanatory graphics people save and repost, as clean SVG or a single HTML file |
+| **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | Design-system-grade explanatory graphics — timelines, comparisons, process diagrams — as clean, self-contained SVG or a single HTML file. Language-agnostic; built to be saved and reshared |
 
 ### Technical Documentation
 
 | Skill | What it does |
 |---|---|
-| **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | Turn research into one doc with four Diátaxis blocks, writing only what the material supports and flagging gaps |
+| **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | Engineering-grade knowledge docs on the Diátaxis model — tutorial, how-to, reference, explanation — writing only what the material supports and flagging the gaps honestly. A discipline that travels across domains |
 
 ### Knowledge Management
 
