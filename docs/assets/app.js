@@ -1,4 +1,4 @@
-/* Claude Skills catalog — interaction only.
+/* My Skills catalog — interaction only.
    The catalog markup is server-baked into index.html (good for SEO and works
    with JS disabled); this script adds language, theme, search, and filtering. */
 (function () {
