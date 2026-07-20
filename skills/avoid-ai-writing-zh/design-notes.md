@@ -60,3 +60,9 @@ Organized to mirror the English division:
 - **zh 特有補充（英文缺的）** — fuller zh-authored rules with no direct English one-liner, or that need more complete handling: 空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 口號式短句, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, 翻譯腔, plus the abstract→concrete rewrite table. Ends with the Allowed-patterns carve-out table (governs the whole zh section).
 
 When our fork was cut it stripped upstream's provenance lines from the shared categories (per the root `CLAUDE.md` convention). The verbatim rebase re-introduces them into the English layer only; the zh layer stays convention-clean.
+
+## External sources drawn on (zh layer)
+
+Reference material the zh rules were informed by (not rebased from — the rules are our own rewrite):
+
+- **speak-human-tw** — https://github.com/Raymondhou0917/speak-human-tw (`references/taiwan-localization.md`). Source for the 翻譯腔 additions in `zh-phrase-rules.md`: 長定語鏈 (「一個能…的 X」→ 短句) and 介詞框架堆疊 (基於／通過…來…). That doc's bulk is 陸用語 term substitution, which is `avoid-china-writing`'s axis, not this skill's — only the translate-ese layer was taken here.
