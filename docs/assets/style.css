@@ -244,6 +244,13 @@ a:hover { text-decoration: underline; }
 .btn:hover { text-decoration: none; }
 .btn-primary { background: var(--accent); color: #fff; }
 .btn-primary:hover { background: var(--accent-ink); }
+/* dark accent is light — use ink text on the solid button for AA contrast */
+:root[data-theme="dark"] .btn-primary { color: #17171a; }
+:root[data-theme="dark"] .btn-primary:hover { color: #17171a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .btn-primary { color: #17171a; }
+  :root:not([data-theme="light"]) .btn-primary:hover { color: #17171a; }
+}
 .btn-ghost { background: var(--bg-elev); color: var(--text); border-color: var(--border-strong); }
 .btn-ghost:hover { border-color: var(--accent); color: var(--accent-ink); }
 .btn svg { width: 16px; height: 16px; }
