@@ -3,6 +3,22 @@
 Ideas not yet drafted. Signal: friction hit 2+ times.
 
 ## Ideas
+
+### Issues
+- [ ] **`tools/run-eval` trigger-layer check hit a pre-existing environmental issue.** Noted
+  2026-07-28 while shipping plain-speak v1.4.0. Every case errored with `no parseable
+  decision from claude` — confirmed not specific to that change by rerunning against an
+  untouched skill (`avoid-china-writing`), which failed identically. Symptom: the script
+  shells out to a nested `claude -p` subprocess, which apparently doesn't parse cleanly when
+  invoked from inside an already-running Claude Code session (this repo's own dev loop is
+  exactly that environment, so the tool is currently unusable for in-session verification).
+  Worked around by diffing the `description:` frontmatter block byte-for-byte instead of
+  running the real trigger check — acceptable for a version-only change but not a substitute
+  for the router judgment on an actual description edit. Needs root-causing (nested-session
+  auth/session-id collision? stdout buffering swallowed by the parent CLI?) and either a fix
+  or a documented "run this outside an active Claude Code session" caveat in
+  `tools/run-eval`'s own usage text.
+
 - [x] **plain-speak: add 計畫可執行度 (原則 vs 做法) to the 具體 guardrail.** Done 2026-07-28
   (v1.3.0→v1.4.0). Plan-bearing output was retreating into 原則 ("分階段導入、控制風險")
   instead of 做法 (誰/做什麼/何時) — the existing 具體度 guard only had a descriptive face
