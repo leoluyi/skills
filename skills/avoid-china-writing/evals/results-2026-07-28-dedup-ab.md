@@ -20,10 +20,10 @@ Method: one independent agent per case per arm, invoking the skill via the Skill
 | 8 | 同形異義 carve-out | 6/6 | 6/6 | yes |
 | 9 | 簡體一對多消歧義 | 4/6 | 5/6 | yes |
 | 10 | 整篇簡體（非殘留） | — | 3/3 | v1.1.0 only |
-| 11 | detect-only 模式 | — | 4/5 | v1.1.0 only |
+| 11 | detect-only 模式 | — | 5/5 | v1.1.0 only |
 | 12 | 字形錯字＋識別字 carve-out | — | 4/4 | v1.1.0 only |
 | | **Both-arm subset (2-9)** | **34/37** | **36/37** | |
-| | **Full 12-case (v1.1.0)** | — | **50/52** | |
+| | **Full 12-case (v1.1.0)** | — | **51/52** | |
 
 **This clears the bar — not parity.** The earlier 29/31-both-arms read was an artifact of the case-5 eval bug: once the prompt no longer made 落地 self-redundant, v1.0.0 slipped to 5/6 (it hedged, offering an optional swap the expectation forbids) while v1.1.0 held 6/6 (kept it outright, no hedge). Case 9 moved the same direction: v1.0.0 missed the 動詞劃／名詞畫 split (計劃表 for both, should be 計畫表 for the noun) on top of the already-known 消息/一条 vocab-layer gap; v1.1.0 only missed the vocab-layer item. On the 8 cases run on both arms, v1.1.0 beats v1.0.0 34/37 → 36/37.
 
@@ -53,10 +53,14 @@ The refactor's central risk was that shrinking the inline core from 93 rows to a
 - Case 3: "needed for 出租車／便利店／公交車／三文魚／奶酪 which are not in SKILL.md's P0 tripwire table"
 - Case 4: "the instruction 'any foreign proper noun not among the eight above: look it up' fired correctly and the table resolved every one"
 
-Cases 1 and 11 close the other half of the question — whether a P0-only or short text correctly *skips* the read when the inline tripwire is already sufficient. Case 1 (pure P0 vocabulary: 屏幕／軟件／網絡...) scored 3/3 without needing a table lookup. Case 11's one miss (清晰度 not flagged) suggests the P0 seed alone isn't quite exhaustive for short detect-mode texts — worth a look, see Open below.
+Cases 1 and 11 close the other half of the question — whether a P0-only or short text correctly *skips* the read when the inline tripwire is already sufficient. Case 1 (pure P0 vocabulary: 屏幕／軟件／網絡...) scored 3/3 without needing a table lookup, and case 11 scored 5/5 the same way. The tripwire does prevent lookups on short P0-dominant texts; the earlier "the inline core prevented zero lookups" finding holds only for long-tail-bearing texts, which is what cases 2-8 all were.
 
-## Open
+## The two misses, settled
 
-- **Case 9, vocab-layer-too:** both arms miss 消息→訊息／一条→一則. Is expecting that vocab-layer swap on top of the character-level 简→繁 conversion asking too much in one pass? Both arms treated 消息 as cross-strait-identical vocabulary rather than a term needing localization. Possible this expectation is eval over-reach rather than a skill gap — flag for the user rather than silently loosen it.
-- **Case 11, 清晰度 not flagged:** the only miss in an otherwise clean v1.1.0-only run. 清晰度 (video/image clarity) may sit in a gray zone closer to standard Taiwan usage than to 陸用語 — another candidate for "eval asked for too much" rather than a skill defect. Also flag for the user.
-- Cases 1, 10, 11, 12 only tested on v1.1.0 (selective dual-arm scope, agreed in advance) — not run on v1.0.0, so no direct baseline comparison exists for these four.
+**Case 11's 清晰度 — eval over-reach, expectation loosened.** The term is not in `term-table.md` at all, so the eval was requiring a catch the skill never defines. 清晰度 is standard Taiwan usage for image/video clarity, not 陸用語. Removed from `catches-rest`; case 11 rescored 4/5 → 5/5. This changes the eval, not the skill, so the run above remains valid.
+
+**Case 9's 消息／一条 — real skill gap, kept strict.** Both arms left them; v1.0.0's agent stated outright 「消息：兩岸用字用詞皆同，無需更動」. It is not: 「發了一則訊息」 is the natural Taiwan phrasing and 一条 is a mainland classifier. `term-table.md` lists 信息 but not 消息, and no classifier rules at all. Expectation stands; the fix is a term-table addition, logged in `backlog.md`. Deliberately **not** fixed in this branch — editing the table now would mean the committed results no longer describe the shipped skill.
+
+## Scope limit
+
+Cases 1, 10, 11, 12 ran on v1.1.0 only (selective dual-arm, agreed in advance to cap cost) — no direct v1.0.0 comparison exists for these four. The "beats baseline" claim rests on the 8 both-arm cases, not on the 12-case total.
