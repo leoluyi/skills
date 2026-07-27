@@ -42,6 +42,38 @@
         "concision-holds: Every added word beyond the original buys either a gloss of a term or the headline fact — no hedging/filler/packaging (基本上/我覺得應該/在某種程度上/進行一個…的動作) and no restating the same point twice. (Do NOT grade by raw character count: the input is a comma-compressed spec list, so a plain rewrite that glosses terms will legitimately run longer — 精煉 here means cutting packaging, not out-shortening a pre-compressed list.)",
         "no-plainness-narration: Contains none of 白話講/白話來說/說白了/簡單來說/講白一點."
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "翻成白話給非技術主管:我們下一步會把 HPA 的 maxReplicas 從 10 調到 30、每天 09:50 用 CronJob 預先開 5 台 warm pool、把 alert threshold 從 CPU 80% 降到 65%、並把 database connection pool 從 50 開到 120,預計下週三的 release 窗口上線。",
+      "expected_output": "Should-fire on the new prescriptive face, and deliberately past the >3-item threshold. Four moves is exactly where the pre-existing representative-concrete rule ('when the source itemizes more than ~3 things, fold into one theme clause + one illustrative example') would otherwise apply and delete three of the four actions. This is the real tie-break test: a plan's moves are what the reader is waiting on, not evidence to fold, so all four survive; the >3 folding rule still governs evidence/causes elsewhere.",
+      "expectations": [
+        "moves-survive-as-做法: All four actions survive as things a person does, each with its number (ceiling to 30, pre-warm 5 pods at 09:50 daily, alert threshold to 65%, connection pool to 120) — NOT compressed into 原則-shaped phrases (「加強自動擴容能力」「優化告警機制」「分階段強化容量管理」).",
+        "not-folded-as-evidence: Does NOT apply representative-concrete's >3-item rule to fold the four moves into one theme clause plus one or two illustrative examples while dropping the rest. This is the exact scenario the old rule would mishandle — moves are the deliverable, not evidence to summarize away.",
+        "keeps-the-when: 下週三(的 release 窗口)survives — a plan's reader is waiting on the date.",
+        "term-glossed: HPA / maxReplicas / CronJob / warm pool / alert threshold / connection pool are each glossed inline or replaced by the plain idea, not left carrying the sentence unglossed."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "翻成白話給主管:接下來我們會分階段導入、強化系統韌性、優化告警機制,並持續關注使用者體驗。",
+      "expected_output": "Boundary case for the new rule's own failure mode: a plan made entirely of 原則 with zero 做法 in the source. The correct move mirrors case 1's no-fabrication logic on the prescriptive face — name that there is no actual next step stated, do not invent one, and do not just re-word the same principles into smoother-sounding principles.",
+      "expectations": [
+        "flags-原則-with-no-做法: Explicitly surfaces that the plan names no action the reader could act on (e.g. names the empty commitments, or asks 誰/做什麼/何時) rather than re-dressing the same principles in plainer-sounding words.",
+        "no-fabrication: Invents no specific action, number, owner, or date that is absent from the source — mirrors case 1's guard, now on the prescriptive face.",
+        "no-plainness-narration: Contains none of 白話講/白話來說/說白了/簡單來說/講白一點."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "用白話解釋 eventual consistency",
+      "expected_output": "Must-not-fire boundary: a pure definitional prompt with no plan content at all. The new 計畫可執行度 rule must not leak into definitional output as an invented 下一步/action-item section — the deliverable stays a definition, per the skill's existing length and shape discipline.",
+      "expectations": [
+        "no-invented-plan-section: No 下一步/建議做法/action-item section appears anywhere in the output; the definition is the whole deliverable.",
+        "length-discipline: Stays roughly 2-4 sentences of prose, no headers or bullets — the new rule does not inflate a single-term explanation into a structured document.",
+        "what-it-does-and-whats-it-for: States both what eventual consistency does and what problem it solves, per the existing bar.",
+        "term-glossed: eventual consistency itself is glossed in plain terms, not left as an unexplained label."
+      ]
     }
   ]
 }
