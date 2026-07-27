@@ -91,6 +91,8 @@ The largest category: everyday and technical nouns/verbs where Taiwan and the ma
 | 程序(program) | 程式 | 法律／作業「程序」(procedure)保留 |
 | 代碼 | 程式碼 | — |
 | 調試 | 除錯 | — |
+| 調用(call a function/API) | 呼叫／叫用 | 人力／資源／預算的「調用」→ 調度／動用 |
+| 復用 | 複用／重複使用 | 「復」為簡轉繁錯字,一律改「複」;code reuse 保留「複用」,見術語例外 |
 | 集成 | 整合 | — |
 | 兼容 | 相容 | — |
 | 緩存 | 快取 | — |
@@ -147,7 +149,7 @@ Mainland tech-industry and corporate jargon. Most of these say little on their o
 |---|---|---|
 | 對齊 | AI/ML「模型對齊／對齊人類價值」(model alignment)、排版「靠左對齊」、資料「欄位對齊」 | 「對齊一下顆粒度」「跟老闆對齊預期」→ 取得共識 |
 | 顆粒度 | 資料／權限工程的 granularity(「權限控管到欄位顆粒度」「監控指標的時間顆粒度」) | 「對齊顆粒度」當口頭禪 → 刪或改「細緻度」 |
-| 復用 | 軟體工程「程式碼復用／組件復用」(code reuse,可保留或改「重用」) | 泛化的「經驗復用」→ 沿用／借鏡 |
+| 複用 | 軟體工程「程式碼複用／元件複用」(code reuse) 原樣保留 | 泛化的「經驗複用」→ 沿用／借鏡;字形「復用」一律改「複用」 |
 | 數據 | 資料科學固定組合詞:數據分析、數據科學、大數據、數據治理 | 一般語境的「數據」單用 → 資料 |
 | 落地 | 具體到「導入上線」時,「落地」在台灣科技業已可理解 | 「賦能落地」「戰略落地」堆疊 → 講清楚做了什麼 |
 
@@ -213,9 +215,9 @@ These prevent over-flagging and misfires. When in doubt, flag-with-note rather t
 | Context-neutral senses（物理「質量」、法律「程序」、公文「文件」、幾何「水平」) | Same word, different meaning — replacing changes the meaning |
 | 簡體 inside code identifiers / URLs / file paths / variable names | Not prose; changing it breaks things |
 | Whole-document Simplified | Route to a full 簡→繁 conversion, not piecemeal flags |
-| 專業慣用組合詞／術語 term-of-art（模型對齊、權限顆粒度、程式碼復用、數據分析、大數據) | The field's standard term with a concrete referent — register-correct, not a defect. See the [term-of-art carve-out](#b-互聯網／職場黑話-prc-corp-speak) under 黑話 |
+| 專業慣用組合詞／術語 term-of-art（模型對齊、權限顆粒度、程式碼複用、數據分析、大數據) | The field's standard term with a concrete referent — register-correct, not a defect. See the [term-of-art carve-out](#b-互聯網／職場黑話-prc-corp-speak) under 黑話 |
 | Industry-standard terms where the 大陸 form is the accepted TW technical term | Some finance / 半導體 / 生醫 / 法遵 fields — verify before "correcting" |
-| Taiwan-standard words that merely resemble 陸用語（用戶端、視窗) | These are correct TW usage; don't over-correct |
+| Taiwan-standard words that merely resemble 陸用語（用戶端、視窗、上手「快速上手」) | These are correct TW usage; don't over-correct |
 
 ---
 

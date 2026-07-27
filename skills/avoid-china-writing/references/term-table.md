@@ -62,6 +62,8 @@ Everything in this file is reference data — 陸用語→台灣正體 pairs and
 | 代碼 | 程式碼 | — |
 | 源碼 / 源代碼 | 原始碼 | — |
 | 調試 | 除錯 | — |
+| 調用（call a function/API） | 呼叫／叫用 | 人力、資源、預算的「調用」→ 調度／動用 |
+| 回調 | 回呼（callback） | — |
 | 報錯 | 出現錯誤／錯誤訊息 | — |
 | 死機 / 宕機 | 當機 | — |
 | 崩潰 | 當機／崩潰 | 「崩潰」情緒義保留 |
@@ -208,7 +210,7 @@ Everything in this file is reference data — 陸用語→台灣正體 pairs and
 
 ## B. 互聯網／職場黑話 (PRC corp-speak) — 完整版
 
-> **術語例外.** 對齊(model alignment)、顆粒度(granularity)、復用(code reuse)、數據(數據分析／大數據)、落地(導入上線) 在其專業領域是正式術語,指向具體技術對象時保留,只有當它們當空話連接詞時才改。判準:這個詞有沒有指到一個具體的技術對象。詳見 SKILL.md 的 term-of-art carve-out。
+> **術語例外.** 對齊(model alignment)、顆粒度(granularity)、複用(code reuse,字形「復用」須改「複用」)、數據(數據分析／大數據)、落地(導入上線) 在其專業領域是正式術語,指向具體技術對象時保留,只有當它們當空話連接詞時才改。判準:這個詞有沒有指到一個具體的技術對象。詳見 SKILL.md 的 term-of-art carve-out。
 
 | 陸用語 | 台灣講法／改法 | 備註 |
 |---|---|---|
@@ -249,7 +251,7 @@ Everything in this file is reference data — 陸用語→台灣正體 pairs and
 | 引流 | 導流／引導流量 | — |
 | 種草 | 推薦／帶起興趣 | — |
 | 拔草 | 打消念頭／入手 | — |
-| 復用 | 重複使用／重用 | — |
+| 復用 | 複用／重複使用 | 「復」為簡轉繁錯字,一律改「複」;code reuse 保留「複用」,見術語例外 |
 | 復購 | 回購／再次購買 | — |
 | 拉新 | 拉新客／獲取新用戶 | — |
 | 留存 | 留存／回訪率 | — |
