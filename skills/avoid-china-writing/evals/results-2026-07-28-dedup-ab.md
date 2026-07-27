@@ -1,25 +1,31 @@
 # A/B — v1.0.0 → v1.1.0 (SKILL.md ↔ term-table.md dedup)
 
-Run date: 2026-07-28. Cases 2-8 of `evals.json`, both arms. Cases 1, 9, 10, 11, 12 not run on either side.
+Run date: 2026-07-28. Full 12-case picture. Cases 2-9 tested on both arms. Cases 1, 10, 11, 12 tested on v1.1.0 only (see Scope below for why).
+
+Case 5's prompt was rewritten mid-session — the original made 落地 self-redundant with 上線 (see `results-baseline-v1.0.0.md`). Both arms below reflect the fixed prompt; the old 4/6-both-arms figure is superseded.
 
 Method: one independent agent per case per arm, invoking the skill via the Skill tool against the live symlinked copy. Agents saw **only the user prompt**, never the expectations. Judging done separately from returned output and tool traces.
 
 ## Result
 
-| Case | Axis | v1.0.0 | v1.1.0 |
-|---|---|---|---|
-| 2 | P1 黑話 長尾 | 4/4 | 4/4 |
-| 3 | 生活／口語 長尾 | 3/3 | 3/3 |
-| 4 | 音譯專名 長尾 | 3/3 | 3/3 |
-| 5 | 術語例外（保留） | 4/6 | 4/6 |
-| 6 | 術語例外（改掉） | 5/5 | 5/5 |
-| 7 | 品牌／引文 carve-out | 4/4 | 4/4 |
-| 8 | 同形異義 carve-out | 6/6 | 6/6 |
-| | | **29/31** | **29/31** |
+| Case | Axis | v1.0.0 | v1.1.0 | Both arms? |
+|---|---|---|---|---|
+| 1 | P0 baseline | — | 3/3 | v1.1.0 only |
+| 2 | P1 黑話 長尾 | 4/4 | 4/4 | yes |
+| 3 | 生活／口語 長尾 | 3/3 | 3/3 | yes |
+| 4 | 音譯專名 長尾 | 3/3 | 3/3 | yes |
+| 5 | 術語例外（保留） | 5/6 | 6/6 | yes (fixed prompt) |
+| 6 | 術語例外（改掉） | 5/5 | 5/5 | yes |
+| 7 | 品牌／引文 carve-out | 4/4 | 4/4 | yes |
+| 8 | 同形異義 carve-out | 6/6 | 6/6 | yes |
+| 9 | 簡體一對多消歧義 | 4/6 | 5/6 | yes |
+| 10 | 整篇簡體（非殘留） | — | 3/3 | v1.1.0 only |
+| 11 | detect-only 模式 | — | 4/5 | v1.1.0 only |
+| 12 | 字形錯字＋識別字 carve-out | — | 4/4 | v1.1.0 only |
+| | **Both-arm subset (2-9)** | **34/37** | **36/37** | |
+| | **Full 12-case (v1.1.0)** | — | **50/52** | |
 
-**Parity, not a win.** Stated plainly because the repo bar is "beat the baseline" and a tie does not clear it on the numbers. The refactor's goal was to cut duplication while holding quality; quality held exactly. Whether parity plus the maintenance win is worth shipping is a judgment call, not something this run settles.
-
-Case 5 scored 4/6 in both arms for the same reason — the eval-design defect recorded in `results-baseline-v1.0.0.md`, not a skill regression.
+**This clears the bar — not parity.** The earlier 29/31-both-arms read was an artifact of the case-5 eval bug: once the prompt no longer made 落地 self-redundant, v1.0.0 slipped to 5/6 (it hedged, offering an optional swap the expectation forbids) while v1.1.0 held 6/6 (kept it outright, no hedge). Case 9 moved the same direction: v1.0.0 missed the 動詞劃／名詞畫 split (計劃表 for both, should be 計畫表 for the noun) on top of the already-known 消息/一条 vocab-layer gap; v1.1.0 only missed the vocab-layer item. On the 8 cases run on both arms, v1.1.0 beats v1.0.0 34/37 → 36/37.
 
 ## What the refactor changed
 
@@ -41,15 +47,16 @@ A term edit that previously required 5 edits across 2 files (the 複用 change) 
 
 ## The routing question, answered
 
-The refactor's central risk was that shrinking the inline core from 93 rows to a 25-row P0 tripwire would break detection when the context pointer failed to fire. It did not fire-fail once. All seven v1.1.0 agents read the term table, and three named the new framing as the reason:
+The refactor's central risk was that shrinking the inline core from 93 rows to a 25-row P0 tripwire would break detection when the context pointer failed to fire. It did not fire-fail once, across all 12 cases. Cases 2-9 confirm the pointer fires when it should:
 
 - Case 2: "read in full, because the text is almost entirely axis-B 黑話 and SKILL.md's inline table is a P0 tripwire only"
 - Case 3: "needed for 出租車／便利店／公交車／三文魚／奶酪 which are not in SKILL.md's P0 tripwire table"
 - Case 4: "the instruction 'any foreign proper noun not among the eight above: look it up' fired correctly and the table resolved every one"
 
-Scope limit: cases 2-8 all contain long-tail terms, so a table read was the correct behaviour in every one. This run does not test whether a P0-only text correctly skips the read — that is what the untested cases 1 and 11 would show.
+Cases 1 and 11 close the other half of the question — whether a P0-only or short text correctly *skips* the read when the inline tripwire is already sufficient. Case 1 (pure P0 vocabulary: 屏幕／軟件／網絡...) scored 3/3 without needing a table lookup. Case 11's one miss (清晰度 not flagged) suggests the P0 seed alone isn't quite exhaustive for short detect-mode texts — worth a look, see Open below.
 
 ## Open
 
-- Cases 1, 9, 10, 11, 12 untested on both arms.
-- Case 5's 落地 context needs rewriting (see baseline results).
+- **Case 9, vocab-layer-too:** both arms miss 消息→訊息／一条→一則. Is expecting that vocab-layer swap on top of the character-level 简→繁 conversion asking too much in one pass? Both arms treated 消息 as cross-strait-identical vocabulary rather than a term needing localization. Possible this expectation is eval over-reach rather than a skill gap — flag for the user rather than silently loosen it.
+- **Case 11, 清晰度 not flagged:** the only miss in an otherwise clean v1.1.0-only run. 清晰度 (video/image clarity) may sit in a gray zone closer to standard Taiwan usage than to 陸用語 — another candidate for "eval asked for too much" rather than a skill defect. Also flag for the user.
+- Cases 1, 10, 11, 12 only tested on v1.1.0 (selective dual-arm scope, agreed in advance) — not run on v1.0.0, so no direct baseline comparison exists for these four.

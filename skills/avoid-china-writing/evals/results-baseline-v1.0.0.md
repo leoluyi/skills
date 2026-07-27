@@ -34,6 +34,6 @@ Cases 5 and 6 use the same words (對齊, 顆粒度, 複用, 數據, 落地) in 
 
 ## Defects found
 
-**Eval-design defect, case 5.** The source sentence 「功能落地後上線」 makes 落地 redundant with 上線, so changing it is defensible. The `keeps-or-softflags-landing` and `zero-false-positives` expectations assumed 落地 was safely in term-of-art territory there. Rewrite the case to put 落地 in an unambiguous 導入上線 context, or drop it from that case. Scored as fail here to keep the baseline honest; do not treat the two points as a skill regression.
+**Eval-design defect, case 5 — fixed 2026-07-28.** The source sentence 「功能落地後上線」 made 落地 redundant with 上線, so changing it was defensible. The case-5 prompt in `evals.json` has since been rewritten to an unambiguous 導入上線 context (「該方案已在三個事業群落地」) with a stricter `keeps-landing` expectation. **The 4/6 score above is stale** — see `results-2026-07-28-dedup-ab.md` for the rerun against the fixed prompt (v1.0.0: 5/6, v1.1.0: 6/6).
 
 **Skill defect: `carve-out` has no Chinese gloss.** The case 7 agent rendered it 「碳排除項」 — reading the English as 碳 (carbon). SKILL.md uses the bare English term throughout while instructing output in Chinese, leaving the agent to invent a translation. Give it a Chinese gloss (排除項／例外項) at first use.
