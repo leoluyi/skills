@@ -15,7 +15,7 @@ description: >-
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
-version: 1.3.0
+version: 1.4.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -114,6 +114,9 @@ Mark each criterion pass (✓) / fail (✗) / not-applicable (—):
 - **Every term glossed** — no acronym or term of art carries a sentence unglossed? (Guardrails)
 - **No plainness-narration** — free of「白話講/白話來說/說白了/簡單來說」-type self-framing? (Guardrails)
 - **具體度** — states concrete, checkable facts, not abstract modifiers standing in for them (「大幅提升/全面優化」without a number)? (Guardrails)
+- **計畫可執行度** — where the draft says what will be done, does it name 做法(誰、
+  做什麼、做到什麼算完成)rather than 原則? Mark — when the draft states no plan.
+  (Guardrails)
 - **Accurate** — simplification didn't bend anything into something false? (Guardrails)
 
 Output stays flat — one bullet list of the marked criteria (each ✗ carrying a
@@ -126,21 +129,31 @@ the same length discipline as a translate. No section headers.
   nuance changes a decision, keep it and phrase it plainly.
 - **具體優先於抽象。** A concrete, checkable fact beats an abstract description of
   the same thing —「查詢從 3 秒降到 0.3 秒」not「大幅優化效能」,「去掉重複跟空值」
-  not「對資料進行清洗處理」. This does not fight concision; it serves it. The
-  concrete version is usually *fewer* words, because one fact replaces a pile of
-  abstract modifiers. The failure mode to kill is padding a "plain" sentence with
-  reassuring but empty adjectives (「全面」「整體」「大幅」「有效地」) — they lengthen
-  without informing. Division of labor: **具體 picks *which fact* to state;
-  精煉 cuts *everything that isn't the fact*.** They share no ground, so you can
-  hold both. When detail genuinely overflows and buries the point, the cut is not
-  "be less concrete" — it's picking the one or two most representative, checkable
-  facts and dropping the rest (representative-concrete, not exhaustive-concrete).
-  Operationally: when the source itemizes more than ~3 things, do not translate
-  the list. Lead with the headline fact the reader actually needs (the outcome,
-  「吞吐量翻倍」), fold the items into one theme clause naming the *kind* of change
-  (「放寬了各處的排隊上限」), and cite at most one item as an illustrative example.
-  Enumerating every item back to the reader is exhaustive-concrete — it reads as
-  thorough but buries the one number that mattered.
+  not「對資料進行清洗處理」. The failure mode to kill is padding a "plain" sentence
+  with reassuring but empty adjectives (「全面」「整體」「大幅」「有效地」) — they
+  lengthen without informing. Division of labor with concision: **具體 picks
+  *which fact* to state; 精煉 cuts *everything that isn't the fact*** — they
+  share no ground, so you hold both, and the concrete version usually runs
+  *shorter*, because one fact replaces a pile of empty modifiers. When detail
+  genuinely overflows and buries the point, the cut is not "be less concrete" —
+  it's picking the one or two most representative, checkable facts and dropping
+  the rest (representative-concrete, not exhaustive-concrete). Operationally:
+  when the source itemizes more than ~3 things, do not translate the list. Lead
+  with the headline fact the reader actually needs (the outcome,「吞吐量翻倍」),
+  fold the items into one theme clause naming the *kind* of change (「放寬了各處
+  的排隊上限」), and cite at most one item as an illustrative example. Enumerating
+  every item back to the reader is exhaustive-concrete — it reads as thorough
+  but buries the one number that mattered.
+
+  When the material is a plan, abstraction wears a second face: the **原則**.
+  It reads like content (「分階段導入、控制風險」), so it slips past the
+  empty-adjective guard above. The concrete form is a **做法** — who does what,
+  and what counts as done:「HPA 上限從 10 調到 30,下週三上線」not「加強容量
+  管理」. Representative-concrete folds *evidence* — the causes behind an
+  outcome; a plan's moves are not evidence, they are what the reader is waiting
+  on, so keep every move that changes what they decide or wait for and fold
+  only the rest. A 做法 the source doesn't contain is not yours to invent: when
+  the plan is all 原則, say so in one line and ask what the actual next step is.
 - **Flag ambiguity, don't guess.** If the source is ambiguous, give the most
   likely reading and note the ambiguity in one line.
 - **No unglossed acronyms or jargon.** Never let an abbreviation or term of art
@@ -199,6 +212,7 @@ API(應用程式介面)就是兩套系統之間的「點餐窗口」。比方餐
 - The catch:—
 - 術語 gloss:✗「HPA」「autoscaling」「503」三個都沒解釋就承載語意
 - 具體度:✓ 有具體機制與可查的錯誤(撞上限、503),不是空泛描述
+- 計畫可執行度:—(原文只描述現象,沒講接下來要做什麼)
 - 失真:✓ 事實正確
 
 改寫版(先假設是產品高層、看客戶影響;若對象是 CFO 再改成談成本):

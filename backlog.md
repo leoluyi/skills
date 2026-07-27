@@ -3,6 +3,14 @@
 Ideas not yet drafted. Signal: friction hit 2+ times.
 
 ## Ideas
+- [x] **plain-speak: add 計畫可執行度 (原則 vs 做法) to the 具體 guardrail.** Done 2026-07-28
+  (v1.3.0→v1.4.0). Plan-bearing output was retreating into 原則 ("分階段導入、控制風險")
+  instead of 做法 (誰/做什麼/何時) — the existing 具體度 guard only had a descriptive face
+  and missed this prescriptive one. A/B needed two iterations: the first eval case (3 moves)
+  sat at/below the pre-existing >3-item fold threshold and came back a near-tie (inconclusive
+  — see design-notes.md); redesigned to 4 moves and got a clean, reproducible result (v1.4.0
+  2/2 kept all numbers, v1.3.0 baseline 0/2, stripped 3 of 4 numbers into vague language both
+  times). Log: `skills/plain-speak/evals/results-2026-07-28-plan-concreteness.md`.
 - [x] **Migrate the remaining skills to the skill-creator eval layout.** Done 2026-07-19. All 8 skills (avoid-ai-writing-zh, avoid-china-writing, blog-writing-zh, briefing-outline, formal-doc-structure, knowledge-doc-writing, plain-speak, rfp-writing) now use `skills/<name>/evals/{trigger-queries.json, evals.json}`; legacy top-level `evals/<name>/` tree removed, `benchmark-protocol.md` files moved alongside. `expected_trigger`→`should_trigger` renamed throughout. Caveat: `knowledge-doc-writing` had no real trigger file before (its old `prompts.json` was content-quality material mislabeled) — its 6 negative trigger queries are freshly authored from SKILL.md's documented exclusions, not carried over, so treat that one file as unverified until it's actually been run once.
 - [x] **Fix `tools/run-eval`'s Anthropic-API dependency.** Done 2026-07-19. The script curled `api.anthropic.com` directly with a raw API key — a shared-tool cost/portability problem surfaced while working the item above. Rewrote it to run the router judgment as a one-shot subagent call through whatever coding-agent CLI is installed (`claude -p --tools=""` or `codex exec -s read-only`, auto-detected, override via `RUN_EVAL_AGENT`), so it's no longer a direct vendor API call and works across AI coding assistants, not just Anthropic's. Fixed a `set -e`/`pipefail` bug found during verification (a non-matching `grep` on a malformed router reply silently killed the whole loop after one iteration). Verified against `rfp-writing` (9/9, matches the old direct-API run) and `infographic-design`.
 
