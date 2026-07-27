@@ -59,7 +59,15 @@ Cases 1 and 11 close the other half of the question — whether a P0-only or sho
 
 **Case 11's 清晰度 — eval over-reach, expectation loosened.** The term is not in `term-table.md` at all, so the eval was requiring a catch the skill never defines. 清晰度 is standard Taiwan usage for image/video clarity, not 陸用語. Removed from `catches-rest`; case 11 rescored 4/5 → 5/5. This changes the eval, not the skill, so the run above remains valid.
 
-**Case 9's 消息／一条 — real skill gap, kept strict.** Both arms left them; v1.0.0's agent stated outright 「消息：兩岸用字用詞皆同，無需更動」. It is not: 「發了一則訊息」 is the natural Taiwan phrasing and 一条 is a mainland classifier. `term-table.md` lists 信息 but not 消息, and no classifier rules at all. Expectation stands; the fix is a term-table addition, logged in `backlog.md`. Deliberately **not** fixed in this branch — editing the table now would mean the committed results no longer describe the shipped skill.
+**Case 9's 消息／一条 — real skill gap, kept strict, since fixed.** Both arms left them; v1.0.0's agent stated outright 「消息：兩岸用字用詞皆同，無需更動」. It is not: 「發了一則訊息」 is the natural Taiwan phrasing and 一条 is a mainland classifier. `term-table.md` listed 信息 but not 消息, and no classifier rules at all — the agent had nothing to look up and fell back on a wrong prior. Expectation stands. Closed in v1.1.1, after this run; see below.
+
+## Follow-up — v1.1.1, the 消息／量詞 fix
+
+The gap above is closed. `term-table.md` gains 消息（訊息／消息 by sense）and 短信→簡訊; SKILL.md's D 語法 list gains two classifier lines (一條消息→一則訊息、一條短信→一則簡訊；一部手機→一支手機、一條影片→一支影片).
+
+Classifiers went inline as **patterns**, not into the table as terms — SKILL.md's D section states that grammar patterns live there in full, so a 量詞 subsection in `term-table.md` would have been unreachable without also amending that sentence and reopening the routing question the A/B had just settled.
+
+Case 9 rerun on v1.1.1, single arm, same blind method: **6/6** (v1.0.0 4/6 → v1.1.0 5/6 → v1.1.1 6/6). The agent tiered the two additions separately — 一条→一則 as P1 語法／量詞, 消息→訊息 as P2 詞彙選字 — matching where each now lives. Scope: case 9 only; no false-positive regression sweep was run on the other 11 cases.
 
 ## Scope limit
 

@@ -1,7 +1,7 @@
 ---
 name: avoid-china-writing
 description: Audit and rewrite Traditional Chinese to remove mainland-China (PRC / 大陸) usage and convert it to Taiwan 正體中文 conventions across four axes — 陸用語詞彙 (視頻→影片、軟件→軟體、屏幕→螢幕、網絡→網路), 互聯網／職場黑話 (賦能、抓手、對齊顆粒度、閉環、落地、賽道、內卷), 簡體字殘留 (为／发／网／软／数据 混入繁體), and 音譯與專名／語法差異 (奧巴馬→歐巴馬、悉尼→雪梨、硅谷→矽谷、通過→透過). Trigger when the user asks to 去除大陸／陸用語、改成台灣用語、正體中文在地化、抓簡體殘留、把互聯網黑話改成正常中文, or「這段有沒有大陸用詞」. Supports detect / rewrite / edit modes. Do NOT invoke for 去除 AI 味／潤飾語氣 (use avoid-ai-writing-zh), 結構化商業文件 簽呈／報告 (use formal-doc-structure), RFP／需求規格書 (use rfp-writing), 白話文翻譯 (use plain-speak), casual chat, creative writing, or code comments. This skill localizes across the strait — an axis orthogonal to AI-ism cleanup.
-version: 1.1.0
+version: 1.1.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -158,6 +158,8 @@ Place names, political figures, brands and food terms have a long tail that does
 - 存在…的問題 → 有…的問題
 - 屬於比較…的 → 比較…（刪掉贅字「屬於」)
 - V + 化 堆疊（場景化、抓手化、顆粒化)→ flag stacking, 改回動詞或名詞
+- 量詞（訊息類）：一條消息 → 一則訊息、一條短信 → 一則簡訊
+- 量詞（物件類）：一部手機 → 一支手機、一條影片 → 一支影片
 - 立馬 → 立刻／馬上
 - 靠譜 → 可靠／靠得住
 - 特…／賊…（特好、賊快，大陸口語強調)→ 超…／非常…
