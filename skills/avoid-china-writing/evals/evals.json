@@ -1,0 +1,141 @@
+{
+  "skill_name": "avoid-china-writing",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "把這段改成台灣正體中文：「請先在屏幕上打開軟件，網絡連上後保持缺省設置，視頻會自動加載。若服務器內存不足，請卸載其他程序後重新激活。」",
+      "expected_output": "P0 baseline: unambiguous 陸用語 across the highest-signal vocabulary band. Every term here is P0 and should be caught without any deep lookup.",
+      "expectations": [
+        "catches-all-p0-vocab: 屏幕→螢幕、軟件→軟體、網絡→網路、缺省→預設、設置→設定、視頻→影片、加載→載入、服務器→伺服器、內存→記憶體、卸載→解除安裝／移除、程序→程式、激活→啟用／啟動 全數改到。",
+        "no-missed-terms: 12 個 P0 詞沒有任何一個漏標；漏一個即視為 recall 缺口。",
+        "output-is-taiwan-idiom: 改寫後整段讀起來是台灣科技文件的自然語感，不是逐詞替換後的生硬拼接。"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "這段的用語幫我改一下：「這個項目的抓手不清，建議先對齊一下顆粒度，把賽道打透形成閉環，再談賦能生態。底層邏輯是拉新、留存、轉化三段鏈路要跑通，打法上先做私域流量。」",
+      "expected_output": "REGRESSION CANARY: every term here is P1 互聯網黑話 that lives only in references/term-table.md, not in the SKILL.md inline seed. If the context pointer to the term table fails to fire, this case collapses.",
+      "expectations": [
+        "loads-term-table: 為了處理這些黑話，實際讀取了 references/term-table.md，而不是只憑 SKILL.md 的 inline 內容硬猜。",
+        "catches-jargon-cluster: 抓手不清→切入點不明、對齊顆粒度→統一細緻度／取得共識、賽道→領域／市場、打透→深耕／徹底做好、閉環→完整流程、賦能生態→支援體系、底層邏輯→根本原理、拉新→拉新客、留存→回訪率、轉化→轉換率、鏈路→流程／環節、跑通→驗證可行、打法→做法／策略、私域流量→自有客群 全數處理。",
+        "names-the-concrete-thing: 黑話的改法不是換成另一個空詞，而是講清楚具體指什麼；改寫後句子有實際內容，不是同義空話替換。",
+        "tier-labelled-p1: 標為 P1（發布前改），與 P0 簡體／明顯陸源區隔。"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "幫我看這段有沒有大陸用詞：「昨天立馬打了個出租車去公司，司機挺靠譜的。中午在便利店買了三文魚飯糰跟奶酪，晚上坐公交車回家，順手拿了個土豆。」",
+      "expected_output": "Deep-lookup: 生活／口語 long tail, all table-only after the inline seed shrinks to P0. 土豆 is the trap — in Taiwan it means peanut, so leaving it is a real meaning error.",
+      "expectations": [
+        "catches-everyday-terms: 立馬→立刻／馬上、出租車→計程車、靠譜→可靠／靠得住、三文魚→鮭魚、奶酪→起司／乳酪、公交車→公車 全數標出。",
+        "catches-tudou-as-meaning-error: 土豆→馬鈴薯 必改，並點出台灣「土豆」指花生，不改會造成語意錯誤（非單純語感問題）。",
+        "tier-separation: 土豆 列為 P0（語意錯誤／明顯陸源），立馬／靠譜 列為 P2（口語邊界），不混為一談。"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "這篇報導的譯名幫我在地化：「戛納影展期間，來自老撾與沙特的代表團先飛抵迪拜轉機，隨後前往悉尼與新西蘭進行為期兩週的訪問。」",
+      "expected_output": "Deep-lookup: 音譯專名 long tail. 悉尼／新西蘭 sit in the inline seed; 戛納／老撾／沙特／迪拜 are table-only.",
+      "expectations": [
+        "catches-long-tail-transliterations: 戛納→坎城、老撾→寮國、沙特→沙烏地阿拉伯、迪拜→杜拜 全數改到（這四個需要查 term-table）。",
+        "catches-seed-transliterations: 悉尼→雪梨、新西蘭→紐西蘭 改到。",
+        "no-partial-coverage: 不出現「改了常見的、漏了長尾的」模式——六個譯名全中才算通過。"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "這段技術文件幫我檢查用語：「我們用 RLHF 做模型對齊，權限控管做到欄位顆粒度，並提高元件的程式碼複用率。數據分析的部分接大數據平台，該方案已在三個事業群落地，接下來要評估能不能推到全公司。」",
+      "expected_output": "術語例外 (term-of-art carve-out): every flaggable-looking word here points at a concrete technical referent and must be KEPT. This is the false-positive guard.",
+      "expectations": [
+        "keeps-model-alignment: 「模型對齊」保留不改（AI/ML alignment 術語）。",
+        "keeps-granularity: 「欄位顆粒度」保留不改（權限工程 granularity，指向具體技術對象）。",
+        "keeps-code-reuse: 「程式碼複用」保留不改，且不改寫成「重用」。",
+        "keeps-data-terms: 「數據分析」「大數據」為固定組合詞，保留不改。",
+        "keeps-landing: 「該方案已在三個事業群落地」明確指具體的導入上線（有範圍、有對象），必須保留，不得改成「實作／導入／上線」等同義詞替換。",
+        "zero-false-positives: 整段不應產生任何硬性改寫建議；若逐詞替換即為失敗。"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "這段會議紀錄的用語幫我修：「跟老闆對齊一下預期，顆粒度再拉細一點，把上一季的經驗複用到下個專案，順便把方法論沉澱下來。」",
+      "expected_output": "術語例外, filler side: the same words as case 5, but doing empty connective work with no concrete referent. Must be flagged here. Cases 5 and 6 together test the judgment, not the word list.",
+      "expectations": [
+        "flags-alignment-as-filler: 「對齊預期」→ 取得共識／確認認知，標為黑話用法。",
+        "flags-granularity-as-filler: 「顆粒度再拉細」→ 再細緻一點／講得更細，標為口頭禪。",
+        "flags-reuse-as-filler: 「經驗複用」→ 沿用／借鏡，非 code reuse 語境。",
+        "flags-chendian: 「沉澱方法論」→ 彙整成方法論／累積，標出這是空話用法。",
+        "consistent-with-case-5: 判準明確落在「有沒有指到具體技術對象」，而非對這些詞一律放行或一律改掉。"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "幫我把這段的陸用語改掉：「根據微信公眾號的說法，支付寶與抖音的用戶規模持續成長。原文寫道：『我们要打造一个赋能商户的生态闭环』，這點值得台灣業者參考。」",
+      "expected_output": "Carve-outs: PRC brand names are proper nouns, and the quoted mainland sentence is someone else's words. Neither may be silently rewritten.",
+      "expectations": [
+        "keeps-brand-names: 微信、支付寶、抖音、公眾號（作為平台專名時）保留原樣，不譯成 WeChat／TikTok。",
+        "does-not-rewrite-quote: 引號內的大陸原文『我们要打造一个赋能商户的生态闭环』不被改寫或轉繁，只加註說明其中的簡體與黑話。",
+        "flags-with-note: 對引文採取「標記並說明」而非「靜默修正」，並明說理由是引文不可代改。",
+        "fixes-surrounding-prose: 引文外的敘述文字（用戶→使用者）該改的仍要改，不因為有引文就整段放過。"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "檢查這段有沒有陸用語：「這顆行星的質量約為地球的三倍。本案已依法定程序送件，相關文件請洽承辦人。桌面請保持水平，並確認用戶端與視窗設定正確。」",
+      "expected_output": "Homograph carve-out: every candidate here is the Taiwan-correct sense of a context-sensitive word. Swapping any of them changes the meaning or corrupts standard TW usage.",
+      "expectations": [
+        "keeps-mass: 物理「質量」(mass) 保留，不改成「品質」。",
+        "keeps-legal-procedure: 法律「法定程序」(procedure) 保留，不改成「程式」。",
+        "keeps-document: 公文「文件」(document) 保留，不改成「檔案」。",
+        "keeps-horizontal: 幾何「保持水平」(horizontal) 保留，不改成「水準」。",
+        "keeps-tw-standard-words: 「用戶端」「視窗」是台灣標準用語，保留不改。",
+        "zero-changes: 本題正確答案是整段不動；任何一處改寫都是過度校正。"
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "這段混了簡體，幫我轉成正體：「她剪了头发之后，站在里面的干燥区，看着制造好的模型，重新规划了计划表，还发了一条消息。」",
+      "expected_output": "簡體 one-to-many disambiguation. Picking the wrong Traditional form is worse than leaving the Simplified character, so this tests context selection, not mechanical conversion.",
+      "expectations": [
+        "correct-fa: 头发→頭髮（不是「頭發」）；发了一条消息→發了一則訊息（不是「髮」）。同字兩義各自選對。",
+        "correct-li: 里面→裡面（不是「里面」）。",
+        "correct-gan: 干燥→乾燥（不是「干」或「幹」）。",
+        "correct-zhi: 制造→製造（不是「制造」）。",
+        "correct-hua: 规划→規劃、计划表→計畫表（動詞用劃、名詞用畫的台灣習慣）。",
+        "vocab-layer-too: 消息→訊息、一条→一則，字形轉換之外的用語層也一併處理。"
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "幫我處理這份文件：「我们的产品采用了先进的人工智能技术，能够为用户提供高质量的服务。通过持续优化算法，我们不断提升系统的响应速度和稳定性。团队将继续努力，为客户创造更大的价值。」",
+      "expected_output": "Whole-document Simplified is a different branch: this is a mainland document, not a leak. Char-by-char flagging is the wrong response.",
+      "expectations": [
+        "recognises-whole-doc-branch: 辨識出整份為簡體（非零星殘留），走簡→繁轉換＋用語在地化的整體處理，而不是逐字列出簡體字清單。",
+        "converts-and-localises-in-one-pass: 一次完成轉繁與用語在地化：质量→品質、优化→最佳化、算法→演算法、响应→回應／反應、用户→使用者、通过→透過。",
+        "no-char-by-char-flag-list: 不輸出一長串「为→為、这→這」式的逐字對照當作主要交付。"
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "先不要改，幫我標出來就好：「這個視頻的清晰度不夠，建議調用新的接口重新渲染，順便把緩存清一下，用戶反饋說加載很慢。」",
+      "expected_output": "detect mode: flag only, grouped by severity tier, no rewritten text returned. Also covers 調用／接口, recently added table entries.",
+      "expectations": [
+        "detect-not-rewrite: 只標記與說明，不回傳改寫後的整段文字。使用者說「先不要改」必須被遵守。",
+        "grouped-by-tier: 標記結果依 P0／P1／P2 分組呈現。",
+        "catches-diaoyong: 調用→呼叫／叫用 標出（此處為呼叫 API，非人力資源調度）。",
+        "catches-rest: 視頻→影片、清晰度→畫質／解析度、接口→介面、緩存→快取、用戶→使用者、反饋→回饋／意見、加載→載入 全數標出。",
+        "gives-replacements: 每個標記都附台灣講法，讓使用者能自行決定是否採用。"
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "這段程式說明幫我看用語：「這個模組的復用性很高。調用 encodeVideo() 之後會觸發回調，把結果寫進 video_cache 資料夾。注意 defaultConfig 這個變數名不要動。」",
+      "expected_output": "Mixed layer: 復用 is a 字形 error (must become 複用) while code-reuse sense is kept; 調用／回調 are the newly added entries; code identifiers and English function names are carve-outs.",
+      "expectations": [
+        "fixes-glyph-not-word: 復用→複用（字形錯字必改），但保留「複用」不改寫成「重用」，因為這是軟體工程 code reuse 語境。",
+        "catches-diaoyong-huidiao: 調用→呼叫／叫用、回調→回呼（callback）。",
+        "protects-identifiers: encodeVideo()、video_cache、defaultConfig 屬程式識別字，一律不動——即使 Video／cache／default 對應到被列管的詞。",
+        "no-overreach-into-code: 不把識別字裡的英文當成待在地化的內容處理。"
+      ]
+    }
+  ]
+}

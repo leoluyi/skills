@@ -1,6 +1,19 @@
 # 陸用語 → 台灣正體中文 完整對照表
 
-The exhaustive lookup behind `SKILL.md`. The skill body carries the high-frequency core; this file is the long tail. All four axes. The **Carve-out** column names contexts where the mainland form (or a homograph) is legitimate and must not be swapped.
+The single term authority for this skill, across all four axes. `SKILL.md` carries the judgment — how to decide, what not to touch — and a P0 tripwire; every term lives here. A word absent from `SKILL.md` is not thereby clean: this is the file that settles it.
+
+The **Carve-out** column names contexts where the mainland form (or a homograph) is legitimate and must not be swapped.
+
+**Tier by section**, so severity needs no per-row lookup:
+
+| 區塊 | Tier |
+|---|---|
+| A. 詞彙 — 資訊科技、生活／一般 | P0（少數已在地化借詞於 Carve-out 註明為 P2） |
+| A. 詞彙 — 口語／俚語 | P2 |
+| B. 互聯網／職場黑話 | P1 |
+| C. 簡體字殘留 | P0 |
+| D. 音譯與專名 | P0 |
+| D. 語法／用詞習慣 | P1 |
 
 Everything in this file is reference data — 陸用語→台灣正體 pairs and illustrative examples. Per the skill's self-reference escape hatch, none of it is prose to be "localized."
 
@@ -210,7 +223,7 @@ Everything in this file is reference data — 陸用語→台灣正體 pairs and
 
 ## B. 互聯網／職場黑話 (PRC corp-speak) — 完整版
 
-> **術語例外.** 對齊(model alignment)、顆粒度(granularity)、複用(code reuse,字形「復用」須改「複用」)、數據(數據分析／大數據)、落地(導入上線) 在其專業領域是正式術語,指向具體技術對象時保留,只有當它們當空話連接詞時才改。判準:這個詞有沒有指到一個具體的技術對象。詳見 SKILL.md 的 term-of-art carve-out。
+> **術語例外.** 對齊、顆粒度、複用、數據、落地 在其專業領域是正式術語,指向具體技術對象時保留。保留與改掉的完整判準見 `SKILL.md` 的 term-of-art carve-out。
 
 | 陸用語 | 台灣講法／改法 | 備註 |
 |---|---|---|
