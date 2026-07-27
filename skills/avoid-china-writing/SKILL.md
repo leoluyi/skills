@@ -110,6 +110,7 @@ The largest category: everyday and technical nouns/verbs where Taiwan and the ma
 | 出租車 | 計程車 | — |
 | 公交車 | 公車 | — |
 | 水平(level) | 水準 | 幾何「水平」(horizontal)保留 |
+| 帶教 | 輔導／帶領／指導 | 外部顧問對學員＝輔導(台灣最標準);梯次之間的內部傳承＝帶領／指導 |
 
 Rule: replace on sight when the term is unambiguous 陸用語. For **context-sensitive** entries (數據/質量/程序/文件/水平/信息), pick the Taiwan word only in the sense noted — don't blanket-swap.
 
@@ -138,7 +139,7 @@ Mainland tech-industry and corporate jargon. Most of these say little on their o
 | 種草 / 拔草 | 推薦、帶起興趣／打消念頭 |
 | 心智(品牌心智) | 認知／心佔率 |
 | 組合拳 | 一套做法／綜合措施 |
-| 沉澱(方法論) | 累積／整理經驗 |
+| 沉澱(沉澱方法論／沉澱為訓練教材) | 累積／彙整(沉澱經驗→累積經驗;沉澱為訓練教材→彙整成訓練教材) |
 
 **術語例外(term-of-art carve-out).** Several of these words are *also* legitimate terms-of-art in a specific professional domain — there they carry a precise, established meaning and must be kept, not swapped. The test is whether the word points at a concrete technical referent or is doing empty connective work. Tolerate the term-of-art sense; flag the filler sense.
 
