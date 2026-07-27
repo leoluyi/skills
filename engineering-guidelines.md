@@ -16,6 +16,8 @@ skills/<name>/
     └── judged-cases.md   # optional — corpus of user verdicts
 ```
 
+Keep the body under 500 lines; everything past that belongs in `references/` or `scripts/`.
+
 The frontmatter needs two fields. The `description` is the **trigger gate** — the only thing the agent sees when deciding whether to load the skill. Name what should fire it *and* what should not:
 
 ```yaml
@@ -55,27 +57,25 @@ kebab-case, action-flavored, specific over generic: `oracle-exadata-cutover` not
 
 Every skill is **model-invoked** (agent or user can fire it — the default) or **user-invoked** (only the human typing its name, via `disable-model-invocation: true`). The catalog marks the latter `invoke-only`. Which to pick, and how it changes what the `description` is written for, is in [`.agents/invocation.md`](.agents/invocation.md). Caveat for this repo: `disable-model-invocation` is a Claude-Code field Codex reads as a no-op (see [Portability](#portability)), so user-invoked is not yet enforced on the Codex side — a skill that must never auto-fire can't rely on the flag alone across tools.
 
-## Authoring rules
-
-- **Write the description pushy.** Name the explicit phrases that should fire it and what should not. Vague descriptions either misfire on unrelated prompts or silently never load.
-- **Body under 500 lines.** `SKILL.md` is the index — push detail into `references/` and deterministic logic into `scripts/`.
-- **Explain *why*, not just *what*.** The why lets a reader extrapolate to edge cases the bullets miss. If the skill says "do X", say what X prevents.
-- **Every skill is portable.** It runs unchanged on Claude Code *and* Codex. See [Portability](#portability).
-
 ## Write generative-first
 
 A skill's words compete for the model's attention, and their *register* sets the model's mode. Compliance vocabulary — gate, checklist, must, verify — pushes the model into satisficing: it optimizes *passing your checks* instead of doing the craft. Told "text must fit", a compliance-mode model enlarges the box (the fastest path to green) instead of cutting words.
 
 - **Open with role, taste, and stakes; keep procedure light.** Model the register on Anthropic's official skills (~50–150 body lines): a craft brief, not an SOP. The 500-line cap is a ceiling, not a target.
+- **Explain *why*, not just *what*.** The why lets the model extrapolate to edge cases the bullets miss — it is what makes judgement possible instead of pattern-matching. If the skill says "do X", say what X prevents.
 - **Growth by incident is a defect log, not a skill.** After a failure, prefer in order: (1) delete or simplify the rule that created the pressure, (2) add an eval assertion, (3) add a scripted check. A new prose paragraph is the last resort — per-incident prose is the fastest way to bury the generative core.
+- **Don't spend tokens on what the model already does.** A rule earns its place only if removing it makes the output worse. Before adding one — and periodically for the ones already there — delete it and re-run the evals; if nothing regresses, it was stating the obvious, and the context it consumed was pure cost. Rules written to hobble an older model become the thing hobbling the current one.
 - **Know each rule's enforcement tier** — script-gated, eval-asserted, or taste. If a taste rule keeps getting violated, promote it to an eval assertion or cut it. A rule nobody enforces is context cost with no return.
 - **State each rule once, at the strongest tier.** If a check already enforces something objectively, restating it as prose adds zero enforcement and teaches the model to read the passage as a checklist. Keep prose for what checks can't catch — factual tells, taste, judgment — and phrase it generatively: a derivation method that fires at decision time beats a passive list of things to avoid.
 - **Steer positive.** Naming a banned behaviour makes it more available, not less. State the target behaviour so the banned one is never spoken; keep a prohibition only where it genuinely can't be phrased positively, paired with what to do instead.
 - **Put a rule where every affected path passes through.** Craft written into a special-case section only fires on that case — usually only a clause or two is actually specific, and the rest belongs upstream with a pointer back. When two rules conflict, resolve it in writing where the general rule lives: name the purpose that licenses the exception and the source its content must come from, and cross-reference both ways.
+- **Design the interface before you teach by example.** Worked examples of a *procedure* fence the model into the exploration space they demonstrate; a well-shaped script signature, file layout, or reference structure does not. Spend the effort on the tool's parameters and expressiveness, then let the model derive the call. Only verbatim-output content is exempt — templates, term tables, phrasing tables are the output itself, not a demonstration of how to reach it (see [Language strategy](#language-strategy)). Example sentences that teach a judgement call are *not* exempt: convert them into a derivation rule or a reference the model consults on demand, or be able to say what each one buys that a rule can't.
 - **Borrow battle-tested content verbatim.** When a proven source covers domain-general ground your skill needs, check the license, then import near-verbatim with attribution (a `NOTICE` file in the skill dir; provenance in the skill's `design-notes.md`). Paraphrase regresses proven prose toward the mean. Adapt only where the domain genuinely diverges.
 - **Two external standards, one tie-break.** How to *write* a skill follows `writing-great-skills`; how to *evaluate* one follows the official `skill-creator`. Where they overlap, `writing-great-skills` wins.
 
 Smell test across versions: `grep -ciE '\bmust\b|\bnever\b|hard-fail|checklist|verify' skills/<name>/SKILL.md` — a rising count signals bloat, independent of line count.
+
+Sources: `writing-great-skills` · `skill-creator` · [The new rules of context engineering for Claude 5-generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models).
 
 ## Language strategy
 
@@ -154,6 +154,7 @@ Evals follow the official `skill-creator` standard: `skills/<name>/evals/evals.j
 
 - `tools/usage-report` quarterly. Zero hits in 90 days → archive candidate (`tools/archive-skill <name>`).
 - Fires too often on wrong prompts → tighten the description. Fires too rarely on right ones → make the description pushier or add trigger phrases.
+- **A model upgrade invalidates the baseline.** Evals compare a skill against its previous version *on the current model*; when the model generation changes, re-run the with/without comparison before trusting old results. A skill that beat vanilla two generations ago may now be net-negative — the base model absorbed what it was teaching.
 - Archive aggressively. The repo is supposed to feel small.
 
 ## Catalog upkeep
@@ -167,10 +168,10 @@ The repo has no per-skill hosted docs page; a skill's public face is its **catal
 Finishing check before finalizing a skill edit:
 
 ```
-grep -rnE 'GAN|round [0-9]|benchmark|補強|補充樣本|比對〈|對照[^，。]*〈|可般化|般化|來自對照|eval #|FP ?=|recall' skills/<name>/
+grep -rnE 'round [0-9]|eval #|FP ?=|recall|benchmark|precision' skills/<name>/
 ```
 
-Hits inside `SKILL.md` or `references/` are noise — move them to the dev docs above. Hits inside `design-notes.md`, `judged-cases.md`, or eval fixtures are fine; that is where provenance lives.
+The grep only catches the mechanical tells; read for the rest — any sentence explaining *how a rule was arrived at* rather than how to apply it is noise, whatever words it uses. Hits inside `SKILL.md` or `references/` are noise — move them to the dev docs above. Hits inside `design-notes.md`, `judged-cases.md`, or eval fixtures are fine; that is where provenance lives.
 
 ## Skill self-sufficiency and dependency direction
 
