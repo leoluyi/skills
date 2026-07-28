@@ -1,0 +1,50 @@
+name: Check generated catalog surfaces
+
+# Fails if README.md / README.zh-TW.md have drifted from what tools/build-docs
+# generates out of skills/*/catalog.md + docs/catalog.yml — a stale catalog table
+# or skill-count badge. docs/index.html and docs/skills.json are gitignored build
+# output and are rebuilt by pages.yml, so they are not part of this gate.
+
+on:
+  pull_request:
+    paths:
+      - "skills/**/catalog.md"
+      - "skills/**/SKILL.md"
+      - "docs/catalog.yml"
+      - "docs/index.template.html"
+      - "tools/build-docs"
+      - "README.md"
+      - "README.zh-TW.md"
+      - ".github/workflows/docs-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/**/catalog.md"
+      - "skills/**/SKILL.md"
+      - "docs/catalog.yml"
+      - "docs/index.template.html"
+      - "tools/build-docs"
+      - "README.md"
+      - "README.zh-TW.md"
+      - ".github/workflows/docs-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Verify catalog surfaces are current
+        run: |
+          uv run tools/build-docs --check || {
+            echo "::error::Catalog surfaces are stale. Run 'uv run tools/build-docs' and commit the updated README.md / README.zh-TW.md."
+            exit 1
+          }
