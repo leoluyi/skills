@@ -67,6 +67,8 @@ Reference material the zh rules were informed by (not rebased from — the rules
 
 - **speak-human-tw** — https://github.com/Raymondhou0917/speak-human-tw (`references/taiwan-localization.md`). Source for the 翻譯腔 additions in `zh-phrase-rules.md`: 長定語鏈 (「一個能…的 X」→ 短句) and 介詞框架堆疊 (基於／通過…來…). That doc's bulk is 陸用語 term substitution, which is `avoid-china-writing`'s axis, not this skill's — only the translate-ese layer was taken here.
 
+  **Separately (2026-07-28), a different kind of use**: `evals/evals.json` ids 15–54 adapt 40 of the 42 test cases from that repo's `evals/benchmark.md` (MIT) — verbatim source text (原文/問題點/預期方向), not a rewrite, with added fields (`bucket`／`面向`／`對應規則`／`tier`) for this repo's format. This is a different artifact from the rule-content rewrite above, so it gets its own NOTICE line rather than folding into the "our own rewrite" framing. SF-14/SF-15 (中國用語／半形標點) were excluded — out of this skill's axis, filed to `avoid-china-writing`'s backlog instead.
+
 ## Research notes (dev material, not runtime)
 
 `research/` holds faithful distillations of outside source material for authoring reference. **These are dev/authoring material, not runtime** — they carry provenance headers and source citations, and must not be surfaced into `SKILL.md` or `references/`. If a distillation later informs a shipped rule, promote a provenance-stripped extract into the rule body and add attribution here + in `NOTICE`/`README`.
@@ -82,3 +84,65 @@ The method lives in `evals/adversarial-eval-protocol.md`. Each row = one GAN-sty
 | 2026-07-17 | 5 篇：觀點（高見龍）、教學（保哥/miniasp）、newsletter（倉鼠）、docs（工程會使用手冊）、公文規格（工程會資安要求） | 3 篇自生 zh-TW voiceless 文（觀點／教學／分析，無 Tier-1 詞級病句） | voice-bearing 真人 FP=0/3；voice-neutral 若誤啟用 FP=2/2；AI recall=3/3 | (1) 判準應為 voice-bearing vs voice-neutral，非 blog vs 非 blog——真人觀點/教學/newsletter 穩定帶齊 stance/specifics/metaphor/口語破格；docs/公文本就均質須維持排除。(2) AI voiceless 文常無詞級病句，詞表會漏標，結構層才抓得到（層的價值驗證）。(3) 密集教學文（保哥）缺自創比喻卻為真人 →『只解釋不造像』不可單獨觸發。樣本小（n=3/3），round 2 應擴語料。 | gating 從 casual-only 擴為 voice-bearing 文體集；只解釋不造像加 technical-blog 成群才觸發 carve-out；eval #3 #4 |
 | 2026-07-28 | 合成保護桶 6 段（公文分階段導入、docs 啟動流程、會議紀錄、音訊 BPM、blog 工作節奏、technical-blog timeout 節奏）——非考據真人語料，屬針對新規則的合成 FP probe | 合成病灶桶 2 段（專案報告六成語連綴、newsletter 學習節奏＋四成語），皆為零可查核事實 | 首輪 FP 3/18（S1 循序漸進 1/3、S3 環環相扣 2/3）、recall 6/6；修正後 FP 0/18、recall 6/6（各 3 個獨立平行 agent） | 四字評語規則初版把判準寫成「刪掉這四個字少了什麼事實」，agent 逐詞判恆為「沒有」，於是成語旁已寫滿具體內容的公文／docs 也被誤殺。病灶是判準作用域錯置：成語本身永不帶事實，該問的是成語所形容之事有無寫在鄰句。 | 判準改為段落級（成語所形容之事是否在同段鄰句寫出）＋三條分支（寫出→不標／整段無可查核事實→標／三個以上連綴且無事實→必標）；carve-out 增列公文與技術文件總結語、存疑不標；eval #10 #11 #12 |
 | 2026-07-20 | n/a（此輪測 rewrite 機制而非 detect gating，非真人桶對照） | 1 組合成 prompt：docs 語境三句連續教練口吻段（含實質內容）＋一段扣除語氣後無實質內容 | rewrite-mode baseline vs new，非 FP/recall 指標 | span-local baseline 在無實質內容段落捏造了原文沒有的主張（「斷言若講不出道理，就稱不上是驗證」）以避免留空；new 版正確輸出挖空標記句、不代筆。含實質內容段落兩版皆寫出連貫第三人稱改寫，此樣本未能區分 no-residual-seam 這一半（模型即使無顯性機制也可能自然寫得連貫，需更長／更多句的段落才能穩定逼出接縫）。 | 新增 `### Scope ladder` 語言無關段落＋兩條硬規則（reframe-not-delete、flag-hollow-don't-ghostwrite）；eval #6 |
+| 2026-07-28（語料階段） | H 桶 20 篇（保哥/高見龍/Julia Evans/Simon Willison/知識倉鼠/90s.pm.investing/AI避坑情報員/工程會/IETF RFC，見 `evals/corpus.md`） | A 桶 12 篇（8 篇對齊 H 例主題、4 篇 voiceless 探針，見 `evals/corpus.md`） | 未跑分——本輪只建語料與 baseline，不改規則；跑分留給 refactor branch 的 step 3/4 | 建語料本身即發現兩個規則缺口（見下方「speak-human-tw 分析」）：罐頭式反應鏡頭、幻覺引用查證。另修正 evals.json id 1/2/4 的答案外洩（見下）。 | 無 patch，本輪不動 SKILL.md |
+
+## Trigger-query 診斷更正（2026-07-19 resweep 的 id 3／id 10）
+
+`backlog.md` 記錄的「id 3 (en/rewrite)、id 10 (structure-signals) 兩個未分診的 fail」
+**指的是 `evals/trigger-queries.json` 的 query id**（router 觸發判斷），不是 `evals.json`
+的內容品質 case——兩份檔案剛好都有 id 3 與 id 10，容易混淆，這裡記清楚：
+
+- **trigger-queries.json id 3**："Clean up the AI-isms in this blog intro — too many 'delve'..."（positive/en/rewrite）
+- **trigger-queries.json id 10**："這篇部落格草稿沒什麼明顯的 AI 空話...幫我用 --structure-signals 看..."（positive/zh-tw/structure-signals）
+
+**診斷，後來用修好的工具確認（見下）**：用與 `tools/run-eval` 完全相同的 router
+prompt 形狀（只給 description，一個字判斷 TRIGGER/NONE），對這兩條各跑一次獨立
+子agent判斷——**兩條都判 TRIGGER**，即現在的 description（v1.5.0）已經正確涵蓋兩者。
+
+對照 `SKILL.md` 的 git log：id 10 對應的「detect-only structure-signals audit...
+uniform rhythm, no stance, no concrete examples,「正確但沒有靈魂」」這段文字，是
+commit `e45db5b4`（2026-07-19 07:59）加入的——與 backlog 記錄的 07-19 resweep同一天，
+先後順序無法從 commit message 確認。
+
+**已用修好的 `tools/run-eval` 實測確認（2026-07-28）**：`tools/run-eval` 的
+nested-session bug 修好後（見 Issues 條目——根因其實是 `ANTHROPIC_API_KEY` 額度
+用盡時 CLI 優先選用該付費路徑而非 claude.ai 登入，不是真正的巢狀 session 衝突），
+對 `avoid-ai-writing-zh` 的完整 `trigger-queries.json` 跑一次：**10/10 全過**，
+包含 id 3（en/rewrite）與 id 10（structure-signals）皆為 PASS。backlog 記錄的
+兩個 fail 確認已被 2026-07-19 的 description 修訂帶掉，不是本輪新修的——只是
+之前沒有能用的工具去確認。
+
+**殘留風險（診斷順帶發現，不是本輪要修的東西）**：id 3 的 query 含「blog intro」
+一詞，與 description 結尾排除句「composing a blog or rewriting a draft into a
+human voice is blog-writing-zh's job, not this skill's」的「blog」字面相鄰，
+診斷子agent指出這是一個「不夠嚴謹的 router 可能被字面誤導去分流到 blog-writing-zh」
+的潛在陷阱——雖然這次判斷正確，值得在 step 3 動 description 時留意，不必現在處理。
+
+## Step 3 inputs（speak-human-tw 分析產出，本輪只記錄不動規則）
+
+移植 speak-human-tw 的 40 案（`evals/evals.json` id 15 之後；id 13/14 是本輪原創的
+voice-neutral 案例，不是移植）時發現四項對 step 3
+（重寫規則）有直接參考價值的東西：
+
+1. **SNF 案的判別問題形狀，是「規則 → 判斷」在這個題材上的具體長相。** speak-human-tw
+   不寫「別改」，寫判別問題：SNF-11「這個詞是使用還是提及？」、SNF-04「排比有沒有
+   內容撐著？」、SNF-13「有沒有給選擇條件？」、SNF-15「停頓有沒有不可替代的敘事
+   功能？」。這比本 skill現有規則常見的「判準：...」加一段散文解釋更緊湊。
+   **step 3 重寫規則時，優先嘗試把「判準」段落壓成一句可以直接拿去問 agent 的判別
+   問題，而不是保留現在的散文說明體。**
+2. **保護清單是很強的 leading word 候選。** speak-human-tw 把價格、折扣碼、期限、
+   真名、引號原話、承諾條款收成一個具名概念、每案獨立標記「不能動的理由」。本 skill
+   現在只有分散在各條規則裡的 carve-out，加上 `engineering-guidelines.md` 一條
+   fidelity 檢查，沒有一個統一的名字。**step 3 若要收斂這塊，「保護清單」本身就是
+   現成的詞，不必重新發明。**
+3. **兩個確認的規則缺口，皆已在 `evals.json` 標「（缺口）」等待 step 3 補：**
+   - **罐頭式反應鏡頭**（speak-human-tw SF-27／SNF-15，「我愣了一下」「在電腦前
+     停了一下」）——本 skill 完全沒有這條規則，且 corpus.md 的 coverage matrix 上
+     「人工戲劇」面向的 SF 欄目前是空的，兩處相互印證同一個洞。
+   - **幻覺引用查證**（SF-19，查無此研究的精確數據＋張冠李戴的名人語錄）——本 skill
+     現有的 Vague attributions 只抓「業界專家」這種無來源鋪墊，不抓「捏造一個看起來
+     有來源的假引用」，是不同層級的問題。
+4. **獨立收斂的佐證，不是巧合。** SF-25 立場真空的預期方向寫「輸出『（需作者補充：
+   …）』佔位標註，不代編理由」——與本 skill 既有的 `flag-hollow-don't-ghostwrite`
+   （見 `### Scope ladder`）是兩邊各自長出來、原則完全相同的規則。**這是重寫時可以
+   直接引用的外部驗證：不必只靠本 skill 自己的迭代史來確認這條規則站得住。**

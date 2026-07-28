@@ -4,7 +4,7 @@
 # dependencies = ["pyyaml"]
 # ///
 """Generate docs/index.html, docs/skills.json, and the README catalog
-tables from skills/<slug>/catalog.md + docs/catalog.yml.
+tables and skill-count badges from skills/<slug>/catalog.md + docs/catalog.yml.
 
 skills/<slug>/catalog.md (front matter only) is the single source of truth
 for a skill's public-facing 說明. Nothing else should be hand-edited for a
@@ -12,8 +12,8 @@ routine catalog update — see .agents/writing-docs.md.
 
 Usage:
   uv run tools/build-docs           # write docs/index.html, docs/skills.json,
-                                     # and the catalog sections of both READMEs
-  uv run tools/build-docs --check   # write nothing; exit 1 if outputs would change
+                                     # and the catalog sections + badges of both READMEs
+  uv run tools/build-docs --check   # write nothing; exit 1 if any of those would change
 """
 from __future__ import annotations
 
@@ -37,6 +37,7 @@ MARKER_RE = {
     "en": re.compile(r"(<!-- CATALOG:START -->\n).*?(\n<!-- CATALOG:END -->)", re.S),
     "zh": re.compile(r"(<!-- CATALOG:START -->\n).*?(\n<!-- CATALOG:END -->)", re.S),
 }
+BADGE_RE = re.compile(r"(badge/skills-)\d+(-)")
 
 
 def split_frontmatter(text: str) -> dict:
@@ -296,13 +297,16 @@ def build_readme_section(lang: str, categories: list[dict], skills: list[dict]) 
     return "\n".join(blocks)
 
 
-def write_readme(path: Path, lang: str, categories: list[dict], skills: list[dict]) -> None:
-    text = path.read_text(encoding="utf-8")
+def render_readme(text: str, label: str, lang: str, categories: list[dict], skills: list[dict]) -> str:
+    """Return `text` with the catalog section and the skill-count badge refreshed."""
     section = build_readme_section(lang, categories, skills)
-    new_text, n = MARKER_RE[lang].subn(lambda m: m.group(1) + section + m.group(2), text, count=1)
+    text, n = MARKER_RE[lang].subn(lambda m: m.group(1) + section + m.group(2), text, count=1)
     if n != 1:
-        raise ValueError(f"{path}: CATALOG markers not found")
-    path.write_text(new_text, encoding="utf-8")
+        raise ValueError(f"{label}: CATALOG markers not found")
+    text, n = BADGE_RE.subn(lambda m: f"{m.group(1)}{len(skills)}{m.group(2)}", text, count=1)
+    if n != 1:
+        raise ValueError(f"{label}: skill-count badge (badge/skills-N-) not found")
+    return text
 
 
 def main() -> None:
@@ -312,23 +316,32 @@ def main() -> None:
     skills_json = build_skills_json(site, categories, skills)
     index_html = build_index_html(categories, skills)
 
-    targets = {
+    # Committed surfaces: --check always verifies these, since a stale one is a
+    # real defect that would ship.
+    tracked = {}
+    for path, lang in ((REPO / "README.md", "en"), (REPO / "README.zh-TW.md", "zh")):
+        tracked[path] = render_readme(
+            path.read_text(encoding="utf-8"), path.name, lang, categories, skills
+        )
+
+    # Gitignored build output: absent on a fresh checkout and rebuilt by the Pages
+    # workflow, so --check only compares them when they already exist locally.
+    artifacts = {
         DOCS_DIR / "skills.json": skills_json,
         DOCS_DIR / "index.html": index_html,
     }
 
     if check_only:
-        changed = [p for p, content in targets.items() if not p.exists() or p.read_text(encoding="utf-8") != content]
-        if changed:
-            print("out of date:", *[str(p) for p in changed], file=sys.stderr)
+        stale = [p for p, content in tracked.items() if p.read_text(encoding="utf-8") != content]
+        stale += [p for p, content in artifacts.items()
+                  if p.exists() and p.read_text(encoding="utf-8") != content]
+        if stale:
+            print("out of date:", *[str(p) for p in stale], file=sys.stderr)
             sys.exit(1)
         return
 
-    for path, content in targets.items():
+    for path, content in {**artifacts, **tracked}.items():
         path.write_text(content, encoding="utf-8")
-
-    write_readme(REPO / "README.md", "en", categories, skills)
-    write_readme(REPO / "README.zh-TW.md", "zh", categories, skills)
 
     print(f"generated {len(skills)} skills across {len(categories)} categories")
 

@@ -3,7 +3,7 @@
 This repo has no per-skill hosted docs page. The equivalent surface is a **catalog entry** — one Markdown source file that `tools/build-docs` renders into every surface that shows it:
 
 - **`skills/<slug>/catalog.md`** — the single source of truth. YAML front matter holding the skill's bilingual title, tagline, when-to-use / when-not, and highlights.
-- **`README.md`** / **`README.zh-TW.md`** — the `## Skill catalog` / `## 技能目錄` sections, generated between `<!-- CATALOG:START -->` / `<!-- CATALOG:END -->` markers.
+- **`README.md`** / **`README.zh-TW.md`** — the `## Skill catalog` / `## 技能目錄` sections, generated between `<!-- CATALOG:START -->` / `<!-- CATALOG:END -->` markers, plus the shields skill-count badge (`badge/skills-N-`) at the top of each file. Neither is hand-edited; the generator hard-fails if the markers or the badge go missing.
 - **`docs/index.html`** — the interactive catalog at `https://leoluyi.tw/skills/`. Generated; not committed (gitignored, built by CI).
 - **`docs/skills.json`** — the machine-readable twin (used by `npx skills` and any tool reading the catalog programmatically). Generated; not committed.
 
@@ -15,7 +15,9 @@ Act whenever a skill is added, renamed, recategorized, or has its trigger/descri
 uv run tools/build-docs
 ```
 
-This regenerates `docs/index.html`, `docs/skills.json`, and both README catalog sections in one pass. Commit the `catalog.md` change and the regenerated READMEs; `docs/index.html` / `docs/skills.json` are rebuilt by the GitHub Pages workflow (`.github/workflows/pages.yml`) on every push to `main`, so don't hand-edit or commit them.
+This regenerates `docs/index.html`, `docs/skills.json`, and both READMEs' catalog sections and skill-count badges in one pass. Commit the `catalog.md` change and the regenerated READMEs; `docs/index.html` / `docs/skills.json` are rebuilt by the GitHub Pages workflow (`.github/workflows/pages.yml`) on every push to `main`, so don't hand-edit or commit them.
+
+Forgetting the rebuild is caught in CI: `.github/workflows/docs-check.yml` runs `uv run tools/build-docs --check` on every PR and every push to `main` that touches a catalog input, and fails if either README has drifted. The two `docs/` artifacts are gitignored, so `--check` compares them only when they already exist locally — on a fresh checkout it verifies the READMEs alone.
 
 ## `skills/<slug>/catalog.md`
 
@@ -55,6 +57,7 @@ Add a category here before pointing any skill's `category` field at it — the g
 ## Done when
 
 - `uv run tools/build-docs` exits 0 with no validation errors, and its "generated N skills across M categories" line matches the actual count.
-- `git diff` shows the expected `catalog.md` change plus the regenerated `README.md` / `README.zh-TW.md` catalog sections — nothing else.
+- `uv run tools/build-docs --check` exits 0 — this is the gate CI runs, so a stale catalog table or badge fails the PR.
+- `git diff` shows the expected `catalog.md` change plus the regenerated `README.md` / `README.zh-TW.md` catalog sections and badge counts — nothing else.
 - The `invoke-only` badge/table-suffix appears if and only if the skill's `SKILL.md` sets `disable-model-invocation: true`.
 - Every link (`skills/<slug>/SKILL.md` in READMEs, the full GitHub URL in `skillUrl`) resolves.
