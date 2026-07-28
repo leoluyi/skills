@@ -103,12 +103,47 @@ EOF
 
 # Runs the router prompt as an isolated one-shot subagent call — no tool
 # access, no file/network side effects, just a text judgment.
+#
+# Nested-session note: when this script runs from inside an already-running
+# Claude Code session, the nested `claude -p` subprocess used to fail with
+# "no parseable decision" and no visible cause. Root cause (confirmed
+# 2026-07-28): if ANTHROPIC_API_KEY is set in the environment, the `claude`
+# CLI prefers that metered billing-API path over the claude.ai CLI login —
+# and in a dev/CI shell where that key is present but uncredited, every call
+# silently fails. This tool only ever wants the free CLI-login router path
+# (never a billed API call, and never Anthropic's HTTP API directly — see
+# the cross-AI-company note above), so it explicitly drops the key for its
+# own subprocess only; it does not touch the parent shell's environment.
 invoke_router() {
-  local query="$1" prompt
+  local query="$1" prompt raw
   prompt=$(router_prompt "$query")
   case "$AGENT" in
     claude)
-      claude -p "$prompt" --tools="" </dev/null 2>/dev/null || true
+      # stderr goes to its own file, never into $raw: merging it in (an
+      # earlier version of this fix did `2>&1`) let a CLI error's stderr
+      # text satisfy the same TRIGGER/NONE grep used to parse the real
+      # answer — a stub CLI that errors while echoing the prompt back
+      # (which contains the literal word "Trigger" from several skills'
+      # own descriptions) produced a silently fabricated PASS. Keep stdout
+      # and stderr on separate channels so a failure can only ever surface
+      # as the "no parseable decision" diagnostic below, never as a verdict.
+      local err_file
+      err_file=$(mktemp)
+      raw=$(env -u ANTHROPIC_API_KEY claude -p "$prompt" --tools="" </dev/null 2>"$err_file") || true
+      if [[ -z "$raw" ]] || ! grep -qiwE 'TRIGGER|NONE' <<<"$raw"; then
+        {
+          echo "run-eval: claude -p produced no parseable TRIGGER/NONE decision."
+          # Strip control bytes (raw ANSI/OSC sequences from a child CLI
+          # shouldn't reach the caller's terminal) and redact anything
+          # shaped like an API key before this ever prints to stderr.
+          printf '  stderr: %.200s\n' \
+            "$(LC_ALL=C tr -d '\000-\010\013\014\016-\037' <"$err_file" \
+               | sed -E 's/sk-[A-Za-z0-9_-]+/<redacted>/g')"
+          echo "  check: are you logged into claude.ai via the CLI ('claude /login')?"
+        } >&2
+      fi
+      rm -f "$err_file"
+      printf '%s' "$raw"
       ;;
     codex)
       local tmp
@@ -132,7 +167,9 @@ while IFS= read -r entry; do
   expected=$(jq -r '.expected_trigger // .should_trigger' <<<"$entry")
 
   raw=$(invoke_router "$query")
-  choice=$(grep -ioE 'TRIGGER|NONE' <<<"$raw" | head -1 | tr '[:upper:]' '[:lower:]' || true)
+  # Word-boundary match: a plain 'TRIGGER|NONE' substring match would also
+  # hit "triggered" or "NoneType" inside an unrelated CLI message.
+  choice=$(grep -ioE '\<TRIGGER\>|\<NONE\>' <<<"$raw" | head -1 | tr '[:upper:]' '[:lower:]' || true)
 
   if [[ -z "$choice" ]]; then
     printf "[%s] ERROR (%s) — no parseable decision from %s\n" "$id" "$category" "$AGENT" >&2
