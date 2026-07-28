@@ -1,6 +1,6 @@
 # 繁體中文 AI 用詞對照表（zh-TW / 台灣用語）
 
-The six enumerable word/phrase → replacement lookup tables for the Traditional Chinese section of `avoid-ai-writing-zh`. Load this file when auditing CJK text and you need a concrete「這個詞→換成這個」lookup — empty slogans, the 確保 filler family, significance-inflation words, AI sentence templates, individual-term substitutions, and Taiwan term preferences.
+The seven enumerable word/phrase → replacement lookup tables for the Traditional Chinese section of `avoid-ai-writing-zh`. Load this file when auditing CJK text and you need a concrete「這個詞→換成這個」lookup — empty slogans, the 確保 filler family, significance-inflation words, AI sentence templates, individual-term substitutions, 四字評語, and Taiwan term preferences.
 
 Everything else in the zh layer stays inline in `SKILL.md` under 「Traditional Chinese AI-isms」: the behavioral rules that need judgment rather than lookup (空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 口號式短句, 翻譯腔, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, and the contrarian / copula / adjective-stacking micro-rules), the abstract→concrete rewrite table, and the do-not-flag Allowed-patterns carve-outs. Apply both together.
 
@@ -52,9 +52,35 @@ AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中�
 
 | Flag | 為何不精準 | Fix | Carve-out（保留原詞） |
 |---|---|---|---|
-| 節奏（用於時程／進度語境，如「專案節奏」「開發節奏」） | 把英文 rhythm／cadence 的譬喻套到時程上；中文應直接指明時間規劃 | 期程（時間規劃）／排程（具體時間表，依語境擇一） | 真正描述音樂、運動、敘事的「節奏感」時保留 |
+| 節奏（套在時程、工作、學習、對話、產品等抽象事物上，如「專案節奏」「開發節奏」「工作節奏」「學習節奏」「對話節奏」「掌握節奏」「節奏感」） | 把英文 rhythm／cadence 的譬喻鋪到不具韻律的事物上，聽起來有畫面卻沒指出任何具體安排 | 依語境指明實際所指：期程（時間規劃）／排程（具體時間表）／頻率（多久一次）／步調（快慢）／輪次（迭代週期） | 真正描述音樂、舞蹈、運動、敘事韻律的「節奏」保留 |
 | 編排（用於 orchestration，如「服務編排」「流程編排」） | orchestration 直譯為「編排」偏向版面／內容編排語意，與調度資源、協調流程的原意不符 | 調度 | 描述版面、內容、表演、課程「編排」時保留 |
 | 跳（用於 network hop，如「多一跳」「少一跳」「每跳延遲」） | network hop 的直譯；圈外讀者不知道「跳」的是什麼，句中也沒有動作與對象 | 寫明動作與對象：「請求多經過一個轉發節點（network hop）」「每經過一個節點就增加一段轉發延遲」 | 明確面向網路工程讀者、且文中已定義 hop 一詞時，可用「hop」原文 |
+
+## 四字評語（成語式讚詞）
+
+AI 描述進度、執行、文本品質時，慣以四字成語或四字排比作結，讀來鏗鏘卻不含任何可查核的事實——這是「節奏」譬喻的成語形態，也是 Excessive adjective stacking 的四字版。
+
+**判準的作用域是段落，不是那四個字。** 單看成語本身永遠不帶事實，據此逐詞判會把真人正常書寫誤殺。要問的是：**這一段裡，成語所形容的事，有沒有在鄰近句子被寫出來？**
+
+- 寫出來了 → 成語只是主題句或連接語，**不標**。「先完成單一單位試辦，確認流程可行後再循序漸進擴及其餘六個單位」——階段安排就在句中。
+- 沒寫出來，整段找不到日期、數量、負責單位、步驟或機制 → 成語頂替了本該說明的內容，**標記**。
+- 一段內三個以上四字評語連綴、且無任一可查核事實者，必標。
+
+| Flag | 這句實際說了什麼 | Fix（改寫方向） |
+|---|---|---|
+| 節奏明快 | 只說了「快」，沒說快在哪 | 指明實際數字：每兩週一個 release、需求到上線平均 5 個工作天 |
+| 張弛有度 | 對安排的自我讚許，零資訊 | 寫出安排本身：前四週密集開發，第五週只做整合測試與修補 |
+| 一氣呵成 | 對過程順暢度的評價，無從查核 | 寫出實際過程：三個模組在同一次迭代內完成並一次整合上線，中途未回頭改規格 |
+| 三線並行 | 沒說是哪三線、怎麼並行、誰負責 | 列出各線與負責單位：後端 API、前端介面、資料遷移三項同期進行，各由 X／Y／Z 負責 |
+| 環環相扣／層層遞進／循序漸進 | 對結構的形容，不指出結構 | 寫出實際依賴：B 需要 A 的輸出才能開工，C 待 B 驗收後啟動 |
+| 有條不紊／井然有序／穩紮穩打 | 對品質的自我評分 | 刪除；若要留，改為可查核的事實（每階段皆有驗收紀錄） |
+| 相輔相成／事半功倍 | 宣稱綜效卻不量化 | 寫出綜效來源與幅度：兩者共用同一份設定檔，設定維護點從兩處減為一處 |
+
+**Carve-out：**
+
+- 成語所形容的安排、依賴或結果已寫在同段鄰句者保留（見上方段落級判準）——公文的「循序漸進推動」、技術文件的「三者環環相扣」在依序列出步驟之後，是正當的總結語。
+- 引文、標語、簡報標題頁、文學敘事體裁保留。
+- 存疑時不標。本 skill 寧可漏標也不誤傷真人（signals, not proof）。
 
 ## 負面案例對照（承 SKILL.md 判準）
 

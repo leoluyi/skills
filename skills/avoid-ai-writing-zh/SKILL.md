@@ -2,7 +2,7 @@
 name: avoid-ai-writing-zh
 description: >-
   Audit and rewrite content to remove AI writing patterns ("AI-isms"). Extends the English-only avoid-ai-writing with an added Traditional-Chinese (Taiwan business usage) layer, so it handles English, Traditional Chinese, and mixed zh/en text. Use when asked to "remove AI-isms," "clean up AI writing," 「去除 AI 味」or「把中文改成人話」, or as a de-AI finishing pass before shipping English/mixed software-development docs — README, CONTRIBUTING, ADR, API docs, code comments. Also runs a detect-only structure-signals audit for a draft that carries no obvious AI-isms yet still reads as AI-written — uniform rhythm, no stance, no concrete examples, 「正確但沒有靈魂」— naming what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
-version: 1.4.0
+version: 1.5.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -407,7 +407,7 @@ Apply this section whenever the text contains CJK. These are the Chinese analogu
 
 **A caution before flagging.** Several of these patterns also appear in legitimate formal Taiwanese business writing — 公文, 簽呈, 法遵文件 — and in second-language writers. They are signals, not proof (the same "signals, not proof" rule from [What this skill is and isn't](#what-this-skill-is-and-isnt) applies). Flag the *empty* instances; keep the ones doing real work. The do-not-flag carve-outs (the Allowed patterns table at the end of this section) exist to stop over-flagging.
 
-**詞→替換查表另置。** The six enumerable word/phrase substitution lookup tables — 空話／口號, the 確保 filler family, 至關重要 significance words, AI 句式 templates, 慣用詞替換, and Taiwan term preferences — live in **[references/zh-phrase-rules.md](references/zh-phrase-rules.md)**. Load that file whenever you need a concrete「詞→替換」lookup while auditing CJK. Everything else — the behavioral rules, the abstract→concrete rewrite table, and the Allowed-patterns carve-outs — stays inline here.
+**詞→替換查表另置。** The seven enumerable word/phrase substitution lookup tables — 空話／口號, the 確保 filler family, 至關重要 significance words, AI 句式 templates, 慣用詞替換, 四字評語（成語式讚詞）, and Taiwan term preferences — live in **[references/zh-phrase-rules.md](references/zh-phrase-rules.md)**. Load that file whenever you need a concrete「詞→替換」lookup while auditing CJK. Everything else — the behavioral rules, the abstract→concrete rewrite table, and the Allowed-patterns carve-outs — stays inline here.
 
 ### 對應英文分類
 
@@ -808,6 +808,7 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
 - Transition phrases (Moreover, Furthermore, Additionally)
 - Hashtag stuffing (`blog`/`technical-blog` profiles)
 - Tier 3 phrase repetition (single phrase ≥2× — fine in isolation, suspect in stacks)
+- zh-TW 四字評語（成語式讚詞頂替具體內容，如 節奏明快／張弛有度／一氣呵成／三線並行）與「節奏」譬喻泛用（工作節奏／學習節奏／掌握節奏）
 
 Use P0+P1 for quick passes. Full audit covers all three tiers.
 
