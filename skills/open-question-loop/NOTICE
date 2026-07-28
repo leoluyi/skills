@@ -1,0 +1,29 @@
+This skill's discussion loop and red-team pass are structured on prior work by
+others. No prose was copied; what is borrowed is method. Short functional field
+labels ("fails if", "kill criterion") are reused as terms of art.
+
+- The widening move (one question at a time, multiple-choice where the options
+  are discrete, several approaches with trade-offs before converging) follows
+  the "brainstorming" skill from obra/superpowers,
+  https://github.com/obra/superpowers
+  MIT License, Copyright (c) 2025 Jesse Vincent.
+
+- The assumption-attack structure (fails-if / cheapest evidence / kill criterion,
+  ranked by damage against cost to check) and the "neither manufacture doubt nor
+  rubber-stamp" discipline follow the "strategy-red-team" skill from
+  phuryn/pm-skills, https://github.com/phuryn/pm-skills
+  MIT License, Copyright (c) 2026 Pawel Huryn.
+
+  Both license texts were read from the upstream repositories on 2026-07-28.
+  Because no substantial portion of either work is reproduced here, the MIT
+  attribution condition is not triggered; the credit above is given anyway.
+
+- The context-gathering entry and the fresh-context verification step are adapted
+  from the "doc-coauthoring" example skill published by Anthropic. The copy this
+  was read from shipped without a license file, unlike its sibling example
+  skills (Apache-2.0), so its terms are unconfirmed. Only the method is used —
+  ask before drafting, then test the artifact against a reader with no context.
+  If you intend to redistribute this skill, confirm that skill's terms first.
+
+Everything else is original work by Lu Yi, MIT-licensed (see the repository-root
+LICENSE).

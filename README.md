@@ -73,7 +73,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-11 skills across 4 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+12 skills across 4 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
@@ -107,6 +107,7 @@ Language-agnostic professional tools that stand on their own — no Chinese requ
 |---|---|
 | **Learn Loop**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault |
 | **Obsidian Vault Notes**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks |
+| **Open Question Loop**<br>[`open-question-loop`](skills/open-question-loop/SKILL.md) | Think through a question neither of you can answer yet — widen the options, label what's found vs guessed, attack the load-bearing assumptions, and leave a record that says what would overturn it |
 <!-- CATALOG:END -->
 
 ---

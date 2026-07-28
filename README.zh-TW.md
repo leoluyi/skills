@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-11 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+12 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -102,6 +102,7 @@ tools/sync-skills
 |---|---|
 | **結構化學習迴圈**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian |
 | **Obsidian 筆記庫**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | 在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構 |
+| **未定問題討論迴圈**<br>[`open-question-loop`](skills/open-question-loop/SKILL.md) | 陪你想一個雙方都還沒有答案的問題：先展開選項，標出哪句是查到的、哪句是猜的，再拆掉承重假設，留下一份寫明「什麼會推翻它」的紀錄 |
 <!-- CATALOG:END -->
 
 ---

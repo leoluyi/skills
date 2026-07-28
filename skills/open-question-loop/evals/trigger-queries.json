@@ -1,0 +1,108 @@
+{
+  "skill_name": "open-question-loop",
+  "queries": [
+    {
+      "id": 1,
+      "query": "陪我想一下,我們到底該不該自己做這個模組?我沒有答案,你應該也沒有。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/explicit-both-unsure"
+    },
+    {
+      "id": 2,
+      "query": "這個決定我還沒想清楚,幫我釐清一下要往哪個方向走。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/unsettled-decision"
+    },
+    {
+      "id": 3,
+      "query": "幫我挑戰這個想法,我想知道它哪裡站不住。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/challenge-request"
+    },
+    {
+      "id": 4,
+      "query": "壓力測試一下這個方向:我們打算把付費牆往前移到第三篇文章。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/stress-test"
+    },
+    {
+      "id": 5,
+      "query": "red team 我這份計畫,把承重假設拆出來看。",
+      "should_trigger": true,
+      "category": "positive/mixed/red-team"
+    },
+    {
+      "id": 6,
+      "query": "Think this through with me — I genuinely don't know if we should rewrite this service or keep patching it.",
+      "should_trigger": true,
+      "category": "positive/en/explicit-both-unsure"
+    },
+    {
+      "id": 7,
+      "query": "Poke holes in this: I think the churn spike is caused by the onboarding change we shipped in March.",
+      "should_trigger": true,
+      "category": "positive/en/poke-holes"
+    },
+    {
+      "id": 8,
+      "query": "What are we actually assuming here? We've been agreeing for an hour and it's making me nervous.",
+      "should_trigger": true,
+      "category": "positive/en/converging-too-fast"
+    },
+    {
+      "id": 9,
+      "query": "我們剛剛討論出來的方向,你幫我看一下有沒有什麼會推翻它的東西。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/falsifier-request"
+    },
+    {
+      "id": 10,
+      "query": "我已經決定用 Postgres 了,取捨我都想清楚了,幫我寫成一份給團隊的決策文件。",
+      "should_trigger": false,
+      "category": "negative/zh-tw/answer-already-settled",
+      "note": "Question is closed; this is a writing job. knowledge-doc-writing or formal-doc-structure owns it. Nearest lookalike to eval case 4 — over-triggering here is the most likely way this skill becomes annoying."
+    },
+    {
+      "id": 11,
+      "query": "幫我把這段對話整理成技術筆記,之後要放 wiki。",
+      "should_trigger": false,
+      "category": "negative/zh-tw/doc-writing",
+      "note": "Distillation and doc production, not open inquiry. knowledge-doc-writing owns it."
+    },
+    {
+      "id": 12,
+      "query": "我想搞懂 CRDT 是怎麼運作的,幫我從頭講一遍。",
+      "should_trigger": false,
+      "category": "negative/zh-tw/settled-concept",
+      "note": "The answer exists and the model has it. This is teaching, not joint inquiry — teach it directly or use learn-loop."
+    },
+    {
+      "id": 13,
+      "query": "Kubernetes 的 Gateway API 現在的穩定版本是哪一版?",
+      "should_trigger": false,
+      "category": "negative/zh-tw/factual-lookup",
+      "note": "Look it up. A four-move inquiry loop over a fact is pure overhead."
+    },
+    {
+      "id": 14,
+      "query": "這個 test 一直在 CI 上壞掉,本機跑又會過,幫我找原因。",
+      "should_trigger": false,
+      "category": "negative/zh-tw/debugging",
+      "note": "Unknown cause, but a knowable one with a systematic method. Debugging, not an open question."
+    },
+    {
+      "id": 15,
+      "query": "幫我看這段給高層的白話寫得夠不夠白。",
+      "should_trigger": false,
+      "category": "negative/zh-tw/plain-language-review",
+      "note": "Audience translation. plain-speak owns it — no open question involved."
+    },
+    {
+      "id": 16,
+      "query": "I'm not sure this function handles the empty-array case correctly, can you check?",
+      "should_trigger": false,
+      "category": "negative/en/uncertainty-but-checkable",
+      "note": "Contains 'I'm not sure' but the answer is determinable by reading the code. Uncertainty alone is not the trigger — unknowability to both sides is."
+    }
+  ]
+}
