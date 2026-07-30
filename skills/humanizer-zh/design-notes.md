@@ -77,7 +77,7 @@ Three files, none replacing another:
 | `evals/evals.json` | given a prompt, does the skill behave as expected |
 | `evals/judged-cases.md` | why a given rule is shaped the way it is |
 
-`tools/check-labels` validates both instruments against the rule names the skill actually declares (derived from `zh-rules.md` headings and `hidden-author.md`, so there is no separate manifest to drift), plus the corpus 解析契約 — every 引文片段 must be an exact substring of its clean quote, `全文` excepted.
+`tools/check-labels` validates both instruments against the rule names the skill actually declares (derived from `zh-rules.md` headings and `hidden-author.md`, so there is no separate manifest to drift), plus the corpus 解析契約 — every 引文片段 must be an exact substring of its clean quote, `全文` excepted. Since 2026-07-30 the extraction is declared in `evals/label-check.json` rather than hardcoded in the tool, which is also what makes the gate opt-in for other skills; that file names the *files and regexes*, never the rule names, so the no-drift property is unchanged.
 
 ## Adversarial iteration log (rule-tuning rounds)
 
