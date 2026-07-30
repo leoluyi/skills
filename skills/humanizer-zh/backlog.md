@@ -30,37 +30,50 @@ Closed items do not stay here — see `design-notes.md`, `evals/results-*.md`, a
   不代筆補寫」), **id 7** 保護 (double-flags 「範圍是開放的，不是固定的」, the exact false
   positive the case protects against), **id 5** 命中 (no person-shift fix offered), **id 36**
   命中 (argues the table form is fine rather than collapsing two rows to prose), **id 38** 命中
-  (promotes a 「今天，我想跟大家分享」 preamble into the protection list — but see the ported-case
-  item below, which says id 38's key is itself wrong).
+  (that run's runner promoted a 「今天，我想跟大家分享」 preamble into the protection list against
+  the *old* key, which called that a miss — but the key was itself wrong, per the ported-case
+  item below; the runner's call was closer to right, and against the fixed key this is no longer
+  expected to be a red).
 
 ## The instrument is not a clean bar either
 
 Both of these change the key, so both force a re-baseline of **both** versions. Sequence them
 against the run above rather than interleaving.
 
-- [ ] **The 40 ported speak-human-tw cases (ids 15–54) encode another project's taste, and at
-  least three contradict this repo's.** Adjudicated 2026-07-30 by the author with yes/no
-  questions on the raw sentences: **id 21** (粗體標籤＋條列形式 — 「條列形式本身沒問題」, so the
-  case's 「能一段散文講完就用散文」 direction is too strong), **id 28** (單一次解說導引腔 —
-  「偶一為之不算」, vindicating the density carve-out the case contradicts), **id 38**
-  (「今天，我想跟大家分享我使用 AI 改稿的三個心得。」 — 「這是正常開場」, so it should not be cut
-  alongside the 時代大帽子 first sentence). In all three the skill was right and the case was
-  wrong. Consequence: **1.5.0's 87/88 is partly earned by flagging text the author considers
-  fine.** A fourth case, **id 17**, was adjudicated in the same session without landing in
-  that group — per PR #20 the skill was right in three of four, so id 17 is the one that went
-  the other way; recover the actual verdict before relying on it either way.
+- [ ] **The remaining ~36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) are
+  still unadjudicated and may hold more taste mismatches with this repo's judgment.** Four cases from
+  the same batch were adjudicated 2026-07-30 and landed this round: **id 17** (「業界專家普遍認為」
+  -shaped sentence ruled no-AI-味 twice — blind, then again after being shown `模糊歸屬`'s own
+  rule text — retired from the scored suite since flipping it would contradict the rule's own
+  `抓` example; rule text unchanged this round), **id 21** (粗體標籤＋條列形式 — list form itself
+  isn't the defect, key narrowed to the label-restatement formula that actually is), **id 28**
+  (single 解說導引腔 instance — inside the rule's own density carve-out, flipped to
+  protection-class; new id 57 added so the rule keeps hit-side coverage), **id 38** (第二句
+  「今天，我想跟大家分享我使用 AI 改稿的三個心得」 是正常開場 — key split so only the 時代大帽子
+  first sentence stays flagged; `corpus.md`'s A-08 annotation reconciled on the same
+  referent-based reasoning). All four verdicts, with the reasoning that produced them, are now
+  in [`evals/judged-cases.md`](evals/judged-cases.md) — closing the hand-transcription gap this
+  item used to note.
 
-  Two loose ends the sweep left:
-  - **Resume at ids 15/16/17** — that is where the sweep stalled (PR #20). The remaining ~37
-    ported cases are unadjudicated and may hold more of the same. Two cases from the same source
-    batch were deliberately *not* ported here because they test the 陸用語／簡體殘留 axis; they
-    are tracked in
-    [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither
-    side blocks the other.
-  - **None of the four verdicts are in `evals/judged-cases.md`.** That file holds two cases,
-    neither of them these, so the only record is prose in this backlog and in PR #20 — exactly
-    the hand-transcription problem `tools/annotate` exists to remove. Writing them into
-    `judged-cases.md` is part of closing this item, not a follow-up.
+  **Resume at ids 15/16, 18** — that is where the sweep stalled (PR #20) before finding these
+  four. Two cases from the same source batch were deliberately *not* ported here because they
+  test the 陸用語／簡體殘留 axis; they are tracked in
+  [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither side
+  blocks the other.
+
+- [ ] **`模糊歸屬` may be scoped too wide — id 17's adjudication found it catching a defect
+  ordinary human writers also commit, not just an AI tell.** The author ruled a 「業界專家普遍認為」
+  -shaped sentence has no AI 味, in isolation, even after being shown the rule's own 抓／保留 text
+  (`references/zh-rules.md:218-222`) — reasoning 「規則本身抓得太寬」「是一般人類文章也可能犯的錯誤」；
+  full record in [`evals/judged-cases.md`](evals/judged-cases.md). Explicitly scoped to that one
+  case by the author, not a mandate to change the rule now — but the shape is worth naming:
+  `解說導引腔` already has a density carve-out (a single instance doesn't count, only stacking
+  does — `references/zh-rules.md:58-63`); `模糊歸屬` has no isolated-instance equivalent. Whether
+  it needs one — and whether other rules share the gap — is a behaviour change and needs its own
+  branch and re-run, not a fold-in to a key-fix round. `corpus.md`'s A-06 (`:789`) is the
+  distinguishing datapoint already on record: the same 模糊歸屬 pattern there co-occurs with
+  `對比句式` and a 「值得深思的現象」 framing sentence, and stays flagged — so any fix is about
+  isolation, not about weakening the rule wholesale.
 
 - [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
   widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
@@ -83,8 +96,13 @@ against the run above rather than interleaving.
   carry rewrite-phrased expectations** (「改成」「全清」「刪掉」) that cannot be checked literally
   against a detect output, forcing graders onto the softer "did the report point this way" bar.
   (3) **Single `expected-direction` slugs bundle 2–3 independent requirements** (id 34 wants
-  prose-ification *and* concrete detail; id 38 wants two separate deletions), so binary scoring
-  reads "half done" as a full miss.
+  prose-ification *and* concrete detail), so binary scoring reads "half done" as a full miss.
+  id 38 had the same shape (two independent deletions in one slug) and was split into separate
+  `expectations` entries during the 2026-07-30 key-fix round (see `evals/judged-cases.md`).
+  id 21 was fixed in the same round but is a different defect, not this one — its old key's
+  demand was substantively wrong (asked for prose-collapse, which is the wrong rule's remedy),
+  not merely bundled; the fix rewrote the direction rather than decomposing it. The remaining
+  unadjudicated ported cases may hold more of either shape.
 
 - [ ] **`corpus.md` is saturated — it detects regressions, it does not measure progress.**
   1.5.0 scores 89/89 on it (52/52 protection, 37/37 hits) and 2.0.0 matches at 89/89. Keep
@@ -118,7 +136,7 @@ against the run above rather than interleaving.
   品味層 語料, flagging any case whose verdict now contradicts its `expected-direction`. Runs
   over a filtered set (a whole id range, or only cases that failed a given run). Dev-side,
   `uv` fine, never part of skill runtime. The immediate consumer is the ported-case sweep
-  above — resuming it at ids 15/16/17 by hand is the same transcription tax a second time.
+  above — resuming it at ids 15/16, 18 by hand is the same transcription tax a second time.
 
 ## Behaviour changes, each on its own branch and its own re-run
 

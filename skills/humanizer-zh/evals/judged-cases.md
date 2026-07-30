@@ -71,3 +71,57 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **What the verdict turned on.** evals.json id 7 carried the opposite expectation — `no-false-positive-on-informative-short-sentence`, on the reading that the sentence 「在前文之後補上新的邊界界定」 and so earns the 對比句式 rule's 真實的事實邊界 carve-out. The author does not read it that way: 「開放」 names no boundary that a reader could act on (who may add, whether it is reviewed, on what basis), so the contrast construction is carrying the sentence rather than marking a real distinction. The rule's own carve-out example — 「管理粒度是資料集，不是租戶」 — swaps two concrete nouns; 開放/固定 are abstract qualities, and that difference is what the carve-out turns on.
 
 **Consequence.** **id 7's key is wrong, and the skill's behaviour was right.** A 2026-07-30 protection-class run scored it ❌ against the recorded expectation; that red is an instrument defect, not a regression. Fix the case, do not weaken the rule. The two extra spans the author named (短句斷言, 兩條路) are uncovered by the current key and worth adding.
+
+## 模糊歸屬 — id 17 retired: a defect ordinary human writers also commit
+
+**Source material.** The full prompt of evals.json id 17 (ported from speak-human-tw SF-03), a newsletter sentence:
+
+> 業界專家普遍認為，AI 工具將徹底改變內容產業的遊戲規則，不少使用者也表示工作效率獲得顯著提升。
+
+**Verdict (author, 2026-07-30, twice).** Both rounds: no AI 味.
+
+1. **Blind** — shown the raw sentence only, no rule name, no expected direction: 沒有.
+2. **Informed re-ask** — shown `模糊歸屬`'s full 抓／保留 text (`references/zh-rules.md:218-222`) and asked again given the rule's own wording: still 沒有. Reasoning: 「規則本身抓得太寬」— 「這句只是寫的不太精闢的文章，是一般人類文章也可能犯的錯誤」.
+
+**What the verdict turned on.** `模糊歸屬`'s `抓` clause names exactly this shape — 業界專家普遍認為／不少使用者表示 — and its three `保留` clauses (nameable source; author's own first-hand experience so stated; a transition backed by the next sentence's concrete fact) don't apply here. Rule text and the old key agree with each other; the author's verdict is the outlier, and it survived being shown the rule text, not just the raw sentence. The distinguishing question that separates this from a real catch: does the sentence carry an AI-specific tell, or only a generic-writing weakness (unsourced authority framing, alone) that a human draft could produce just as easily? By the author's read, this sentence is the latter. Contrast with `evals/corpus.md`'s A-06 (`:789`), where the same 模糊歸屬 shape (業界普遍認為 + 不少專家也表示) co-occurs with `對比句式`'s 「不僅…更…」 and a 「值得深思的現象」 framing sentence — the combination reads as AI where the isolated instance in id 17 does not. A-06's flagged verdict stands unchanged; this entry does not extend to it.
+
+**Consequence for the instrument.** Flipping id 17 to protection-class without changing the rule text would create a guaranteed-red case: the rule's `抓` example *is* this sentence, so any runner reading `zh-rules.md:219` correctly flags it, failing a key that says don't. The author explicitly scoped this to the one case — not a mandate to widen `模糊歸屬`'s carve-outs, and not a reason to touch the rule this round. id 17 is retired from `evals.json` (id left as a gap, not renumbered — historical `results-*.md` files reference cases by id) and the verdict recorded here instead. The broader question — whether `模糊歸屬` needs an isolated-instance carve-out the way `解說導引腔` already has a density one — is logged as its own item in `../backlog.md`, for its own branch and re-run.
+
+## 粗體與內聯標題濫用 vs 條列膨脹 — id 21's key asked for the wrong rule's fix
+
+**Source material.** evals.json id 21 (ported from speak-human-tw SF-07), a three-item bulleted list:
+
+> 本次改版重點如下：
+> - **使用者體驗**：透過全新介面設計大幅改善
+> - **載入速度**：透過演算法優化顯著提升
+> - **資料安全**：透過端對端加密全面強化
+
+**Verdict (author, 2026-07-30).** 「條列形式本身沒問題」— the defect is the repeated 「**粗體標籤**：透過⋯⋯達成⋯⋯」 formula, not the list. The label restates what the following clause already says, and all three bullets share the identical construction, but the bullets themselves carry distinct, specific content (UX redesign, load-time optimisation, end-to-end encryption).
+
+**What the verdict turned on.** Two rules cover adjacent ground here: `粗體與內聯標題濫用` (`references/zh-rules.md:156-158`) catches bold labels that self-restate their own following text; `條列膨脹` (`:162-164`) has an explicit `保留` for 「真的是清單的內容」, naming `changelog`／`todo`／規格逐項展開 as the kind of list that survives. id 21's 「本次改版重點如下」 is literally release notes — the same shape as that carve-out's own examples. The old key's `expected-direction` — 「能一段散文講完就用散文」 — asked for prose collapse, which is `條列膨脹`'s remedy for a list that fails its carve-out, not `粗體與內聯標題濫用`'s remedy for label self-restatement. Applying the wrong rule's fix to this case would have penalised a correct skill response that kept the list and only removed the label self-restatement.
+
+**Consequence for the instrument.** `expected_output` and `expectations` narrowed to target the label-restatement/parallel-formula defect specifically, and split into two entries: one naming the actual fix (drop the self-restating labels or break the repeated 「透過X達成Y」 construction, keep the three items' content), one guarding against the old key's over-reach (`no-prose-collapse-demand` — list form is not itself a defect).
+
+## 解說導引腔 — id 28's single instance is inside the rule's own density carve-out
+
+**Source material.** evals.json id 28 (ported from speak-human-tw SF-16), the entire prompt is one sentence:
+
+> 把這三個數字擺在一起，你會讀到一件很重要的事：我們的讀者其實更喜歡短內容。
+
+**Verdict (author, 2026-07-30).** 偶一為之不算 — this single occurrence should not be flagged.
+
+**What the verdict turned on.** `解說導引腔` (`references/zh-rules.md:58-63`) carries an explicit density `保留`: a lone instance doesn't count, only stacking does (500 字內 3 次以上). id 28's entire prompt is this one sentence — nowhere near the stacking threshold. The old key called for a fix anyway, which contradicts the rule's own carve-out; this is a key error, not a signal that the carve-out is wrong.
+
+**Consequence for the instrument.** id 28 flipped from hit-class (`SF`) to protection-class (`SNF`); `expected_output`/`expectations` rewritten to assert the protection boundary directly (`no-single-instance-false-positive`). Flipping this case left `解說導引腔` with zero hit-side coverage in both `evals.json` and `corpus.md` (confirmed by grep before this change) — a new case, id 57, was added with four stacked instances in one short passage to keep the hit side measured.
+
+## 公式化開場 — id 38's second sentence names a referent, the first doesn't
+
+**Source material.** evals.json id 38 (ported from speak-human-tw SF-26), a two-sentence blog opener:
+
+> 在當今資訊爆炸、AI 技術日新月異的時代背景下，內容創作者正面臨著前所未有的挑戰與機遇。今天，我想跟大家分享我使用 AI 改稿的三個心得。
+
+**Verdict (author, 2026-07-30).** The first sentence is AI-flavored; the second — 「今天，我想跟大家分享我使用 AI 改稿的三個心得」— 「是正常開場」, should not be cut alongside the first.
+
+**What the verdict turned on.** `公式化開場` (`references/zh-rules.md:246-251`) carries a `保留` for openers that 「點名具體脈絡而非類別」. The first sentence is close to the rule's own `抓` example (在當今…的時代) and names no specific context. The second sentence names one — 「我使用 AI 改稿的三個心得」 is a concrete, specific topic, not a category placeholder. `corpus.md` applies the same referent-based logic elsewhere, though under a different rule: H-01's 「今天因為要維護一個 11 年前完工的專案」 and H-02's 「今天我打算用這篇文章來解決上述所有問題」 (`evals/corpus.md:171`, `:198`) are both judged `ok` under `空降斷言開場`'s carve-out (「非指涉未交代之物」) — same underlying question (does the opener name something concrete?), different rule than `公式化開場`. A referent-anchored 「今天…」 opener is not the same defect as a content-free one, regardless of which rule is doing the catching.
+
+**Consequence for the instrument.** `expected_output`/`expectations` split into two: cut the first sentence (time-era framing, loses no information), explicitly protect the second (`no-preview-opener-false-positive`) rather than treating it as a 「預告式導言」 that must also go. `corpus.md`'s A-08 annotation (`:849`) was reconciled to state the same referent-based condition explicitly — its flagged span 「今天想跟大家聊聊」 differs from id 38's second sentence in exactly this way: it names no specific context (what follows is the generic 「怎麼分辨真正有用的工具跟純粹的噱頭」), so it stays flagged; the verdict on A-08 itself is unchanged, only the stated reason is sharpened.
