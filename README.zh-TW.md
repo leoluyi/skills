@@ -126,7 +126,7 @@ tools/sync-skills
 ├── CLAUDE.md          # 硬規則（永遠載入）——禁止事項
 ├── engineering-guidelines.md     # 完整撰寫指南
 ├── CONTRIBUTING.md    # 如何貢獻（英文＋繁中）
-├── backlog.md         # 還沒動筆的點子
+├── backlog.md         # repo 層與 tools/ 的待辦（單一 skill 的待辦在 skills/<name>/backlog.md）
 ├── skills/            # 上架技能——每個是一個 SKILL.md 資料夾
 ├── docs/              # GitHub Pages 網站（互動式目錄）
 └── tools/             # repo 腳本

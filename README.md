@@ -131,7 +131,7 @@ tools/sync-skills
 ├── CLAUDE.md          # hard rules (always loaded) — the forbidden directives
 ├── engineering-guidelines.md     # full authoring guide
 ├── CONTRIBUTING.md    # how to contribute (EN + 繁中)
-├── backlog.md         # ideas not yet drafted
+├── backlog.md         # repo-level + tools/ backlog (per-skill items live in skills/<name>/backlog.md)
 ├── skills/            # active skills — each is a SKILL.md folder
 ├── docs/              # GitHub Pages site (the live catalog)
 └── tools/             # repo scripts
