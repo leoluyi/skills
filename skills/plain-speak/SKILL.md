@@ -8,14 +8,18 @@ description: >-
   "what does this term mean", or pastes technical text and asks for a
   business-audience version, or asks you to review/check whether an existing
   plain-language draft lands for a non-technical reader ("這樣夠白話嗎", "幫我看
-  非技術主管看不看得懂", "is this clear enough for a PM"). Reply in the language
+  非技術主管看不看得懂", "is this clear enough for a PM"). Also use when invoked
+  mid-conversation with nothing attached, or when the user asks for what just
+  happened to be re-explained — "上面那段用白話再講一次", "你剛剛講的我看不懂",
+  "剛剛那幾個選項差在哪", "講人話" — where the target is the preceding turn,
+  including a question just put to the user. Reply in the language
   the user wrote in. Do NOT
   invoke for removing AI-isms / 潤飾語氣 from existing prose (use
   avoid-ai-writing-zh), for structuring a whole formal business document —
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
-version: 1.4.0
+version: 1.5.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -48,6 +52,8 @@ Both run the same criteria below; translate produces to them, review checks them
 - Prep for a status update, exec summary, or doc aimed at non-engineers
 - A finished plain-language draft to review — a colleague's, or your own — against
   the bar before it reaches the reader
+- Something in this very conversation the user lost the thread on — an answer just
+  given, or a question just put to them (§When nothing is attached)
 
 Sibling skills own the adjacent axes — hand off rather than half-do their job:
 lowering AI-ish *voice* in prose → `avoid-ai-writing-zh`; organizing a whole
@@ -63,15 +69,62 @@ Keep each technical term in its native form the first time you introduce it — 
 
 The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
 
+## When nothing is attached
+
+A user who reaches for this skill mid-conversation without pasting anything is
+pointing at what just happened: the target is the **preceding turn**, and the
+reader is **the user themself** — someone who follows the business and the
+product but lost this particular thread. No third-party audience gets invented
+here, and asking which part they meant defeats the point; pick the target by the
+order below and name it in one opening clause, so a wrong pick costs one word to
+correct.
+
+1. **A question left with the user** — anything you asked and are still waiting
+   on, with options or without. This outranks a plain answer: they aren't merely
+   lost, they're blocked on a decision.
+2. **The last substantive answer or explanation.** Step back over turns that are
+   pure tool work, diffs, or status lines with nothing explained in them, to the
+   last turn that actually carried reasoning.
+3. **Nothing technical in reach** — say so in one line and ask what to lower. A
+   turn that was already plain needs no translation, and manufacturing a
+   "plainer" version of plain text is the same failure as inventing a number the
+   source never had.
+
+An invocation that carries a reader but no content (「給 CFO」, "for my PM") sets
+that reader; the target still comes from the order above.
+
+**A question gets re-posed, not just explained.** Lower the question itself, then
+each option with what choosing it actually commits or costs — the difference
+between the options is usually the exact thing that was opaque — and close by
+asking it again so the user can just answer. The option set survives untouched:
+same options, same order, none merged, none added, none quietly dropped, so a
+reply aimed at the original still lands. Plain text carries this on its own;
+where the host offers an interactive question tool, use it, but the deliverable
+stands without one.
+
+**Lowering is not re-deciding.** A translated answer keeps its substance exactly
+— same recommendation, same options, same caveats, no new ones. If lowering the
+language exposes something the original got wrong or overclaimed, that earns one
+separate line, never a quiet edit inside the translation. Then stop: this is a
+request to be understood, not a signal to resume the work it interrupted.
+
 ## How to respond
 
 1. **Identify the reader first.** Who actually reads or hears this — stated by
    the user, inferable from context (a PM, an exec/CFO, a salesperson, a
-   customer, a vendor), or, if nothing says, the default non-technical manager.
+   customer, a vendor), or, if nothing says, the default non-technical manager —
+   except when nothing was attached and the target came from the conversation, where
+   the reader is the user themself (§When nothing is attached).
    Everything below flexes off this one choice: the *same* term becomes a
-   different 白話 for a CFO (財務影響) than for a salesperson (客戶好處). If the
-   reader wasn't given, name the one you assumed in one passing clause of the
-   prose so the user can correct it — never as a "Who's asking:" label or header.
+   different 白話 for a CFO (財務影響) than for a salesperson (客戶好處). A reader
+   the user named stands as given — don't sharpen it into a sub-segment you then
+   hedge over. Where you did have to assume, the assumption rides inside the prose
+   as a passing clause, not as a label, header, or parenthetical preamble the
+   deliverable hangs off, and it arrives with no offer of an alternative version:
+   one reader, one deliverable, so the line stays repeatable instead of reaching
+   the reader wrapped in conditions. When the reader genuinely can't be inferred
+   *and* that choice would change the substance rather than the emphasis, name the
+   ambiguity in one line after the deliverable (Guardrails) — still one version.
 2. **One-line answer — what it does, and what it's for.** Two beats in one
    breath: *what it does* (the plain function, no jargon) and *what it's for*
    (the problem it solves — what was painful before it existed). A single
@@ -106,7 +159,8 @@ your own pre-send — don't rewrite blind. Grade it against the bar, then fix.
 
 Mark each criterion pass (✓) / fail (✗) / not-applicable (—):
 
-- **Reader locked** — one specific reader in view, not a generic "non-tech"? (§How to respond 1)
+- **Reader locked** — one specific reader in view, not a generic "non-tech", and not
+  two readers hedged against each other? (§How to respond 1)
 - **What-it-does + what-it's-for** — one line carrying both beats? (§2)
 - **Reader-relative why** — the consequence *to this reader*, not just intrinsic purpose? (§3)
 - **Analogy fits the medium** — present only where it belongs (spoken/casual), out of formal written output? (§4)
@@ -215,7 +269,24 @@ API(應用程式介面)就是兩套系統之間的「點餐窗口」。比方餐
 - 計畫可執行度:—(原文只描述現象,沒講接下來要做什麼)
 - 失真:✓ 事實正確
 
-改寫版(先假設是產品高層、看客戶影響;若對象是 CFO 再改成談成本):
+改寫版(對象抓成看客戶影響的產品高層):
 系統在流量尖峰時,原本會自動增加機器來吸收暴量的機制撞到了設定上限,機器加不
 上去,於是一部分使用者的請求被擋掉、看到錯誤畫面。對我們的意義是尖峰時段有真實
 使用者受影響、可能流失;要嘛調高上限,要嘛在流量可預期時預先擴容。
+
+---
+
+**Input:** (對話中間,使用者沒附任何文字;上一輪是丟給他的選擇題)
+「並發寫入要用 optimistic 還是 pessimistic locking?A: optimistic,衝突時 retry。
+B: pessimistic,先鎖 row 再改。」
+
+**Output:**
+剛剛問你的是:兩筆修改同時進來時,要怎麼避免其中一筆被蓋掉。兩個做法的差別是
+「先各改各的、存檔才對帳」還是「先排隊、一次只讓一個人改」。
+
+- A(optimistic,樂觀鎖):兩邊都先改,存檔時才檢查有沒有人搶先;沒撞到的時候最快,
+  撞到的那個人要重做一次,愈多人同時改同一筆、重做就愈頻繁。
+- B(pessimistic,悲觀鎖):誰先進來就把那筆資料鎖住,其他人等它放開;沒有人會白做,
+  代價是等待,同時要改的人多時會卡住。
+
+這兩個你要哪一個?

@@ -74,6 +74,87 @@
         "what-it-does-and-whats-it-for: States both what eventual consistency does and what problem it solves, per the existing bar.",
         "term-glossed: eventual consistency itself is glossed in plain terms, not left as an unexplained label."
       ]
+    },
+    {
+      "id": 8,
+      "prompt": "你正在一段對話中間。上一輪你(助理)回答了下面這段,使用者接著沒有附任何文字、只呼叫了 plain-speak。請照 plain-speak 應有的行為回應。\n\n[助理] 這個 race 出在 write path 上用 read-modify-write 更新 counter,兩個 request 同時進來會互相覆蓋。我建議改用資料庫的 atomic increment,不要在應用層算;之後真的要跨 shard 統計,再補一層 CDC 進 warehouse 就好。",
+      "expected_output": "Bare invocation with the target only in the conversation. The correct move is to lower the preceding answer for the person who asked — not to ask which part they meant, and not to invent a third-party non-technical audience the conversation never mentioned. Substance must survive untouched.",
+      "expectations": [
+        "targets-preceding-turn: Lowers the preceding answer directly. Does NOT reply by asking which passage or which term the user wanted explained.",
+        "reader-is-the-asker: Written to the person in the conversation. Contains no invented third-party audience framing (「給主管看」「向高層說明」「your PM/exec」) that the conversation never introduced.",
+        "substance-preserved: The recommendation stays atomic increment done by the database, with the cross-shard CDC step still conditional on a later need. No new recommendation, option, or caveat is introduced, and none of the original ones is dropped.",
+        "terms-glossed: race / read-modify-write / atomic increment / CDC / shard are each replaced by the plain idea or glossed inline, not left carrying a sentence.",
+        "does-not-resume-work: Ends after the explanation. Does NOT start implementing, patching, or planning the fix as if the invocation were approval to continue.",
+        "no-plainness-narration: Contains none of 白話講/白話來說/說白了/簡單來說/講白一點."
+      ]
+    },
+    {
+      "id": 9,
+      "prompt": "你正在一段對話中間。上一輪你(助理)丟了下面這個選擇題給使用者、還在等他回答,使用者接著沒有附任何文字、只呼叫了 plain-speak。請照 plain-speak 應有的行為回應。\n\n[助理] 快取失效策略要用哪一個?\nA:TTL 到期自動失效 — 實作最簡單,但讀到的資料最多可能過期 5 分鐘。\nB:write-through invalidation,寫入時主動失效 — 一致性最好,但每次寫入都要多打一次快取,寫入延遲增加。\nC:version 化的 cache key — 不用刪 key,但舊 key 會佔記憶體到被 evict 為止。",
+      "expected_output": "The user is not merely lost, they are blocked on a pending decision. Explaining without re-posing leaves them stuck, because the option list they would answer against is no longer in front of them. The option set is data to lower, not to edit.",
+      "expectations": [
+        "option-set-intact: All three options appear, with their original labels A/B/C and in their original order. None merged, none dropped, and no fourth option invented.",
+        "per-option-consequence: Each option carries, in plain terms, what choosing it costs or commits (A's up-to-5-minutes staleness, B's added write latency, C's memory held by old keys) — the difference between the options is stated, not just their names.",
+        "re-poses-the-question: The reply ends by putting the question back to the user so they can answer directly, rather than stopping at an explanation.",
+        "does-not-decide-for-them: Does NOT silently pick one option as the answer or add a recommendation the original question did not contain.",
+        "terms-glossed: TTL / write-through invalidation / cache key / evict are glossed inline or replaced by the plain idea."
+      ]
+    },
+    {
+      "id": 10,
+      "prompt": "你正在一段對話中間。上一輪你(助理)說了下面這句,使用者接著沒有附任何文字、只呼叫了 plain-speak。請照 plain-speak 應有的行為回應。\n\n[助理] 好,那我先把這兩份文件的差異列出來,你再決定要不要合併。",
+      "expected_output": "Adversarial boundary on the new path: the preceding turn is already plain and holds nothing technical. Mirrors case 1's no-fabrication logic — manufacturing a 'plainer' version of plain text, or inventing technical content to lower, is the failure.",
+      "expectations": [
+        "says-nothing-to-lower: States in about one line that the preceding turn holds nothing needing plain-language treatment, and asks what the user wanted lowered.",
+        "no-manufactured-translation: Does NOT emit a reworded version of the already-plain sentence as if it were a translation.",
+        "no-fabrication: Invents no technical term, mechanism, or earlier content that the given turn does not contain.",
+        "stays-short: One or two sentences. Does not expand into a structured explanation of a turn with nothing in it."
+      ]
+    },
+    {
+      "id": 11,
+      "prompt": "你正在一段對話中間。上一輪你(助理)回答了下面這段,使用者接著只丟了「plain-speak 給 CFO」這幾個字,沒有附任何要翻的內容。請照 plain-speak 應有的行為回應。\n\n[助理] 這個 race 出在 write path 上用 read-modify-write 更新 counter,兩個 request 同時進來會互相覆蓋。我建議改用資料庫的 atomic increment,不要在應用層算。",
+      "expected_output": "Reader override on the bare path: the invocation supplies a reader but no content, so the target still comes from the conversation while the named reader replaces the default. Tests that the two halves of the rule are independent.",
+      "expectations": [
+        "targets-preceding-turn: The thing lowered is the preceding answer. Does NOT reply by asking what content the user wanted translated.",
+        "reader-is-the-cfo: Framed for a CFO — the consequence stated is the financial or accounting one (counts/amounts silently wrong, reconciliation or reported figures untrustworthy), not 客戶好處 or a generic 非技術主管 restatement, and not written to the asker as themself.",
+        "substance-preserved: Keeps the recommendation as-is (let the database do the increment). Adds no new recommendation, cost estimate, or number absent from the source.",
+        "terms-glossed: race / read-modify-write / atomic increment are glossed or replaced by the plain idea."
+      ]
+    },
+    {
+      "id": 12,
+      "prompt": "你正在一段對話中間。上一輪你(助理)說了:「我把 connection pool 從 20 開到 50,壓測後 p99 從 1.8 秒降到 400 毫秒。」使用者接著說:「翻成白話給非技術主管:我們把資料庫索引從 B-tree 換成 GIN,單次查詢要掃的資料頁少了很多。」",
+      "expected_output": "Must-not-fire boundary for the new bare-invocation path. Content IS supplied, so the conversation must not become the target: the previous turn is not what the user asked about. Guards against the new rule leaking into ordinary translate requests as a conversation-recall framing or an interactive re-ask.",
+      "expectations": [
+        "translates-the-supplied-text: The output is about the index change (B-tree to GIN, fewer data pages scanned). The connection-pool / p99 content from the preceding turn does not appear.",
+        "does-not-retarget-the-conversation: The preceding turn is not treated as the thing to lower — no version of the connection-pool sentence is produced, and no question is re-posed. Merely referring to the preceding turn to keep its numbers from being attached to this change is correct behaviour, not a failure.",
+        "reader-is-the-named-manager: Written for the 非技術主管 the user named, not for the asker themself.",
+        "no-fabricated-number: The vague 「少了很多」 is not turned into an invented page count or percentage."
+      ]
+    },
+    {
+      "id": 13,
+      "prompt": "翻成白話:我們把 CI 的 test job 拆成 4 個平行 shard,整條 pipeline 從 22 分鐘降到 7 分鐘。",
+      "expected_output": "No reader stated, and the reader choice would only shift emphasis — the fact and its consequence are the same whoever hears it. The failure mode this guards: announcing an assumed reader as a preamble the deliverable hangs off, then offering to redo it for a different reader. A line that arrives wrapped in 「假設對象是X,若是Y我再改」 cannot be repeated in a meeting, which is the bar the whole skill works against.",
+      "expectations": [
+        "one-version-only: Exactly one plain-language version is delivered. No second version, no 「若對象是…我再改成…」 / 'if it's for X instead, I'd frame it as' offer, conditional or otherwise.",
+        "assumption-not-a-preamble: If an assumed reader is named at all, it appears as a clause inside the prose (e.g. 「對主管的意義是…」). It is NOT a label, header, or parenthetical line placed before the deliverable that the translation then hangs off.",
+        "carries-the-numbers: 22 minutes to 7 minutes survives as the checkable anchor.",
+        "term-glossed: CI / test job / shard / pipeline are glossed inline or replaced by the plain idea."
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "翻成白話:我們決定把 SLA 從 99.9% 降到 99.5%,換到每月省下 40 萬雲端費用。",
+      "expected_output": "Must-not-overcorrect boundary for case 13's rule. Here no reader is given AND the choice changes substance, not just emphasis: for a CFO the deliverable leads on the 40 萬 saving, while for anyone facing a customer the deliverable is the extra downtime being accepted and whether it is contractually promised. Suppressing the reader question entirely would be the overcorrection — the existing 'flag ambiguity, don't guess' guardrail still applies, in one line, with one version delivered.",
+      "expectations": [
+        "one-version-still: One plain-language version is delivered, not two parallel versions and not a menu of framings to choose from.",
+        "ambiguity-named-once: The unknown that actually governs the framing is surfaced in about one line — whether this 99.9% is a customer-facing contractual commitment or an internal target, since only the first carries penalty and renegotiation exposure — rather than silently assumed with no mention at all.",
+        "flag-not-a-wrapper: That line sits after the deliverable as a note, not before it as a condition the translation depends on.",
+        "downtime-made-concrete: 99.9% to 99.5% is converted into something checkable a non-engineer can hold (roughly 43 minutes of downtime a month becoming roughly 3.6 hours, or an equivalent correct restatement), not left as two percentages that look almost identical.",
+        "keeps-the-trade: Both sides of the trade survive — the 40 萬 monthly saving and the reduced availability. Neither is dropped."
+      ]
     }
   ]
 }

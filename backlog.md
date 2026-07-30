@@ -37,6 +37,13 @@ Ideas not yet drafted. Signal: friction hit 2+ times.
 
 - [x] **Fix `tools/run-eval`'s Anthropic-API dependency.** Done 2026-07-19. The script curled `api.anthropic.com` directly with a raw API key — a shared-tool cost/portability problem surfaced while working the item above. Rewrote it to run the router judgment as a one-shot subagent call through whatever coding-agent CLI is installed (`claude -p --tools=""` or `codex exec -s read-only`, auto-detected, override via `RUN_EVAL_AGENT`), so it's no longer a direct vendor API call and works across AI coding assistants, not just Anthropic's. Fixed a `set -e`/`pipefail` bug found during verification (a non-matching `grep` on a malformed router reply silently killed the whole loop after one iteration). Verified against `rfp-writing` (9/9, matches the old direct-API run) and `infographic-design`.
 
+- [ ] **plain-speak: two v1.5.0 behaviours are unverifiable from a single-prompt harness — need real
+  transcripts in `judged-cases.md`.** 2026-07-30. v1.5.0's bare-invocation path resolves its target
+  from the conversation, and cases 8–12 test that against a transcript *embedded in the prompt*. Two
+  parts of the resolution order therefore went untested: stepping back over pure tool-work and status
+  turns to reach the last turn that carried reasoning, and re-posing a pending question through the
+  host's interactive question tool where one exists. Collect real session transcripts where either
+  path misfires and turn them into judged cases; do not assume the synthetic runs cover them.
 - [x] **plain-speak: add 計畫可執行度 (原則 vs 做法) to the 具體 guardrail.** Done 2026-07-28
   (v1.3.0→v1.4.0). Plan-bearing output was retreating into 原則 ("分階段導入、控制風險")
   instead of 做法 (誰/做什麼/何時) — the existing 具體度 guard only had a descriptive face

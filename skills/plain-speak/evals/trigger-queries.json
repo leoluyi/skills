@@ -52,6 +52,33 @@
       "note": "Review branch in English: check whether the draft lands for a non-technical reader, flag unglossed terms (canary, SLO), return checklist plus corrected draft."
     },
     {
+      "id": 14,
+      "query": "你剛剛那段解釋我看不太懂,用白話再講一次。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/recall-previous-answer",
+      "note": "No content attached — the target is the preceding turn and the reader is the asker."
+    },
+    {
+      "id": 15,
+      "query": "剛剛那幾個選項到底差在哪?用白話重問一次好嗎。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/recall-pending-question",
+      "note": "Pending decision. Should re-pose the question with every option lowered, not just explain."
+    },
+    {
+      "id": 16,
+      "query": "Hold on — can you re-explain what you just said in plain terms? You lost me.",
+      "should_trigger": true,
+      "category": "positive/en/recall-previous-answer"
+    },
+    {
+      "id": 17,
+      "query": "剛剛那段 code 再講一次,我想知道那個 goroutine leak 到底是怎麼發生的,講細一點。",
+      "should_trigger": false,
+      "category": "negative/deeper-technical-not-lowering",
+      "note": "Also a re-explain request, but aimed downward into implementation detail for an engineer. This skill lowers the audience; it is not the general 'explain again' handler."
+    },
+    {
       "id": 6,
       "query": "幫我把這段內部報告的 AI 味拿掉,像是「賦能」「全面提升」「不是…而是…」那種空話,改成正式但人話的中文。",
       "should_trigger": false,
