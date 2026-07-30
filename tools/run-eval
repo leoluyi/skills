@@ -164,7 +164,10 @@ while IFS= read -r entry; do
   id=$(jq -r '.id' <<<"$entry")
   category=$(jq -r '.category // "-"' <<<"$entry")
   query=$(jq -r '.prompt // .query' <<<"$entry")
-  expected=$(jq -r '.expected_trigger // .should_trigger' <<<"$entry")
+  # Not `.expected_trigger // .should_trigger`: jq's `//` falls through on
+  # `false` as well as `null`, so a fixture using the newer key would read
+  # every negative case as `null` and FAIL it forever, silently.
+  expected=$(jq -r 'if has("expected_trigger") then .expected_trigger else .should_trigger end' <<<"$entry")
 
   raw=$(invoke_router "$query")
   # Word-boundary match: a plain 'TRIGGER|NONE' substring match would also
