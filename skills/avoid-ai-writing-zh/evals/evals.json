@@ -129,8 +129,8 @@
         "no-word-level-false-positives: 不把正確的技術陳述（狀態碼、欄位名）誤標為 AI 空話。"
       ],
       "bucket": "SNF",
-      "面向": "立場與開場",
-      "對應規則": "結構級訊號 carve-out（voice-neutral 體裁排除）",
+      "面向": "語言句式",
+      "對應規則": "結構級訊號 carve-out（voice-neutral）",
       "tier": "fast"
     },
     {
@@ -142,8 +142,8 @@
         "no-coaching-tone-false-positive: 不誤標「簽請核示」為對讀者說教——這是公文慣用結尾語，非教練口吻。"
       ],
       "bucket": "SNF",
-      "面向": "立場與開場",
-      "對應規則": "結構級訊號 carve-out（voice-neutral 體裁排除）",
+      "面向": "語言句式",
+      "對應規則": "結構級訊號 carve-out（voice-neutral）",
       "tier": "fast"
     },
     {
@@ -155,7 +155,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "意義膨脹",
+      "對應規則": "（缺口——本 skill 無專門對應「標誌著／見證了／奠定基礎」三連發的規則名；最接近英文 Significance inflation，zh 尚無對應詞表項）",
       "tier": "fast",
       "source": "speak-human-tw SF-01 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -168,7 +168,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "推廣語氣",
+      "對應規則": "Promotional language",
       "tier": "full",
       "source": "speak-human-tw SF-02 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -181,7 +181,7 @@
       ],
       "bucket": "SF",
       "面向": "事實與引用",
-      "對應規則": "模糊歸屬",
+      "對應規則": "Vague attributions",
       "tier": "full",
       "source": "speak-human-tw SF-03 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -194,7 +194,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "對比句式",
+      "對應規則": "Contrarian structure",
       "tier": "fast",
       "source": "speak-human-tw SF-04 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -207,7 +207,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "零資訊警句與口號",
+      "對應規則": "口號式短句（零資訊重述）",
       "tier": "full",
       "source": "speak-human-tw SF-05 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -220,7 +220,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "破折號濫用",
+      "對應規則": "破折號當萬用連接詞",
       "tier": "fast",
       "source": "speak-human-tw SF-06 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -233,7 +233,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "粗體與內聯標題濫用",
+      "對應規則": "Inline-header lists／頓號串列代替論述",
       "tier": "full",
       "source": "speak-human-tw SF-07 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -246,7 +246,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "表情符號與標籤堆疊",
+      "對應規則": "（缺口——emoji 堆疊本 skill 無獨立規則，近似 Hashtag stuffing 但非全等）",
       "tier": "full",
       "source": "speak-human-tw SF-08 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -259,7 +259,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "對話介面殘留",
+      "對應規則": "Chatbot artifacts",
       "tier": "fast",
       "source": "speak-human-tw SF-09 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -272,7 +272,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "諂媚語氣",
+      "對應規則": "Sycophantic tone",
       "tier": "full",
       "source": "speak-human-tw SF-10 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -285,7 +285,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "萬用收尾",
+      "對應規則": "Generic conclusions",
       "tier": "full",
       "source": "speak-human-tw SF-11 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -298,7 +298,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "避險堆疊",
+      "對應規則": "Hedge-stacked predictions",
       "tier": "full",
       "source": "speak-human-tw SF-12 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -311,7 +311,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "知識截止免責",
+      "對應規則": "Cutoff disclaimers",
       "tier": "full",
       "source": "speak-human-tw SF-13 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -324,7 +324,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "解說導引腔",
+      "對應規則": "（缺口——「你會讀到一件事」解說導引腔本 skill 無專門規則，近似對讀者說教但非評斷讀者，屬解說腔，值得新增）",
       "tier": "full",
       "source": "speak-human-tw SF-16 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -337,7 +337,7 @@
       ],
       "bucket": "SF",
       "面向": "立場與開場",
-      "對應規則": "反問句開場與收尾",
+      "對應規則": "警句式評語／Rhetorical question openers",
       "tier": "full",
       "source": "speak-human-tw SF-17 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -350,7 +350,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "詞彙處理失真",
+      "對應規則": "Synonym cycling",
       "tier": "full",
       "source": "speak-human-tw SF-18 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -363,7 +363,7 @@
       ],
       "bucket": "SF",
       "面向": "事實與引用",
-      "對應規則": "幻覺引用與未查證主張",
+      "對應規則": "（缺口——本 skill 無「幻覺引用查證」規則，僅有 Vague attributions 近似但不全等；幻覺數據/語錄需要新規則）",
       "tier": "full",
       "source": "speak-human-tw SF-19 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -376,7 +376,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "AI 工具殘留標記",
+      "對應規則": "AI-tool URL parameters／Chatbot citation markup leaks（design-notes 記錄的規則缺口之一：本 skill 未列舉 utm_source=chatgpt.com、turn0search 這類具體標記）",
       "tier": "full",
       "source": "speak-human-tw SF-20 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -389,7 +389,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "萬用收尾",
+      "對應規則": "空降主張／Generic future-narrative closers",
       "tier": "full",
       "source": "speak-human-tw SF-21 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -402,7 +402,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "條列膨脹與裸名詞條列",
+      "對應規則": "頓號串列代替論述／Numbered list inflation",
       "tier": "full",
       "source": "speak-human-tw SF-22 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -415,7 +415,7 @@
       ],
       "bucket": "SF",
       "面向": "長文scope",
-      "對應規則": "長文scope",
+      "對應規則": "Scope ladder（現有 eval id 6 已測此機制的段落級版本，此為長文 bounded 版）",
       "tier": "fast",
       "source": "speak-human-tw SF-23 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -428,7 +428,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "表格誤用",
+      "對應規則": "（缺口——本 skill 無「表格誤用」專門規則，近似頓號串列代替論述但非全等）",
       "tier": "full",
       "source": "speak-human-tw SF-24 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -441,7 +441,7 @@
       ],
       "bucket": "SF",
       "面向": "立場與開場",
-      "對應規則": "立場真空",
+      "對應規則": "（缺口——本 skill 沒有「立場真空」的具名規則；design-notes 記錄的獨立收斂佐證：預期方向與既有 flag-hollow-don't-ghostwrite 呼應但非同一規則，值得正式收編）",
       "tier": "fast",
       "source": "speak-human-tw SF-25 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -454,7 +454,7 @@
       ],
       "bucket": "SF",
       "面向": "立場與開場",
-      "對應規則": "公式化開場",
+      "對應規則": "空降斷言開場（時代大帽子）／Speculative scenario openers",
       "tier": "full",
       "source": "speak-human-tw SF-26 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -467,7 +467,7 @@
       ],
       "bucket": "SF",
       "面向": "人工戲劇",
-      "對應規則": "罐頭式反應鏡頭",
+      "對應規則": "（缺口——design-notes 記錄的規則缺口：本 skill 完全沒有「罐頭式反應鏡頭」這條規則，需新增）",
       "tier": "fast",
       "source": "speak-human-tw SF-27 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -480,7 +480,7 @@
       ],
       "bucket": "SNF",
       "面向": "保護清單",
-      "對應規則": "保護清單／交易事實",
+      "對應規則": "（缺口——本 skill 無具名的保護清單概念，僅有分散 carve-outs；engineering-guidelines.md 僅有一條 fidelity 檢查，未涵蓋價格/折扣碼/期限這組）",
       "tier": "full",
       "source": "speak-human-tw SNF-01 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -493,7 +493,7 @@
       ],
       "bucket": "SNF",
       "面向": "保護清單",
-      "對應規則": "保護清單／具名見證與原話",
+      "對應規則": "（缺口——同上，本 skill 無具名保護清單機制）",
       "tier": "fast",
       "source": "speak-human-tw SNF-02 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -506,7 +506,7 @@
       ],
       "bucket": "SNF",
       "面向": "保護清單",
-      "對應規則": "保護清單／承諾條款",
+      "對應規則": "（缺口——同上）",
       "tier": "full",
       "source": "speak-human-tw SNF-03 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -519,7 +519,7 @@
       ],
       "bucket": "SNF",
       "面向": "語言句式",
-      "對應規則": "零資訊警句與口號 carve-out（承載新資訊的短句是節奏）",
+      "對應規則": "口號式短句 carve-out（承載新資訊的短句是節奏，不標）",
       "tier": "full",
       "source": "speak-human-tw SNF-04 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -532,7 +532,7 @@
       ],
       "bucket": "SNF",
       "面向": "事實與引用",
-      "對應規則": "模糊歸屬 carve-out（具名可查來源）",
+      "對應規則": "Vague attributions carve-out（有明確來源不算模糊歸屬）",
       "tier": "full",
       "source": "speak-human-tw SNF-05 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -545,7 +545,7 @@
       ],
       "bucket": "SNF",
       "面向": "語言句式",
-      "對應規則": "對比句式 carve-out（整篇最多一次）",
+      "對應規則": "Contrarian structure carve-out（整篇最多一次）",
       "tier": "fast",
       "source": "speak-human-tw SNF-06 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -558,7 +558,7 @@
       ],
       "bucket": "SNF",
       "面向": "溝通殘留",
-      "對應規則": "知識截止免責 carve-out（必要營運免責）／保護清單／必要免責與作業說明",
+      "對應規則": "（缺口——本 skill 的 Allowed patterns 未列「金流／客服必要免責句」這一項，精神上與既有 carve-out 一致但無明文）",
       "tier": "full",
       "source": "speak-human-tw SNF-07 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -570,8 +570,8 @@
         "expected-behavior: 放行，一個字都不用動。"
       ],
       "bucket": "SNF",
-      "面向": "立場與開場",
-      "對應規則": "結構級訊號／無口語破格 carve-out（刻意破格是正向特徵）",
+      "面向": "語言句式",
+      "對應規則": "結構級訊號 carve-out（句句完整、無口語破格的反例——此為刻意破格，應保留）",
       "tier": "full",
       "source": "speak-human-tw SNF-08 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -583,8 +583,8 @@
         "expected-behavior: 放行。英文技術詞（WebP、lazy load、LCP）屬中英混排的合理範圍。"
       ],
       "bucket": "SNF",
-      "面向": "內容類",
-      "對應規則": "空話填充 carve-out（掛實際指標的提升／優化）",
+      "面向": "語言句式",
+      "對應規則": "（缺口——本 skill 的 Allowed patterns 已列「提升 in a technical context」，但「優化」掛實際指標這組未明文收錄，精神一致）",
       "tier": "full",
       "source": "speak-human-tw SNF-09 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -596,8 +596,8 @@
         "expected-behavior: 放行或只做極輕微調。不能把公告改成聊天口吻。"
       ],
       "bucket": "SNF",
-      "面向": "立場與開場",
-      "對應規則": "結構級訊號 carve-out（voice-neutral 體裁排除）",
+      "面向": "溝通殘留",
+      "對應規則": "結構級訊號 carve-out（voice-neutral／公文排除範圍，Allowed patterns「Structured uniformity in 公文/RFP/SOP」）",
       "tier": "fast",
       "source": "speak-human-tw SNF-10 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -610,7 +610,7 @@
       ],
       "bucket": "SNF",
       "面向": "語言句式",
-      "對應規則": "使用／提及之分",
+      "對應規則": "（缺口——「使用 vs 提及」判準本 skill 未明文，是很強的可加規則；design-notes 已記錄為 step 3 輸入）",
       "tier": "full",
       "source": "speak-human-tw SNF-11 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -623,7 +623,7 @@
       ],
       "bucket": "SNF",
       "面向": "長文scope",
-      "對應規則": "長文scope carve-out（文件尺度的刻意節奏非推論鏈斷裂）",
+      "對應規則": "Scope ladder carve-out（濃縮體裁不豁免論證步驟，但此處是刻意的敘事節奏設計，非推論鏈斷裂）",
       "tier": "full",
       "source": "speak-human-tw SNF-12 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -636,7 +636,7 @@
       ],
       "bucket": "SNF",
       "面向": "立場與開場",
-      "對應規則": "空降主張 carve-out（有選擇條件與經驗的條件式建議）",
+      "對應規則": "空降主張 carve-out（有具體選擇條件與經驗，非懸空結論）",
       "tier": "full",
       "source": "speak-human-tw SNF-13 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -649,7 +649,7 @@
       ],
       "bucket": "SNF",
       "面向": "立場與開場",
-      "對應規則": "空降斷言開場 carve-out（帶具體數字與轉折的時代變化句）",
+      "對應規則": "空降斷言開場 carve-out（時代變化句有具體數字與轉折支撐，非空泛大帽子）",
       "tier": "full",
       "source": "speak-human-tw SNF-14 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -662,7 +662,7 @@
       ],
       "bucket": "SNF",
       "面向": "人工戲劇",
-      "對應規則": "罐頭式反應鏡頭 carve-out（推進事件的真實停頓）",
+      "對應規則": "（缺口——同 SF-27，本 skill 無罐頭式反應鏡頭規則，此為其 carve-out 半邊）",
       "tier": "fast",
       "source": "speak-human-tw SNF-15 (MIT, adapted with attribution — verbatim source text, added fields)"
     }

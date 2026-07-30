@@ -20,10 +20,11 @@ to those fields; source files under `skills/` are never modified.
 
 When a skill's `description` exceeds 1024 chars, add a trimmed replacement at
 `scripts/app-skill-overrides/<name>.txt` (plain text, one paragraph). The build
-uses it verbatim in place of the source description whenever the file exists —
-length is not re-checked, so an override left behind after its source shrinks
-will silently keep shipping stale text. Without an override, the build
-hard-fails rather than shipping a package the app will reject.
+uses it verbatim in place of the source description. Without an override, the
+build hard-fails rather than shipping a package the app will reject.
 
-No overrides are currently needed — every source description fits under the
-limit.
+Current overrides:
+
+- `avoid-ai-writing-zh.txt` — source description folds to 1193 chars; trimmed to
+  ~996 by dropping the cross-skill routing sentence and shortening the
+  blog-writing-zh handoff tail.

@@ -22,10 +22,9 @@
 沒有逐字引用，借的是結構。兩個來源的 LICENSE 已於 2026-07-28 從上游 repo 實際讀取確認，
 皆為 MIT（obra/superpowers: Copyright (c) 2025 Jesse Vincent；phuryn/pm-skills:
 Copyright (c) 2026 Pawel Huryn）。因未重製任何實質篇幅，MIT 的姓名標示條件並未觸發，
-NOTICE 屬自願標示，故本 skill 不附 per-skill LICENSE 檔。（這裡原本拿 avoid-ai-writing-zh
-當對照——它附了上游 LICENSE，因為確實近乎逐字引入了上游內容；該技能 2.0.0 移除那層逐字沿用
-的英文內容後，LICENSE 檔也一併刪掉了，這個對照已不成立。）Anthropic 的 doc-coauthoring
-取用的副本未附授權檔，條款未確認，已在 NOTICE 據實標明。
+NOTICE 屬自願標示，故本 skill 不附 per-skill LICENSE 檔（對照 avoid-ai-writing-zh 有附，
+是因為它確實近乎逐字引入了上游內容）。Anthropic 的 doc-coauthoring 取用的副本未附授權檔，
+條款未確認，已在 NOTICE 據實標明。
 
 - **obra/superpowers `brainstorming`**（https://github.com/obra/superpowers）——
   Widen 這一步的形狀：一次問一個問題、能用選擇題就用選擇題、提出多個方案連同取捨、
