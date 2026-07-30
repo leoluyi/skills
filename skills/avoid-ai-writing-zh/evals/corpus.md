@@ -80,10 +80,12 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 面向的判定列，但填寫時選這一例**最具代表性**的一個，讓 coverage matrix 彙整時有
 明確歸屬。
 
-（8 個而非最初設想的 7 個——打破第四面牆／對讀者說教是實際替 H/A 兩桶標註時浮現
-的第 8 類：它談的是「文件在對誰說話」，跟內容是否空洞〔內容類〕、句式是否合乎中文
-語感〔語言句式〕、版面是否過度裝飾〔風格版面〕、是否殘留協作痕跡〔溝通殘留〕都不同
-軸，硬塞進其中一類會失真，所以升格為獨立類別而非勉強歸併。）
+（8 個而非最初設想的 7 個——打破第四面牆是實際替 H/A 兩桶標註時浮現的第 8 類：
+它談的是「交付物在談論自己」，跟內容是否空洞〔內容類〕、句式是否合乎中文語感
+〔語言句式〕、版面是否過度裝飾〔風格版面〕、是否殘留協作痕跡〔溝通殘留〕都不同軸，
+硬塞進其中一類會失真，所以升格為獨立類別而非勉強歸併。與它相鄰的「對讀者說教」
+問的是另一件事——文件在對誰說話、以及有沒有把讀者當成被評斷的對象——歸在
+立場與開場。）
 
 ### 判定表
 
@@ -92,7 +94,7 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 | 引文片段 | 淨引文的精確子字串 | 涵蓋一個判定所及的最小範圍 |
 | # | 正整數，可留空 | 僅當同一片段在該例引文中重複出現時填，指第幾次 |
 | 判定 | `ok` / `flag` | `ok`＝真人正常寫法，標了就是 false positive；`flag`＝確實該標 |
-| 規則 | SKILL.md 的規則名或結構訊號名 | `ok` 列填「被誤標時最可能觸發的那條」，才量得出 FP 歸屬 |
+| 規則 | `references/zh-rules.md` 的規則名，或 `結構級訊號／<子訊號>`、`保護清單／<項目>` | `ok` 列填「被誤標時最可能觸發的那條」，才量得出 FP 歸屬 |
 
 `ok` 列的「規則」欄容易被填成空白——請務必填。FP 的價值在於指出**是哪條規則過度觸發**，
 沒有這一欄，一輪跑完只知道誤標率，不知道要 carve-out 誰。
@@ -122,9 +124,9 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 我認為第一種比較完美 |  | ok | 警句式評語 |
-| 記得 13 年前我也踩過一樣的坑 |  | ok | 結構級訊號／具體個人細節 |
-| 可以應付各種狀況 |  | ok | 空話／口號 |
+| 我認為第一種比較完美 |  | ok | 零資訊警句與口號 |
+| 記得 13 年前我也踩過一樣的坑 |  | ok | 結構級訊號／零具體個人細節 |
+| 可以應付各種狀況 |  | ok | 空話填充 |
 
 **整篇判定**：clean
 ````
@@ -167,7 +169,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 今天因為要維護一個 11 年前完工的專案，特別把當時的 VM 還原到 Hyper-V 裡面執行 | | ok | 空降斷言開場（有具體情境鋪陳，非指涉未交代之物） |
-| 網路就是打不通！ | | ok | 警句式評語（真實情緒感嘆，非破折號收尾的自我加值） |
+| 網路就是打不通！ | | ok | 零資訊警句與口號（真實情緒感嘆，非破折號收尾的自我加值） |
 | 最後搞了一整個上午，才真正釐清真相！ | | ok | 結構級訊號／零具體個人細節（此句正是具體細節本身，反例） |
 | 唉～你一定覺得很蠢對不對！請繼續看一下 | | ok | 對讀者說教（casual／部落格聲音的 carve-out，自嘲共感非居高臨下判斷） |
 
@@ -239,7 +241,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 大、小片軟碟機、家裡電腦有比較大容量的硬碟 | | ok | 結構級訊號／零具體個人細節（具體時代物件細節，非壓縮論述——反例） |
-| 那時候不要說什麼 Stack Overflow 可以抄了，連 Google 都還沒出生咧 | | ok | 警句式評語（口語破格＋具體年代梗，非破折號收尾的自我加值） |
+| 那時候不要說什麼 Stack Overflow 可以抄了，連 Google 都還沒出生咧 | | ok | 零資訊警句與口號（口語破格＋具體年代梗，非破折號收尾的自我加值） |
 | 用貼紙把磁碟片旁邊的孔貼起來就能防止資料寫入 | | ok | 口語化萬能動詞（「貼」「防止」語意明確指向唯一動作，非含糊萬能動詞） |
 
 **整篇判定**：clean
@@ -287,7 +289,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 |---|---|---|---|
 | 我總是喜歡冷門的玩意兒 | | ok | 空降主張（判斷句由後句「Rust 就相對的夠冷門」具體支撐，非懸空結論） |
 | 以我這種愛現的個性 | | ok | 對讀者說教（此為自我評斷而非評斷讀者，性質不同） |
-| 揉合了語多種程式語言的範式 | | ok | 過度簡寫（原文真實筆誤「語多種」，保留原樣不修正——這是人味真跡，不是省略成分該標的地方） |
+| 揉合了語多種程式語言的範式 | | ok | 保護清單／真人的不完美（原文真實筆誤「語多種」，保留原樣不修正——這是人味真跡，不是省略成分該標的地方） |
 
 **整篇判定**：clean
 
@@ -309,9 +311,9 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| I LOVE computer networking | | ok | Emotional flatline（此為真實情緒強度標記，缺席才是 AI 味，出現屬正常人味） |
-| it's what I spent a big chunk of the last few years at work doing | | ok | Vague attributions（具體個人經歷佐證，非假託他人權威） |
-| getting started with all the tools was originally a little tricky | | ok | Hedge-stacked predictions（單一口語化限定詞，非避險堆疊） |
+| I LOVE computer networking | | ok | 情緒宣告（此為真實情緒強度標記，缺席才是 AI 味，出現屬正常人味） |
+| it's what I spent a big chunk of the last few years at work doing | | ok | 模糊歸屬（具體個人經歷佐證，非假託他人權威） |
+| getting started with all the tools was originally a little tricky | | ok | 避險堆疊（單一口語化限定詞，非避險堆疊） |
 
 **整篇判定**：clean
 
@@ -333,8 +335,8 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| pairing with Rachel and Jeff | | ok | Notability name-dropping（具名真實同事協作紀錄，非權威背書） |
-| maybe 10 minutes to compile, and it took about 2 minutes on my fast about | | ok | False ranges（具體實測數字；「my fast about」是真實未修飾筆誤，非刻意模糊區間） |
+| pairing with Rachel and Jeff | | ok | 權威名號堆砌（具名真實同事協作紀錄，非權威背書） |
+| maybe 10 minutes to compile, and it took about 2 minutes on my fast about | | ok | 保護清單／真人的不完美（具體實測數字；「my fast about」是真實未修飾筆誤，非刻意模糊區間） |
 
 **整篇判定**：clean
 
@@ -356,8 +358,8 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| Okay, Julia, you might be thinking | | ok | Rhetorical question openers（自我對話式反問，是結構級訊號要求的口語破格，非空泛修辭開場） |
-| For example at some point in the last 8 years I learned Go | | ok | Vague attributions（具體年限與事實，非模糊歸屬） |
+| Okay, Julia, you might be thinking | | ok | 反問句開場與收尾（自我對話式反問，是結構級訊號要求的口語破格，非空泛修辭開場） |
+| For example at some point in the last 8 years I learned Go | | ok | 模糊歸屬（具體年限與事實，非模糊歸屬） |
 
 **整篇判定**：clean
 
@@ -379,8 +381,8 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| I no longer believe this to be the case | | ok | Vague attributions（立場轉折由後句具體事實支撐，非懸空結論） |
-| I've been mulling over the best way to handle this for the best part of a year... and then a couple of days ago I had a breakthrough | | ok | Rhythm and uniformity／Missing first-person perspective（具體時間軸，正是應保留的第一人稱經驗） |
+| I no longer believe this to be the case | | ok | 空降主張（立場轉折由後句具體事實支撐，非懸空結論） |
+| I've been mulling over the best way to handle this for the best part of a year... and then a couple of days ago I had a breakthrough | | ok | 立場真空（具體時間軸，正是應保留的第一人稱經驗） |
 
 **整篇判定**：clean
 
@@ -402,8 +404,8 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| I still need to honour that promise! | | ok | Sycophantic tone（此為自我究責的真實語氣，非討好讀者的罐頭致謝） |
-| doesn't expose my personal data | | ok | Vague attributions（具體隱私顧慮，非空泛歸因） |
+| I still need to honour that promise! | | ok | 諂媚語氣（此為自我究責的真實語氣，非討好讀者的罐頭致謝） |
+| doesn't expose my personal data | | ok | 模糊歸屬（具體隱私顧慮，非空泛歸因） |
 
 **整篇判定**：clean
 
@@ -425,9 +427,9 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| inspired by Josh Branchaud's collection | | ok | Notability name-dropping（具名真實來源致意，非權威堆砌） |
-| I've since published 148 TILs across 43 different topics | | ok | False ranges（精確可查數字，非模糊區間） |
-| It's a great format! | | ok | Promotional language（真實個人評價，非行銷推廣語） |
+| inspired by Josh Branchaud's collection | | ok | 權威名號堆砌（具名真實來源致意，非權威堆砌） |
+| I've since published 148 TILs across 43 different topics | | ok | 空話填充（精確可查數字，非模糊區間） |
+| It's a great format! | | ok | 推廣語氣（真實個人評價，非行銷推廣語） |
 
 **整篇判定**：clean
 
@@ -450,7 +452,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 開信率依舊在 50% 左右，也收到了關鍵評論網的轉載邀請 | | ok | 空降主張（具體可查數字與事件，非懸空結論） |
-| 非常感謝讀者們的支持！ | | ok | 警句式評語（真實致謝且緊接具體事件，非罐頭式感謝語） |
+| 非常感謝讀者們的支持！ | | ok | 零資訊警句與口號（真實致謝且緊接具體事件，非罐頭式感謝語） |
 | 如果有真的很重要事，那遲早還是會出現的 | | ok | 空降斷言開場（此句在文中段，回指前句「沒特別盯 twitter」的具體行為，非指涉未交代之物） |
 
 **整篇判定**：clean
@@ -473,8 +475,8 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 不是 Anthropic 說自己重視安全，而是它幾乎把 AI 時代的所有矛盾都壓在自己身上 | | ok | Contrarian structure（真實區分兩件事，非表演性對比：後句頓號串列具體列舉了矛盾內容） |
-| 要賺錢、要跑得快、要幫企業寫程式、要跟政府合作 | | ok | 頓號串列代替論述（每項皆為具體矛盾點，非壓縮回應付） |
+| 不是 Anthropic 說自己重視安全，而是它幾乎把 AI 時代的所有矛盾都壓在自己身上 | | ok | 對比句式（真實區分兩件事，非表演性對比：後句頓號串列具體列舉了矛盾內容） |
+| 要賺錢、要跑得快、要幫企業寫程式、要跟政府合作 | | ok | 列舉代替論述（每項皆為具體矛盾點，非壓縮回應付） |
 | 我覺得 Dario 最誠實的一句其實是「從不信任開始是理性的」，因為這比任何安全口號都更接近現實 | | ok | 空降主張（判斷句同句即給出理由「因為...」，非懸空結論） |
 
 **整篇判定**：clean
@@ -497,9 +499,9 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 它不是週期股，它正在變成 AI 時代的公用事業股 | | ok | Contrarian structure（具體產業分類判斷，非表演性對比） |
-| 把一個大的、模糊的、不可測試的判斷，拆成一棵樹——每一根分枝是一個更小的問題，每一片葉子是一個可以用數據回答「對」或「錯」的假設 | | ok | 口號式短句（此為作者自建方法論框架的自創比喻，非零資訊重述的對仗口號——刪掉會損失「樹狀分解」這個具體方法論） |
-| 你沒辦法證偽它 | | ok | 警句式評語（判斷句本身即論證核心，非破折號收尾的自我加值評語） |
+| 它不是週期股，它正在變成 AI 時代的公用事業股 | | ok | 對比句式（具體產業分類判斷，非表演性對比） |
+| 把一個大的、模糊的、不可測試的判斷，拆成一棵樹——每一根分枝是一個更小的問題，每一片葉子是一個可以用數據回答「對」或「錯」的假設 | | ok | 零資訊警句與口號（此為作者自建方法論框架的自創比喻，非零資訊重述的對仗口號——刪掉會損失「樹狀分解」這個具體方法論） |
+| 你沒辦法證偽它 | | ok | 零資訊警句與口號（判斷句本身即論證核心，非破折號收尾的自我加值評語） |
 
 **整篇判定**：clean
 
@@ -522,7 +524,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 早安，各位創作者、社群小編，還有那些信箱永遠爆炸的自媒體經營者 | | ok | 對讀者說教（casual／blunt voice 的 carve-out：直接稱呼讀者為同盟屬人設語域，非居高臨下評斷） |
-| 我是你們的 AI 避坑情報員 | | ok | 打破第四面牆（此為刻意經營的持續性人設暱稱，非委託場景復述或思考過程外洩） |
+| 我是你們的 AI 避坑情報員 | | ok | 文件自述（此為刻意經營的持續性人設暱稱，非委託場景復述或思考過程外洩） |
 | 讓我顯得很蠢的人工智障 | | ok | 專有名詞過度翻譯（「人工智障」是作者自創雙關語，非生造譯名） |
 
 **整篇判定**：clean
@@ -591,9 +593,9 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| A 404 status code does not indicate whether this lack of representation is temporary or permanent | | ok | Rhythm and uniformity（規格文件本就該均質被動語態，非缺席第一人稱的 AI 味——carve-out：voice-neutral docs/spec） |
-| the 410 (Gone) status code is preferred over 404 if the origin server knows, presumably through some configurable means, that the condition is likely to be permanent | | ok | Hedge-stacked predictions（此為規格條件邏輯的精確限定，非避險堆疊） |
-| see Section 4.2.2 of [RFC7234] | | ok | 打破第四面牆 carve-out（對外部權威來源的正式引用，讀者可獨立查核） |
+| A 404 status code does not indicate whether this lack of representation is temporary or permanent | | ok | 節奏均質（規格文件本就該均質被動語態，非缺席第一人稱的 AI 味——carve-out：voice-neutral docs/spec） |
+| the 410 (Gone) status code is preferred over 404 if the origin server knows, presumably through some configurable means, that the condition is likely to be permanent | | ok | 避險堆疊（此為規格條件邏輯的精確限定，非避險堆疊） |
+| see Section 4.2.2 of [RFC7234] | | ok | 併稿接縫（對外部權威來源的正式引用，讀者可獨立查核） |
 
 **整篇判定**：clean
 
@@ -615,8 +617,8 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| Specifically, the secure channel should provide the following properties: [...] | | ok | Bullet lists of bare noun phrases（規格文件的條列展開屬 carve-out：Allowed patterns「Structured uniformity」，且原文條列確有逐項展開，非壓縮） |
-| as described in [RFC3552] | | ok | 打破第四面牆 carve-out（對外部權威來源的正式引用） |
+| Specifically, the secure channel should provide the following properties: [...] | | ok | 條列膨脹與裸名詞條列（規格文件的條列展開屬 carve-out：Allowed patterns「Structured uniformity」，且原文條列確有逐項展開，非壓縮） |
+| as described in [RFC3552] | | ok | 併稿接縫（對外部權威來源的正式引用） |
 
 **整篇判定**：clean
 
@@ -653,11 +655,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 在容器化開發的時代背景下 | | flag | 空降斷言開場（時代大帽子式鋪陳，指涉未交代之物） |
-| 這通常牽涉到防火牆設定、網路模式選擇與埠號對應這三個環節——它們彼此環環相扣，缺一不可 | | flag | 警句式評語／頓號串列代替論述（破折號收尾自我加值＋頓號堆砌未展開） |
-| 首先，我們需要確認容器的網路模式；接著，檢查防火牆規則是否允許對應的連線；最後，驗證埠號對應是否正確 | | flag | Reasoning chain artifacts（「首先／接著／最後」指紋詞，思考過程外洩） |
-| 網路除錯不僅是技術問題，更是一種耐心的展現 | | flag | Contrarian structure（不僅…更…句式，空泛昇華結尾） |
+| 這通常牽涉到防火牆設定、網路模式選擇與埠號對應這三個環節——它們彼此環環相扣，缺一不可 | | flag | 零資訊警句與口號（破折號收尾自我加值＋頓號堆砌未展開） |
+| 首先，我們需要確認容器的網路模式；接著，檢查防火牆規則是否允許對應的連線；最後，驗證埠號對應是否正確 | | flag | 思考過程外洩（「首先／接著／最後」指紋詞，思考過程外洩） |
+| 網路除錯不僅是技術問題，更是一種耐心的展現 | | flag | 對比句式（不僅…更…句式，空泛昇華結尾） |
 
-**整篇判定**：flagged — 空降斷言開場、警句式評語、頓號串列代替論述、Reasoning chain artifacts、Contrarian structure
+**整篇判定**：flagged — 空降斷言開場、零資訊警句與口號、思考過程外洩、對比句式
 
 **預期方向**：刪時代大帽子開場，改從具體錯誤現象切入；三個排查步驟合併成一段連貫散文而非
 「首先／接著／最後」清單；刪「不僅是技術問題更是耐心的展現」收尾，若要收尾就寫具體排查結果。
@@ -680,11 +682,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 對團隊的知識管理至關重要 | | flag | 至關重要（家族詞，空泛升值） |
+| 對團隊的知識管理至關重要 | | flag | 意義膨脹（家族詞，空泛升值） |
 | 這兩種方式各有優缺點，最終還是取決於團隊的使用習慣與工作情境 | | flag | 立場真空（讀完不知道作者實際建議什麼，兩句都是誰都同意的緩衝） |
-| 無論選擇哪一種工具，持續保持文件的即時更新，才是知識管理成功的關鍵 | | flag | Generic conclusions（萬用收尾，任何工具比較文章都能接） |
+| 無論選擇哪一種工具，持續保持文件的即時更新，才是知識管理成功的關鍵 | | flag | 萬用收尾（萬用收尾，任何工具比較文章都能接） |
 
-**整篇判定**：flagged — 至關重要、立場真空、Generic conclusions
+**整篇判定**：flagged — 意義膨脹、立場真空、萬用收尾
 
 **預期方向**：「至關重要」改成平述句；立場真空段改成作者實際的建議（用哪個工具、為什麼）；
 萬用收尾換成具體下一步（例如「持續更新的文件才有用，不在於用哪個編輯器」）。
@@ -707,11 +709,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 你是否也曾懷疑過，自己是不是不適合走上程式設計這條路？ | | flag | 對讀者說教／Rhetorical question openers（開場即以反問對讀者本人下判斷式喊話，非描述操作或列舉讀者可能的具體疑慮——對照 H-05 的三連問各自換一個具體場景，此句只有一個空泛提問） |
-| 學習程式的路上充滿挑戰，但只要堅持下去，終究會看到成果 | | flag | Generic conclusions（萬用勵志語，無具體行動或案例） |
-| 與其擔心自己不夠聰明，不如把時間拿來持續練習——畢竟，機會永遠留給準備好的人，不是嗎？ | | flag | 警句式評語／Rhetorical question openers（「與其…不如…」＋格言＋反問三合一勸誡收尾） |
+| 你是否也曾懷疑過，自己是不是不適合走上程式設計這條路？ | | flag | 對讀者說教（開場即以反問對讀者本人下判斷式喊話，非描述操作或列舉讀者可能的具體疑慮——對照 H-05 的三連問各自換一個具體場景，此句只有一個空泛提問） |
+| 學習程式的路上充滿挑戰，但只要堅持下去，終究會看到成果 | | flag | 萬用收尾（萬用勵志語，無具體行動或案例） |
+| 與其擔心自己不夠聰明，不如把時間拿來持續練習——畢竟，機會永遠留給準備好的人，不是嗎？ | | flag | 反問句開場與收尾（「與其…不如…」＋格言＋反問三合一勸誡收尾） |
 
-**整篇判定**：flagged — 對讀者說教、Generic conclusions、警句式評語
+**整篇判定**：flagged — 對讀者說教、萬用收尾、反問句開場與收尾
 
 **預期方向**：反問式對讀者下判斷的開場改寫成第三人稱陳述這個現象常見；萬用勵志語換成具體
 行動建議；「與其…不如…畢竟…不是嗎？」三合一收尾整段刪或換成作者自己的具體案例。
@@ -734,11 +736,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| Networking issues in Kubernetes can be frustrating to debug | | flag | Emotional flatline（宣告式陳述情緒，非真實第一人稱經驗——對照 H-07 的 "I LOVE computer networking"） |
-| First, check whether the pod is running correctly. Next, verify that the service is correctly routing traffic. Finally, confirm that DNS resolution is working as expected. | | flag | Reasoning chain artifacts（First/Next/Finally 指紋詞） |
-| By following this systematic approach, most networking issues can be resolved efficiently | | flag | Generic conclusions（萬用收尾，任何除錯文章都能接） |
+| Networking issues in Kubernetes can be frustrating to debug | | flag | 情緒宣告（宣告式陳述情緒，非真實第一人稱經驗——對照 H-07 的 "I LOVE computer networking"） |
+| First, check whether the pod is running correctly. Next, verify that the service is correctly routing traffic. Finally, confirm that DNS resolution is working as expected. | | flag | 思考過程外洩（First/Next/Finally 指紋詞） |
+| By following this systematic approach, most networking issues can be resolved efficiently | | flag | 萬用收尾（萬用收尾，任何除錯文章都能接） |
 
-**整篇判定**：flagged — Emotional flatline、Reasoning chain artifacts、Generic conclusions
+**整篇判定**：flagged — 情緒宣告、思考過程外洩、萬用收尾
 
 **預期方向**：刪「can be frustrating to debug」這句宣告式情緒開場；First/Next/Finally 三步驟
 合併成連貫散文；萬用收尾換成具體結果或殘留的注意事項。
@@ -761,11 +763,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| Caching can significantly improve application performance | | flag | Filler phrases（泛泛陳述，非具體實測數據——對照 H-12 的「148 TILs across 43 different topics」） |
-| cache-aside, write-through, and write-behind | | flag | Bullet lists of bare noun phrases（三個策略名詞並列，皆未展開） |
-| Understanding these trade-offs is essential for building performant systems | | flag | Generic conclusions（萬用收尾） |
+| Caching can significantly improve application performance | | flag | 空話填充（泛泛陳述，非具體實測數據——對照 H-12 的「148 TILs across 43 different topics」） |
+| cache-aside, write-through, and write-behind | | flag | 條列膨脹與裸名詞條列（三個策略名詞並列，皆未展開） |
+| Understanding these trade-offs is essential for building performant systems | | flag | 萬用收尾（萬用收尾） |
 
-**整篇判定**：flagged — Filler phrases、Bullet lists of bare noun phrases、Generic conclusions
+**整篇判定**：flagged — 空話填充、條列膨脹與裸名詞條列、萬用收尾
 
 **預期方向**：「can significantly improve performance」換成具體實測數字；三個策略名詞各展開
 一句說明取捨；萬用收尾換成作者實際偏好哪一種、為什麼。
@@ -788,11 +790,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 業界普遍認為 | | flag | Vague attributions（無來源的權威鋪墊——對照 H-14 具名的「Dario」與可查的具體矛盾清單） |
-| 不少專家也表示 | | flag | Vague attributions（同一段第二層模糊歸屬堆疊） |
-| 這不僅是技術問題，更是整個產業必須共同面對的挑戰 | | flag | Contrarian structure（不僅…更…，空泛昇華收尾，無具體立場） |
+| 業界普遍認為 | | flag | 模糊歸屬（無來源的權威鋪墊——對照 H-14 具名的「Dario」與可查的具體矛盾清單） |
+| 不少專家也表示 | | flag | 模糊歸屬（同一段第二層模糊歸屬堆疊） |
+| 這不僅是技術問題，更是整個產業必須共同面對的挑戰 | | flag | 對比句式（不僅…更…，空泛昇華收尾，無具體立場） |
 
-**整篇判定**：flagged — Vague attributions（雙重）、Contrarian structure
+**整篇判定**：flagged — 模糊歸屬（雙重）、對比句式
 
 **預期方向**：「業界普遍認為」「不少專家也表示」各補上具體來源或改成作者自己的觀察；
 「不僅是技術問題更是…挑戰」換成作者自己對這篇報導的實際判斷。
@@ -815,11 +817,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 我們都必須誠實面對自己的假設 | | flag | 警句式評語（祈使句形態的道德化評語，無具體方法支撐） |
+| 我們都必須誠實面對自己的假設 | | flag | 零資訊警句與口號（祈使句形態的道德化評語，無具體方法支撐） |
 | 一個好的分析框架，應該要能夠系統性地拆解問題，並且用數據驗證每一個環節 | | flag | 空降斷言開場（丟出「系統性拆解」概念但未具體說明怎麼拆，缺乏 H-15 那種「一根分枝一個小問題」的可操作細節） |
-| 這正是嚴謹分析與童話故事的根本差異 | | flag | Contrarian structure（套用 H-15 作者已建立的「科學 vs 童話」框架，但沒有自己的落地應用，是空泛借殼而非自創比喻） |
+| 這正是嚴謹分析與童話故事的根本差異 | | flag | 對比句式（套用 H-15 作者已建立的「科學 vs 童話」框架，但沒有自己的落地應用，是空泛借殼而非自創比喻） |
 
-**整篇判定**：flagged — 警句式評語、空降斷言開場、Contrarian structure
+**整篇判定**：flagged — 零資訊警句與口號、空降斷言開場、對比句式
 
 **預期方向**：「我們都必須誠實面對」祈使式評語改成直接陳述作法；「系統性拆解問題」補上
 實際怎麼拆（哪個假設、拆成哪些子問題）；借用他人「科學 vs 童話」框架的收尾整段刪，
@@ -844,10 +846,10 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | AI 工具日新月異，行銷話術也是層出不窮 | | flag | 空降斷言開場（「日新月異」「層出不窮」四字空話，無具體工具或案例——對照 H-16 直接點名 Google Gemini） |
-| 今天想跟大家聊聊 | | flag | Template phrases（AI 部落格開場慣用套語，非真實人設互動——對照 H-16 的固定暱稱「我是你們的 AI 避坑情報員」） |
-| 老實說，市面上充斥著各種誇大宣傳，我們都應該保持理性判斷 | | flag | Generic conclusions（萬用理性呼籲，缺 H-16 那種具體吐槽對象與自創詞彙「人工智障」） |
+| 今天想跟大家聊聊 | | flag | 公式化開場（AI 部落格開場慣用套語，非真實人設互動——對照 H-16 的固定暱稱「我是你們的 AI 避坑情報員」） |
+| 老實說，市面上充斥著各種誇大宣傳，我們都應該保持理性判斷 | | flag | 萬用收尾（萬用理性呼籲，缺 H-16 那種具體吐槽對象與自創詞彙「人工智障」） |
 
-**整篇判定**：flagged — 空降斷言開場、Template phrases、Generic conclusions
+**整篇判定**：flagged — 空降斷言開場、公式化開場、萬用收尾
 
 **預期方向**：「日新月異」「層出不窮」換成具體工具或案例；刪「今天想跟大家聊聊」直接進主題；
 萬用理性呼籲換成作者對某個具體話術的實際吐槽判斷。
@@ -872,7 +874,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 全文 | | flag | 結構級訊號／全文無立場（zero stance：沒有一句作者判斷句，以「整體而言」收場） |
+| 全文 | | flag | 結構級訊號／立場真空（zero stance：沒有一句作者判斷句，以「整體而言」收場） |
 | 全文 | | flag | 結構級訊號／零具體個人細節（沒有一個具體時間、次數、場景；純定義式陳述） |
 | 全文 | | flag | 結構級訊號／只解釋不造像（CI/CD 全用定義式解釋，無自創比喻） |
 
@@ -899,11 +901,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 全文 | | flag | Rhythm and uniformity／Missing first-person perspective（無任何 "I think"／個人偏好／實際踩坑經驗） |
-| 全文 | | flag | Vocabulary diversity（低 TTR：反覆使用 resource／stateless／RESTful 等固定詞彙圈，句長也高度均一） |
-| 全文 | | flag | 結構級訊號的英文對應／no original metaphor（純定義式解釋，無一個把抽象概念拉到具體經驗的比喻） |
+| 全文 | | flag | 立場真空（無任何 "I think"／個人偏好／實際踩坑經驗） |
+| 全文 | | flag | 詞彙處理失真（低 TTR：反覆使用 resource／stateless／RESTful 等固定詞彙圈，句長也高度均一） |
+| 全文 | | flag | 結構級訊號／只解釋不造像（純定義式解釋，無一個把抽象概念拉到具體經驗的比喻） |
 
-**整篇判定**：flagged — Rhythm and uniformity、Vocabulary diversity、no original metaphor（三項成群）
+**整篇判定**：flagged — 立場真空、詞彙處理失真、結構級訊號／只解釋不造像（三項成群）
 
 **預期方向**：detect-only，不代筆——只提示作者補一句自己對 REST 的實際偏好或踩過的坑、
 一個把抽象概念（stateless、resource）拉到具體經驗的自創比喻。
@@ -927,10 +929,10 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 全文 | | flag | 結構級訊號／零具體個人細節（列舉三種方法但無一次作者自己實際使用某方法的具體場景） |
-| 全文 | | flag | 結構級訊號／全文無立場（沒有一句「我後來選了 X，因為 Y」的判斷，以「選擇適合自己的方法」中立收場） |
-| 選擇適合自己的方法，並且持續實踐，是提升生產力的關鍵 | | flag | Generic conclusions（萬用收尾，任何時間管理文章都能接） |
+| 全文 | | flag | 結構級訊號／立場真空（沒有一句「我後來選了 X，因為 Y」的判斷，以「選擇適合自己的方法」中立收場） |
+| 選擇適合自己的方法，並且持續實踐，是提升生產力的關鍵 | | flag | 萬用收尾（萬用收尾，任何時間管理文章都能接） |
 
-**整篇判定**：flagged — 結構級訊號（兩項成群）、Generic conclusions
+**整篇判定**：flagged — 結構級訊號（兩項成群）、萬用收尾
 
 **預期方向**：detect-only，不代筆——只提示作者補一次自己實際用哪種方法、用了多久、
 效果如何；萬用收尾若要保留，換成作者自己的具體選擇與理由。
@@ -953,11 +955,11 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 全文 | | flag | Rhythm and uniformity／Missing first-person perspective（無任何個人經驗或偏好陳述） |
-| Setting a consistent schedule, creating a dedicated workspace, and taking regular breaks | | flag | Bullet lists of bare noun phrases（三個策略並列，未展開任何一項的具體做法） |
-| Many professionals find that these small adjustments make a meaningful difference over time | | flag | Vague attributions（「many professionals」無來源的權威鋪墊） |
+| 全文 | | flag | 立場真空（無任何個人經驗或偏好陳述） |
+| Setting a consistent schedule, creating a dedicated workspace, and taking regular breaks | | flag | 條列膨脹與裸名詞條列（三個策略並列，未展開任何一項的具體做法） |
+| Many professionals find that these small adjustments make a meaningful difference over time | | flag | 模糊歸屬（「many professionals」無來源的權威鋪墊） |
 
-**整篇判定**：flagged — Rhythm and uniformity、Bullet lists of bare noun phrases、Vague attributions
+**整篇判定**：flagged — 立場真空、條列膨脹與裸名詞條列、模糊歸屬
 
 **預期方向**：detect-only，不代筆——只提示作者補一句自己遠端工作的實際經驗或偏好；
 三個並列策略至少展開一項說明實際怎麼做；「many professionals」換成具體來源或作者自己的觀察。
@@ -971,24 +973,28 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 `SF` 欄＝有 AI 桶案例證明它抓得到（recall）；`SNF` 欄＝有真人桶案例證明它不誤傷（false positive）。
 兩欄都空的面向就是缺口——這張表的用途是把缺口變得看得見，不是記錄成績。
 
-**資料來源跨兩個檔案。** SF/SNF 欄位主要來自本檔（H/A 桶各例的「面向」metadata）；
-`保護清單`／`長文scope` 兩個正交機制在本檔沒有原生案例，它們的 SF/SNF 覆蓋來自
-`evals.json`（speak-human-tw 移植案例的保護清單／長文 scope 分組，見該檔的 `bucket`／`面向` 欄）。
-本表只列本檔（corpus.md）能提供的欄位；跑分時應與 evals.json 的覆蓋合併看，不要只看本表。
+**這張表由判定列的「規則」欄推導，不由每例的「面向」欄推導。** 兩者不同：`面向` 是
+建語料時替**整例**選的最具代表性一軸，一例的判定列常橫跨數個類別，所以用 `面向` 統計
+會同時漏報與誤報。2.0.0 重新分類規則後，本表改以「這個類別底下的規則，有沒有實際出現在
+某一列」為準——`flag` 列進 SF 欄，`ok` 列進 SNF 欄。各例的 `面向` 欄保留原值不動
+（它記錄的是建語料當時的意圖，不是覆蓋統計的基礎）。
+
+`保護清單`／`長文scope` 兩個正交機制在本檔幾乎沒有原生案例，覆蓋主要交給 `evals.json`。
+跑分時應與 evals.json 的覆蓋合併看，不要只看本表。
 
 | 缺陷類別／機制 | SF（AI 桶案例） | SNF（真人桶案例） | 缺口 |
 |---|---|---|---|
-| 內容類 | A-01, A-02, A-05, A-09, A-11 | H-02, H-06, H-07, H-10, H-12, H-13, H-14, H-19 | — |
-| 語言句式 | A-07, A-10 | H-03, H-05, H-09, H-15, H-17, H-18 | — |
-| 風格版面 | *(無)* | H-20 | **SF 缺口**：本檔沒有 AI 桶案例以風格版面（破折號密度、粗體、emoji、表格誤用）為主要面向；`evals.json` 已移植的 speak-human-tw SF-06/07/08/22/24 補上這一塊，但本檔尚無對應真實文本樣本可供對照 |
-| 溝通殘留 | A-04, A-12 | H-08, H-11 | — |
-| 事實與引用 | A-06 | *(無)* | **SNF 缺口**：本檔沒有真人桶案例以「有來源的具體引用／數據」為主要面向來對照 A-06 的無來源權威鋪墊；H-13（開信率 50%）與 H-19（RFC 引用）的判定列有觸及，但都不是該例的主要面向標記 |
-| 立場與開場 | *(無)* | *(無)* | **雙缺口**：本檔沒有任何一例把立場真空／公式化開場收尾當主要面向——A-02 的判定表裡有一列標了「立場真空」，但那不是該例的主要面向分類；需要專門的一組 H/A 案例補上，或確認 `evals.json` 的 speak-human-tw SF-25/SNF-13（立場真空 vs 有條件選擇建議）是否已經足夠覆蓋 |
-| 人工戲劇 | *(無)* | H-01, H-04 | **SF 缺口**：本檔沒有 AI 桶案例以罐頭式反應鏡頭／警句式人工戲劇為主要面向——這與 design-notes.md 記錄的規則缺口（罐頭式反應鏡頭，取自 speak-human-tw SF-27/SNF-15）相互印證，`evals.json` 移植後應能補上 SF 側 |
-| 打破第四面牆 | A-03, A-08 | H-16 | — |
-| 保護清單（機制） | *(無)* | *(無)* | 本檔無原生案例；覆蓋交給 `evals.json` 的 speak-human-tw SNF-01/02/03（價格、真名、承諾條款） |
-| 長文scope（機制） | *(無)* | *(無)* | 本檔無原生案例；覆蓋交給既有 `evals.json` id 6（Scope ladder）與 speak-human-tw SF-23/SNF-12（長文 bounded 情境） |
+| 內容類 | A-02, A-03, A-04, A-05, A-08, A-11 | H-12 | **SNF 偏薄**：只有一例真人文的 `ok` 列落在內容類，對「具體但樸素的敘述不該被當空話」這一側的保護力量測不足 |
+| 語言句式 | A-01, A-06, A-07, A-10 | H-01, H-04, H-05, H-07, H-13, H-14, H-15, H-16, H-17, H-18, H-19 | — |
+| 風格版面 | A-05, A-12 | H-14, H-20 | — |
+| 溝通殘留 | *(無)* | H-11 | **SF 缺口**：本檔沒有 AI 桶案例帶對話介面殘留、諂媚語氣、知識截止免責或 AI 工具殘留標記。這一類是 P0，卻只有真人側的反例——recall 完全交給 `evals.json`（ids 23／24／27／32），本檔無真實文本可對照 |
+| 事實與引用 | A-06, A-12 | H-07, H-08, H-09, H-11, H-12 | — |
+| 立場與開場 | A-01, A-02, A-03, A-07, A-08, A-09, A-10, A-11, A-12 | H-01, H-02, H-03, H-04, H-05, H-06, H-09, H-10, H-13, H-14, H-16, H-17, H-18 | — |
+| 人工戲劇 | A-04 | H-07 | 兩側各只有一例，樣本薄 |
+| 打破第四面牆 | A-01, A-04 | H-16, H-19, H-20 | — |
+| 保護清單（機制） | *(無)* | H-06, H-08 | SNF 側有兩例（真人筆誤保留）；SF 側不適用——保護清單是抑制機制，沒有「該標而未標」的一側。其餘覆蓋交給 `evals.json` ids 40／41／42／46 |
+| 長文scope（機制） | *(無)* | *(無)* | 本檔無原生案例；覆蓋交給 `evals.json` id 6、35、51 |
 
-**本輪最有價值的產出是這張表的空格，不是滿格。** 風格版面的 SF 缺口、事實與引用與
-立場與開場的雙缺口、人工戲劇的 SF 缺口，都是 step 3 重寫規則時該優先確認是否已經
-被 `evals.json` 的移植案例接住；接不住的，才是真正需要在下一輪語料裡補的洞。
+**本輪最有價值的產出是這張表的空格，不是滿格。** 目前真正的洞是**溝通殘留的 SF 側**
+（一個 P0 類別在真實語料上完全沒有 recall 樣本）與**內容類的 SNF 側**，其次是人工戲劇
+兩側的樣本厚度。下一輪補語料應從這三處下手。
