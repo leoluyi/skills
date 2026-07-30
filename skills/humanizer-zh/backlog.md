@@ -45,8 +45,17 @@ against the run above rather than interleaving.
   (「今天，我想跟大家分享我使用 AI 改稿的三個心得。」 — 「這是正常開場」, so it should not be cut
   alongside the 時代大帽子 first sentence). In all three the skill was right and the case was
   wrong. Consequence: **1.5.0's 87/88 is partly earned by flagging text the author considers
-  fine.** The remaining ~37 ported cases are unadjudicated and may hold more of the same; the
-  yes/no sweep (`tools/annotate`) is the way through.
+  fine.** A fourth case, **id 17**, was adjudicated in the same session without landing in
+  that group — per PR #20 the skill was right in three of four, so id 17 is the one that went
+  the other way; recover the actual verdict before relying on it either way.
+
+  Two loose ends the sweep left:
+  - **Resume at ids 15/16/17** — that is where the sweep stalled (PR #20). The remaining ~37
+    ported cases are unadjudicated and may hold more of the same.
+  - **None of the four verdicts are in `evals/judged-cases.md`.** That file holds two cases,
+    neither of them these, so the only record is prose in this backlog and in PR #20 — exactly
+    the hand-transcription problem `tools/annotate` exists to remove. Writing them into
+    `judged-cases.md` is part of closing this item, not a follow-up.
 
 - [ ] **Three structural defects in `evals.json`.** Found by the 2026-07-30 54-case run; the
   instrument was left frozen that round so the skill fix stayed comparable to the baseline.
