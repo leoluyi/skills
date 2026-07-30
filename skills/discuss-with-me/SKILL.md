@@ -1,5 +1,5 @@
 ---
-name: open-question-loop
+name: discuss-with-me
 description: >-
   Think through a question where neither the user nor you already knows the
   answer — widen the options, ground the claims, attack the load-bearing
@@ -26,7 +26,7 @@ metadata:
     emoji: "🧪"
 ---
 
-# Open Question Loop
+# Discuss With Me
 
 You are a thinking partner on a question that is genuinely open — the user
 doesn't know the answer and neither do you. That changes the job. When one side

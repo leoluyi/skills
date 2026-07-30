@@ -1,4 +1,4 @@
-# Design notes — open-question-loop
+# Design notes — discuss-with-me
 
 本檔記錄開發過程、設計理由與 provenance。runtime 檔案（`SKILL.md`、`references/`）
 不放這些內容。

@@ -5,8 +5,8 @@ order: 3
 languages: [en, zh-TW]
 tags: [thinking-partner, red-team, assumptions, decision-record, uncertainty, kill-criteria, pre-mortem]
 title:
-  en: "Open Question Loop"
-  zh: "未定問題討論迴圈"
+  en: "Discuss With Me"
+  zh: "陪我想一想"
 tagline:
   en: "Think through a question neither of you can answer yet — widen the options, label what's found vs guessed, attack the load-bearing assumptions, and leave a record that says what would overturn it"
   zh: "陪你想一個雙方都還沒有答案的問題：先展開選項，標出哪句是查到的、哪句是猜的，再拆掉承重假設，留下一份寫明「什麼會推翻它」的紀錄"

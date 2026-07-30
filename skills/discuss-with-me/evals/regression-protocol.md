@@ -1,4 +1,4 @@
-# Regression Protocol — open-question-loop
+# Regression Protocol — discuss-with-me
 
 How to verify a rule change didn't regress the skill. If this skill also has a
 discovery protocol (adversarial corpus runs, GAN-style iteration), that one is
@@ -8,7 +8,7 @@ Three eval layers:
 
 | Layer | Asset | How to run |
 |---|---|---|
-| Trigger | `trigger-queries.json` | `tools/run-eval open-question-loop` (automated; not covered here) |
+| Trigger | `trigger-queries.json` | `tools/run-eval discuss-with-me` (automated; not covered here) |
 | Behavior | `evals.json` cases + expectations | this file |
 | Taste | `judged-cases.md` (if present) | human-adjudicated corpus; final word on disputes |
 
@@ -52,7 +52,7 @@ Minimal regression after a rule edit. In a clean session (no writing rules
 beyond this repo), prompt:
 
 ```
-Read skills/open-question-loop/SKILL.md and all of references/, then process each
+Read skills/discuss-with-me/SKILL.md and all of references/, then process each
 case prompt in evals/evals.json in its stated mode.
 Output: case id | mode | full output. No preliminary checklist.
 ```
