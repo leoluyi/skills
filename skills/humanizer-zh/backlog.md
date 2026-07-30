@@ -1,7 +1,8 @@
 # humanizer-zh backlog
 
-Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md). Several
-items below are blocked on `tools/run-case` there.
+Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md) — except
+`tools/annotate` below, which only this skill's material calls for. Several items below are
+blocked on `tools/run-case` there.
 
 Closed items do not stay here — see `design-notes.md`, `evals/results-*.md`, and commits.
 
@@ -51,7 +52,11 @@ against the run above rather than interleaving.
 
   Two loose ends the sweep left:
   - **Resume at ids 15/16/17** — that is where the sweep stalled (PR #20). The remaining ~37
-    ported cases are unadjudicated and may hold more of the same.
+    ported cases are unadjudicated and may hold more of the same. Two cases from the same source
+    batch were deliberately *not* ported here because they test the 陸用語／簡體殘留 axis; they
+    are tracked in
+    [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither
+    side blocks the other.
   - **None of the four verdicts are in `evals/judged-cases.md`.** That file holds two cases,
     neither of them these, so the only record is prose in this backlog and in PR #20 — exactly
     the hand-transcription problem `tools/annotate` exists to remove. Writing them into
@@ -99,6 +104,21 @@ against the run above rather than interleaving.
   id 40's runner normalised 「3/31 晚上 11:59」 to 「3/31 23:59」 inside its own report. Harmless
   in detect mode (the text was untouched and the verdict stood), but the identical reflex in
   rewrite mode is a 保真 failure, and nothing currently tests for it.
+
+## Tooling the adjudication needs
+
+- [ ] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
+  straight out of the session that found it. When a run disagrees with the key, the fastest
+  way to settle it turned out not to be reading rule text — it was showing the author the raw
+  sentence and asking 「這句有沒有 AI 味？」 with two buttons. Four such questions overturned
+  three cases in one round, where two rounds of rule-wording argument had settled nothing.
+  The tool should: pull a case's quoted span out of `evals.json`, present span + genre + one
+  line of context (never the expectation, never the rule name — those bias the answer), take
+  有/沒有, and write the verdict plus a one-line rationale into `evals/judged-cases.md` as
+  品味層 語料, flagging any case whose verdict now contradicts its `expected-direction`. Runs
+  over a filtered set (a whole id range, or only cases that failed a given run). Dev-side,
+  `uv` fine, never part of skill runtime. The immediate consumer is the ported-case sweep
+  above — resuming it at ids 15/16/17 by hand is the same transcription tax a second time.
 
 ## Behaviour changes, each on its own branch and its own re-run
 
