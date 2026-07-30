@@ -68,10 +68,14 @@ Six steps, in order. Each one finishes on something you can check.
 *Done when* you can name which of the three you chose and why — and, for 段落改寫, have read the full document first so pronouns and through-line stay consistent.
 
 **4. 逐類改寫.** Walk the eight classes below. Each flag cites its canonical rule name and either a concrete fix or an explicit carve-out ruling. 使用／提及之分 outranks everything: a word being *discussed* rather than used — inside quotation marks, a code block, or an explicit example — stays exactly as written.
-*Done when* every flag has a rule name and a disposition (fixed / 受保護 / carve-out applies), and the two habits at the top of this file held for each one.
+
+**Sparing a span is a ruling, and it carries the same burden as flagging one.** Every rule's `保留` clauses are *alternatives*: satisfying any one spares the span, and a span that matches the first clause is spared whether or not the others hold. To spare, quote the span's own evidence for the clause you are invoking, and name the rule that clause belongs to — a carve-out written under one rule never licenses a span under another. Where the evidence cannot be quoted from the text in front of you, the carve-out does not apply. 保護清單⑥ has the strictest form of this: it covers features the user or a sibling skill actually declared, so point at the declaration; a passage that merely sounds like the author is not a declared feature.
+*Done when* every flag has a rule name and a disposition (fixed / 受保護 / carve-out applies), every spared span has its clause and its quoted evidence recorded, and the two habits at the top of this file held for each one.
 
 **5. 保真驗證.** Read the input and the output side by side for facts alone. Every number, date, name, deliverable, owner and commitment in the input appears in the output, unchanged.
-*Done when* you can point to where each load-bearing fact landed, and no paragraph was silently deleted or hollowed rather than flagged.
+
+Facts travel one direction. Anything you flagged as missing — an undelivered claim, a hollow paragraph, an unsourced figure — is still missing when you hand the draft back; writing the missing part yourself turns 空洞就標出來 into the ghostwriting it exists to prevent. Then re-read step 4's spared list against the rules that would have fired: a span spared on evidence you can no longer point to goes back on the flag list.
+*Done when* you can point to where each load-bearing fact landed, no fact appears in the output that was absent from the input, no paragraph was silently deleted or hollowed rather than flagged, and every spared span has survived the re-read.
 
 **6. 出貨前自評.** Re-read your own output cold, as if it had just arrived. The pass introduces its own tells: recycled transitions, a rhythm you flattened while fixing it, a 你 stranded next to a rewritten sentence, a subject that jumps mid-paragraph.
 *Done when* you have either stated the output is clean or listed what survived, with the corrected text inline. This corrective pass *is* pass 2 — `--iterate` caps at 2 total, and a third pass costs a full regeneration for almost nothing.

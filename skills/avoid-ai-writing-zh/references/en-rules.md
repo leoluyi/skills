@@ -4,6 +4,8 @@ The English rules are the same 45 canonical rules, wearing English clothes. Noth
 
 What the English tells have in common: a fixed phrase gets reached for at a moment where a fact belongs. So the working question is never "is this phrase banned" but "did a sentence arrive where a fact was due". Delete the phrase and see what is left standing — if a fact is still there, patch the span; if nothing is, that is a 空話 / 立場真空 finding for the author, not something to write your way out of.
 
+Each rule's keep-clauses are alternatives, not a checklist: satisfying any one spares the span, whichever one it is. Quote the span's own evidence for the clause you invoke and say which rule it belongs to — a carve-out written under one rule never licenses a span under another — and if the evidence is not quotable from the text in front of you, the carve-out does not hold.
+
 Example pairs below are synthetic.
 
 ## 內容類
