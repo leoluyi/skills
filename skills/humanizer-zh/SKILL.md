@@ -70,12 +70,20 @@ Six steps, in order. Each one finishes on something you can check.
 **4. 逐類改寫.** Walk the eight classes below. Each flag cites its canonical rule name and either a concrete fix or an explicit carve-out ruling. 使用／提及之分 outranks everything: a word being *discussed* rather than used — inside quotation marks, a code block, or an explicit example — stays exactly as written.
 
 **Sparing a span is a ruling, and it carries the same burden as flagging one.** Every rule's `保留` clauses are *alternatives*: satisfying any one spares the span, and a span that matches the first clause is spared whether or not the others hold. To spare, quote the span's own evidence for the clause you are invoking, and name the rule that clause belongs to — a carve-out written under one rule never licenses a span under another. Where the evidence cannot be quoted from the text in front of you, the carve-out does not apply. 保護清單⑥ has the strictest form of this: it covers features the user or a sibling skill actually declared, so point at the declaration; a passage that merely sounds like the author is not a declared feature.
-*Done when* every flag has a rule name and a disposition (fixed / 受保護 / carve-out applies), every spared span has its clause and its quoted evidence recorded, and the two habits at the top of this file held for each one.
+**One span, one flag.** When two rules fire on the same span, the defect is one defect — report it under the rule that names it most precisely and drop the other. Listing it twice reads to the author as two problems to fix and inflates the count; noticing 「與上一條同源」 and filing both rows anyway is the failure mode to avoid. Distinct spans in one sentence still get their own rows.
+*Done when* every flag has a rule name and a disposition (fixed / 受保護 / carve-out applies), no span appears on the flag list twice, every spared span has its clause and its quoted evidence recorded, and the two habits at the top of this file held for each one.
 
 **5. 保真驗證.** Read the input and the output side by side for facts alone. Every number, date, name, deliverable, owner and commitment in the input appears in the output, unchanged.
 
 Facts travel one direction. Anything you flagged as missing — an undelivered claim, a hollow paragraph, an unsourced figure — is still missing when you hand the draft back; writing the missing part yourself turns 空洞就標出來 into the ghostwriting it exists to prevent. Then re-read step 4's spared list against the rules that would have fired: a span spared on evidence you can no longer point to goes back on the flag list.
-*Done when* you can point to where each load-bearing fact landed, no fact appears in the output that was absent from the input, no paragraph was silently deleted or hollowed rather than flagged, and every spared span has survived the re-read.
+
+Removing tone means restating the surviving fact in different words, so the bar is zero new **claims**, not zero new words — and a claim is anything the reader could take as true of the world, not just a number, tool or date. Two moves look alike and are not:
+
+- **Making a source term explicit** — unpacking 「講得出道理的主張」 into 「在什麼前提下，系統應該產生什麼結果」 spells out what the term already denoted. Allowed.
+- **Supplying a consequence the source never stated** — the source says a template was copied; adding that such tests 「只是把現況固定下來，不會驗證任何東西」 asserts an outcome the author never claimed. Not allowed, however true it sounds.
+
+Check it by quotation, not by impression: for each clause of the rewrite, point at the span of the input it came from. A clause with nothing to point at is a new claim, and self-certifying 「未新增原文沒有的事實」 while one is present is the failure this step exists to catch.
+*Done when* every clause of the rewrite is traceable to a quoted input span, you can point to where each load-bearing fact landed, no paragraph was silently deleted or hollowed rather than flagged, and every spared span has survived the re-read.
 
 **6. 出貨前自評.** Re-read your own output cold, as if it had just arrived. The pass introduces its own tells: recycled transitions, a rhythm you flattened while fixing it, a 你 stranded next to a rewritten sentence, a subject that jumps mid-paragraph.
 *Done when* you have either stated the output is clean or listed what survived, with the corrected text inline. This corrective pass *is* pass 2 — `--iterate` caps at 2 total, and a third pass costs a full regeneration for almost nothing.
@@ -87,7 +95,7 @@ Facts travel one direction. Anything you flagged as missing — an undelivered c
 | class | what it catches | rules |
 |---|---|---|
 | 內容類 (7) | words spent without a fact arriving | 意義膨脹 · 空話填充 · 抽象claim缺交付 · 萬用收尾 · 推廣語氣 · 原地踏步與段落失連 · 解說導引腔 |
-| 語言句式 (12) | the sentence's shape doing the work its content should | 對比句式 · 避險堆疊 · 詞彙處理失真 · 節奏均質 · 破碎短句堆疊 · 零資訊警句與口號 · 口語化萬能動詞 · 過度簡寫 · 翻譯腔 · 專有名詞過度翻譯 · 繫詞膨脹 · 使用／提及之分 |
+| 語言句式 (12) | the sentence's shape doing the work its content should | 對比句式 · 避險堆疊 · 詞彙處理失真 · 節奏均質 · 破碎短句堆疊 · 零資訊警句與口號 · 口語化萬能詞 · 過度簡寫 · 翻譯腔 · 專有名詞過度翻譯 · 繫詞膨脹 · 使用／提及之分 |
 | 風格版面 (6) | typography and layout standing in for structure | 破折號濫用 · 粗體與內聯標題濫用 · 條列膨脹與裸名詞條列 · 列舉代替論述 · 表情符號與標籤堆疊 · 表格誤用 |
 | 溝通殘留 (4) | chat-turn and tooling residue surviving into a document | 對話介面殘留 · 諂媚語氣 · 知識截止免責 · AI 工具殘留標記 |
 | 事實與引用 (3) | authority borrowed instead of earned | 模糊歸屬 · 幻覺引用與未查證主張 · 權威名號堆砌 |

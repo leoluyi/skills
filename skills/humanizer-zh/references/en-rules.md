@@ -1,6 +1,6 @@
 # English layer
 
-The English rules are the same 45 canonical rules, wearing English clothes. Nothing here is a separate taxonomy — cite the same rule name you would cite in Chinese, and reach for the same carve-out. Twelve rules are Chinese-specific (抽象claim缺交付, 破碎短句堆疊, 零資訊警句與口號, 口語化萬能動詞, 過度簡寫, 翻譯腔, 專有名詞過度翻譯, 列舉代替論述, 空降斷言開場, 空降主張, 對讀者說教, 罐頭式反應鏡頭); this file covers the 33 that manifest in English too.
+The English rules are the same 45 canonical rules, wearing English clothes. Nothing here is a separate taxonomy — cite the same rule name you would cite in Chinese, and reach for the same carve-out. Twelve rules are Chinese-specific (抽象claim缺交付, 破碎短句堆疊, 零資訊警句與口號, 口語化萬能詞, 過度簡寫, 翻譯腔, 專有名詞過度翻譯, 列舉代替論述, 空降斷言開場, 空降主張, 對讀者說教, 罐頭式反應鏡頭); this file covers the 33 that manifest in English too.
 
 What the English tells have in common: a fixed phrase gets reached for at a moment where a fact belongs. So the working question is never "is this phrase banned" but "did a sentence arrive where a fact was due". Delete the phrase and see what is left standing — if a fact is still there, patch the span; if nothing is, that is a 空話 / 立場真空 finding for the author, not something to write your way out of.
 

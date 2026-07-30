@@ -64,11 +64,12 @@
     {
       "id": 7,
       "prompt": "detect 這段 README 草稿（docs 語境）：「技能要在真實 eval 上贏過『不用技能』才會上架。沒過 eval，不上架。安裝有兩條路：連網一行指令，或離線的逐一技能 symlink。範圍是開放的，不是固定的。」",
-      "expected_output": "Adversarial: mixes two slogan-style tells (zero-info restatement, slogan-replaces-explanation) with one legitimate punchy short sentence that must NOT be flagged. Guards the rhythm-vs-slogan boundary.",
+      "expected_output": "Adversarial: mixes two slogan-style tells (zero-info restatement, slogan-replaces-explanation) with one legitimate punchy short sentence that must NOT be flagged. Guards the rhythm-vs-slogan boundary. 作者裁定（2026-07-30）：「範圍是開放的，不是固定的」該標為正反語句；原 no-false-positive 期望與作者判斷相反，已更正。詳見 evals/judged-cases.md。",
       "expectations": [
         "flags-zero-info-restatement: 標記「沒過 eval，不上架。」為零資訊重述——前句已說明 eval 通過才上架，此對仗短句未加任何新資訊，建議刪除。",
         "flags-slogan-replacing-explanation: 標記「連網一行指令，或離線的逐一技能 symlink」為口號代替說明——在該講安裝步驟處只給對仗片語，Fix 應攤開成可執行的完整句。",
-        "no-false-positive-on-informative-short-sentence: 不標記「範圍是開放的，不是固定的」——此短句在前文之後補上新的邊界界定，是承載新資訊的節奏，非口號；同時不得誤觸『不是…而是…』contrarian（此為事實邊界 carve-out）。"
+        "flags-contrast-construction: 標記「範圍是開放的，不是固定的。」為 對比句式——「開放」未界定誰可新增、是否需審核、依據為何，否定框架撐起整句而非標示真實區分；對比句式的 真實的事實邊界 carve-out 不成立（該 carve-out 針對具體名詞的邊界，如「管理粒度是資料集，不是租戶」，不涵蓋抽象性質的對舉）。",
+        "no-duplicate-listing-of-one-span: 同一片段不得在兩條規則下各記一筆——重複計列會把一處缺陷讀成兩處。"
       ]
     },
     {

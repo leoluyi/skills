@@ -57,6 +57,19 @@ against the run above rather than interleaving.
     the hand-transcription problem `tools/annotate` exists to remove. Writing them into
     `judged-cases.md` is part of closing this item, not a follow-up.
 
+- [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
+  widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
+  generally-understood term belongs (「兩條路」→「兩個方式」; ruling in `evals/judged-cases.md`).
+  Nothing measures it yet:
+  - **Hit case** — id 7's 「兩條路」 is the adjudicated example but is not in that case's key.
+  - **Protection case** — this is the one that matters. Widening a catch from verbs to nouns
+    and phrases puts every figurative noun in range, so a register that legitimately carries
+    figuration must be shown to survive: `casual` voice, and a 署名文體 draft whose metaphor
+    system is declared under 保護清單⑥. The two carve-outs written for it (已成通用術語的比喻;
+    宣告過的比喻系統) are untested prose until a case fires at them.
+  Until both exist, treat the widening as unverified — it is the kind of change that buys one
+  hit and pays for it in false positives nobody measured.
+
 - [ ] **Three structural defects in `evals.json`.** Found by the 2026-07-30 54-case run; the
   instrument was left frozen that round so the skill fix stayed comparable to the baseline.
   (1) **Hit-class and protection-class cases are partitioned into separate id ranges** — c3 is
