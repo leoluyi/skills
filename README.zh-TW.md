@@ -152,7 +152,8 @@ tools/sync-skills
 
 部分技能立基於既有作品，署名與授權如下：
 
-- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** — Conor Bronsdon（MIT）。`avoid-ai-writing-zh` 的英文偵測層逐字沿用此專案；上游 MIT 授權隨 [`skills/avoid-ai-writing-zh/LICENSE`](skills/avoid-ai-writing-zh/LICENSE) 一併附上。
-- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** — Raymond Hou（雷蒙三十）（MIT）。啟發了 `avoid-ai-writing-zh`（翻譯腔）與 `avoid-china-writing`（陸用語對照表）的部分台灣用語條目；這些規則條目均為自行改寫，非照抄原文。另外，`avoid-ai-writing-zh` 的測試語料（`evals/evals.json` id 15-54）逐字改編了 40 則測試案例並標明出處，見 `skills/avoid-ai-writing-zh/NOTICE`。
+- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** — Raymond Hou（雷蒙三十）（MIT）。`avoid-ai-writing-zh` 的六步驟工作流程與保護清單機制改編自此專案；其翻譯腔條目也啟發了該技能與 `avoid-china-writing`（陸用語對照表）的部分台灣用語條目，這些規則條目均為自行改寫，非照抄原文。另外，`avoid-ai-writing-zh` 的測試語料（`evals/evals.json` id 15-54）逐字改編了 40 則測試案例並標明出處，見 [`skills/avoid-ai-writing-zh/NOTICE`](skills/avoid-ai-writing-zh/NOTICE)。
+- **[humanizer](https://github.com/blader/humanizer)** — Siqi Chen（MIT）與 **[x-skills](https://github.com/sergebulaev/x-skills)** 的 `x-humanizer` — Sergey Bulaev（MIT）。`avoid-ai-writing-zh` 的英文層由兩者的模式清單蒸餾而來：規則重新推導、重新歸入該技能自己的缺陷分類並改寫，未逐字沿用任何原文。
+- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** — Conor Bronsdon（MIT）。`avoid-ai-writing-zh` 在 v1.5.0（含）以前的英文偵測層逐字沿用此專案；該層已於 v2.0.0 移除，現行技能不再含其內容，此處保留署名以誌來歷。
 - **[Diátaxis](https://diataxis.fr/)** — Daniele Procida（[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）。`knowledge-doc-writing` 以 Diátaxis 四型模型（tutorial／how-to／reference／explanation）為結構主軸；框架本身為 Procida 所有，`skills/knowledge-doc-writing/research/` 下的蒸餾筆記為衍生內容，以 CC BY-SA 4.0 釋出。
 - **frontend-design** — Anthropic（Apache-2.0）。`infographic-design` 改編其部分內容，詳見 [`skills/infographic-design/NOTICE`](skills/infographic-design/NOTICE)。
