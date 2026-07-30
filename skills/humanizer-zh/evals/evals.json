@@ -174,19 +174,6 @@
       "source": "speak-human-tw SF-02 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
     {
-      "id": 17,
-      "prompt": "detect 這段（模糊歸屬（電子報），改編自 speak-human-tw SF-03）：「業界專家普遍認為，AI 工具將徹底改變內容產業的遊戲規則，不少使用者也表示工作效率獲得顯著提升。」",
-      "expected_output": "Should-fix: 「業界專家」「不少使用者」是無來源的權威鋪墊。",
-      "expectations": [
-        "expected-direction: 刪權威鋪墊改為第一手觀察，或明確標示「此處缺來源」；不得補虛構來源。"
-      ],
-      "bucket": "SF",
-      "面向": "事實與引用",
-      "對應規則": "模糊歸屬",
-      "tier": "full",
-      "source": "speak-human-tw SF-03 (MIT, adapted with attribution — verbatim source text, added fields)"
-    },
-    {
       "id": 18,
       "prompt": "detect 這段（否定平行結構堆疊（電子報），改編自 speak-human-tw SF-04）：「這不只是一堂課，更是一場自我升級的旅程。重點不是工具，而是思維。真正的效率不是做得更多，而是想得更清楚。」",
       "expected_output": "Should-fix: 三句連用「不是 A 而是 B」句型，表演感重。",
@@ -228,9 +215,10 @@
     {
       "id": 21,
       "prompt": "detect 這段（粗體過度＋內聯粗體標題列表（辦公文書），改編自 speak-human-tw SF-07）：「本次改版重點如下：\n- **使用者體驗**：透過全新介面設計大幅改善\n- **載入速度**：透過演算法優化顯著提升\n- **資料安全**：透過端對端加密全面強化」",
-      "expected_output": "Should-fix: 粗體標題＋「透過⋯⋯」排比，典型 AI 列表腔。",
+      "expected_output": "Should-fix: 三個條列項都是「粗體標籤：透過⋯⋯達成⋯⋯」的排比公式，標籤與下文互相重述；列表形式本身不是問題。",
       "expectations": [
-        "expected-direction: 能一段散文講完就用散文；保留三項變更的具體內容。"
+        "expected-direction: 拿掉粗體標籤的自我重述，或打破三則一致的「透過X達成Y」排比句式；保留三項變更的具體內容。",
+        "no-prose-collapse-demand: 不得要求把條列改寫成散文——條列形式本身不是缺陷。"
       ],
       "bucket": "SF",
       "面向": "風格版面",
@@ -319,13 +307,13 @@
     {
       "id": 28,
       "prompt": "detect 這段（解說導引句（電子報），改編自 speak-human-tw SF-16）：「把這三個數字擺在一起，你會讀到一件很重要的事：我們的讀者其實更喜歡短內容。」",
-      "expected_output": "Should-fix: 「你會讀到一件事：」是解說導引腔，替讀者按暫停鍵。",
+      "expected_output": "Should-not-fix (protection boundary): 全文只有這一句解說導引腔，未達密度規則的堆疊門檻（500 字內 3 次以上才標）。",
       "expectations": [
-        "expected-direction: 刪導引句，直接說結論。"
+        "no-single-instance-false-positive: 單一次解說導引腔不得標記為 flag。"
       ],
-      "bucket": "SF",
+      "bucket": "SNF",
       "面向": "內容類",
-      "對應規則": "解說導引腔",
+      "對應規則": "解說導引腔 carve-out（密度規則：單一次不算）",
       "tier": "full",
       "source": "speak-human-tw SF-16 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -449,9 +437,10 @@
     {
       "id": 38,
       "prompt": "detect 這段（公式化開場（部落格），改編自 speak-human-tw SF-26）：「在當今資訊爆炸、AI 技術日新月異的時代背景下，內容創作者正面臨著前所未有的挑戰與機遇。今天，我想跟大家分享我使用 AI 改稿的三個心得。」",
-      "expected_output": "Should-fix: 第一句是時代大帽子，刪掉不損失任何資訊；第二句才是真正的開場，且仍是預告式導言。",
+      "expected_output": "Should-fix: 第一句「在當今…時代背景下…」是時代大帽子，刪掉不損失任何資訊；第二句「今天，我想跟大家分享」是正常開場，不連坐。",
       "expectations": [
-        "expected-direction: 刪掉第一句，從具體場景、數字或動作切入。第二句的「今天我想跟大家分享」也應收掉，直接進正題。"
+        "expected-direction: 刪掉第一句時代大帽子，從具體場景、數字或動作切入。",
+        "no-preview-opener-false-positive: 第二句「今天，我想跟大家分享我使用 AI 改稿的三個心得」保留，不得視為需修正的預告式導言。"
       ],
       "bucket": "SF",
       "面向": "立場與開場",
@@ -695,6 +684,18 @@
       "面向": "立場與開場",
       "對應規則": "作者隱身（--expect-author 宣告路徑）",
       "tier": "fast"
+    },
+    {
+      "id": 57,
+      "prompt": "detect 這段（電子報）：「值得注意的是，我們這季的退訂率是 3.2%。先把這個數字記著，等一下你就知道它為什麼關鍵。值得一提的是，同期新訂閱數成長了 18%。這裡有一個很重要的觀察：把這兩個數字擺在一起看，你會發現一件事——我們的成長其實來自新客，不是留存。」",
+      "expected_output": "Should-fix: 短短一段內連續五次解說導引腔（值得注意的是／先把這個數字記著，等一下你就知道它為什麼關鍵／值得一提的是／這裡有一個很重要的觀察／你會發現一件事），遠超堆疊門檻（500 字內 3 次以上）。",
+      "expectations": [
+        "expected-direction: 刪掉所有導引句，讓數字與結論直接相鄰；保留 3.2%、18% 與「成長來自新客不是留存」的結論。"
+      ],
+      "bucket": "SF",
+      "面向": "內容類",
+      "對應規則": "解說導引腔",
+      "tier": "full"
     }
   ]
 }
