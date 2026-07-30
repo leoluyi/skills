@@ -15,7 +15,7 @@ description: >-
   use learn-loop), for factual lookups, or for debugging and code review. The
   test is whether the answer is unknown to both sides, not whether the topic
   feels hard.
-version: 0.1.0
+version: 0.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -70,6 +70,22 @@ better outcome than a beautifully structured discussion of a solved problem.
 
 Keep the entry to a few lines. A long process announcement is the first sign of
 a skill optimizing for looking rigorous.
+
+### Invoked bare
+
+When the invocation carries no question — just the skill name, mid-conversation —
+the subject is the turn that just happened: the user is telling you your last
+answer has something in it they can't act on yet. Read your own last turn for what
+it never argued for — the premise it rested on, the direction it picked without
+comparing alternatives, the number or claim it produced without a source. That is
+the question. Name **the blocked move** with it: what the user was about to do
+that this last turn was supposed to support. The blocked move sets the depth — the
+loop is done when they can make that move or knowingly decline to, not when the
+topic runs out.
+
+If two readings of the last turn are genuinely different questions, give both and
+let them pick. If the last turn left nothing open — a lookup, a finished edit, a
+settled fact — say so and answer whatever they're actually unsure about instead.
 
 ## The loop
 
@@ -147,6 +163,11 @@ Two endings are good, and one of them is not an answer.
 A third ending exists and should be said out loud when it happens: the question
 was malformed, and the real question is a different one. Restate it and restart
 the loop.
+
+When the run started bare, close by saying where **the blocked move** now stands:
+make it, make a different one, or hold it until the named evidence arrives. The
+user paused work to come here; a tidy record with no verdict on the move leaves
+them exactly where they started.
 
 ## Holding the line
 

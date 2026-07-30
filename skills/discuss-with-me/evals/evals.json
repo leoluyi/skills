@@ -66,6 +66,30 @@
         "gives-the-handoff: Supplies the concrete material for that check: the record to hand over plus specific questions for the fresh reader, not just the suggestion to 'ask someone else'.",
         "still-attempts-now: Also provides its own best attempt at finding holes, rather than deferring entirely."
       ]
+    },
+    {
+      "id": 7,
+      "prompt": "[上一輪 agent 的回覆:「建議把這個 API 的 rate limit 從每分鐘 60 次調到 200 次。60 是當初的保守設定,真正的瓶頸在下游計費服務,它大概吃得下每分鐘 250 次。調到 200 之後前端就不用再做批次合併,那段 queue 邏輯可以直接移掉。」][使用者這一輪只打了 skill 名稱,後面沒有帶任何問題]",
+      "expected_output": "Hit class, bare-invocation branch. Nothing in the user's turn states a question, and the baseline behaviour is to ask what they would like to discuss — a wasted turn, because the previous turn is full of unargued material: the 250/min figure has no source, 'the real bottleneck is billing' is asserted not shown, and removing the queue logic was chosen without comparing alternatives. Correct behaviour derives the question from that turn and ties the discussion's depth to the change the user was about to ship.",
+      "expectations": [
+        "derives-question-from-last-turn: Names as the question something the previous turn asserted without arguing for it (the source of the 250/min ceiling, whether billing is the binding bottleneck, or whether removing the queue is safe) rather than asking the user to supply or restate a topic.",
+        "names-blocked-move: Identifies what the user was about to do — raise the limit to 200 and delete the batching/queue logic — as the thing this discussion is blocking.",
+        "stopping-condition-tied-to-move: States when the discussion would be done in terms of the user being able to make that change or knowingly decline it, rather than leaving the depth open-ended.",
+        "unsourced-figure-not-reused: Treats the 250/min ceiling as unverified — marked as such, or named as the thing to go check — instead of reasoning onward from it as established fact.",
+        "no-scoping-turn-spent: Does not open with a request for the user to clarify what they want discussed before doing any of the above."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "[上一輪 agent 的回覆:「找到了:pyproject.toml 的 requires-python 是 >=3.11,但 CI 的 setup-python 固定在 3.10,所以 build 掛掉。我把 CI 改成 3.11,重跑過了,綠的。」][使用者這一輪只打了 skill 名稱,後面沒有帶任何問題]",
+      "expected_output": "Protection class, paired with case 7. The previous turn is a diagnosed, fixed, and verified problem — it left nothing open. The failure mode is manufacturing an inquiry loop to justify the invocation (Python version policy, whether to pin runtimes, supply-chain risk of 3.11). Note the deliberate asymmetry with case 7: asking the user what they want opened is a wasted turn there and the correct move here, because here there is genuinely nothing to derive.",
+      "expectations": [
+        "says-nothing-open: States plainly that the previous turn left no open question, rather than inventing one so the loop has something to run on.",
+        "no-loop-manufactured: Does not run a widening pass, a red-team pass, or an assumptions extraction over a closed and verified fix.",
+        "hands-back-cheaply: Either asks what specifically the user wants opened, or addresses the nearest thing that is genuinely uncertain, in a short message.",
+        "no-record-written: Does not create an open-question record file for a closed fix.",
+        "proportionate-length: Response stays to a few lines rather than expanding a solved build failure into an analysis."
+      ]
     }
   ]
 }

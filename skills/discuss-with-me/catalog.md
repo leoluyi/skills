@@ -23,10 +23,12 @@ highlights:
     - "Red-team pass gives each assumption a fails-if, cheapest evidence, kill criterion, and who would know"
     - "Verifies in a fresh context — subagent or new session, ideally another model family — never in the thread that built the conclusion"
     - "Writes an open-question record carrying killed options and the strongest case against, not a decision doc"
+    - "Invoked bare mid-conversation, it makes the question out of the last answer — what that turn never argued for — and stops when the work you paused can move"
   zh:
     - "先展開 5–20 個選項，包含跟當下風向相反的，再交給你決定留哪些"
     - "每個承重句就地標 [已查證]／[推論]／[推測]，流暢的段落沒辦法把猜測洗成事實"
     - "紅隊回合逐條給出「什麼情況下不成立」「最便宜的驗證」「停損線」「誰會知道」"
     - "驗證一律換到乾淨脈絡：subagent 或新對話，最好換一個模型家族，不在原討論串裡自己驗自己"
     - "產出是「未定問題紀錄」：保留已排除的選項與反方最強論證，不是一份假裝確定的決策文件"
+    - "對話中途直接呼叫、不帶問題，就從上一輪回答裡沒被論證的地方生出題目，討論到你停下的那件工作能往下走為止"
 ---
