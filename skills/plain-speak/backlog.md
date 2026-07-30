@@ -2,9 +2,6 @@
 
 Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md).
 
-Note: this branch carries 1.4.0. The first item below describes 1.5.0, which is on `main`
-(`f91a5d3`) and arrives here on merge.
-
 - [ ] **Two 1.5.0 behaviours are unverifiable from a single-prompt harness — need real
   transcripts in `judged-cases.md`.** 2026-07-30. The bare-invocation path resolves its target
   from the conversation, and cases 8–12 test that against a transcript *embedded in the prompt*.

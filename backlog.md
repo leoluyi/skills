@@ -57,8 +57,7 @@ pays that tax again, which is why these three sit above every skill-level item.
   error surfaced. Fix: `if has("expected_trigger") then .expected_trigger else .should_trigger end`.
 
 - [ ] **`discuss-with-me` cases 9–16 errored with "not logged into claude.ai via the CLI".**
-  Noted 2026-07-30 while shipping that skill's 0.2.0 (`main` renamed it from
-  `open-question-loop`). Cases 1–8 passed; 9–16 all failed with `run-eval: claude -p produced
+  Noted 2026-07-30 while shipping that skill's 0.2.0. Cases 1–8 passed; 9–16 all failed with `run-eval: claude -p produced
   no parseable TRIGGER/NONE decision.` A different symptom from the 2026-07-28
   `ANTHROPIC_API_KEY` credit-exhaustion bug (that one silently swallowed "Credit balance is
   too low"; this is a plain login-state message) — either a genuinely expired CLI session, or
