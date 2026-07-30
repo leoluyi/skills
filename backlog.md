@@ -41,29 +41,36 @@ pays that tax again, which is why these three sit above every skill-level item.
   JSON.** Lowest of the three in value, and the one most likely to be unnecessary once
   `annotate` exists.
 
-- [ ] **Wire `tools/check-labels` into `docs-check.yml`.** It validates every rule label
-  against the names the skill actually declares, plus the corpus 解析契約, and is
-  regression-tested against six injected fault classes (unresolvable name, non-substring
-  引文片段, invalid 判定, a purely parenthetical `（缺口` label, an invented sub-signal under a
-  real parent, a malformed judgment row). Today it gates only when run by hand.
+- [ ] **`check-labels` has no equivalent gate for skills other than humanizer-zh.**
+  Found 2026-07-30 while wiring it into CI (`.github/workflows/humanizer-zh-labels.yml`, a
+  separate workflow file rather than a second job in `docs-check.yml` — GitHub Actions applies
+  `on.paths` at the whole-workflow level, not per-job, so a second job in that file would still
+  run, and could block, on a catalog-only PR that never touches humanizer-zh). The tool
+  hard-depends on `references/zh-rules.md`, `references/hidden-author.md`, and
+  `evals/corpus.md` — no other skill has these, so running it against one fails with
+  `missing rule file` (exit 2), not a clean skip. Worth deciding whether a second skill ever
+  grows a `corpus.md` in this same shape, or whether label hygiene for everyone else needs a
+  different, lighter check.
 
 ## `tools/run-eval`
 
-- [ ] **`jq -r '.expected_trigger // .should_trigger'` treats `false` as absent.** Found
-  2026-07-28; latent, not live — every `trigger-queries.json` in the repo uses
-  `should_trigger`. jq's `//` falls through whenever the left side is `false`, not just
-  `null`, so a fixture using the newer `expected_trigger` key (which the script's own usage
-  comment says it supports) would read as `null` → every negative case FAILs forever, with no
-  error surfaced. Fix: `if has("expected_trigger") then .expected_trigger else .should_trigger end`.
-
-- [ ] **`discuss-with-me` cases 9–16 errored with "not logged into claude.ai via the CLI".**
-  Noted 2026-07-30 while shipping that skill's 0.2.0. Cases 1–8 passed; 9–16 all failed with `run-eval: claude -p produced
-  no parseable TRIGGER/NONE decision.` A different symptom from the 2026-07-28
-  `ANTHROPIC_API_KEY` credit-exhaustion bug (that one silently swallowed "Credit balance is
-  too low"; this is a plain login-state message) — either a genuinely expired CLI session, or
-  that same failure mode surfacing new diagnostic text after the `env -u ANTHROPIC_API_KEY`
-  fix. Needs a clean rerun with `claude /login` state confirmed, to tell a one-off session
-  hiccup from a router-path regression.
+`RUN_EVAL_AGENT=codex` is now a real second router, not just a documented option — it had never
+actually been exercised. Fixed 2026-07-30, all verified live against a real `codex` install:
+model/effort were unpinned and silently overridable by `$CODEX_HOME/config.toml` (fixed with
+`-m`/`-c model_reasoning_effort` plus `--ignore-user-config`, the flag that actually makes a
+pin authoritative); it broke outright when invoked from outside the repo (fixed with
+`-C "$REPO_ROOT"`, `--skip-git-repo-check` kept as a fallback); stderr was discarded on failure,
+and once captured, a first-review fix that copied the `claude` branch's `head`-based snippet
+still printed only `codex exec`'s startup banner, never the actual error, because the real
+failure sits at the *tail* of stderr, not the head (fixed, verified against a real invalid-model
+error); and it had no `ANTHROPIC_API_KEY`-style env-drop for policy parity with the claude
+branch's "never a billed API call" stance (added `env -u OPENAI_API_KEY` defensively — not
+reproduced as a live failure on this CLI's ChatGPT-login mode, but zero-cost and the failure
+mode, if it exists elsewhere, would be silent). Verified against `discuss-with-me`'s 16-case
+trigger set from both inside and outside the repo — both routers agree case-by-case
+(`evals/results-2026-07-30-trigger-rerun.md` in that skill's dir). This is now the tool to reach
+for whenever a run-eval failure needs to be told apart from a genuine router regression, rather
+than re-running the same CLI and hoping.
 
 ## Per-skill backlogs
 
@@ -71,5 +78,5 @@ pays that tax again, which is why these three sit above every skill-level item.
 - [`skills/avoid-china-writing/backlog.md`](skills/avoid-china-writing/backlog.md) — one missing eval axis
 - [`skills/blog-writing-zh/backlog.md`](skills/blog-writing-zh/backlog.md) — source-derived voice profile
 - [`skills/infographic-design/backlog.md`](skills/infographic-design/backlog.md) — negation in `references/`
-- [`skills/knowledge-doc-writing/backlog.md`](skills/knowledge-doc-writing/backlog.md) — trigger layer never verified
-- [`skills/plain-speak/backlog.md`](skills/plain-speak/backlog.md) — two behaviours a single-prompt harness can't reach
+- [`skills/knowledge-doc-writing/backlog.md`](skills/knowledge-doc-writing/backlog.md) — no open items
+- [`skills/plain-speak/backlog.md`](skills/plain-speak/backlog.md) — real transcripts needed for two untestable-by-prompt behaviours

@@ -11,8 +11,3 @@ Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md).
   transcripts where either path misfires and turn them into judged cases; do not assume the
   synthetic runs cover them.
 
-- [ ] **Rerun the trigger layer with the fixed description extractor.** Any pass rate recorded
-  before 2026-07-19 was measured against a truncated `description: >-` — `tools/run-eval`'s
-  extractor fed the router the literal string `>-`, so it guessed from the skill name alone.
-  The extractor is fixed; this skill has not been rerun since. (`knowledge-doc-writing` is the
-  other one still outstanding.)

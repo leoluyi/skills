@@ -1,0 +1,52 @@
+name: Check humanizer-zh eval labels
+
+# tools/check-labels validates two things for humanizer-zh specifically: every
+# rule label used by evals.json / corpus.md resolves to a name the skill
+# actually declares, and every corpus.md 引文片段 is a real substring of its
+# case's quote (the 解析契約). It hard-depends on this skill's own
+# references/zh-rules.md, references/hidden-author.md, and evals/corpus.md —
+# no other skill has these files, so it is not generalizable to skills/**
+# (running it against a skill that lacks them fails with "missing rule file",
+# not a clean skip).
+#
+# This lives in its own workflow file, not a second job in docs-check.yml,
+# because GitHub Actions applies `on.paths` at the workflow level: a second
+# job in that file would still run (and could block) on a catalog-only PR
+# that never touches humanizer-zh, and vice versa. Two independent gates need
+# two independent trigger sets.
+
+on:
+  pull_request:
+    paths:
+      - "skills/humanizer-zh/SKILL.md"
+      - "skills/humanizer-zh/references/**"
+      - "skills/humanizer-zh/evals/corpus.md"
+      - "skills/humanizer-zh/evals/evals.json"
+      - "tools/check-labels"
+      - ".github/workflows/humanizer-zh-labels.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/humanizer-zh/SKILL.md"
+      - "skills/humanizer-zh/references/**"
+      - "skills/humanizer-zh/evals/corpus.md"
+      - "skills/humanizer-zh/evals/evals.json"
+      - "tools/check-labels"
+      - ".github/workflows/humanizer-zh-labels.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Validate humanizer-zh eval labels and corpus parsing contract
+        run: uv run tools/check-labels humanizer-zh
