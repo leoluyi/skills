@@ -141,11 +141,11 @@ def load_canonical(skill_dir: Path) -> set[str]:
         if line.startswith("### "):
             names.add(line[4:].strip())
 
-    signals = skill_dir / "references" / "structure-signals.md"
+    signals = skill_dir / "references" / "hidden-author.md"
     if not signals.exists():
         raise CorpusError(f"missing rule file: {signals}")
     for match in re.finditer(
-        r"結構級訊號／[^\s、（()|`*。，]+", signals.read_text(encoding="utf-8")
+        r"作者隱身／[^\s、（()|`*。，]+", signals.read_text(encoding="utf-8")
     ):
         names.add(match.group(0))
 

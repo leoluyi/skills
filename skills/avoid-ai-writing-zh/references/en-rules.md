@@ -98,19 +98,19 @@ English also runs this defect *inside a sentence*, with no bullet in sight: a co
 **公式化開場** — "In the rapidly evolving world of…", "In today's landscape", "As technology continues to advance"; the speculative world opener ("Imagine a world where every deploy is instant"); the fill-in-the-blank social opener ("I recently had the pleasure of…"). Fiction, a thought experiment with a stated payoff, and the instructional "imagine you have a sorted array" all stay.
 > Last year the office logged 412 maintenance tickets; 118 were the same leaking riser. ← *In today's rapidly evolving property-management landscape…*
 
-**反問句開場與收尾** — "But what does this mean for developers?", "So why should you care?", "What's next?" used to stall before a point or to moralise at the end. A genuine conversational aside in a voice-bearing piece stays, and so does a run of questions where each names a different concrete worry; `linkedin` allows one as a hook.
+**反問句開場與收尾** — "But what does this mean for developers?", "So why should you care?", "What's next?" used to stall before a point or to moralise at the end. A genuine conversational aside in a 署名文體 piece stays, and so does a run of questions where each names a different concrete worry; `linkedin` allows one as a hook.
 > For residents it's money: the fee goes from NT$65 to NT$72 per ping. ← *So what does this really mean for residents?*
 
-**立場真空** — the systematic refusal to take a position in a genre that calls for one: "there are pros and cons either way", "it depends on your use case", "ultimately, both approaches have merit" as the conclusion, and no sentence anywhere carrying the author's judgement. Voice-neutral genres — docs, README, reference, RFP, spec, SOP, investor-email — are supposed to read this way; one clear stance anywhere in the piece clears the flag.
+**立場真空** — the systematic refusal to take a position in a genre that calls for one: "there are pros and cons either way", "it depends on your use case", "ultimately, both approaches have merit" as the conclusion, and no sentence anywhere carrying the author's judgement. Genres that only state information — docs, README, reference, RFP, spec, SOP — are supposed to read this way, and 公文/簽呈 take their stance in the 擬辦 line rather than in a voice. A proposal, plan or investor email is not on that list: it exists to recommend, so surveying the options and recommending none is precisely what this catches. One clear stance anywhere in the piece clears the flag.
 > I'd take the gas hob. ← *Both hob types have their advantages, depending on personal preference.*
 
-**結構級訊號** — detect-only, aggregate, gated to voice-bearing genres, two or more sub-signals required. Full rules in [structure-signals.md](structure-signals.md).
+**作者隱身** — detect-only, aggregate, gated to 署名文體 genres, two or more sub-signals required. Full rules in [hidden-author.md](hidden-author.md).
 
 ## 人工戲劇
 
 **情緒宣告** — "What surprised me most", "What struck me was", "I was fascinated to discover", "The most interesting part", and the bare header form ("Interesting part of the project:").
 
-Its flatter and commoner English form asserts the feeling *about the topic* with nobody in the sentence: "X can be frustrating to debug", "this is a common source of confusion", "the process is often painful". It reads as experience but reports none — no occasion, no cost, no one who felt it. Ask who felt this and when; if the text cannot say, it is a declared emotion standing in for the specific one. A genuine intensity marker that the surrounding 400 words earn stays; in a voice-bearing piece it is the *absence* of these that reads as machine-written.
+Its flatter and commoner English form asserts the feeling *about the topic* with nobody in the sentence: "X can be frustrating to debug", "this is a common source of confusion", "the process is often painful". It reads as experience but reports none — no occasion, no cost, no one who felt it. Ask who felt this and when; if the text cannot say, it is a declared emotion standing in for the specific one. A genuine intensity marker that the surrounding 400 words earn stays; in a 署名文體 piece it is the *absence* of these that reads as machine-written.
 > I lost an afternoon to this before checking whether kube-proxy was even running. ← *Networking issues can be frustrating to debug.*
 > The stock has been going since 1978 — strained every night, topped up every morning. ← *What struck me most was their remarkable dedication.*
 

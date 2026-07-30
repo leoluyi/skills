@@ -1,7 +1,7 @@
 ---
 name: avoid-ai-writing-zh
 description: >-
-  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit a named file in place); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only structure-signals audit that names what is absent (均質、沒立場、沒有具體例子) rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
+  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit a named file in place); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
 version: 2.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -42,7 +42,7 @@ Signals, not proof. Every pattern here is more frequent in LLM output, and every
 
 **Language.** CJK present → the zh layer, [references/zh-rules.md](references/zh-rules.md). Pure English → the English layer, [references/en-rules.md](references/en-rules.md). Mixed zh/en → audit each language under its own layer, and leave English technical terms (API, Kubernetes, CI/CD) standing inside the Chinese prose; that is correct Taiwan usage.
 
-**Mode.** Natural language selects it; explicit options (`--mode`, `--voice`, `--context`, `--file`, `--structure-signals`, `--iterate`) do the same job for power users — `--iterate` is the one that governs how far the pass runs, capping the corrective passes of step 6 at 2.
+**Mode.** Natural language selects it; explicit options (`--mode`, `--voice`, `--context`, `--file`, `--expect-author`, `--iterate`) do the same job for power users — `--iterate` is the one that governs how far the pass runs, capping the corrective passes of step 6 at 2.
 
 | mode | select it when | deliver |
 |---|---|---|
@@ -50,7 +50,7 @@ Signals, not proof. Every pattern here is more frequent in LLM output, and every
 | `detect` | the user says 先標出來就好／不用改／flag only／audit／scan | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. The text stays untouched. |
 | `edit` | the user names a file to fix in place | read the file, apply targeted edits to flagged spans only, re-read, and report before → after per span. Passages with no tells stay byte-identical. |
 
-**Structure-signals audit** — detect-only, and it reports absence rather than rewriting. Route here when a draft carries no obvious AI phrases yet still reads as machine-written, or when `--structure-signals` is passed. Its gate and its five sub-signals live in [references/structure-signals.md](references/structure-signals.md); read that file before reporting anything under this heading, because the voice-neutral exclusion there is what keeps this from firing on 公文 and docs.
+**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 44 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
 
 Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
@@ -58,8 +58,8 @@ Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
 Six steps, in order. Each one finishes on something you can check.
 
-**1. 情境辨識.** Name the language, the genre, and whether the genre is voice-bearing (blog, newsletter, essay, opinion) or voice-neutral (docs, README, RFP, 簽呈, 公文, SOP, spec, reference, investor-email). Pick a context profile and a voice profile, inferring from the text when the user names neither.
-*Done when* you have stated the language, the genre, the voice-bearing verdict and the two profiles in one sentence — and said which of them you inferred rather than were told.
+**1. 情境辨識.** Name the language, the genre, and whether the genre is 署名文體 (blog, newsletter, essay, opinion) or 事務文體 (docs, README, RFP, 簽呈, 公文, SOP, spec, reference, 規劃書, 建議書, 計劃書, investor-email — the reader came for the information and does not care who wrote it). `--expect-author` settles that verdict as 署名文體 on the user's declaration. The verdict governs exactly one rule, 作者隱身; every other rule runs at full strength on both, so 事務文體 is never a reason to let an AI-ism stand.
+*Done when* you have stated the language, the genre, the 署名文體／事務文體 verdict and the two profiles in one sentence — and said which of them you inferred rather than were told.
 
 **2. 保護清單鎖定.** Before touching a single word, extract the spans that must survive verbatim and mark them immutable: ①交易事實（價格、原價、折扣碼、期限、數量、日期）②具名見證與原話 ③承諾條款（退費、保固、SLA、法遵條文）④必要免責與作業說明（金流、物流、客服）⑤引文、程式碼區塊、他人署名文字 ⑥使用者宣告的 voice profile 正向特徵（立場、比喻系統、刻意節奏、刻意口語破格）⑦真人的不完美（作者自己文字裡的錯字、縮寫、特異大小寫、殘句）⑧外部權威來源的正式引用. Protection covers the span, not the prose wrapped around it — hollow sentences packed around a protected price still get flagged. It also stops at AI-generated boilerplate that merely looks like a clause: a fabricated testimonial or invented statistic belongs to 幻覺引用與未查證主張.
 *Done when* the list is written out with a reason per entry, and any rule firing inside one of them is reported as **受保護** instead of flagged.
@@ -91,7 +91,7 @@ Facts travel one direction. Anything you flagged as missing — an undelivered c
 | 風格版面 (6) | typography and layout standing in for structure | 破折號濫用 · 粗體與內聯標題濫用 · 條列膨脹與裸名詞條列 · 列舉代替論述 · 表情符號與標籤堆疊 · 表格誤用 |
 | 溝通殘留 (4) | chat-turn and tooling residue surviving into a document | 對話介面殘留 · 諂媚語氣 · 知識截止免責 · AI 工具殘留標記 |
 | 事實與引用 (3) | authority borrowed instead of earned | 模糊歸屬 · 幻覺引用與未查證主張 · 權威名號堆砌 |
-| 立場與開場 (7) | judgement announced, deferred, or absent | 空降斷言開場 · 公式化開場 · 反問句開場與收尾 · 空降主張 · 立場真空 · 結構級訊號 · 對讀者說教 |
+| 立場與開場 (7) | judgement announced, deferred, or absent | 空降斷言開場 · 公式化開場 · 反問句開場與收尾 · 空降主張 · 立場真空 · 作者隱身 · 對讀者說教 |
 | 人工戲劇 (3) | a beat manufactured where nothing happened | 罐頭式反應鏡頭 · 情緒宣告 · 懸念與自我貼標籤 |
 | 打破第四面牆 (3) | the deliverable talking about itself | 文件自述 · 思考過程外洩 · 併稿接縫 |
 

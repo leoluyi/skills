@@ -51,7 +51,7 @@
 - 發表：<YYYY-MM-DD；2022 前尤佳>
 - 語言：zh-TW | en
 - 文體：technical-blog | blog | newsletter | docs | 公文 | SOP | RFP | 簽呈 | casual
-- voice：voice-bearing | voice-neutral
+- 文體類：署名文體 | 事務文體
 - 面向：<見下方 7+2 分類軸>
 - 取材：<取原文哪一段、幾句>
 ```
@@ -66,12 +66,12 @@
 - 對齊：<對應哪一則真人例的主題／文體，或 n/a>
 - 語言：zh-TW | en
 - 文體：<同上表>
-- voice：voice-bearing | voice-neutral
+- 文體類：署名文體 | 事務文體
 - 面向：<見下方 7+2 分類軸>
 ```
 
-`voice` 欄不是文體的同義詞，是**結構級訊號該不該啟用**的判準：voice-bearing（觀點、
-technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文、SOP、RFP、簽呈）
+`文體類` 欄不是文體的同義詞，是**作者隱身該不該啟用**的判準：署名文體（觀點、
+technical-blog、newsletter、casual）應啟用，事務文體（docs、公文、SOP、RFP、簽呈）
 應維持排除。這一欄是 gating 邊界的量測對象，不可省。
 
 `面向` 欄是這一例主要測的分類軸，取自下方 Coverage matrix 的 8 個缺陷類別
@@ -94,7 +94,7 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 | 引文片段 | 淨引文的精確子字串 | 涵蓋一個判定所及的最小範圍 |
 | # | 正整數，可留空 | 僅當同一片段在該例引文中重複出現時填，指第幾次 |
 | 判定 | `ok` / `flag` | `ok`＝真人正常寫法，標了就是 false positive；`flag`＝確實該標 |
-| 規則 | `references/zh-rules.md` 的規則名，或 `結構級訊號／<子訊號>`、`保護清單／<項目>` | `ok` 列填「被誤標時最可能觸發的那條」，才量得出 FP 歸屬 |
+| 規則 | `references/zh-rules.md` 的規則名，或 `作者隱身／<子訊號>`、`保護清單／<項目>` | `ok` 列填「被誤標時最可能觸發的那條」，才量得出 FP 歸屬 |
 
 `ok` 列的「規則」欄容易被填成空白——請務必填。FP 的價值在於指出**是哪條規則過度觸發**，
 沒有這一欄，一輪跑完只知道誤標率，不知道要 carve-out 誰。
@@ -116,7 +116,7 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 - 發表：2019-03-11
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 取材：全文第 3 段，2 句
 
 > 這個地雷有兩個 Workaround。我認為第一種比較完美，可以應付各種狀況——記得 13 年前
@@ -125,7 +125,7 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
 | 我認為第一種比較完美 |  | ok | 零資訊警句與口號 |
-| 記得 13 年前我也踩過一樣的坑 |  | ok | 結構級訊號／零具體個人細節 |
+| 記得 13 年前我也踩過一樣的坑 |  | ok | 作者隱身／零具體個人細節 |
 | 可以應付各種狀況 |  | ok | 空話填充 |
 
 **整篇判定**：clean
@@ -138,7 +138,7 @@ technical-blog、newsletter、casual）應啟用，voice-neutral（docs、公文
 外部可考據的真人手寫文本。這一桶量的是 **false-positive rate**：被標的比例越低越好。
 
 取材守則：作者具名、原文可公開存取、2022 年前發表尤佳；每篇只取代表性短段。
-文體要鋪開——voice-bearing 與 voice-neutral 都要有，否則量不出 gating 邊界。
+文體要鋪開——署名文體 與 事務文體 都要有，否則量不出 gating 邊界。
 zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 **Tier 註記。** H-13～H-16 四例的來源是 2023 年後才創立的 Substack newsletter，
@@ -158,7 +158,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2021-06-14
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：人工戲劇
 - 取材：文章開頭兩段
 
@@ -170,7 +170,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 |---|---|---|---|
 | 今天因為要維護一個 11 年前完工的專案，特別把當時的 VM 還原到 Hyper-V 裡面執行 | | ok | 空降斷言開場（有具體情境鋪陳，非指涉未交代之物） |
 | 網路就是打不通！ | | ok | 零資訊警句與口號（真實情緒感嘆，非破折號收尾的自我加值） |
-| 最後搞了一整個上午，才真正釐清真相！ | | ok | 結構級訊號／零具體個人細節（此句正是具體細節本身，反例） |
+| 最後搞了一整個上午，才真正釐清真相！ | | ok | 作者隱身／零具體個人細節（此句正是具體細節本身，反例） |
 | 唉～你一定覺得很蠢對不對！請繼續看一下 | | ok | 對讀者說教（casual／部落格聲音的 carve-out，自嘲共感非居高臨下判斷） |
 
 **整篇判定**：clean
@@ -185,7 +185,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2021-09-14
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：文章開場段
 
@@ -209,7 +209,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2020-05-24
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：語言句式
 - 取材：文章開場段
 
@@ -217,7 +217,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 本篇文章我將介紹一個好用工具 | | ok | 結構級訊號／只解釋不造像（此段確實只解釋不造像，但屬教學文開場，需與其他結構訊號成群才計入；本文其餘段落〔見 H-01〕有具體踩坑細節） |
+| 本篇文章我將介紹一個好用工具 | | ok | 作者隱身／只解釋不造像（此段確實只解釋不造像，但屬教學文開場，需與其他結構訊號成群才計入；本文其餘段落〔見 H-01〕有具體踩坑細節） |
 | 工具會自動幫你新增 .gitignore 檔案 | | ok | 對讀者說教（描述工具行為對讀者的影響，主詞是流程不是評斷讀者） |
 
 **整篇判定**：clean（附註：此段本身無立場、無比喻、無具體細節，是同一位真人作者在同一個部落格裡完全中性的一段——直接證據支持「只解釋不造像不可單獨觸發」這條 carve-out：判準要看整篇或整個作者的寫作習慣，不能單看一段就判 voiceless）
@@ -232,7 +232,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2019-02-08
 - 語言：zh-TW
 - 文體：blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：人工戲劇
 - 取材：文章第二段
 
@@ -240,7 +240,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 大、小片軟碟機、家裡電腦有比較大容量的硬碟 | | ok | 結構級訊號／零具體個人細節（具體時代物件細節，非壓縮論述——反例） |
+| 大、小片軟碟機、家裡電腦有比較大容量的硬碟 | | ok | 作者隱身／零具體個人細節（具體時代物件細節，非壓縮論述——反例） |
 | 那時候不要說什麼 Stack Overflow 可以抄了，連 Google 都還沒出生咧 | | ok | 零資訊警句與口號（口語破格＋具體年代梗，非破折號收尾的自我加值） |
 | 用貼紙把磁碟片旁邊的孔貼起來就能防止資料寫入 | | ok | 口語化萬能動詞（「貼」「防止」語意明確指向唯一動作，非含糊萬能動詞） |
 
@@ -256,7 +256,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2020-03-07
 - 語言：zh-TW
 - 文體：blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：語言句式
 - 取材：文中一段（讀者內心 OS 三連問）
 
@@ -279,7 +279,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2020-12-25
 - 語言：zh-TW
 - 文體：blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：文中一段（含原文本身筆誤，保留未修正）
 
@@ -303,7 +303,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2019-02-10
 - 語言：en
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：開場段
 
@@ -327,7 +327,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2021-02-09
 - 語言：en
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：溝通殘留
 - 取材：文中一段
 
@@ -350,7 +350,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2021-05-24
 - 語言：en
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：語言句式
 - 取材：文中一段
 
@@ -358,7 +358,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| Okay, Julia, you might be thinking | | ok | 反問句開場與收尾（自我對話式反問，是結構級訊號要求的口語破格，非空泛修辭開場） |
+| Okay, Julia, you might be thinking | | ok | 反問句開場與收尾（自我對話式反問，是作者隱身要求的口語破格，非空泛修辭開場） |
 | For example at some point in the last 8 years I learned Go | | ok | 模糊歸屬（具體年限與事實，非模糊歸屬） |
 
 **整篇判定**：clean
@@ -373,7 +373,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2020-02-26
 - 語言：en
 - 文體：technical-blog／TIL
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：文中一段
 
@@ -396,7 +396,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2020-09-18
 - 語言：en
 - 文體：technical-blog／TIL
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：溝通殘留
 - 取材：文中一段
 
@@ -419,7 +419,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2021-05-02
 - 語言：en
 - 文體：technical-blog／TIL
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：文中一段
 
@@ -443,7 +443,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2023-09-24
 - 語言：zh-TW
 - 文體：newsletter
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：導讀段
 
@@ -467,7 +467,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2026-06-15
 - 語言：zh-TW
 - 文體：newsletter
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 - 取材：文中一段
 
@@ -491,7 +491,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2026-04-06
 - 語言：zh-TW
 - 文體：分析
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：語言句式
 - 取材：文中一段
 
@@ -515,7 +515,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2026-01-04
 - 語言：zh-TW
 - 文體：casual／吐槽觀點
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：打破第四面牆
 - 取材：開場段
 
@@ -539,7 +539,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2026-07-27
 - 語言：zh-TW
 - 文體：公文／RFP
-- voice：voice-neutral
+- 文體類：事務文體
 - 面向：語言句式
 - 取材：範本開頭條文
 
@@ -547,10 +547,10 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 以下各項招標規定內容，由機關填寫，投標廠商不得填寫或塗改 | | ok | 結構級訊號（voice-neutral 排除範圍：Allowed patterns「Structured uniformity in 公文 / RFP / SOP」carve-out） |
+| 以下各項招標規定內容，由機關填寫，投標廠商不得填寫或塗改 | | ok | 作者隱身（事務文體 排除範圍：Allowed patterns「Structured uniformity in 公文 / RFP / SOP」carve-out） |
 | 各項內含選項者，由機關擇符合本採購案者勾填 | | ok | 過度簡寫（此為法規慣用文書句式，非省略成分——公文體裁本身容許此密度） |
 
-**整篇判定**：clean（此例的價值在於證明 voice：voice-neutral 的 gating 排除是對的——若誤啟用結構級訊號，這種本該均質的公文會被大量誤標）
+**整篇判定**：clean（此例的價值在於證明 voice：事務文體 的 gating 排除是對的——若誤啟用作者隱身，這種本該均質的公文會被大量誤標）
 
 ---
 
@@ -562,7 +562,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2025-12-30
 - 語言：zh-TW
 - 文體：公文／RFP
-- voice：voice-neutral
+- 文體類：事務文體
 - 面向：語言句式
 - 取材：第 1 條 契約文件及效力，第七款
 
@@ -585,7 +585,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2014-06
 - 語言：en
 - 文體：docs
-- voice：voice-neutral
+- 文體類：事務文體
 - 面向：內容類
 - 取材：Section 6.5.4
 
@@ -593,7 +593,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| A 404 status code does not indicate whether this lack of representation is temporary or permanent | | ok | 節奏均質（規格文件本就該均質被動語態，非缺席第一人稱的 AI 味——carve-out：voice-neutral docs/spec） |
+| A 404 status code does not indicate whether this lack of representation is temporary or permanent | | ok | 節奏均質（規格文件本就該均質被動語態，非缺席第一人稱的 AI 味——carve-out：事務文體 docs/spec） |
 | the 410 (Gone) status code is preferred over 404 if the origin server knows, presumably through some configurable means, that the condition is likely to be permanent | | ok | 避險堆疊（此為規格條件邏輯的精確限定，非避險堆疊） |
 | see Section 4.2.2 of [RFC7234] | | ok | 併稿接縫（對外部權威來源的正式引用，讀者可獨立查核） |
 
@@ -609,7 +609,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 - 發表：2018-08
 - 語言：en
 - 文體：docs
-- voice：voice-neutral
+- 文體類：事務文體
 - 面向：風格版面
 - 取材：Section 1 Introduction
 
@@ -632,7 +632,7 @@ zh-TW 與 en 兩語都要有，英文桶是 round 2 明列的缺口。
 需要有一部分是**無詞級病句的 voiceless 文**——那是結構層存在的理由，詞表抓不到。
 
 A-01～A-08 對齊 H-01～H-16 各例的主題／文體，測詞級與段落級規則的 recall。
-A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H 例），專門測結構級訊號——
+A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H 例），專門測作者隱身——
 這四例的判定表刻意標「全文」而非單一片段，因為缺席的是整篇的立場、細節與比喻，
 不是某一句的用詞。
 
@@ -647,7 +647,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-01
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 
 > 在容器化開發的時代背景下，網路連線問題是每一位開發者都會遇到的挑戰。當容器內的服務無法連接到本機服務時，這通常牽涉到防火牆設定、網路模式選擇與埠號對應這三個環節——它們彼此環環相扣，缺一不可。首先，我們需要確認容器的網路模式；接著，檢查防火牆規則是否允許對應的連線；最後，驗證埠號對應是否正確。透過系統性的排查方法，這個問題通常可以被順利解決。值得注意的是，網路除錯不僅是技術問題，更是一種耐心的展現。
@@ -675,7 +675,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-02
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 
 > 選擇合適的文件協作工具，對團隊的知識管理至關重要。Azure DevOps 提供了內建的 Wiki 線上編輯器，但許多開發者也會選擇搭配 Visual Studio Code 進行 Markdown 撰寫。這兩種方式各有優缺點，最終還是取決於團隊的使用習慣與工作情境。無論選擇哪一種工具，持續保持文件的即時更新，才是知識管理成功的關鍵。
@@ -702,7 +702,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-04, H-05, H-06
 - 語言：zh-TW
 - 文體：blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：打破第四面牆
 
 > 你是否也曾懷疑過，自己是不是不適合走上程式設計這條路？這樣的想法，其實每一位轉職工程師都曾經歷過。學習程式的路上充滿挑戰，但只要堅持下去，終究會看到成果。與其擔心自己不夠聰明，不如把時間拿來持續練習——畢竟，機會永遠留給準備好的人，不是嗎？
@@ -729,7 +729,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-07, H-08, H-09
 - 語言：en
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：溝通殘留
 
 > Networking issues in Kubernetes can be frustrating to debug. It's important to understand the underlying components: pods, services, and ingress controllers all play a role. First, check whether the pod is running correctly. Next, verify that the service is correctly routing traffic. Finally, confirm that DNS resolution is working as expected. By following this systematic approach, most networking issues can be resolved efficiently.
@@ -756,7 +756,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-10, H-11, H-12
 - 語言：en
 - 文體：technical-blog／TIL
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 
 > Today I learned about different caching strategies for web applications. Caching can significantly improve application performance. There are several approaches: cache-aside, write-through, and write-behind. Each has its own trade-offs in terms of consistency and complexity. Understanding these trade-offs is essential for building performant systems.
@@ -783,7 +783,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-13, H-14
 - 語言：zh-TW
 - 文體：newsletter
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：事實與引用
 
 > 這篇報導揭示了 AI 產業一個值得深思的現象：業界普遍認為，安全與商業利益之間存在著微妙的平衡。不少專家也表示，這樣的矛盾恐怕短期內難以解決。這不僅是技術問題，更是整個產業必須共同面對的挑戰。
@@ -810,7 +810,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-15
 - 語言：zh-TW
 - 文體：分析
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：語言句式
 
 > 在分析任何投資標的時，我們都必須誠實面對自己的假設。一個好的分析框架，應該要能夠系統性地拆解問題，並且用數據驗證每一個環節。唯有秉持科學精神，才能避免落入敘事陷阱。這正是嚴謹分析與童話故事的根本差異。
@@ -838,7 +838,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：H-16
 - 語言：zh-TW
 - 文體：casual／吐槽觀點
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：打破第四面牆
 
 > 各位朋友，AI 工具日新月異，行銷話術也是層出不窮。今天想跟大家聊聊，怎麼分辨真正有用的工具跟純粹的噱頭。老實說，市面上充斥著各種誇大宣傳，我們都應該保持理性判斷。
@@ -865,7 +865,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：n/a（無詞級病句探針，非對齊特定 H 例）
 - 語言：zh-TW
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 
 > 持續整合與持續部署（CI/CD）是現代軟體開發流程中常見的實踐方式。持續整合指的是開發者頻繁地將程式碼變更合併到主要分支，並透過自動化測試驗證程式碼品質。持續部署則進一步將通過測試的程式碼自動部署到生產環境。導入 CI/CD 流程可以縮短開發週期，並降低人為疏失發生的機率。許多團隊會使用像是 GitHub Actions、GitLab CI 或 Jenkins 等工具來建立自己的流水線。整體而言，CI/CD 是提升軟體交付效率的重要一環。
@@ -874,13 +874,13 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 全文 | | flag | 結構級訊號／立場真空（zero stance：沒有一句作者判斷句，以「整體而言」收場） |
-| 全文 | | flag | 結構級訊號／零具體個人細節（沒有一個具體時間、次數、場景；純定義式陳述） |
-| 全文 | | flag | 結構級訊號／只解釋不造像（CI/CD 全用定義式解釋，無自創比喻） |
+| 全文 | | flag | 作者隱身／立場真空（zero stance：沒有一句作者判斷句，以「整體而言」收場） |
+| 全文 | | flag | 作者隱身／零具體個人細節（沒有一個具體時間、次數、場景；純定義式陳述） |
+| 全文 | | flag | 作者隱身／只解釋不造像（CI/CD 全用定義式解釋，無自創比喻） |
 
-**整篇判定**：flagged — 結構級訊號（三項訊號成群觸發，符合「需與其他結構訊號成群才計入」的門檻，非單條）
+**整篇判定**：flagged — 作者隱身（三項訊號成群觸發，符合「需與其他結構訊號成群才計入」的門檻，非單條）
 
-**預期方向**：結構級訊號是 detect-only，不代筆——只提示作者補入一次具體踩坑經驗（哪個 pipeline、
+**預期方向**：作者隱身是 detect-only，不代筆——只提示作者補入一次具體踩坑經驗（哪個 pipeline、
 卡在哪一步）、一句自己的立場（例如偏好哪套工具鏈、為什麼）、一個自創比喻，不由 skill 自己生出這些內容。
 
 ---
@@ -894,7 +894,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：n/a
 - 語言：en
 - 文體：technical-blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：語言句式
 
 > REST is an architectural style for designing networked applications. RESTful APIs use standard HTTP methods such as GET, POST, PUT, and DELETE to perform operations on resources. Each resource is identified by a unique URI, and interactions are stateless, meaning each request contains all the information needed to process it. Following REST principles can make APIs more predictable and easier to maintain. Many modern web services adopt this style when building their public interfaces.
@@ -903,9 +903,9 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 |---|---|---|---|
 | 全文 | | flag | 立場真空（無任何 "I think"／個人偏好／實際踩坑經驗） |
 | 全文 | | flag | 詞彙處理失真（低 TTR：反覆使用 resource／stateless／RESTful 等固定詞彙圈，句長也高度均一） |
-| 全文 | | flag | 結構級訊號／只解釋不造像（純定義式解釋，無一個把抽象概念拉到具體經驗的比喻） |
+| 全文 | | flag | 作者隱身／只解釋不造像（純定義式解釋，無一個把抽象概念拉到具體經驗的比喻） |
 
-**整篇判定**：flagged — 立場真空、詞彙處理失真、結構級訊號／只解釋不造像（三項成群）
+**整篇判定**：flagged — 立場真空、詞彙處理失真、作者隱身／只解釋不造像（三項成群）
 
 **預期方向**：detect-only，不代筆——只提示作者補一句自己對 REST 的實際偏好或踩過的坑、
 一個把抽象概念（stateless、resource）拉到具體經驗的自創比喻。
@@ -921,18 +921,18 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：n/a
 - 語言：zh-TW
 - 文體：blog
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：內容類
 
 > 時間管理是每個人都需要面對的課題。常見的時間管理方法包括番茄工作法、時間區塊法與待辦清單法。番茄工作法將工作切分為 25 分鐘的專注時段，中間穿插短暫休息；時間區塊法則是預先為每項任務分配固定時段；待辦清單法則著重於任務的排序與追蹤。選擇適合自己的方法，並且持續實踐，是提升生產力的關鍵。
 
 | 引文片段 | # | 判定 | 規則 |
 |---|---|---|---|
-| 全文 | | flag | 結構級訊號／零具體個人細節（列舉三種方法但無一次作者自己實際使用某方法的具體場景） |
-| 全文 | | flag | 結構級訊號／立場真空（沒有一句「我後來選了 X，因為 Y」的判斷，以「選擇適合自己的方法」中立收場） |
+| 全文 | | flag | 作者隱身／零具體個人細節（列舉三種方法但無一次作者自己實際使用某方法的具體場景） |
+| 全文 | | flag | 作者隱身／立場真空（沒有一句「我後來選了 X，因為 Y」的判斷，以「選擇適合自己的方法」中立收場） |
 | 選擇適合自己的方法，並且持續實踐，是提升生產力的關鍵 | | flag | 萬用收尾（萬用收尾，任何時間管理文章都能接） |
 
-**整篇判定**：flagged — 結構級訊號（兩項成群）、萬用收尾
+**整篇判定**：flagged — 作者隱身（兩項成群）、萬用收尾
 
 **預期方向**：detect-only，不代筆——只提示作者補一次自己實際用哪種方法、用了多久、
 效果如何；萬用收尾若要保留，換成作者自己的具體選擇與理由。
@@ -948,7 +948,7 @@ A-09～A-12 是**無詞級病句**的 voiceless 文（題材不對齊特定 H �
 - 對齊：n/a
 - 語言：en
 - 文體：newsletter
-- voice：voice-bearing
+- 文體類：署名文體
 - 面向：溝通殘留
 
 > Remote work has become increasingly common in recent years. Staying productive while working remotely requires discipline and the right habits. Setting a consistent schedule, creating a dedicated workspace, and taking regular breaks are all effective strategies. Many professionals find that these small adjustments make a meaningful difference over time.

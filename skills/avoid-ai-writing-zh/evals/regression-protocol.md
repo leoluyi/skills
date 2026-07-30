@@ -43,7 +43,7 @@ Verdict 分兩類，出貨門檻不同：
 ```
 讀取 skills/avoid-ai-writing-zh/SKILL.md 與 references/ 全部檔案，
 逐案處理 evals/evals.json 每條案例的 prompt 欄（照案例指定的
-detect / rewrite / --structure-signals 模式）。
+detect / rewrite / --expect-author 模式）。
 輸出格式：案例 id｜模式｜完整輸出。不用先列清單問我。
 ```
 

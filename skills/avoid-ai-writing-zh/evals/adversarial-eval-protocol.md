@@ -48,7 +48,7 @@ skill 是 prompt／規則集，不是權重，所以「訓練」= 規則精修�
 - **signals, not proof**：真人文被標是一筆 false-positive 資料點，不是「這個真人是 AI」的證據。語料的真人身分以外部考據為準，不以 skill 判斷為準。
 - **版權**：只引短段＋標 URL，不整篇轉存、不重新發布。語料清單記出處，不記全文。
 - **過擬合警戒**：只吻合單篇語料的超specific 規則不收；一條規則要在多篇 AI 文上重現才進 SKILL.md。
-- **FP 與 recall 取捨**：本 skill 的 ethos 是寧可漏標也別誤傷真人（見「signals, not proof」節）。同一個 patch 若把 recall 拉高卻讓 FP 明顯上升，傾向不收或改為只在 `--structure-signals` 下啟用。
+- **FP 與 recall 取捨**：本 skill 的 ethos 是寧可漏標也別誤傷真人（見「signals, not proof」節）。同一個 patch 若把 recall 拉高卻讓 FP 明顯上升，傾向不收或改為只在 `--expect-author` 下啟用。
 - 存疑的 patch 先記 backlog，不當輪硬收。
 
 ## 執行方式（可選）
@@ -59,10 +59,10 @@ harness 自動化 fan-out：generator 產 AI 桶、evaluator 跑判別器與 jud
 
 ## 首輪待驗（gating 邊界）
 
-第一個要用本協定回答的問題：**結構級訊號（zh-TW 部落格聲音）該擴大到哪些
-非 blog 文體？** 目前只在 `casual` voice／`--structure-signals` 啟用。假設是
-「voice-bearing 文體（觀點倡議 blunt、技術部落格 technical-blog、newsletter）
-應啟用，voice-neutral 文體（docs、RFP、簽呈、公文、SOP）應維持排除」。
+第一個要用本協定回答的問題：**作者隱身（zh-TW 部落格聲音）該擴大到哪些
+非 blog 文體？** 目前只在 `casual` voice／`--expect-author` 啟用。假設是
+「署名文體 文體（觀點倡議 blunt、技術部落格 technical-blog、newsletter）
+應啟用，事務文體 文體（docs、RFP、簽呈、公文、SOP）應維持排除」。
 用真人桶量各文體的 false-positive rate：FP 可接受的文體才納入 auto-enable，
 其餘維持 opt-in。**先有數據再放寬 gate，不憑感覺改。**
 

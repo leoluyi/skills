@@ -2,7 +2,7 @@
 
 The seven enumerable word/phrase → replacement lookup tables for the Traditional Chinese section of `avoid-ai-writing-zh`. Load this file when auditing CJK text and you need a concrete「這個詞→換成這個」lookup — empty slogans, the 確保 filler family, significance-inflation words, AI sentence templates, individual-term substitutions, 四字評語, and Taiwan term preferences.
 
-This file is lookup data, not rules. The rules that need judgment rather than lookup live in `zh-rules.md`, organised by the eight defect classes; the detect-only aggregate lives in `structure-signals.md`. Apply those together with the tables here.
+This file is lookup data, not rules. The rules that need judgment rather than lookup live in `zh-rules.md`, organised by the eight defect classes; the detect-only aggregate lives in `hidden-author.md`. Apply those together with the tables here.
 
 ## Empty slogans (空話／口號) — always replace
 
