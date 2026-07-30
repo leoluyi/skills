@@ -48,7 +48,7 @@
       "query": "幫我潤飾這份內部技術文件，把 AI 味的詞彙（確保、賦能、進而那種）拿掉，改成正式但人話的中文。",
       "should_trigger": false,
       "category": "negative/general-formal-zh",
-      "note": "Should route to clean-ai-writing / avoid-ai-writing, not rfp-writing."
+      "note": "Should route to humanizer-zh, not rfp-writing."
     },
     {
       "id": 9,

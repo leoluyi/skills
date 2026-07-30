@@ -8,7 +8,7 @@
 有人味的繁中部落格寫作 skill。核心信念：**AI 文「看得出是 AI」不是
 因為殘留病句，而是缺少人味的正向特徵**（立場、親身經歷、自建比喻、
 不均質節奏、思考痕跡）。本 skill 是「加法」——注入這些特徵；下游的
-avoid-ai-writing-zh 是「減法」——清機械化 AI 味。順序不可反。
+humanizer-zh 是「減法」——清機械化 AI 味。順序不可反。
 
 ## 開發歷程（怎麼長出來的）
 
@@ -37,7 +37,7 @@ avoid-ai-writing-zh 是「減法」——清機械化 AI 味。順序不可反�
 10. **系列文**（series-planning.md）：產出後自動評估值不值得拆，
     值得才附大綱。不前置規劃、不每篇都問。
 11. **pipeline 主動調用**：Step 5 從「提示使用者」升級為「主動載入
-    並執行 avoid-ai-writing-zh」，且用 detect-first 三步（先 detect
+    並執行 humanizer-zh」，且用 detect-first 三步（先 detect
     拿清單 → blog-writing-zh 過濾 intentional voice → 只 rewrite
     未豁免項），實測證實最不會誤削聲音。
 12. **第五正向特徵「思考痕跡」**（v0.14.0）：核心原則從四特徵擴為五。
@@ -45,7 +45,7 @@ avoid-ai-writing-zh 是「減法」——清機械化 AI 味。順序不可反�
     只把打磨好的結論丟給讀者」的口吻；人味來自邊想邊寫、讓讀者看著
     你從困惑走到結論。此特徵與八元素正交、且 baseline always-on，
     故放核心原則（非 voice-axes 可選軸）。同步登記進 Step 5 的兩處
-    intentional-voice 豁免清單，避免下游 avoid-ai-writing-zh 把
+    intentional-voice 豁免清單，避免下游 humanizer-zh 把
     「我一開始以為…」「老實說不確定」當 hedging 削掉。改寫模式綁
     既有編者視角反捏造守則（不假造第一人稱困惑，改攤開素材推導順序）。
 
@@ -75,13 +75,13 @@ Julia（DNS 解惑＋gzip 探索）、Simon（年度回顧＋速覽）。
 
 - [ ] **跑 evals**：用 repo 的 run-eval 工具實際量測觸發準確率與
   輸出品質，目前 evals 只寫了斷言、還沒跑過。
-- [ ] **avoid-ai-writing-zh v1.1**：見 avoid-ai-writing-zh-improvement-
+- [ ] **humanizer-zh v1.1**：見 humanizer-zh-improvement-
   proposal.md——加結構級 detect 規則（節奏均質、零立場、零具體細節
   等「零病句仍看得出是 AI」訊號）。本次未動那個 skill。
 - [ ] **benchmark 常態化**：每季挑一位作者重跑一輪，風味會隨作者
   近作演化。protocol 支援重跑。
 - [ ] **真實 pipeline 串接測試**：目前 pipeline 效果是在單一對話裡
-  模擬 avoid-ai-writing-zh 的行為驗證的；在 Claude Code 真的載入兩個
+  模擬 humanizer-zh 的行為驗證的；在 Claude Code 真的載入兩個
   skill 跑一次，確認 detect-first 交棒實際運作。
 - [ ] **新風味擴充**：若要加作者，流程是 (1) 爬雙篇 (2) 建
   style-<name>.md (3) 跑 benchmark protocol (4) 補進 voice-axes 配方表

@@ -14,8 +14,8 @@ whenUse:
   en: "When you need to write or rewrite a Taiwan-Chinese blog post or newsletter, or turn Obsidian notes, talks, or foreign articles into a long-form zh-TW piece."
   zh: "要寫或改寫繁中部落格文、電子報，或把 Obsidian 筆記、演講、外文文章變成中文長文時。"
 whenNot:
-  en: "Not for formal memos (formal-doc-structure), RFPs (rfp-writing), explaining a single term in plain language (plain-speak), or pure de-AI cleanup with no restructuring (avoid-ai-writing-zh)."
-  zh: "正式簽呈用 formal-doc-structure、RFP 用 rfp-writing、單一術語白話解釋用 plain-speak、純去 AI 味不動結構用 avoid-ai-writing-zh。"
+  en: "Not for formal memos (formal-doc-structure), RFPs (rfp-writing), explaining a single term in plain language (plain-speak), or pure de-AI cleanup with no restructuring (humanizer-zh)."
+  zh: "正式簽呈用 formal-doc-structure、RFP 用 rfp-writing、單一術語白話解釋用 plain-speak、純去 AI 味不動結構用 humanizer-zh。"
 highlights:
   en:
     - "Two modes: compose from a topic, or rewrite Obsidian notes, talks, and foreign sources"

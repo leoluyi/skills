@@ -1,6 +1,6 @@
 ---
 name: formal-doc-structure
-description: Draft, revise, or restructure formal internal business documents in Traditional Chinese (Taiwan corporate / financial-institution usage) — 簽呈, 會議紀錄, 評估報告, 專案規劃, 採購與廠商溝通, 對主管簡報, 驗收與交付, 跨單位協調. Picks a reader-driven structure per document type and produces a usable draft, not just advice. Trigger when the user asks to write or fix an internal business document, memo, report, meeting record, plan, or vendor communication. Do NOT invoke for RFP / 招標規格 / 需求規格書 (use rfp-writing), for pure language cleanup with no structural work (use avoid-ai-writing / clean-ai-writing), or for casual chat, creative writing, marketing copy, or code comments.
+description: Draft, revise, or restructure formal internal business documents in Traditional Chinese (Taiwan corporate / financial-institution usage) — 簽呈, 會議紀錄, 評估報告, 專案規劃, 採購與廠商溝通, 對主管簡報, 驗收與交付, 跨單位協調. Picks a reader-driven structure per document type and produces a usable draft, not just advice. Trigger when the user asks to write or fix an internal business document, memo, report, meeting record, plan, or vendor communication. Do NOT invoke for RFP / 招標規格 / 需求規格書 (use rfp-writing), for pure language cleanup with no structural work (use humanizer-zh), or for casual chat, creative writing, marketing copy, or code comments.
 version: 1.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -43,7 +43,7 @@ Use when the request names one of these artifacts (or a clear equivalent):
 Each of these has conventions that conflict with internal-business-doc rules:
 
 - **RFP / 招標規格 / 需求規格書 / 投標 issuer specs** → use `rfp-writing`. That skill governs documents sent out for bidding; this one governs documents that circulate inside the organization.
-- **Pure language cleanup** (remove AI-isms from existing text, no structural change) → use `avoid-ai-writing` / `clean-ai-writing`. Reach for this skill when the job also involves *organizing* a document by type.
+- **Pure language cleanup** (remove AI-isms from existing text, no structural change) → use `humanizer-zh`. Reach for this skill when the job also involves *organizing* a document by type.
 - Casual conversation, creative writing, marketing / advertising copy, or code comments — unless the user explicitly asks for an internal-document style.
 
 Do not force every document into a project-plan shape. Pick the structure from the reader's need (see below).
@@ -52,7 +52,7 @@ Do not force every document into a project-plan shape. Pick the structure from t
 
 1. **Write like an experienced internal staff member** — a project owner, IT lead, HR partner, procurement officer, or risk reviewer preparing the document for internal circulation. Grounded, practical, business tone. Not promotional, not slogan-like.
 
-2. **Every sentence must earn its place.** Keep a sentence only if it adds a decision, requirement, constraint, risk, responsibility, deliverable, timeline, verification method, follow-up action, or concrete explanation. Cut filler, restatement, and abstract conclusions. This is the same discipline `avoid-ai-writing` enforces, applied while you build the document. See [references/language.md](references/language.md) for the prohibited-phrase list and fixes.
+2. **Every sentence must earn its place.** Keep a sentence only if it adds a decision, requirement, constraint, risk, responsibility, deliverable, timeline, verification method, follow-up action, or concrete explanation. Cut filler, restatement, and abstract conclusions. This is the same discipline `humanizer-zh` enforces, applied while you build the document. See [references/language.md](references/language.md) for the prohibited-phrase list and fixes.
 
 3. **Use affirmative planning language.** Write what *will* be done, proposed, provided, and how it is verified — 預計採…, 規劃…, 建議…, 應提供…, 需完成…, 由…負責…, 成果包含…, 後續依…辦理…. Avoid negative framing (不建議…, 不宜…, 不是…而是…); when contrast is needed, rewrite it as a direct implementation statement.
 
@@ -103,4 +103,4 @@ Run before finalizing:
 
 ## De-AI finishing pass
 
-After the checklist passes, offer `avoid-ai-writing-zh` as a deep de-AI pass over the draft, a far richer AI-ism ruleset than item 9's own light check (references/language.md). Run it only if the user agrees; otherwise finalize as-is. This is the last step before final output.
+After the checklist passes, offer `humanizer-zh` as a deep de-AI pass over the draft, a far richer AI-ism ruleset than item 9's own light check (references/language.md). Run it only if the user agrees; otherwise finalize as-is. This is the last step before final output.

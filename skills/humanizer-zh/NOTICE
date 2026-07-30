@@ -1,0 +1,65 @@
+This skill is original work by Lu Yi, MIT-licensed (see the repository-root
+LICENSE). It draws on several other MIT-licensed projects, recorded below.
+
+- The six-step working procedure (情境辨識 → 保護清單鎖定 → scope 判斷 →
+  逐類改寫 → 保真驗證 → 出貨前自評) and the 保護清單 mechanism are adapted
+  from "speak-human-tw" by Raymond Hou (雷蒙三十), licensed under the MIT
+  License. The step names and the protection-list concept follow that design;
+  the prose, the rule set, and the completion criteria are our own.
+
+- Some Taiwan-usage entries in references/zh-phrase-rules.md (the 翻譯腔
+  patterns) were informed by the same project. Those entries are our own
+  rewrite, not copied text.
+
+- evals/evals.json ids 15-54 adapt 40 of the 42 test cases from
+  "speak-human-tw"'s evals/benchmark.md by Raymond Hou (雷蒙三十), licensed
+  under the MIT License. Unlike the zh-phrase-rules.md entries above, this is
+  a verbatim adaptation, not a rewrite: the source text (原文/問題點/預期方向)
+  is reproduced as-is with added structural fields (bucket, 面向, 對應規則,
+  tier) for this repo's eval format. Two cases (SF-14, SF-15 — 中國用語 and
+  半形標點) were excluded as out of this skill's scope and noted for
+  avoid-china-writing's backlog instead.
+
+- references/en-rules.md was distilled from the pattern inventories of
+  "humanizer" by Siqi Chen (Copyright (c) 2025) and "x-humanizer" from the
+  x-skills collection by Sergey Bulaev (Copyright (c) 2026), both licensed
+  under the MIT License. The distillation is conceptual: patterns were
+  re-derived, re-classified into this skill's eight defect classes, and
+  rewritten. No prose was copied verbatim.
+
+- Through version 1.5.0 this skill was a bilingual fork whose English
+  detection layer was rebased verbatim from "avoid-ai-writing" by Conor
+  Bronsdon, licensed under the MIT License:
+
+      Copyright (c) 2026 Conor Bronsdon
+
+      Permission is hereby granted, free of charge, to any person obtaining a
+      copy of this software and associated documentation files (the
+      "Software"), to deal in the Software without restriction, including
+      without limitation the rights to use, copy, modify, merge, publish,
+      distribute, sublicense, and/or sell copies of the Software, and to
+      permit persons to whom the Software is furnished to do so, subject to
+      the following conditions:
+
+      The above copyright notice and this permission notice shall be included
+      in all copies or substantial portions of the Software.
+
+      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+      OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+      IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+      CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+      TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+      SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+  Version 2.0.0 removed that layer and rebuilt the English side around this
+  skill's own eight defect classes. The rewrite is not a clean-room one: a
+  number of short illustrative phrases in references/en-rules.md ("Here's the
+  thing.", "Plot twist:", "Bookmark this.", the developers/engineers/
+  practitioners/builders synonym chain, and similar example strings) match the
+  upstream text, so the notice above is retained.
+
+- Upstream in turn credited "humanizer-skill" by Aboudjem (MIT) for several
+  patterns that survive here — chat-tooling residue markers, the manufactured-
+  suspense family, and the paragraph-restatement test. That credit is carried
+  forward.

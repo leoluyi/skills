@@ -42,7 +42,7 @@
       "query": "幫我把這段中文的 AI 味拿掉，像是「值得一提的是」「至關重要」「不是…而是…」那種。",
       "should_trigger": false,
       "category": "negative/ai-ism-cleanup",
-      "note": "AI-ism cleanup routes to avoid-ai-writing-zh, not cross-strait localization. Gate must not grab it."
+      "note": "AI-ism cleanup routes to humanizer-zh, not cross-strait localization. Gate must not grab it."
     },
     {
       "id": 8,

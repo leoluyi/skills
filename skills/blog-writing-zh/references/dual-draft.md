@@ -77,7 +77,7 @@
 
 - dual-draft 是**產出層**，正交於 preset（聲音層）、tech-writing
   （內容層）、rewrite（改寫層）。任何模式都可套雙稿。
-- 終版一樣走 pipeline 交棒：合併後仍執行 avoid-ai-writing-zh
+- 終版一樣走 pipeline 交棒：合併後仍執行 humanizer-zh
   終稿檢查（雙稿合併的接縫處尤其需要）。
 - 配方紀錄增記：`dual-draft｜分化軸｜骨架取自稿X`，方便回溯。
 

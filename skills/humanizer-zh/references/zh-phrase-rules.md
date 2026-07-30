@@ -1,8 +1,8 @@
 # 繁體中文 AI 用詞對照表（zh-TW / 台灣用語）
 
-The seven enumerable word/phrase → replacement lookup tables for the Traditional Chinese section of `avoid-ai-writing-zh`. Load this file when auditing CJK text and you need a concrete「這個詞→換成這個」lookup — empty slogans, the 確保 filler family, significance-inflation words, AI sentence templates, individual-term substitutions, 四字評語, and Taiwan term preferences.
+The seven enumerable word/phrase → replacement lookup tables for the Traditional Chinese section of `humanizer-zh`. Load this file when auditing CJK text and you need a concrete「這個詞→換成這個」lookup — empty slogans, the 確保 filler family, significance-inflation words, AI sentence templates, individual-term substitutions, 四字評語, and Taiwan term preferences.
 
-Everything else in the zh layer stays inline in `SKILL.md` under 「Traditional Chinese AI-isms」: the behavioral rules that need judgment rather than lookup (空降斷言／空降主張, 頓號串列, 口語化萬能動詞, 過度簡寫, 破折號濫用, 警句式評語, 破碎短句堆疊, 口號式短句, 翻譯腔, 打破第四面牆, 結構級訊號, 專有名詞過度翻譯, and the contrarian / copula / adjective-stacking micro-rules), the abstract→concrete rewrite table, and the do-not-flag Allowed-patterns carve-outs. Apply both together.
+This file is lookup data, not rules. The rules that need judgment rather than lookup live in `zh-rules.md`, organised by the eight defect classes; the detect-only aggregate lives in `hidden-author.md`. Apply those together with the tables here.
 
 ## Empty slogans (空話／口號) — always replace
 
@@ -44,7 +44,7 @@ Default opening frames that signal generation. Delete the frame; state the fact.
 - 隨著…的快速發展 / 隨著…的日益普及
 - 值得一提的是 / 值得注意的是 (the Chinese "It's worth noting that")
 - 這不僅…更是… / 這標誌著…
-- 具體而言 **only when** no concrete items follow (as a list intro before real items, it is fine — see the Allowed patterns carve-outs in `SKILL.md`)
+- 具體而言 **only when** no concrete items follow (as a list intro before real items, it is fine — the carve-outs sit in the **保留** line beside each rule in `zh-rules.md`)
 
 ## AI 慣用詞替換（個別用詞對照）
 
@@ -58,7 +58,7 @@ AI 偏好的譬喻詞或英文術語直譯，在台灣商務／技術寫作中�
 
 ## 四字評語（成語式讚詞）
 
-AI 描述進度、執行、文本品質時，慣以四字成語或四字排比作結，讀來鏗鏘卻不含任何可查核的事實——這是「節奏」譬喻的成語形態，也是 Excessive adjective stacking 的四字版。
+AI 描述進度、執行、文本品質時，慣以四字成語或四字排比作結，讀來鏗鏘卻不含任何可查核的事實——這是「節奏」譬喻的成語形態，也是**推廣語氣**那串排比形容詞的四字版。
 
 **判準的作用域是段落，不是那四個字。** 單看成語本身永遠不帶事實，據此逐詞判會把真人正常書寫誤殺。要問的是：**這一段裡，成語所形容的事，有沒有在鄰近句子被寫出來？**
 
@@ -82,14 +82,14 @@ AI 描述進度、執行、文本品質時，慣以四字成語或四字排比�
 - 引文、標語、簡報標題頁、文學敘事體裁保留。
 - 存疑時不標。本 skill 寧可漏標也不誤傷真人（signals, not proof）。
 
-## 負面案例對照（承 SKILL.md 判準）
+## 負面案例對照（承 zh-rules.md 判準）
 
-判斷型規則（口號式短句、翻譯腔、過度簡寫）的定型負面案例對照。遇到相同句型可直接套用下表；句型不同、或不確定是否觸發，仍回 `SKILL.md` 依各規則判準處理。左欄是要抓的負面案例，中欄標出病灶與對應的 inline 規則，右欄是改法。
+判斷型規則（零資訊警句與口號、翻譯腔、過度簡寫）的定型負面案例對照。遇到相同句型可直接套用下表；句型不同、或不確定是否觸發，仍回 `zh-rules.md` 依各規則判準處理。左欄是要抓的負面案例，中欄標出病灶與對應的規則名稱，右欄是改法。
 
 | 負面案例（flag） | 病灶 | Fix |
 |---|---|---|
-| …才會上架。沒過 eval，不上架。 | 口號式短句（零資訊重述）：後句只是前句換句話說 | 刪去後句 |
-| 連網一行指令，或離線的逐一技能 symlink | 口號式短句（口號代替說明）：該說明處只給對仗片語 | 線上環境用一行指令安裝；離線或內網環境則改用逐一技能的 symlink |
+| …才會上架。沒過 eval，不上架。 | 零資訊警句與口號（零資訊重述）：後句只是前句換句話說 | 刪去後句 |
+| 連網一行指令，或離線的逐一技能 symlink | 零資訊警句與口號（口號代替說明）：該說明處只給對仗片語 | 線上環境用一行指令安裝；離線或內網環境則改用逐一技能的 symlink |
 | 要貢獻，先看 CONTRIBUTING.md | 翻譯腔（句式直譯 ← To contribute, see X） | 想貢獻的話，請先讀 CONTRIBUTING.md |
 | 指名叫用 | 翻譯腔（搭配直譯 ← invoke by name） | 輸入名稱手動啟動 |
 | 選用的指路 | 翻譯腔（修飾語直譯 ← optional pointer；「指路」在中文不成詞） | 額外參考 |

@@ -14,8 +14,8 @@ whenUse:
   en: "When you want to distill a technical topic you studied or researched into one lasting reference doc split into tutorial, how-to, reference, and explanation."
   zh: "當你想把自學或研究過的技術主題，整理成可長期參考、tutorial／how-to／reference／explanation 四型分離的知識文件時。"
 whenNot:
-  en: "Not for internal memos or reports (use formal-doc-structure), RFPs (use rfp-writing), blog posts (use blog-writing-zh), or language-only de-AI cleanup (use avoid-ai-writing-zh)."
-  zh: "不要用於簽呈／評估報告（用 formal-doc-structure）、RFP（用 rfp-writing）、部落格（用 blog-writing-zh）、或只做語言層去 AI 味（用 avoid-ai-writing-zh）。"
+  en: "Not for internal memos or reports (use formal-doc-structure), RFPs (use rfp-writing), blog posts (use blog-writing-zh), or language-only de-AI cleanup (use humanizer-zh)."
+  zh: "不要用於簽呈／評估報告（用 formal-doc-structure）、RFP（用 rfp-writing）、部落格（用 blog-writing-zh）、或只做語言層去 AI 味（用 humanizer-zh）。"
 highlights:
   en:
     - "Compass router assigns each material chunk to exactly one of four Diátaxis blocks"

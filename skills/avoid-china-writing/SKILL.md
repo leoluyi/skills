@@ -1,6 +1,6 @@
 ---
 name: avoid-china-writing
-description: Audit and rewrite Traditional Chinese to remove mainland-China (PRC / 大陸) usage and convert it to Taiwan 正體中文 conventions across four axes — 陸用語詞彙 (視頻→影片、軟件→軟體、屏幕→螢幕、網絡→網路), 互聯網／職場黑話 (賦能、抓手、對齊顆粒度、閉環、落地、賽道、內卷), 簡體字殘留 (为／发／网／软／数据 混入繁體), and 音譯與專名／語法差異 (奧巴馬→歐巴馬、悉尼→雪梨、硅谷→矽谷、通過→透過). Trigger when the user asks to 去除大陸／陸用語、改成台灣用語、正體中文在地化、抓簡體殘留、把互聯網黑話改成正常中文, or「這段有沒有大陸用詞」. Supports detect / rewrite / edit modes. Do NOT invoke for 去除 AI 味／潤飾語氣 (use avoid-ai-writing-zh), 結構化商業文件 簽呈／報告 (use formal-doc-structure), RFP／需求規格書 (use rfp-writing), 白話文翻譯 (use plain-speak), casual chat, creative writing, or code comments. This skill localizes across the strait — an axis orthogonal to AI-ism cleanup.
+description: Audit and rewrite Traditional Chinese to remove mainland-China (PRC / 大陸) usage and convert it to Taiwan 正體中文 conventions across four axes — 陸用語詞彙 (視頻→影片、軟件→軟體、屏幕→螢幕、網絡→網路), 互聯網／職場黑話 (賦能、抓手、對齊顆粒度、閉環、落地、賽道、內卷), 簡體字殘留 (为／发／网／软／数据 混入繁體), and 音譯與專名／語法差異 (奧巴馬→歐巴馬、悉尼→雪梨、硅谷→矽谷、通過→透過). Trigger when the user asks to 去除大陸／陸用語、改成台灣用語、正體中文在地化、抓簡體殘留、把互聯網黑話改成正常中文, or「這段有沒有大陸用詞」. Supports detect / rewrite / edit modes. Do NOT invoke for 去除 AI 味／潤飾語氣 (use humanizer-zh), 結構化商業文件 簽呈／報告 (use formal-doc-structure), RFP／需求規格書 (use rfp-writing), 白話文翻譯 (use plain-speak), casual chat, creative writing, or code comments. This skill localizes across the strait — an axis orthogonal to AI-ism cleanup.
 version: 1.1.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -16,7 +16,7 @@ metadata:
 
 You are editing Traditional Chinese to remove mainland-China (PRC / 大陸) usage and convert it to Taiwan 正體中文 conventions.
 
-**Scope.** This is a **cross-strait localization tool**, not an AI-ism cleaner. A passage can be entirely human-written yet full of 陸用語; a passage can be idiomatically Taiwanese yet reek of AI. Those are two orthogonal axes. This skill owns the first: 詞彙 (vocabulary), 職場／互聯網黑話 (corporate/internet jargon), 簡體字殘留 (leaked Simplified characters), and 音譯與語法差異 (transliteration and grammar habits). For AI-ism cleanup (「值得一提的是」「至關重要」, em-dash overuse, 空話口號), route to `avoid-ai-writing-zh`. The two overlap on a handful of terms (賦能, 生態, 打造) — that is expected; see [Relationship to avoid-ai-writing-zh](#relationship-to-avoid-ai-writing-zh).
+**Scope.** This is a **cross-strait localization tool**, not an AI-ism cleaner. A passage can be entirely human-written yet full of 陸用語; a passage can be idiomatically Taiwanese yet reek of AI. Those are two orthogonal axes. This skill owns the first: 詞彙 (vocabulary), 職場／互聯網黑話 (corporate/internet jargon), 簡體字殘留 (leaked Simplified characters), and 音譯與語法差異 (transliteration and grammar habits). For AI-ism cleanup (「值得一提的是」「至關重要」, em-dash overuse, 空話口號), route to `humanizer-zh`. The two overlap on a handful of terms (賦能, 生態, 打造) — that is expected; see [Relationship to humanizer-zh](#relationship-to-humanizer-zh).
 
 ## Output Language
 
@@ -37,17 +37,17 @@ Two guardrails follow from that:
 - **Signals, not verdicts.** A single 優化 or 網紅 does not prove a text is "from China" — many terms have crossed the strait and are now normal Taiwan usage. Flag by cluster and context, not by hunting one word. Second-language writers and cross-strait collaborators legitimately mix registers.
 - **Never rewrite what isn't yours to rewrite.** Proper nouns, brand names, direct quotes of mainland source material, and code identifiers stay as written — flag them, explain, but don't silently "correct" them. See [Carve-outs](#carve-outs--do-not-flag).
 
-## Relationship to avoid-ai-writing-zh
+## Relationship to humanizer-zh
 
 These are sibling skills on independent axes. Use the one that matches the request, or run both when the user wants a full clean-up.
 
 | Request | Skill |
 |---|---|
-| 去 AI 味、潤飾語氣、去除空話口號、句型太像機器 | `avoid-ai-writing-zh` |
+| 去 AI 味、潤飾語氣、去除空話口號、句型太像機器 | `humanizer-zh` |
 | 去陸用語、改成台灣用語、正體化、在地化、抓簡體 | **this skill** |
-| 兩者都要(既有 AI 味又有陸用語) | run both — this skill first for 用語, then `avoid-ai-writing-zh` for 語氣／結構 |
+| 兩者都要(既有 AI 味又有陸用語) | run both — this skill first for 用語, then `humanizer-zh` for 語氣／結構 |
 
-**The overlap.** A few terms are *both* AI 空話 and PRC corp-speak — 賦能, 生態, 打造, 抓手. Either skill will catch them. `avoid-ai-writing-zh` flags them as empty slogans (「說了等於沒說」); this skill flags them as 陸用語 and gives the Taiwan-idiom replacement. If you only run one skill, these still get caught. `avoid-ai-writing-zh` keeps a short Taiwan-term reminder that points here for the deep pass.
+**The overlap.** A few terms are *both* AI 空話 and PRC corp-speak — 賦能, 生態, 打造, 抓手. Either skill will catch them. `humanizer-zh` flags them as empty slogans (「說了等於沒說」); this skill flags them as 陸用語 and gives the Taiwan-idiom replacement. If you only run one skill, these still get caught. `humanizer-zh` keeps a short Taiwan-term reminder that points here for the deep pass.
 
 ## Modes
 
@@ -107,7 +107,7 @@ These seven each carry a Taiwan-correct homograph — take the Taiwan word **onl
 
 Mainland tech-industry and corporate jargon: 賦能、抓手、對齊顆粒度、閉環、落地、賽道、內卷、對標、降本增效、復盤、底層邏輯、鏈路、打法、私域流量、破圈、種草、心智、組合拳、沉澱 — and a long tail well past these.
 
-Most say little on their own. The fix is rarely a synonym swap; it is to **name the specific thing**, the same move `avoid-ai-writing-zh` applies to 空話. 「賦能業務」 becomes 「幫業務單位做到 X」, not 「支援業務」 — swapping one vague word for another leaves the sentence just as empty.
+Most say little on their own. The fix is rarely a synonym swap; it is to **name the specific thing**, the same move `humanizer-zh` applies to 空話. 「賦能業務」 becomes 「幫業務單位做到 X」, not 「支援業務」 — swapping one vague word for another leaves the sentence just as empty.
 
 This entire axis is **P1**, and every term with its Taiwan replacement is in [`references/term-table.md`](references/term-table.md). Read it whenever the text carries corporate or product jargon; the names above are a sample, not the set.
 

@@ -41,7 +41,7 @@ The `description` is an unquoted YAML plain scalar, and YAML does not decode `\u
 
 A skill goes through seven stages. Most die at stage 3.
 
-1. **Capture** — friction hit twice → add a one-liner to `backlog.md`. Don't draft yet.
+1. **Capture** — friction hit twice → add a one-liner to a backlog. Don't draft yet. An item about one skill goes in `skills/<name>/backlog.md`; repo-level and `tools/` items go in the root `backlog.md`, which also indexes the per-skill files.
 2. **Draft** — `tools/new-skill <kebab-name>` scaffolds `skills/<name>/SKILL.md` plus `skills/<name>/evals/` (`evals.json`, `trigger-queries.json`, and `regression-protocol.md` from `tools/templates/`; fill in the TODO ship gates per the skill's ethos).
 3. **Test** — write 3+ realistic prompts, run each **with** the skill and **without**. See [Test discipline](#test-discipline).
 4. **Iterate** — adjust the body until with-skill beats the baseline on every prompt. If you can't get there, cut it.
@@ -163,7 +163,7 @@ The repo has no per-skill hosted docs page; a skill's public face is its **catal
 
 ## Keep development-process noise out of skill content
 
-`SKILL.md` and everything under `references/` are runtime instructions the model loads when the skill fires. They must read as "how to do the task", never "how this skill was built". Keep the **insight**, drop the **derivation**: iteration provenance (round numbers, eval IDs, precision/recall figures), derivation narrative ("comparing A and B showed…"), and headers named after how a technique was derived all go. Provenance belongs in the skill's `design-notes.md`, `evals/judged-cases.md`, commit messages, or `backlog.md`.
+`SKILL.md` and everything under `references/` are runtime instructions the model loads when the skill fires. They must read as "how to do the task", never "how this skill was built". Keep the **insight**, drop the **derivation**: iteration provenance (round numbers, eval IDs, precision/recall figures), derivation narrative ("comparing A and B showed…"), and headers named after how a technique was derived all go. Provenance belongs in the skill's `design-notes.md`, `evals/judged-cases.md`, commit messages, or `backlog.md` (the skill's own, or the root one for repo-level items).
 
 Finishing check before finalizing a skill edit:
 

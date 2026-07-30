@@ -76,7 +76,7 @@ Full methodology: `"$VAULT/06-knowledge-management/Learning workflow — from AI
 2. **Every external fact needs a traceable source link.** Primary sources (official docs / papers / the original) outrank secondhand blog posts. When unsure, say so — never fabricate a URL.
 3. **Dropbox caution**: batch/throttle writes — don't fire off a burst of rapid writes in one review (selective-sync conflict risk).
 4. Use **basename wikilinks** `[[Note Name]]`, YAML block-list tags, and Templater frontmatter.
-5. **Leave no AI residue.** Anything you write (literature notes, frontmatter, polishing Leo's draft) gets self-checked against `avoid-ai-writing-zh`: strip empty sloganeering, "not X but Y" sentence patterns, copula inflation, significance inflation, templated phrasing. This is a hard rule for the shared knowledge base (see the vault's `CLAUDE.md`).
+5. **Leave no AI residue.** Anything you write (literature notes, frontmatter, polishing Leo's draft) gets self-checked against `humanizer-zh`: strip empty sloganeering, "not X but Y" sentence patterns, copula inflation, significance inflation, templated phrasing. This is a hard rule for the shared knowledge base (see the vault's `CLAUDE.md`).
 
 ## Steps
 

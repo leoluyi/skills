@@ -10,13 +10,13 @@ removed), ids 13–14 new voice-neutral false-positive cases, ids 15–54 ported
 from speak-human-tw's `evals/benchmark.md` (MIT, adapted with attribution;
 SF-14/SF-15 excluded — filed to `avoid-china-writing`'s backlog instead).
 No rule change has landed — `SKILL.md`/`references/` are byte-identical to
-`main` (verified via `git diff main -- skills/avoid-ai-writing-zh/SKILL.md`
+`main` (verified via `git diff main -- skills/humanizer-zh/SKILL.md`
 before this run). **This result supersedes the 2026-07-21 9/9 run**, which was
 measured against the pre-fix prompts for ids 1/2/4 (answers embedded in the
 prompt text) and is void.
 
 **Purpose.** This is the frozen "before" snapshot the refactor branch
-(`refactor/avoid-ai-writing-zh`) will A/B against once step 3 rewrites
+(`refactor/humanizer-zh`) will A/B against once step 3 rewrites
 `SKILL.md`. Per backlog: the refactor must beat this number, not just be
 shorter.
 

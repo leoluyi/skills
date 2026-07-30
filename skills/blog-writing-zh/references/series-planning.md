@@ -85,4 +85,4 @@
 - 系列風味一致優先於單篇最佳化：連貫感比單篇炫技重要。
 - 建議階段不寫後續內文；使用者確認後逐篇寫作完全走主流程
   （含長度檔位、tech-writing 檢查、dual-draft 選項、pipeline 交棒）。
-- 系列的每一篇完稿後都各自跑 avoid-ai-writing-zh 交棒（Step 5）。
+- 系列的每一篇完稿後都各自跑 humanizer-zh 交棒（Step 5）。

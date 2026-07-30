@@ -16,13 +16,13 @@ description: >-
   suggests splitting into a series (with outline) when one piece can't hold
   the material. Output is always the article
   PLUS 3-5 title/subtitle candidates. Pipeline position: this skill supplies
-  structure and voice (加法), then ACTIVELY INVOKES avoid-ai-writing-zh as the
+  structure and voice (加法), then ACTIVELY INVOKES humanizer-zh as the
   de-AI finishing pass (減法) — loading and running it (rewrite mode, voice
   profile mapped from the chosen 風味) rather than merely telling the user to,
   in any environment that can load sibling skills — plus avoid-china-writing if
   PRC usage may have leaked in. Do NOT invoke for 正式公文／簽呈 (use formal-doc-structure), RFP (use
   rfp-writing), 白話翻譯單一術語 (use plain-speak), or pure de-AI editing of an
-  existing text with no restructuring (use avoid-ai-writing-zh directly).
+  existing text with no restructuring (use humanizer-zh directly).
 version: 0.14.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, etc.). No external tools or APIs required.
@@ -158,7 +158,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
 無法跨 skill 調用的環境（如純網頁對話單獨載入本 skill）則退為明確
 提示使用者接續執行，並附上建議指令。
 
-1. **必做：調用 `avoid-ai-writing-zh` 做去 AI 味終稿檢查。**
+1. **必做：調用 `humanizer-zh` 做去 AI 味終稿檢查。**
    用自然語言交棒即可，它支援 rewrite/detect/edit 模式與 voice
    profile。**採 detect-first 三步流程**（最不會誤削聲音）：
 
@@ -170,8 +170,9 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
    第一人稱經歷、自建比喻、刻意的不均質節奏與口語破格、邊想邊寫的
    思考痕跡（「我一開始以為…」「老實說不確定」、改變主意的轉折）、
    風味簽名句式、單句段急停、低劑量顏文字）標為**豁免**；只留下真正機械化
-   的 AI 套路（空話口號、不是…而是、過度翻譯術語、三元排比慣性、
-   Tier 1 硬核詞等）。
+   的 AI 套路（空話口號、不是…而是、過度翻譯術語、三元排比慣性，
+   以及下游標為 P0 的命中項：AI 工具殘留標記、諂媚語氣、
+   未查證主張等）。
 
    **步驟 C — 只 rewrite 未豁免項。** 把過濾後的待修清單交回，
    以 `rewrite`（或 `edit`）模式只改這些項，明確告知豁免清單不得
@@ -189,7 +190,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
      Simon → `--voice technical`。dual-draft 熔接稿**務必**跑這關，
      接縫處最容易殘留 AI 味（多集中在 A/B 稿論據交會處）。
    - context：依發布場景給 `--context blog|technical-blog|casual` 等。
-   - 交棒話術範例（步驟 A）：「用 avoid-ai-writing-zh 以 detect 模式、
+   - 交棒話術範例（步驟 A）：「用 humanizer-zh 以 detect 模式、
      casual voice 掃這篇，只列 AI-ism 命中清單不要改字，我要自己
      過濾哪些是刻意的聲音。」
 2. **視情況：素材來源含簡中或大陸用語風險時，接著調用
@@ -205,7 +206,7 @@ voice，不是 AI-ism，必須保留；只移除機械化的 AI 套路（空話�
 
 **呼叫後**：拿回下游的 rewrite 結果與 diff，快速檢查聲音是否被
 誤削（尤其金句、單句段、顏文字、簽名句式）；沒問題才定稿交付。
-配方紀錄增記：`pipeline: avoid-ai-writing-zh(rewrite, voice=X)
+配方紀錄增記：`pipeline: humanizer-zh(rewrite, voice=X)
 ✓〔＋avoid-china-writing 若有〕`。
 
 ### Step 6 —（自動）系列文評估
@@ -232,7 +233,7 @@ voice，不是 AI-ism，必須保留；只移除機械化的 AI 套路（空話�
 
 ## 風格配方紀錄
 類型／風味／長度檔位／覆寫元素／dual-draft（若有）
-pipeline: avoid-ai-writing-zh(rewrite, voice=X) ✓〔＋avoid-china-writing 若有〕
+pipeline: humanizer-zh(rewrite, voice=X) ✓〔＋avoid-china-writing 若有〕
 ```
 
 ## Guardrails

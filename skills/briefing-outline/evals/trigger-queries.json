@@ -54,8 +54,8 @@
       "id": 8,
       "query": "幫我把這段提綱的 AI 味拿掉，「賦能」「全面提升」那種空話改掉，結構不用動。",
       "should_trigger": false,
-      "category": "negative/voice-cleanup-routes-to-avoid-ai-writing-zh",
-      "note": "Pure language/voice cleanup with no structural work. Routes to avoid-ai-writing-zh."
+      "category": "negative/voice-cleanup-routes-to-humanizer-zh",
+      "note": "Pure language/voice cleanup with no structural work. Routes to humanizer-zh."
     },
     {
       "id": 9,

@@ -10,7 +10,7 @@ description: >-
   learn 管互動學習迴圈與親手 distillation（鐵律：distillation 是學習本身，不代寫），
   本 skill 只接手 distill 完成後重新組織、補讀者上下文、套完稿檢查。不要用於：公司內部簽呈／會議紀錄／
   評估報告等行政文件（用 formal-doc-structure，即使輸入是既有文件也不因此轉入本 skill）、RFP／招標規格
-  （用 rfp-writing）、部落格文章（用 blog-writing-zh）、只做語言層去 AI 味不動結構（用 avoid-ai-writing-zh）、
+  （用 rfp-writing）、部落格文章（用 blog-writing-zh）、只做語言層去 AI 味不動結構（用 humanizer-zh）、
   只要口頭白話解釋不產文件（用 plain-speak）、learn 的互動學習迴圈本身（用 learn-loop）。
 version: 2.0.0
 license: MIT
@@ -139,7 +139,7 @@ Accuracy / completeness / consistency / usefulness / precision. Item by item:
 - **No fabricated URLs or sources**; when unsure, say so. **No unearned assertions**: every judgment sentence carries at least one of prior context, a stated reason, or a source.
 - **Examples aren't exempt**: example sentences supplied by the user are held to the same standard as the body text — flag and fix broken phrasing in them too.
 
-**De-AI pass:** **call `avoid-ai-writing-zh` first when it's available** — it's the authoritative source for the language judgment call, so run its detect/edit modes — sweep the whole document to zero and report what was found / fixed / remaining. It's optional, not a hard dependency: when it can't be loaded, fall back to the built-in condensed checklist below so the core deliverable is never blocked. Built-in checklist: fragmented short phrases, 頓號 (Chinese enumeration comma) stacking, dash overuse (connective「——」capped at once per thousand characters; the「concept — explanation」bullet separator doesn't count), unearned assertions, missing verbs, aphoristic commentary, templated headings (「深入探討」「全面解析」「揭秘」), second-person coaching voice (a violation in formal and hybrid modes, relaxed to allow first person and self-questioning in learning-notes mode).
+**De-AI pass:** **call `humanizer-zh` first when it's available** — it's the authoritative source for the language judgment call, so run its detect/edit modes — sweep the whole document to zero and report what was found / fixed / remaining. It's optional, not a hard dependency: when it can't be loaded, fall back to the built-in condensed checklist below so the core deliverable is never blocked. Built-in checklist: fragmented short phrases, 頓號 (Chinese enumeration comma) stacking, dash overuse (connective「——」capped at once per thousand characters; the「concept — explanation」bullet separator doesn't count), unearned assertions, missing verbs, aphoristic commentary, templated headings (「深入探討」「全面解析」「揭秘」), second-person coaching voice (a violation in formal and hybrid modes, relaxed to allow first person and self-questioning in learning-notes mode).
 
 ### Cycle-of-Needs Coverage, and Complete ≠ Finished
 

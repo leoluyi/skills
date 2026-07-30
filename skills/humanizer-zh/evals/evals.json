@@ -1,12 +1,12 @@
 {
-  "skill_name": "avoid-ai-writing-zh",
+  "skill_name": "humanizer-zh",
   "evals": [
     {
       "id": 1,
-      "prompt": "用 --structure-signals detect 這段部落格草稿：「Docker 是一種容器化技術，可以將應用程式與其依賴打包在一起。使用 Docker 有許多好處，例如環境一致性與部署效率。開發者可以透過 Dockerfile 定義映像檔，並使用指令建置與執行。整體而言，Docker 是現代開發流程中常見的工具，各種團隊都能依需求採用。」",
+      "prompt": "用 --expect-author detect 這段部落格草稿：「Docker 是一種容器化技術，可以將應用程式與其依賴打包在一起。使用 Docker 有許多好處，例如環境一致性與部署效率。開發者可以透過 Dockerfile 定義映像檔，並使用指令建置與執行。整體而言，Docker 是現代開發流程中常見的工具，各種團隊都能依需求採用。」",
       "expected_output": "Adversarial: text is free of Tier-1/2 word-level AI-isms but structurally voiceless. The structural layer must catch what the word list misses.",
       "expectations": [
-        "flags-structural-absence: 偵測出結構級訊號的缺席：全文無立場（以「各種團隊都能依需求採用」「整體而言」收場）、零具體個人細節（沒有一個具體時間/次數/場景）、只解釋不造像（純定義式解釋，無自創比喻）。",
+        "flags-structural-absence: 偵測出作者隱身的缺席：全文無立場（以「各種團隊都能依需求採用」「整體而言」收場）、零具體個人細節（沒有一個具體時間/次數/場景）、只解釋不造像（純定義式解釋，無自創比喻）。",
         "does-not-fabricate-in-detect: detect 模式只指出缺席並建議作者補入，不自行捏造假的時間、次數或個人經驗來填補。",
         "no-word-level-false-positives: 不把正確的技術陳述（容器化、Dockerfile、映像檔）誤標為 AI 空話；訊號指向結構而非個別用詞。",
         "ground-truth-note: 此段本身無 AI 空話病句、句子文法正確——這是 adversarial 案例的已知性質，不透過 prompt 告知受測者，只記在此供評分時參考。"
@@ -26,14 +26,14 @@
     {
       "id": 3,
       "prompt": "detect 這篇觀點文（technical-blog，個人語氣）：「工程師該不該寫作，我的答案很明確：該。我自己就是靠寫落落長的排錯筆記，才把三年前那個把同事 code 蓋掉的凌晨三點記牢——寫作就像留給未來自己的一張紙條（雖然當下很煩）。」",
-      "expected_output": "Gating: a voice-bearing genre that actually carries stance/specifics/metaphor/口語破格 must NOT be flagged. Guards against false positives from the round-1 gate expansion (blunt/technical-blog auto-enable).",
+      "expected_output": "Gating: a 署名文體 genre that actually carries stance/specifics/metaphor/口語破格 must NOT be flagged. Guards against false positives from the round-1 gate expansion (blunt/technical-blog auto-enable).",
       "expectations": [
-        "no-false-positive-on-voiced-text: 不觸發結構級訊號：文中有明確立場（答案很明確：該）、具體細節（三年前、凌晨三點）、自創比喻（留給未來自己的紙條）、口語破格（（雖然當下很煩）），皆為真人 voice marker，不得誤標為 AI。"
+        "no-false-positive-on-voiced-text: 不觸發作者隱身：文中有明確立場（答案很明確：該）、具體細節（三年前、凌晨三點）、自創比喻（留給未來自己的紙條）、口語破格（（雖然當下很煩）），皆為真人 voice marker，不得誤標為 AI。"
       ]
     },
     {
       "id": 4,
-      "prompt": "用 --structure-signals detect 這段真人技術教學：「這個地雷有兩個 Workaround。我認為第一種比較完美，可以應付各種狀況——記得 13 年前我也踩過一樣的坑（那時還沒有這個範本，只能手動設）。步驟是先在 Controllers 資料夾 Add > Controller，選 API Controller with actions。」",
+      "prompt": "用 --expect-author detect 這段真人技術教學：「這個地雷有兩個 Workaround。我認為第一種比較完美，可以應付各種狀況——記得 13 年前我也踩過一樣的坑（那時還沒有這個範本，只能手動設）。步驟是先在 Controllers 資料夾 Add > Controller，選 API Controller with actions。」",
       "expected_output": "Adversarial: dense technical tutorial with 4/5 voice markers but no original metaphor. no-original-metaphor must not fire solo.",
       "expectations": [
         "metaphor-absence-does-not-flag-solo: 不因『只解釋不造像』單條就標記整篇為 voiceless；教學文缺自創比喻是常態，需與其他結構訊號成群才計入。此文其餘 voice marker 齊全，應判為 clean。",
@@ -43,7 +43,7 @@
     {
       "id": 5,
       "prompt": "detect 這段知識文件正文（docs／正式文件，說明一套 distillation 流程）：「差在骨幹是誰的話。這變體只在你真的親口答過時成立，文件主體是你的說法、AI 補的都上了標；那種退化是 AI 從頭合成、抹掉你哪裡不懂。判準沒變：這篇的字，是你想過的，還是 AI 替你想的。」",
-      "expected_output": "Adversarial: expository/voice-neutral register that apostrophizes the reader as a coach. 第二人稱教練口吻 must fire; it is register-scoped so it fires here yet not in the casual/blog reader-address of case 2.",
+      "expected_output": "Adversarial: expository/事務文體 register that apostrophizes the reader as a coach. 第二人稱教練口吻 must fire; it is register-scoped so it fires here yet not in the casual/blog reader-address of case 2.",
       "expectations": [
         "flags-second-person-coaching: 標記第二人稱教練口吻——「你真的親口答過」「抹掉你哪裡不懂」「你想過的／AI 替你想的」在正式說明文裡對讀者下判斷、喊話，主詞是『你』而非主題本身。",
         "fix-converts-to-exposition: Fix 把主詞換回被解說的主題或泛稱主體（作者／使用者），改成第三人稱陳述，而非保留『你』。",
@@ -64,11 +64,12 @@
     {
       "id": 7,
       "prompt": "detect 這段 README 草稿（docs 語境）：「技能要在真實 eval 上贏過『不用技能』才會上架。沒過 eval，不上架。安裝有兩條路：連網一行指令，或離線的逐一技能 symlink。範圍是開放的，不是固定的。」",
-      "expected_output": "Adversarial: mixes two slogan-style tells (zero-info restatement, slogan-replaces-explanation) with one legitimate punchy short sentence that must NOT be flagged. Guards the rhythm-vs-slogan boundary.",
+      "expected_output": "Adversarial: mixes two slogan-style tells (zero-info restatement, slogan-replaces-explanation) with one legitimate punchy short sentence that must NOT be flagged. Guards the rhythm-vs-slogan boundary. 作者裁定（2026-07-30）：「範圍是開放的，不是固定的」該標為正反語句；原 no-false-positive 期望與作者判斷相反，已更正。詳見 evals/judged-cases.md。",
       "expectations": [
         "flags-zero-info-restatement: 標記「沒過 eval，不上架。」為零資訊重述——前句已說明 eval 通過才上架，此對仗短句未加任何新資訊，建議刪除。",
         "flags-slogan-replacing-explanation: 標記「連網一行指令，或離線的逐一技能 symlink」為口號代替說明——在該講安裝步驟處只給對仗片語，Fix 應攤開成可執行的完整句。",
-        "no-false-positive-on-informative-short-sentence: 不標記「範圍是開放的，不是固定的」——此短句在前文之後補上新的邊界界定，是承載新資訊的節奏，非口號；同時不得誤觸『不是…而是…』contrarian（此為事實邊界 carve-out）。"
+        "flags-contrast-construction: 標記「範圍是開放的，不是固定的。」為 對比句式——「開放」未界定誰可新增、是否需審核、依據為何，否定框架撐起整句而非標示真實區分；對比句式的 真實的事實邊界 carve-out 不成立（該 carve-out 針對具體名詞的邊界，如「管理粒度是資料集，不是租戶」，不涵蓋抽象性質的對舉）。",
+        "no-duplicate-listing-of-one-span: 同一片段不得在兩條規則下各記一筆——重複計列會把一處缺陷讀成兩處。"
       ]
     },
     {
@@ -108,7 +109,7 @@
       "expected_output": "Protection case: 循序漸進 sits next to the actual staging, frequency and owning unit. Paragraph-scope carve-out must hold.",
       "expectations": [
         "no-false-positive-on-idiom-with-adjacent-substance: 不標記「循序漸進」——成語所形容的階段安排、頻率（每兩週）、負責單位（資訊室）都寫在同段鄰句，四字評語的判準作用域是段落而非那四個字。",
-        "no-false-positive-on-formal-uniformity: 不因公文句式均質而觸發結構級訊號（voice-neutral 文體排除）。"
+        "no-false-positive-on-formal-uniformity: 不因公文句式均質而觸發作者隱身（事務文體 文體排除）。"
       ]
     },
     {
@@ -122,28 +123,28 @@
     },
     {
       "id": 13,
-      "prompt": "用 --structure-signals detect 這段 API 文件（docs 語境）：「POST /v1/orders 建立一筆訂單。請求主體需包含 customer_id 與 items 陣列，每個 item 含 sku 與 quantity。成功時回傳 201 與訂單物件；customer_id 不存在時回傳 404；items 為空陣列時回傳 400。」",
-      "expected_output": "Gating: voice-neutral genre (API docs) must NOT trigger 結構級訊號 even though the passage has zero stance, zero personal specifics, and zero original metaphor — those are correct for this genre, not a defect.",
+      "prompt": "detect 這段 API 文件（docs 語境）：「POST /v1/orders 建立一筆訂單。請求主體需包含 customer_id 與 items 陣列，每個 item 含 sku 與 quantity。成功時回傳 201 與訂單物件；customer_id 不存在時回傳 404；items 為空陣列時回傳 400。」",
+      "expected_output": "Gating: 事務文體 genre (API docs) must NOT trigger 作者隱身 even though the passage has zero stance, zero personal specifics, and zero original metaphor — those are correct for this genre, not a defect.",
       "expectations": [
-        "no-structure-signal-on-voice-neutral-docs: 不觸發結構級訊號（全文無立場、零具體個人細節、只解釋不造像）——API 文件屬 voice-neutral，比照 Allowed patterns「Structured uniformity in 公文 / RFP / SOP」carve-out，均質、無立場、句句完整是這個文體該有的樣子。",
+        "no-hidden-author-on-clerical-docs: 不觸發作者隱身（全文無立場、零具體個人細節、只解釋不造像）——API 文件屬 事務文體，比照 Allowed patterns「Structured uniformity in 公文 / RFP / SOP」carve-out，均質、無立場、句句完整是這個文體該有的樣子。",
         "no-word-level-false-positives: 不把正確的技術陳述（狀態碼、欄位名）誤標為 AI 空話。"
       ],
       "bucket": "SNF",
-      "面向": "語言句式",
-      "對應規則": "結構級訊號 carve-out（voice-neutral）",
+      "面向": "立場與開場",
+      "對應規則": "作者隱身 carve-out（事務文體 體裁排除）",
       "tier": "fast"
     },
     {
       "id": 14,
-      "prompt": "用 --structure-signals detect 這段簽呈（公文語境）：「本案擬採資訊室現有雲端主機擴充方案，不另編列採購預算。優點為建置期程短、與既有系統相容；缺點為尖峰時段效能受共用資源限制。簽請核示。」",
-      "expected_output": "Gating: 公文/簽呈 is voice-neutral by genre — no stance beyond the factual recommendation, no personal specifics, no metaphor is expected and correct.",
+      "prompt": "detect 這段簽呈（公文語境）：「本案擬採資訊室現有雲端主機擴充方案，不另編列採購預算。優點為建置期程短、與既有系統相容；缺點為尖峰時段效能受共用資源限制。簽請核示。」",
+      "expected_output": "Gating: 公文/簽呈 is 事務文體 by genre — no stance beyond the factual recommendation, no personal specifics, no metaphor is expected and correct.",
       "expectations": [
-        "no-structure-signal-on-formal-memo: 不觸發結構級訊號——公文／簽呈本就該均質、無個人語氣，比照 Allowed patterns「Structured uniformity in 公文 / RFP / SOP」carve-out。",
+        "no-hidden-author-on-formal-memo: 不觸發作者隱身——公文／簽呈本就該均質、無個人語氣，比照 Allowed patterns「Structured uniformity in 公文 / RFP / SOP」carve-out。",
         "no-coaching-tone-false-positive: 不誤標「簽請核示」為對讀者說教——這是公文慣用結尾語，非教練口吻。"
       ],
       "bucket": "SNF",
-      "面向": "語言句式",
-      "對應規則": "結構級訊號 carve-out（voice-neutral）",
+      "面向": "立場與開場",
+      "對應規則": "作者隱身 carve-out（事務文體 體裁排除）",
       "tier": "fast"
     },
     {
@@ -155,7 +156,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "（缺口——本 skill 無專門對應「標誌著／見證了／奠定基礎」三連發的規則名；最接近英文 Significance inflation，zh 尚無對應詞表項）",
+      "對應規則": "意義膨脹",
       "tier": "fast",
       "source": "speak-human-tw SF-01 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -168,7 +169,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "Promotional language",
+      "對應規則": "推廣語氣",
       "tier": "full",
       "source": "speak-human-tw SF-02 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -181,7 +182,7 @@
       ],
       "bucket": "SF",
       "面向": "事實與引用",
-      "對應規則": "Vague attributions",
+      "對應規則": "模糊歸屬",
       "tier": "full",
       "source": "speak-human-tw SF-03 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -194,7 +195,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "Contrarian structure",
+      "對應規則": "對比句式",
       "tier": "fast",
       "source": "speak-human-tw SF-04 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -207,7 +208,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "口號式短句（零資訊重述）",
+      "對應規則": "零資訊警句與口號",
       "tier": "full",
       "source": "speak-human-tw SF-05 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -220,7 +221,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "破折號當萬用連接詞",
+      "對應規則": "破折號濫用",
       "tier": "fast",
       "source": "speak-human-tw SF-06 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -233,7 +234,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "Inline-header lists／頓號串列代替論述",
+      "對應規則": "粗體與內聯標題濫用",
       "tier": "full",
       "source": "speak-human-tw SF-07 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -246,7 +247,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "（缺口——emoji 堆疊本 skill 無獨立規則，近似 Hashtag stuffing 但非全等）",
+      "對應規則": "表情符號與標籤堆疊",
       "tier": "full",
       "source": "speak-human-tw SF-08 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -259,7 +260,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "Chatbot artifacts",
+      "對應規則": "對話介面殘留",
       "tier": "fast",
       "source": "speak-human-tw SF-09 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -272,7 +273,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "Sycophantic tone",
+      "對應規則": "諂媚語氣",
       "tier": "full",
       "source": "speak-human-tw SF-10 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -285,7 +286,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "Generic conclusions",
+      "對應規則": "萬用收尾",
       "tier": "full",
       "source": "speak-human-tw SF-11 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -298,7 +299,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "Hedge-stacked predictions",
+      "對應規則": "避險堆疊",
       "tier": "full",
       "source": "speak-human-tw SF-12 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -311,7 +312,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "Cutoff disclaimers",
+      "對應規則": "知識截止免責",
       "tier": "full",
       "source": "speak-human-tw SF-13 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -324,7 +325,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "（缺口——「你會讀到一件事」解說導引腔本 skill 無專門規則，近似對讀者說教但非評斷讀者，屬解說腔，值得新增）",
+      "對應規則": "解說導引腔",
       "tier": "full",
       "source": "speak-human-tw SF-16 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -337,7 +338,7 @@
       ],
       "bucket": "SF",
       "面向": "立場與開場",
-      "對應規則": "警句式評語／Rhetorical question openers",
+      "對應規則": "反問句開場與收尾",
       "tier": "full",
       "source": "speak-human-tw SF-17 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -350,7 +351,7 @@
       ],
       "bucket": "SF",
       "面向": "語言句式",
-      "對應規則": "Synonym cycling",
+      "對應規則": "詞彙處理失真",
       "tier": "full",
       "source": "speak-human-tw SF-18 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -363,7 +364,7 @@
       ],
       "bucket": "SF",
       "面向": "事實與引用",
-      "對應規則": "（缺口——本 skill 無「幻覺引用查證」規則，僅有 Vague attributions 近似但不全等；幻覺數據/語錄需要新規則）",
+      "對應規則": "幻覺引用與未查證主張",
       "tier": "full",
       "source": "speak-human-tw SF-19 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -376,7 +377,7 @@
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
-      "對應規則": "AI-tool URL parameters／Chatbot citation markup leaks（design-notes 記錄的規則缺口之一：本 skill 未列舉 utm_source=chatgpt.com、turn0search 這類具體標記）",
+      "對應規則": "AI 工具殘留標記",
       "tier": "full",
       "source": "speak-human-tw SF-20 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -389,7 +390,7 @@
       ],
       "bucket": "SF",
       "面向": "內容類",
-      "對應規則": "空降主張／Generic future-narrative closers",
+      "對應規則": "萬用收尾",
       "tier": "full",
       "source": "speak-human-tw SF-21 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -402,7 +403,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "頓號串列代替論述／Numbered list inflation",
+      "對應規則": "條列膨脹與裸名詞條列",
       "tier": "full",
       "source": "speak-human-tw SF-22 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -415,7 +416,7 @@
       ],
       "bucket": "SF",
       "面向": "長文scope",
-      "對應規則": "Scope ladder（現有 eval id 6 已測此機制的段落級版本，此為長文 bounded 版）",
+      "對應規則": "長文scope",
       "tier": "fast",
       "source": "speak-human-tw SF-23 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -428,7 +429,7 @@
       ],
       "bucket": "SF",
       "面向": "風格版面",
-      "對應規則": "（缺口——本 skill 無「表格誤用」專門規則，近似頓號串列代替論述但非全等）",
+      "對應規則": "表格誤用",
       "tier": "full",
       "source": "speak-human-tw SF-24 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -441,7 +442,7 @@
       ],
       "bucket": "SF",
       "面向": "立場與開場",
-      "對應規則": "（缺口——本 skill 沒有「立場真空」的具名規則；design-notes 記錄的獨立收斂佐證：預期方向與既有 flag-hollow-don't-ghostwrite 呼應但非同一規則，值得正式收編）",
+      "對應規則": "立場真空",
       "tier": "fast",
       "source": "speak-human-tw SF-25 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -454,7 +455,7 @@
       ],
       "bucket": "SF",
       "面向": "立場與開場",
-      "對應規則": "空降斷言開場（時代大帽子）／Speculative scenario openers",
+      "對應規則": "公式化開場",
       "tier": "full",
       "source": "speak-human-tw SF-26 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -467,7 +468,7 @@
       ],
       "bucket": "SF",
       "面向": "人工戲劇",
-      "對應規則": "（缺口——design-notes 記錄的規則缺口：本 skill 完全沒有「罐頭式反應鏡頭」這條規則，需新增）",
+      "對應規則": "罐頭式反應鏡頭",
       "tier": "fast",
       "source": "speak-human-tw SF-27 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -480,7 +481,7 @@
       ],
       "bucket": "SNF",
       "面向": "保護清單",
-      "對應規則": "（缺口——本 skill 無具名的保護清單概念，僅有分散 carve-outs；engineering-guidelines.md 僅有一條 fidelity 檢查，未涵蓋價格/折扣碼/期限這組）",
+      "對應規則": "保護清單／交易事實",
       "tier": "full",
       "source": "speak-human-tw SNF-01 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -493,7 +494,7 @@
       ],
       "bucket": "SNF",
       "面向": "保護清單",
-      "對應規則": "（缺口——同上，本 skill 無具名保護清單機制）",
+      "對應規則": "保護清單／具名見證與原話",
       "tier": "fast",
       "source": "speak-human-tw SNF-02 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -506,7 +507,7 @@
       ],
       "bucket": "SNF",
       "面向": "保護清單",
-      "對應規則": "（缺口——同上）",
+      "對應規則": "保護清單／承諾條款",
       "tier": "full",
       "source": "speak-human-tw SNF-03 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -519,7 +520,7 @@
       ],
       "bucket": "SNF",
       "面向": "語言句式",
-      "對應規則": "口號式短句 carve-out（承載新資訊的短句是節奏，不標）",
+      "對應規則": "零資訊警句與口號 carve-out（承載新資訊的短句是節奏）",
       "tier": "full",
       "source": "speak-human-tw SNF-04 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -532,7 +533,7 @@
       ],
       "bucket": "SNF",
       "面向": "事實與引用",
-      "對應規則": "Vague attributions carve-out（有明確來源不算模糊歸屬）",
+      "對應規則": "模糊歸屬 carve-out（具名可查來源）",
       "tier": "full",
       "source": "speak-human-tw SNF-05 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -545,7 +546,7 @@
       ],
       "bucket": "SNF",
       "面向": "語言句式",
-      "對應規則": "Contrarian structure carve-out（整篇最多一次）",
+      "對應規則": "對比句式 carve-out（整篇最多一次）",
       "tier": "fast",
       "source": "speak-human-tw SNF-06 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -558,7 +559,7 @@
       ],
       "bucket": "SNF",
       "面向": "溝通殘留",
-      "對應規則": "（缺口——本 skill 的 Allowed patterns 未列「金流／客服必要免責句」這一項，精神上與既有 carve-out 一致但無明文）",
+      "對應規則": "知識截止免責 carve-out（必要營運免責）／保護清單／必要免責與作業說明",
       "tier": "full",
       "source": "speak-human-tw SNF-07 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -570,8 +571,8 @@
         "expected-behavior: 放行，一個字都不用動。"
       ],
       "bucket": "SNF",
-      "面向": "語言句式",
-      "對應規則": "結構級訊號 carve-out（句句完整、無口語破格的反例——此為刻意破格，應保留）",
+      "面向": "立場與開場",
+      "對應規則": "作者隱身／無口語破格 carve-out（刻意破格是正向特徵）",
       "tier": "full",
       "source": "speak-human-tw SNF-08 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -583,8 +584,8 @@
         "expected-behavior: 放行。英文技術詞（WebP、lazy load、LCP）屬中英混排的合理範圍。"
       ],
       "bucket": "SNF",
-      "面向": "語言句式",
-      "對應規則": "（缺口——本 skill 的 Allowed patterns 已列「提升 in a technical context」，但「優化」掛實際指標這組未明文收錄，精神一致）",
+      "面向": "內容類",
+      "對應規則": "空話填充 carve-out（掛實際指標的提升／優化）",
       "tier": "full",
       "source": "speak-human-tw SNF-09 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -596,8 +597,8 @@
         "expected-behavior: 放行或只做極輕微調。不能把公告改成聊天口吻。"
       ],
       "bucket": "SNF",
-      "面向": "溝通殘留",
-      "對應規則": "結構級訊號 carve-out（voice-neutral／公文排除範圍，Allowed patterns「Structured uniformity in 公文/RFP/SOP」）",
+      "面向": "立場與開場",
+      "對應規則": "作者隱身 carve-out（事務文體 體裁排除）",
       "tier": "fast",
       "source": "speak-human-tw SNF-10 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -610,7 +611,7 @@
       ],
       "bucket": "SNF",
       "面向": "語言句式",
-      "對應規則": "（缺口——「使用 vs 提及」判準本 skill 未明文，是很強的可加規則；design-notes 已記錄為 step 3 輸入）",
+      "對應規則": "使用／提及之分",
       "tier": "full",
       "source": "speak-human-tw SNF-11 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -623,7 +624,7 @@
       ],
       "bucket": "SNF",
       "面向": "長文scope",
-      "對應規則": "Scope ladder carve-out（濃縮體裁不豁免論證步驟，但此處是刻意的敘事節奏設計，非推論鏈斷裂）",
+      "對應規則": "長文scope carve-out（文件尺度的刻意節奏非推論鏈斷裂）",
       "tier": "full",
       "source": "speak-human-tw SNF-12 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -636,7 +637,7 @@
       ],
       "bucket": "SNF",
       "面向": "立場與開場",
-      "對應規則": "空降主張 carve-out（有具體選擇條件與經驗，非懸空結論）",
+      "對應規則": "空降主張 carve-out（有選擇條件與經驗的條件式建議）",
       "tier": "full",
       "source": "speak-human-tw SNF-13 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -649,7 +650,7 @@
       ],
       "bucket": "SNF",
       "面向": "立場與開場",
-      "對應規則": "空降斷言開場 carve-out（時代變化句有具體數字與轉折支撐，非空泛大帽子）",
+      "對應規則": "空降斷言開場 carve-out（帶具體數字與轉折的時代變化句）",
       "tier": "full",
       "source": "speak-human-tw SNF-14 (MIT, adapted with attribution — verbatim source text, added fields)"
     },
@@ -662,9 +663,38 @@
       ],
       "bucket": "SNF",
       "面向": "人工戲劇",
-      "對應規則": "（缺口——同 SF-27，本 skill 無罐頭式反應鏡頭規則，此為其 carve-out 半邊）",
+      "對應規則": "罐頭式反應鏡頭 carve-out（推進事件的真實停頓）",
       "tier": "fast",
       "source": "speak-human-tw SNF-15 (MIT, adapted with attribution — verbatim source text, added fields)"
+    },
+    {
+      "id": 55,
+      "prompt": "用 --expect-author detect 這段 API 文件（docs 語境）：「POST /v1/orders 建立一筆訂單。請求主體需包含 customer_id 與 items 陣列，每個 item 含 sku 與 quantity。成功時回傳 201 與訂單物件；customer_id 不存在時回傳 404；items 為空陣列時回傳 400。」",
+      "expected_output": "Declaration path: identical text to case 13, flag is the only variable. --expect-author sets the genre verdict to 署名文體, so 作者隱身 runs and reports the absences as findings instead of declining on genre.",
+      "expectations": [
+        "hidden-author-runs-under-declaration: 依 --expect-author 將文體判為 署名文體，作者隱身照跑，至少報出兩個子訊號（立場真空、零具體個人細節）。不得以「事務文體排除」為由拒絕執行。",
+        "declaration-attributed: 報告中載明此體裁判定來自使用者宣告，而非模型自己的判讀，讓誤下的旗標看得見、好撤回。",
+        "reports-absence-only: 只列缺席與建議作者補入的項目，不代筆補寫立場或個人經驗，原文一字未改。",
+        "no-word-level-false-positives: 不把正確的技術陳述（狀態碼、欄位名）誤標為 AI 空話。"
+      ],
+      "bucket": "SF",
+      "面向": "立場與開場",
+      "對應規則": "作者隱身（--expect-author 宣告路徑）",
+      "tier": "fast"
+    },
+    {
+      "id": 56,
+      "prompt": "用 --expect-author detect 這段簽呈（公文語境）：「本案擬採資訊室現有雲端主機擴充方案，不另編列採購預算。優點為建置期程短、與既有系統相容；缺點為尖峰時段效能受共用資源限制。簽請核示。」",
+      "expected_output": "Declaration path: identical text to case 14, flag is the only variable. The user has taken the genre call on themselves, so the audit runs rather than declining — while the sentence-level rules reach the same verdicts they would without the flag.",
+      "expectations": [
+        "hidden-author-runs-under-declaration: 依 --expect-author 將文體判為 署名文體，作者隱身照跑並報出缺席，不得回覆「公文不適用」了事。",
+        "declaration-attributed: 載明體裁判定出自使用者宣告，並可附一句提醒本文按公文讀是體裁正確的。",
+        "no-coaching-tone-false-positive: 不誤標「簽請核示」為對讀者說教——這是公文慣用結尾語，非教練口吻；旗標改變的只有作者隱身這一條的啟用與否。"
+      ],
+      "bucket": "SF",
+      "面向": "立場與開場",
+      "對應規則": "作者隱身（--expect-author 宣告路徑）",
+      "tier": "fast"
     }
   ]
 }

@@ -100,7 +100,7 @@
         "判斷輸入為外來格式（非本 skill 骨架）+ 意圖為『重整』→ 整份重構並依 compass 路由進四型區塊",
         "外來純功能羅列 → reference（describe-only）；補上 What/Why 與 alternatives-weighing（與 Ingress 的邊界、何時不該用 Gateway API）→ explanation；原文若含真實上手步驟 → tutorial/how-to，否則明列缺口",
         "改寫說明列出新增與移除的區塊結構（哪一型新增、原內容各歸哪型），不是只給重寫後的正文",
-        "純語句層潤飾（去 AI 味）不在此步驟代做，留待 avoid-ai-writing-zh 完稿檢查"
+        "純語句層潤飾（去 AI 味）不在此步驟代做，留待 humanizer-zh 完稿檢查"
       ]
     }
   ]

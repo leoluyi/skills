@@ -14,8 +14,8 @@ whenUse:
   en: "Reach for it when you need to explain a technical term, code snippet, error, or dense engineering text to a non-technical reader, to check whether a plain-language draft actually lands, or to have the answer or question you just got re-done in plain language."
   zh: "當你要把技術術語、程式碼、錯誤訊息或工程長文講給非技術讀者聽，想檢查白話草稿夠不夠白，或想叫它把剛剛那個回答、那個問題用白話重講一次時使用。"
 whenNot:
-  en: "Not for de-AI voice cleanup (avoid-ai-writing-zh), structuring a whole formal doc like a 簽呈 or 報告 (formal-doc-structure), or an RFP (rfp-writing)."
-  zh: "不要用於潤飾語氣、去 AI 味（用 avoid-ai-writing-zh），編排整份簽呈或報告（用 formal-doc-structure），或 RFP（用 rfp-writing）。"
+  en: "Not for de-AI voice cleanup (humanizer-zh), structuring a whole formal doc like a 簽呈 or 報告 (formal-doc-structure), or an RFP (rfp-writing)."
+  zh: "不要用於潤飾語氣、去 AI 味（用 humanizer-zh），編排整份簽呈或報告（用 formal-doc-structure），或 RFP（用 rfp-writing）。"
 highlights:
   en:
     - "Pins the exact reader first: a CFO gets 財務影響, a salesperson gets 客戶好處"

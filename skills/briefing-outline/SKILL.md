@@ -1,7 +1,7 @@
 ---
 name: briefing-outline
 description: >-
-  說明提綱 (briefing outline) writing — distill detailed source material into one high-altitude overview that gives each part its purpose and essence, then points down for the detail. Source count is not the point: it works over several documents or one long report (pointing down to its sections). Use when the user wants to 整理／撰寫一份說明提綱, condense one or more sources into a navigable briefing for a 主管 or 委員會, summarise a long report into a high-altitude overview that points down for detail, or re-sync an existing 提綱 after its sources changed. Do NOT invoke to author a single formal document from scratch — 簽呈/會議紀錄/報告/專案規劃 (use formal-doc-structure), for RFP / 需求規格書 / 招標規格 (use rfp-writing), for lowering one term or passage to a non-technical audience (use plain-speak), or for pure language cleanup (use avoid-ai-writing-zh). This skill sits above the source material and points down into each part.
+  說明提綱 (briefing outline) writing — distill detailed source material into one high-altitude overview that gives each part its purpose and essence, then points down for the detail. Source count is not the point: it works over several documents or one long report (pointing down to its sections). Use when the user wants to 整理／撰寫一份說明提綱, condense one or more sources into a navigable briefing for a 主管 or 委員會, summarise a long report into a high-altitude overview that points down for detail, or re-sync an existing 提綱 after its sources changed. Do NOT invoke to author a single formal document from scratch — 簽呈/會議紀錄/報告/專案規劃 (use formal-doc-structure), for RFP / 需求規格書 / 招標規格 (use rfp-writing), for lowering one term or passage to a non-technical audience (use plain-speak), or for pure language cleanup (use humanizer-zh). This skill sits above the source material and points down into each part.
 version: 1.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -36,7 +36,7 @@ The English in this file is structural labelling for you, not literal output. Ne
 3. **Lay the spine.** Order the top-level sections (一、二、三…) so they are **MECE** — 段落分明, each source's essence living in exactly one section (no overlap), the set together covering the whole. Default spine: the process or lifecycle the sources describe (each stage in the order it happens), else the umbrella's own structure. Open with one line naming the spine, and mark each bend with a short transition line that situates the sections about to follow. Place a governing or oversight section beside the phase it governs, not after phases it doesn't touch; only genuinely cross-cutting resourcing tails as an appendix. Completion: every source maps to exactly one section, or is deliberately folded into one.
 4. **Draft each section purpose-first.** Lead with the section's intent (目的／要驗證／要達成), then the essence, then point down with 「（詳《source》）」. Rewrite spec-voice into stakeholder-voice — turn a source's noun-list objective (「…之能力／功能／規格」) into a plain 「能做到〔動詞成果〕」 statement — and run the retained sentences through the `plain-speak` skill against the least-technical reader in the room (its repeat-test). Source already at altitude passes through; don't rewrite well-pitched material to rewrite it.
 5. **Cut to altitude — per item, not a flat line.** Give each item only the room it **earns** (see Altitude); collapse the rest to a label and point down. When one section is deliberately more granular than its siblings, say so rather than let it read as drift. This is the core editorial act — when in doubt, cut and point down.
-6. **Apply house style.** Conform the draft to the style reference below, then offer to run the `avoid-ai-writing-zh` skill on it as a deep de-AI pass (run it only if the user agrees).
+6. **Apply house style.** Conform the draft to the style reference below, then offer to run the `humanizer-zh` skill on it as a deep de-AI pass (run it only if the user agrees).
 7. **Verify.** Run the draft through every gate in **## Verification** below; each is pass/fail and a fail sends you back to the named step. When a change is important enough, cascade a brief mention into companion overview docs (e.g. a one-page 版). Completion: every gate passes.
 
 **Re-sync branch** — a source document changed: identify the affected sections and re-run steps 4–7 for those only, including the cascade check in step 7.
@@ -79,7 +79,7 @@ The 提綱 may also **synthesize what the sources only imply**: name a structure
 - Top-level sections numbered 一、二、三; keep numbering stable across edits so references hold.
 - **Lock owner-designated keywords verbatim.** When the source's owner (主管／委員) has fixed specific technical keywords, carry them through unchanged even while rewriting the surrounding prose to altitude; fix only a typo, mis-set term, or technical/logic error, flag it, and confirm before removing or merging a keyword.
 - **Lock shared terms across the source set.** One canonical form per concept (課程類別、委員會職務、關卡名、機構／子公司名); change one, change all, so cross-references hold.
-- No emoji. Strip AI-isms (the `avoid-ai-writing-zh` pass in step 6 handles this).
+- No emoji. Strip AI-isms (the `humanizer-zh` pass in step 6 handles this).
 
 ## Verification
 
@@ -92,7 +92,7 @@ Before declaring a 提綱 done, run every gate. Each is pass/fail; a fail sends 
 - **Earned depth** (step 5) — each item's room matches what it earns; no self-describing label padded, no non-obvious or decision-bearing item starved. A section deliberately more granular than its siblings says so.
 - **Traceability** (step 4) — every claim and every load-bearing number, *including synthesized ones* (computed totals, regrouped structures), traces to a source. A load-bearing number with no anchor fails.
 - **Pointer coverage** (step 4) — cross-reference density tracks detail density: the heaviest sections each carry a 「（詳《source》）」, not just the light ones.
-- **Voice & shape** (steps 4, 6) — purpose-first labels present; essence is flat bullet clusters, not nested 槽狀 prose; retained sentences pass `plain-speak`'s repeat-test; `avoid-ai-writing-zh` has been offered as a deep de-AI pass (run if the user accepts).
+- **Voice & shape** (steps 4, 6) — purpose-first labels present; essence is flat bullet clusters, not nested 槽狀 prose; retained sentences pass `plain-speak`'s repeat-test; `humanizer-zh` has been offered as a deep de-AI pass (run if the user accepts).
 
 ## Worked example
 

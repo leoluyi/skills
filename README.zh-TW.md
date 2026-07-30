@@ -53,7 +53,7 @@ npx skills add https://github.com/leoluyi/skills -g -a '*' -y
 npx skills update --all
 ```
 
-接著在 Claude Code／Cursor／Codex 裡直接描述任務，技能的 trigger 會自動載入。例如打「幫我把這段 README 去掉 AI 味」就會叫用 `avoid-ai-writing-zh`。
+接著在 Claude Code／Cursor／Codex 裡直接描述任務，技能的 trigger 會自動載入。例如打「幫我把這段 README 去掉 AI 味」就會叫用 `humanizer-zh`。
 
 離線／內網的替代做法：Claude Code 的技能載入器在 `~/.claude/skills/` 本身是 symlink 時有探索 bug，解法是為每個技能各建一條 symlink：
 
@@ -74,7 +74,7 @@ tools/sync-skills
 
 | Skill | 做什麼 |
 |---|---|
-| **去除 AI 味（中英雙語）**<br>[`avoid-ai-writing-zh`](skills/avoid-ai-writing-zh/SKILL.md) | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
+| **去除 AI 味（中英雙語）**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
 | **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，又不誤傷真正的術語 |
 | **把技術術語翻成白話**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 |
 | **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
@@ -126,7 +126,7 @@ tools/sync-skills
 ├── CLAUDE.md          # 硬規則（永遠載入）——禁止事項
 ├── engineering-guidelines.md     # 完整撰寫指南
 ├── CONTRIBUTING.md    # 如何貢獻（英文＋繁中）
-├── backlog.md         # 還沒動筆的點子
+├── backlog.md         # repo 層與 tools/ 的待辦（單一 skill 的待辦在 skills/<name>/backlog.md）
 ├── skills/            # 上架技能——每個是一個 SKILL.md 資料夾
 ├── docs/              # GitHub Pages 網站（互動式目錄）
 └── tools/             # repo 腳本
@@ -152,7 +152,8 @@ tools/sync-skills
 
 部分技能立基於既有作品，署名與授權如下：
 
-- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** — Conor Bronsdon（MIT）。`avoid-ai-writing-zh` 的英文偵測層逐字沿用此專案；上游 MIT 授權隨 [`skills/avoid-ai-writing-zh/LICENSE`](skills/avoid-ai-writing-zh/LICENSE) 一併附上。
-- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** — Raymond Hou（雷蒙三十）（MIT）。啟發了 `avoid-ai-writing-zh`（翻譯腔）與 `avoid-china-writing`（陸用語對照表）的部分台灣用語條目；這些規則條目均為自行改寫，非照抄原文。另外，`avoid-ai-writing-zh` 的測試語料（`evals/evals.json` id 15-54）逐字改編了 40 則測試案例並標明出處，見 `skills/avoid-ai-writing-zh/NOTICE`。
+- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** — Raymond Hou（雷蒙三十）（MIT）。`humanizer-zh` 的六步驟工作流程與保護清單機制改編自此專案；其翻譯腔條目也啟發了該技能與 `avoid-china-writing`（陸用語對照表）的部分台灣用語條目，這些規則條目均為自行改寫，非照抄原文。另外，`humanizer-zh` 的測試語料（`evals/evals.json` id 15-54）逐字改編了 40 則測試案例並標明出處，見 [`skills/humanizer-zh/NOTICE`](skills/humanizer-zh/NOTICE)。
+- **[humanizer](https://github.com/blader/humanizer)** — Siqi Chen（MIT）與 **[x-skills](https://github.com/sergebulaev/x-skills)** 的 `x-humanizer` — Sergey Bulaev（MIT）。`humanizer-zh` 的英文層由兩者的模式清單蒸餾而來：規則重新推導、重新歸入該技能自己的缺陷分類並改寫，未逐字沿用任何原文。
+- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** — Conor Bronsdon（MIT）。`humanizer-zh` 在 v1.5.0（含）以前的英文偵測層逐字沿用此專案；該層已於 v2.0.0 移除，現行技能不再含其內容，此處保留署名以誌來歷。
 - **[Diátaxis](https://diataxis.fr/)** — Daniele Procida（[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)）。`knowledge-doc-writing` 以 Diátaxis 四型模型（tutorial／how-to／reference／explanation）為結構主軸；框架本身為 Procida 所有，`skills/knowledge-doc-writing/research/` 下的蒸餾筆記為衍生內容，以 CC BY-SA 4.0 釋出。
 - **frontend-design** — Anthropic（Apache-2.0）。`infographic-design` 改編其部分內容，詳見 [`skills/infographic-design/NOTICE`](skills/infographic-design/NOTICE)。

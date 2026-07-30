@@ -54,7 +54,7 @@
       "id": 8,
       "query": "這段文字幫我去掉 AI 味就好，結構不要動。",
       "should_trigger": false,
-      "note": "should NOT trigger — avoid-ai-writing-zh territory",
+      "note": "should NOT trigger — humanizer-zh territory",
       "category": "negative/de-ai-only"
     },
     {

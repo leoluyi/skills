@@ -14,8 +14,8 @@ whenUse:
   en: "Reach for it when a Traditional Chinese draft carries mainland wording, corp-speak, or leaked Simplified characters and you need it to read naturally for a Taiwan audience."
   zh: "當一份繁體中文稿子夾雜陸用語、互聯網黑話或簡體字，要改成台灣讀者自然的正體中文時使用。"
 whenNot:
-  en: "Not for stripping AI tells or polishing tone (use avoid-ai-writing-zh), formal business docs (formal-doc-structure), RFPs (rfp-writing), or plain-language rewrites (plain-speak)."
-  zh: "不要用於去 AI 味或潤飾語氣（用 avoid-ai-writing-zh）、簽呈報告（用 formal-doc-structure）、RFP（用 rfp-writing）或白話翻譯（用 plain-speak）。"
+  en: "Not for stripping AI tells or polishing tone (use humanizer-zh), formal business docs (formal-doc-structure), RFPs (rfp-writing), or plain-language rewrites (plain-speak)."
+  zh: "不要用於去 AI 味或潤飾語氣（用 humanizer-zh）、簽呈報告（用 formal-doc-structure）、RFP（用 rfp-writing）或白話翻譯（用 plain-speak）。"
 highlights:
   en:
     - "Catches 陸用語 across four axes: vocabulary, corp-speak jargon, leaked Simplified, transliterations"

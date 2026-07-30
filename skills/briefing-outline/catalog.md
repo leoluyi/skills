@@ -14,8 +14,8 @@ whenUse:
   en: "Reach for it when you need to condense one or more source documents into a navigable briefing a manager or committee can grasp at a glance and drill into."
   zh: "當你要把一份或多份來源文件收斂成主管或委員會能一眼掌握、又能往下鑽的說明提綱時使用。"
 whenNot:
-  en: "Not for authoring a single formal doc from scratch (use formal-doc-structure), an RFP (rfp-writing), lowering one term to a lay reader (plain-speak), or pure de-AI cleanup (avoid-ai-writing-zh)."
-  zh: "不要用於從零撰寫單一正式文件（用 formal-doc-structure）、RFP（用 rfp-writing）、白話化單一術語（用 plain-speak）或純去 AI 味（用 avoid-ai-writing-zh）。"
+  en: "Not for authoring a single formal doc from scratch (use formal-doc-structure), an RFP (rfp-writing), lowering one term to a lay reader (plain-speak), or pure de-AI cleanup (humanizer-zh)."
+  zh: "不要用於從零撰寫單一正式文件（用 formal-doc-structure）、RFP（用 rfp-writing）、白話化單一術語（用 plain-speak）或純去 AI 味（用 humanizer-zh）。"
 highlights:
   en:
     - "Handles one long report or many docs: each part gets its essence, then points down for detail"
