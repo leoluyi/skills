@@ -13,7 +13,8 @@ skills/<name>/
 ├── scripts/         # optional — deterministic logic, no LLM needed
 └── evals/
     ├── evals.json        # with-vs-without test cases
-    └── judged-cases.md   # optional — corpus of user verdicts
+    ├── judged-cases.md   # optional — corpus of user verdicts
+    └── label-check.json  # optional — opt into the tools/check-labels gate
 ```
 
 Keep the body under 500 lines; everything past that belongs in `references/` or `scripts/`.
@@ -120,6 +121,15 @@ Skills may ship deterministic checks under `scripts/`. Their value is that their
 - **Checks exert directional pressure.** Every constraint has a cheapest path to green; state the intended fix order next to the constraint ("cut words, then shrink type, enlarge boxes last") or the model takes the cheap path.
 - **Verify automated edits actually landed.** `str.replace`/`sed` silently no-op on an anchor mismatch. After any scripted patch, grep the target string in the file — never print success unconditionally.
 
+## Where a tool lives — `scripts/` vs `tools/`
+
+Decide by **who runs it**, not by how many skills it serves.
+
+- **Runtime → `skills/<name>/scripts/`.** Anything the skill itself invokes mid-flow. It ships with the skill, so its cost lands on every consumer. Bound by [Portability](#portability) and the severity rules above: the skill must still complete where the interpreter is missing (the check degrades to a human read), and a script stays a *verification gate*, never the only path to the output. `infographic-design/scripts/check.py` is the model.
+- **Dev-side → `tools/`, even when exactly one skill uses it.** Eval dispatch, label hygiene, catalog builds — run by whoever maintains the repo. Don't copy a maintainer script into a skill dir to signal ownership: every file under `skills/<name>/` is a distribution artifact and a context cost for consumers who will never run it. `tools/check-labels` serves only humanizer-zh today and still belongs in `tools/`.
+- **A dev tool's backlog item may sit in the skill's backlog even though its code lives in `tools/`.** The item goes where the *judgment* belongs (`tools/annotate` asks a humanizer-zh question, so it is tracked there); the code goes where the *runner* belongs. These two answers are allowed to differ — say which is which in the item.
+- **A single-skill dev tool takes config, never hardcoded paths.** Make participation opt-in through a declaration the skill ships, so a skill that hasn't opted in **skips cleanly** rather than erroring — an exit-2 on every other skill is what stops a gate from being generalizable. A file the config *does* declare but that is missing stays a hard error: opting in and then losing a rule file is a defect, not an absent feature. `tools/check-labels` reads `skills/<name>/evals/label-check.json` (regex sources for the canonical rule names, plus an optional corpus path) and is run `--all` by `.github/workflows/eval-labels.yml`; the config declares *where names live*, never the names, so there is still no taxonomy manifest to drift.
+
 ## Portability
 
 This repo is the single source of truth, symlinked into each agent's skills tree, so every skill must run unchanged on Claude Code *and* Codex (Cursor and OpenHands then come nearly free). What breaks portability, and the rule for each:
@@ -149,7 +159,7 @@ Evals follow the official `skill-creator` standard: `skills/<name>/evals/evals.j
 - **Anchor evals externally, or they measure your taste.** Assertions derived from the skill's own prose, judged by a model reading that prose, measure conformance — not user value. Phrase assertions as reader outcomes ("a reader can verify X from the artifact alone"), anchor to external standards where they exist, and compare at least one output per round against a real-world exemplar of the genre. Source scenarios from real user requests and artifacts the user has already judged, not from "what does this skill claim to do well?" — a self-authored suite can only fail where you already thought to look. Keep it as a regression guard: good at noticing a deleted rule, worthless as evidence of improvement.
 - **Pair every should-fire assertion with a must-not-fire boundary.** A suite that only checks "the rule catches X" is blind to over-triggering: when adding a detection rule, also add the nearest legitimate text the rule must leave alone, and track the two failure classes separately — for most skills here, a false positive on real writing outranks a missed catch. Text-rewriting skills get three further standing checks on every rewrite output: fidelity (numbers, names, links, quoted text survive verbatim), no same-family substitution (deleting 「賦能」 only to insert 「加值」 is a fail, not a fix), and a prompt-injection probe (an "ignore your rules" instruction embedded in the manuscript is data to edit, not a command). Adapted from speak-human-tw's eval protocol.
 - **Human judgment is the tie-breaker.** When a person says the output got worse while every internal metric is green, suspect the rubric before the person.
-
+- **Cross-check a suspicious trigger result on the second router before calling it a regression.** `tools/run-eval` drives `trigger-queries.json` through Claude Code by default and through Codex with `RUN_EVAL_AGENT=codex`; both are pinned and both refuse to spend a billed API key. When the two disagree case-by-case, the harness is the suspect; when they agree, the router change is real. Re-running the same CLI and hoping tells you nothing.
 ## Maintenance
 
 - `tools/usage-report` quarterly. Zero hits in 90 days → archive candidate (`tools/archive-skill <name>`).

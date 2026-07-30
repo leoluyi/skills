@@ -1,0 +1,49 @@
+name: Check eval labels
+
+# tools/check-labels validates two things for every skill that opts in by
+# shipping evals/label-check.json: each rule label used by evals.json
+# (對應規則) and by the declared corpus resolves to a name the skill itself
+# declares, and each corpus 引文片段 is a real substring of its case's quote
+# (the 解析契約). A skill without that config is skipped cleanly, so this can
+# watch skills/** — only humanizer-zh has opted in so far, and a skill that
+# opts in gets covered here without touching this file.
+#
+# This lives in its own workflow file, not a second job in docs-check.yml,
+# because GitHub Actions applies `on.paths` at the workflow level: a second
+# job in that file would still run (and could block) on a catalog-only PR
+# that never touches eval data, and vice versa. Two independent gates need
+# two independent trigger sets.
+
+on:
+  pull_request:
+    paths:
+      - "skills/*/SKILL.md"
+      - "skills/*/references/**"
+      - "skills/*/evals/**"
+      - "tools/check-labels"
+      - ".github/workflows/eval-labels.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/*/SKILL.md"
+      - "skills/*/references/**"
+      - "skills/*/evals/**"
+      - "tools/check-labels"
+      - ".github/workflows/eval-labels.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Validate eval labels and corpus parsing contract
+        run: uv run tools/check-labels --all
