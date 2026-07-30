@@ -146,11 +146,56 @@ invoke_router() {
       printf '%s' "$raw"
       ;;
     codex)
-      local tmp
+      # Pinned model + effort, with --ignore-user-config so the pin is
+      # authoritative: $CODEX_HOME/config.toml can itself set `model` /
+      # `model_reasoning_effort`, and without this flag those values win
+      # over -m/-c silently — verified 2026-07-30 by passing a deliberately
+      # invalid model name, which only errors with --ignore-user-config
+      # present. Without pinning, a run today is not comparable to a run
+      # next month, or even to a run on a different machine.
+      #
+      # -C "$REPO_ROOT": codex's trust check ("Not inside a trusted
+      # directory...") is keyed to the working directory, and this script
+      # computes REPO_ROOT but otherwise never cds into it — so invoking it
+      # from outside the repo would fail on this branch only (the claude
+      # branch has no such restriction). --skip-git-repo-check is kept as a
+      # fallback for the separate case where REPO_ROOT itself is not a
+      # trusted git checkout by codex's own accounting.
+      #
+      # `env -u OPENAI_API_KEY`: mirrors the claude branch's `-u
+      # ANTHROPIC_API_KEY` for the same stated policy (never a billed API
+      # call). Not reproduced as a live failure on this CLI/login mode —
+      # a fake key did not get preferred over the active ChatGPT session —
+      # but the cost of dropping it is zero and the failure mode, if it
+      # exists on some auth configuration, would be silent.
+      local tmp err_file
       tmp=$(mktemp)
-      codex exec -s read-only -o "$tmp" "$prompt" </dev/null >/dev/null 2>&1 || true
-      cat "$tmp" 2>/dev/null
-      rm -f "$tmp"
+      err_file=$(mktemp)
+      env -u OPENAI_API_KEY codex exec -s read-only \
+        -C "$REPO_ROOT" --skip-git-repo-check --ignore-user-config \
+        -m gpt-5.6-luna -c model_reasoning_effort="xhigh" \
+        -o "$tmp" "$prompt" </dev/null >/dev/null 2>"$err_file" || true
+      raw=$(cat "$tmp" 2>/dev/null)
+      # Same shape as the claude branch: never let stderr feed the verdict,
+      # only the diagnostic. A benign local warning (this CLI logs a shell
+      # snapshot validation failure on some machines) must not be mistaken
+      # for the cause when $tmp is genuinely empty for another reason.
+      if [[ -z "$raw" ]] || ! grep -qiwE 'TRIGGER|NONE' <<<"$raw"; then
+        {
+          echo "run-eval: codex exec produced no parseable TRIGGER/NONE decision."
+          # Tail, not head: codex's own startup banner (version, workdir,
+          # model, sandbox mode) runs 150-200+ bytes before any real error,
+          # so a leading snippet reliably shows the banner and never the
+          # failure. Verified 2026-07-30 against an invalid-model error.
+          printf '  stderr: %s\n' \
+            "$(LC_ALL=C tr -d '\000-\010\013\014\016-\037' <"$err_file" \
+               | tail -c 400 \
+               | sed -E 's/sk-[A-Za-z0-9_-]+/<redacted>/g; s/ey[A-Za-z0-9_-]{20,}/<redacted>/g')"
+          echo "  check: is 'codex' authenticated, and is model 'gpt-5.6-luna' available to it?"
+        } >&2
+      fi
+      rm -f "$tmp" "$err_file"
+      printf '%s' "$raw"
       ;;
   esac
 }
