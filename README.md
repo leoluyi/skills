@@ -53,7 +53,7 @@ Update later:
 npx skills update --all
 ```
 
-Then in Claude Code / Cursor / Codex, just describe the task — a skill's trigger fires it automatically. For example: *"幫我把這段 README 去掉 AI 味"* loads `avoid-ai-writing-zh`.
+Then in Claude Code / Cursor / Codex, just describe the task — a skill's trigger fires it automatically. For example: *"幫我把這段 README 去掉 AI 味"* loads `humanizer-zh`.
 
 <details>
 <summary><b>Offline / airgapped fallback</b></summary>
@@ -79,7 +79,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 
 | Skill | What it does |
 |---|---|
-| **De-AI Writing (English + zh-TW)**<br>[`avoid-ai-writing-zh`](skills/avoid-ai-writing-zh/SKILL.md) | Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose |
+| **Humanizer (English + zh-TW)**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose |
 | **Cross-Strait Chinese Localizer**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms |
 | **Plain Speak: Jargon into Plain Language**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back |
 | **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
@@ -157,8 +157,8 @@ The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full author
 
 Some skills stand on prior work. Credit and licenses:
 
-- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** by Raymond Hou (雷蒙三十) (MIT) — `avoid-ai-writing-zh` adapts its six-step working procedure and its 保護清單 mechanism, and its 翻譯腔 patterns informed Taiwan-usage entries in that skill and in `avoid-china-writing` (陸用語 term table); those rule entries are our own rewrite, not copied text. Separately, `avoid-ai-writing-zh`'s eval corpus (`evals/evals.json` ids 15-54) adapts 40 of its test cases verbatim, with attribution — see [`skills/avoid-ai-writing-zh/NOTICE`](skills/avoid-ai-writing-zh/NOTICE).
-- **[humanizer](https://github.com/blader/humanizer)** by Siqi Chen (MIT) and **[x-skills](https://github.com/sergebulaev/x-skills)**' `x-humanizer` by Sergey Bulaev (MIT) — `avoid-ai-writing-zh`'s English layer was distilled from their pattern inventories; the patterns were re-derived, re-classified into that skill's own defect classes, and rewritten, with no prose copied verbatim.
-- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** by Conor Bronsdon (MIT) — `avoid-ai-writing-zh` through v1.5.0 rebased its English detection layer verbatim from this project. That layer was removed in v2.0.0 and no longer appears in the skill; the credit stands for the record.
+- **[speak-human-tw](https://github.com/Raymondhou0917/speak-human-tw)** by Raymond Hou (雷蒙三十) (MIT) — `humanizer-zh` adapts its six-step working procedure and its 保護清單 mechanism, and its 翻譯腔 patterns informed Taiwan-usage entries in that skill and in `avoid-china-writing` (陸用語 term table); those rule entries are our own rewrite, not copied text. Separately, `humanizer-zh`'s eval corpus (`evals/evals.json` ids 15-54) adapts 40 of its test cases verbatim, with attribution — see [`skills/humanizer-zh/NOTICE`](skills/humanizer-zh/NOTICE).
+- **[humanizer](https://github.com/blader/humanizer)** by Siqi Chen (MIT) and **[x-skills](https://github.com/sergebulaev/x-skills)**' `x-humanizer` by Sergey Bulaev (MIT) — `humanizer-zh`'s English layer was distilled from their pattern inventories; the patterns were re-derived, re-classified into that skill's own defect classes, and rewritten, with no prose copied verbatim.
+- **[avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)** by Conor Bronsdon (MIT) — `humanizer-zh` through v1.5.0 rebased its English detection layer verbatim from this project. That layer was removed in v2.0.0 and no longer appears in the skill; the credit stands for the record.
 - **[Diátaxis](https://diataxis.fr/)** by Daniele Procida ([CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)) — `knowledge-doc-writing` is structured on the Diátaxis four-type model (tutorial / how-to / reference / explanation). The framework is Procida's work; the distilled study notes under `skills/knowledge-doc-writing/research/` are a derivative and are made available under CC BY-SA 4.0.
 - **frontend-design** by Anthropic (Apache-2.0) — `infographic-design` adapts portions; see [`skills/infographic-design/NOTICE`](skills/infographic-design/NOTICE).

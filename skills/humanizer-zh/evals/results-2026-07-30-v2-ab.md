@@ -1,7 +1,7 @@
 # v2.0.0 vs v1.5.0 — A/B
 
 - 日期：2026-07-30
-- 分支：`refactor/avoid-ai-writing-zh`
+- 分支：`refactor/humanizer-zh`
 - 對照組：v1.5.0（`main`，966 行）／實驗組：v2.0.0（110 行）
 
 ## 結論

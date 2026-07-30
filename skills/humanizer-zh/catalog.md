@@ -5,7 +5,7 @@ order: 1
 languages: [en, zh-TW, mixed]
 tags: [de-ai, traditional-chinese, ai-isms, zh-tw, editing, readme]
 title:
-  en: "De-AI Writing (English + zh-TW)"
+  en: "Humanizer (English + zh-TW)"
   zh: "去除 AI 味（中英雙語）"
 tagline:
   en: "Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose"
@@ -21,7 +21,7 @@ highlights:
     - "Three modes: rewrite, detect-only audit, or edit a file in place with minimal fixes"
     - "One rule set, 45 rules in 8 classes: 33 work in both Chinese and English, 12 are Chinese-specific"
     - "Locks a 保護清單 first — prices, quotes, commitments and the author's own rough edges survive verbatim"
-    - "Detect-only structure audit names what a soulless draft is missing, not just bad phrases"
+    - "Detect-only 作者隱身 audit names what a soulless draft is missing, not just bad phrases"
     - "Signals not proof: tuned against false positives on non-native and technical writing"
   zh:
     - "三種模式：改寫、只標記、直接改檔"

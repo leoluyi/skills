@@ -1,6 +1,6 @@
 # Language, drafting patterns, and fixes
 
-Self-contained language discipline for internal business documents. For broad AI-ism cleanup on arbitrary text with no structural work, `avoid-ai-writing` / `clean-ai-writing` go deeper — but everything needed for internal docs is here.
+Self-contained language discipline for internal business documents. For broad AI-ism cleanup on arbitrary text with no structural work, `humanizer-zh` goes deeper — but everything needed for internal docs is here.
 
 ## Prohibited filler
 

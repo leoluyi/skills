@@ -46,7 +46,7 @@ The following are adjacent but distinct — each has its own conventions that co
 - General technical documentation (README, onboarding, API docs)
 - Vendor-side bid proposals or RFP responses (投標提案) — this skill is for the RFP issuer, not the responder
 
-For general formal Chinese writing discipline (avoiding AI-isms), invoke `avoid-ai-writing` or `clean-ai-writing` instead. Those skills apply broadly; this one does not.
+For general formal Chinese writing discipline (avoiding AI-isms), invoke `humanizer-zh` instead. That skill applies broadly; this one does not.
 
 ## Review Checklist
 
@@ -213,7 +213,7 @@ GOOD:
 5. After structural edits, run language audit (grep for prohibited patterns)
 6. Fix language issues
 7. Final grep to verify no prohibited patterns remain
-8. Offer `avoid-ai-writing-zh` as a deep de-AI pass over the final draft; run it only if the user agrees
+8. Offer `humanizer-zh` as a deep de-AI pass over the final draft; run it only if the user agrees
 
 ### Drafting a new section
 
@@ -222,4 +222,4 @@ GOOD:
 3. Write each requirement as a complete sentence
 4. Cross-check against existing sections for redundancy
 5. Run language audit before presenting to user
-6. Offer `avoid-ai-writing-zh` as a deep de-AI pass before presenting; run it only if the user agrees
+6. Offer `humanizer-zh` as a deep de-AI pass before presenting; run it only if the user agrees

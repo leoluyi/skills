@@ -15,7 +15,7 @@ description: >-
   including a question just put to the user. Reply in the language
   the user wrote in. Do NOT
   invoke for removing AI-isms / 潤飾語氣 from existing prose (use
-  avoid-ai-writing-zh), for structuring a whole formal business document —
+  humanizer-zh), for structuring a whole formal business document —
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
@@ -56,7 +56,7 @@ Both run the same criteria below; translate produces to them, review checks them
   given, or a question just put to them (§When nothing is attached)
 
 Sibling skills own the adjacent axes — hand off rather than half-do their job:
-lowering AI-ish *voice* in prose → `avoid-ai-writing-zh`; organizing a whole
+lowering AI-ish *voice* in prose → `humanizer-zh`; organizing a whole
 formal *document* → `formal-doc-structure`; an *RFP* → `rfp-writing`.
 
 ## Output Language

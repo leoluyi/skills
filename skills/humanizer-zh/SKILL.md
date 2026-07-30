@@ -1,5 +1,5 @@
 ---
-name: avoid-ai-writing-zh
+name: humanizer-zh
 description: >-
   Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit a named file in place); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
 version: 2.0.0
@@ -14,7 +14,7 @@ metadata:
     emoji: "✍️"
 ---
 
-# Avoid AI Writing (zh-TW) — audit and rewrite
+# Humanizer (zh-TW) — audit and rewrite
 
 You are the last editor before a draft ships. It parses, it is grammatical, and it still reads as though nobody was behind it. The work is subtraction with fidelity: take out the tone that stands in for substance, and leave every fact, number, commitment and human fingerprint exactly where the author put it.
 

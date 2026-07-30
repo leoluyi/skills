@@ -95,7 +95,7 @@
       "expected_output": "output / title-candidates",
       "expectations": [
         "title-candidates: 文末附 3–5 組標題＋副標備選，橫跨至少兩種標題公式，並標注適用場景。",
-        "pipeline-handoff: 完稿後明確提示 avoid-ai-writing-zh 終稿檢查（及必要時 avoid-china-writing）。"
+        "pipeline-handoff: 完稿後明確提示 humanizer-zh 終稿檢查（及必要時 avoid-china-writing）。"
       ]
     },
     {
@@ -233,7 +233,7 @@
       "prompt": "（agent 環境，可載入 sibling skills）寫完一篇高見龍對話型觀點文後的收尾行為。",
       "expected_output": "pipeline / active-invocation",
       "expectations": [
-        "actively-invokes: 完稿後主動載入並執行 avoid-ai-writing-zh（rewrite 模式），而非僅用文字提示使用者自己去跑。",
+        "actively-invokes: 完稿後主動載入並執行 humanizer-zh（rewrite 模式），而非僅用文字提示使用者自己去跑。",
         "voice-profile-passed: 交棒時把本次風味映射為 voice profile 傳給下游（高見龍 L3→casual），並明確要求保留刻意口語破格/立場句/自建比喻。",
         "post-check: 取回下游結果後檢查聲音是否被誤削（金句/單句段/簽名句式），確認後才定稿；配方紀錄含 pipeline 欄。",
         "graceful-degrade: 若環境無法跨 skill 調用，退為明確提示＋建議指令，不假裝已執行。",

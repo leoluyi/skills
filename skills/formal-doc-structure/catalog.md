@@ -14,8 +14,8 @@ whenUse:
   en: "Reach for it to write or fix an internal business document in Taiwan corporate Traditional Chinese: approval memo, meeting record, assessment report, project plan, or vendor communication."
   zh: "要撰寫或修整公司內部的簽呈、會議紀錄、評估報告、專案規劃或廠商溝通文件時用它。"
 whenNot:
-  en: "Not for RFPs or bidding specs (use rfp-writing), pure language cleanup with no restructuring (use avoid-ai-writing-zh), or blog posts and marketing copy."
-  zh: "不要用在 RFP 或招標規格（改用 rfp-writing）、只做語言去 AI 味不動結構（改用 avoid-ai-writing-zh），或部落格與行銷文案。"
+  en: "Not for RFPs or bidding specs (use rfp-writing), pure language cleanup with no restructuring (use humanizer-zh), or blog posts and marketing copy."
+  zh: "不要用在 RFP 或招標規格（改用 rfp-writing）、只做語言去 AI 味不動結構（改用 humanizer-zh），或部落格與行銷文案。"
 highlights:
   en:
     - "Maps five reader needs (approve, assess, record, execute, coordinate) to a matching document template"

@@ -249,7 +249,7 @@ def check_skill(skill_dir: Path) -> list[str]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("skill", nargs="?", default="avoid-ai-writing-zh")
+    parser.add_argument("skill", nargs="?", default="humanizer-zh")
     args = parser.parse_args()
 
     repo_root = Path(__file__).resolve().parent.parent

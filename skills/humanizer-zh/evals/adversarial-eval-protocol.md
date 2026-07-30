@@ -1,4 +1,4 @@
-# Adversarial Eval Protocol — avoid-ai-writing-zh 對抗式迭代流程
+# Adversarial Eval Protocol — humanizer-zh 對抗式迭代流程
 
 用 GAN 的原理找 skill 盲點與過度觸發的標準流程。每次想優化偵測規則
 （或調整 gating）時跑一輪。與 blog-writing-zh 的「同題對照」互補：

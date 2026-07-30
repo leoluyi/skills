@@ -82,8 +82,8 @@
       "id": 6,
       "query": "幫我把這段內部報告的 AI 味拿掉,像是「賦能」「全面提升」「不是…而是…」那種空話,改成正式但人話的中文。",
       "should_trigger": false,
-      "category": "negative/voice-cleanup-routes-to-avoid-ai-writing-zh",
-      "note": "Voice/AI-ism cleanup of existing prose, not audience translation. Routes to avoid-ai-writing-zh."
+      "category": "negative/voice-cleanup-routes-to-humanizer-zh",
+      "note": "Voice/AI-ism cleanup of existing prose, not audience translation. Routes to humanizer-zh."
     },
     {
       "id": 7,

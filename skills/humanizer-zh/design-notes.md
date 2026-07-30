@@ -1,4 +1,4 @@
-# Design notes — avoid-ai-writing-zh
+# Design notes — humanizer-zh
 
 Maintainer notes — provenance and build process for this one skill.
 
@@ -16,7 +16,7 @@ references/
   examples.md                 — 6 worked end-to-end scenarios (synthetic samples)
 ```
 
-[`docs/avoid-ai-writing-zh.md`](../../docs/avoid-ai-writing-zh.md) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
+[`docs/humanizer-zh.md`](../../docs/humanizer-zh.md) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
 
 ## 文體類 and the two carve-out lists (2026-07-30)
 

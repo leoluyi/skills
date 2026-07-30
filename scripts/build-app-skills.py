@@ -35,7 +35,7 @@ OVERRIDES = Path(__file__).resolve().parent / "app-skill-overrides"
 DEFAULT_SKILLS = [
     "learn",
     "plain-speak",
-    "avoid-ai-writing-zh",
+    "humanizer-zh",
     "infographic-design",
     "knowledge-doc-writing",
 ]

@@ -1,4 +1,4 @@
-# Regression Protocol — avoid-ai-writing-zh 回歸評測流程
+# Regression Protocol — humanizer-zh 回歸評測流程
 
 改規則後怎麼確認「沒退步」的操作流程。與 `adversarial-eval-protocol.md` 互補：
 那份是**進攻**（用對抗語料找盲點、產新規則），這份是**防守**（改完規則後對
@@ -8,7 +8,7 @@
 
 | 層 | 資產 | 跑法 |
 |---|---|---|
-| 觸發層 | `trigger-queries.json` | `tools/run-eval avoid-ai-writing-zh`（已自動化，本文不重複） |
+| 觸發層 | `trigger-queries.json` | `tools/run-eval humanizer-zh`（已自動化，本文不重複） |
 | 行為層 | `evals.json` 的案例與 expectations | 本文核心 |
 | 品味層 | `judged-cases.md` | 人工終判語料，爭議條目的最終依據 |
 
@@ -41,7 +41,7 @@ Verdict 分兩類，出貨門檻不同：
 開乾淨 session（不帶本 repo 以外的寫作規則），prompt：
 
 ```
-讀取 skills/avoid-ai-writing-zh/SKILL.md 與 references/ 全部檔案，
+讀取 skills/humanizer-zh/SKILL.md 與 references/ 全部檔案，
 逐案處理 evals/evals.json 每條案例的 prompt 欄（照案例指定的
 detect / rewrite / --expect-author 模式）。
 輸出格式：案例 id｜模式｜完整輸出。不用先列清單問我。
@@ -62,7 +62,7 @@ detect / rewrite / --expect-author 模式）。
 ## 出貨前雙盤（獨立平行 agents ＋ 跨家族判分）
 
 repo 鐵律：新版要贏 baseline。既有 skill 的 baseline 是**前一版**
-（`git show <前版commit>:skills/avoid-ai-writing-zh/SKILL.md` 連同 references/
+（`git show <前版commit>:skills/humanizer-zh/SKILL.md` 連同 references/
 取出到 scratch 目錄），不是 vanilla。
 
 1. **改寫端 ×2，獨立平行**：agent A 載新版、agent B 載前版，同時啟動、

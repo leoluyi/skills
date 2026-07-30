@@ -14,8 +14,8 @@ whenUse:
   en: "Reach for it when you draft or review a technical RFP (需求規格書 / 招標規格) as the issuing organization, not the bidder."
   zh: "當你要以招標方身分撰寫或審查技術 RFP（需求規格書／招標規格）時使用。"
 whenNot:
-  en: "Skip it for vendor bid responses (投標提案), migration/test plans, ADRs, meeting minutes, or pure de-AI cleanup (use avoid-ai-writing-zh)."
-  zh: "投標提案、遷移／測試計畫、ADR、會議紀錄或純去 AI 味潤稿不要用（改用 avoid-ai-writing-zh）。"
+  en: "Skip it for vendor bid responses (投標提案), migration/test plans, ADRs, meeting minutes, or pure de-AI cleanup (use humanizer-zh)."
+  zh: "投標提案、遷移／測試計畫、ADR、會議紀錄或純去 AI 味潤稿不要用（改用 humanizer-zh）。"
 highlights:
   en:
     - "Structural audit that fixes misplaced sections, merges thin ones, and kills appendix bloat"

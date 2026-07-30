@@ -59,17 +59,17 @@
     },
     {
       "id": 11,
-      "category": "negative/avoid-ai-writing-zh",
+      "category": "negative/humanizer-zh",
       "query": "幫我把這段中文的 AI 味拿掉，像是「值得一提的是」「至關重要」那種空話，結構不用動。",
       "should_trigger": false,
-      "note": "Pure language cleanup routes to avoid-ai-writing-zh, not document distillation."
+      "note": "Pure language cleanup routes to humanizer-zh, not document distillation."
     },
     {
       "id": 12,
-      "category": "negative/avoid-ai-writing-zh",
+      "category": "negative/humanizer-zh",
       "query": "幫我把這份知識文件的句子改順、去掉 AI 味，結構和內容完全不要動。",
       "should_trigger": false,
-      "note": "Structure/content explicitly untouched — pure sentence-level cleanup routes to avoid-ai-writing-zh, not Mode D even though the input is an existing knowledge doc."
+      "note": "Structure/content explicitly untouched — pure sentence-level cleanup routes to humanizer-zh, not Mode D even though the input is an existing knowledge doc."
     },
     {
       "id": 13,

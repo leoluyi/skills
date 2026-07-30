@@ -49,7 +49,7 @@
       "query": "幫我潤飾這段文字，把 AI 味的詞彙（確保、賦能、進而那種）拿掉，改成正式但人話的中文，結構不用動。",
       "should_trigger": false,
       "category": "negative/language-cleanup-only",
-      "note": "Pure language cleanup with no structural work routes to avoid-ai-writing / clean-ai-writing."
+      "note": "Pure language cleanup with no structural work routes to humanizer-zh."
     },
     {
       "id": 9,
