@@ -1,14 +1,29 @@
 # humanizer-zh backlog
 
 Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md) — except
-`tools/annotate` below, which only this skill's material calls for. Several items below are
-blocked on `tools/run-case` there.
+`tools/annotate` below, which only this skill's material calls for.
 
 Closed items do not stay here — see `design-notes.md`, `evals/results-*.md`, and commits.
 
 ## Blocking: 2.0.0 has an unmeasured fix on it
 
-- [ ] **Re-run `evals.json` against the current branch.** The last full measurement is
+- [ ] **Re-run `evals.json` against the current branch.** The harness now exists:
+
+  ```
+  tools/run-case humanizer-zh --baseline 520d5bb:skills/avoid-ai-writing-zh
+  ```
+
+  The `:<dir>` is required because 1.5.0 predates the rename. Three numbers moved while the
+  tool was being built, so read them before comparing anything: the denominator is **98**
+  (`89 raw − 3 ground-truth-note + 4 rewrite cases × 3 global checks`), not 88 — id 17 left,
+  55/56/57 arrived, id 38 split. A second, smaller denominator of **87** governs the
+  comparison against 1.5.0, because that version has no `--expect-author` at all (it shipped
+  `--structure-signals`), so ids 1/4/55/56 — 11 scored rows — cannot be held against it.
+  And the paired blind grading the tool does is a different instrument from the single-arm
+  grading behind 83/88 and 87/88; those two numbers are history, not bars. The 1.5.0 arm of
+  the first run is the new bar.
+
+  The last full measurement is
   `evals/results-2026-07-30-evals54-v2.md`: **83/88, two protection-class reds**, which failed
   the ship gate (`regression-protocol.md` makes 保護類誤殺 0 absolute, not comparative) and
   sent `main` back to 1.5.0. Two behaviour-bearing commits have landed since, and **neither has

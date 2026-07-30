@@ -1,0 +1,46 @@
+{
+  "skill_paths": ["SKILL.md", "references/"],
+  "protocol": {
+    "file": "evals/regression-protocol.md",
+    "criteria_section": "判分標準"
+  },
+  "rewrite_case_ids": [2, 6, 8, 9],
+  "global_rewrite_checks": {
+    "保真": "保護",
+    "不換湯": "命中",
+    "不代筆": "保護"
+  },
+  "unscored_slug_prefixes": ["ground-truth-note"],
+  "chunks": [[1, 9], [10, 19], [20, 29], [30, 39], [40, 49], [50, 57]],
+  "verdict_class": {
+    "protection_patterns": [
+      "^no-",
+      "^does-not-",
+      "^preserves-",
+      "-does-not-",
+      "^facts-preserved",
+      "^reports-absence-only",
+      "^hollow-paragraph-flagged"
+    ],
+    "hit_patterns": [
+      "^flags-",
+      "^also-flags-",
+      "^fix-",
+      "^still-removes-",
+      "^paragraph-rewritten-",
+      "^hidden-author-runs-",
+      "^declaration-attributed"
+    ],
+    "overrides": {
+      "no-residual-seam": "命中",
+      "expected-direction": "命中",
+      "expected-behavior": "保護"
+    }
+  },
+  "baseline_incompatible": [
+    {
+      "ids": [1, 4, 55, 56],
+      "reason": "1.5.0 是 --structure-signals／結構級訊號，沒有 --expect-author；55/56 為 be5a09d 新增，1.5.0 結構上不可能過"
+    }
+  ]
+}

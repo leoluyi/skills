@@ -7,23 +7,23 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 
 ## Measurement infrastructure
 
-The whole repo's ship gate is written against `evals.json`, and **nothing runs it**.
-`tools/run-eval` only exercises `trigger-queries.json` (whether the router fires). Every
-content-quality round so far has been hand-composed: 6 runner + 6 grader agents for the
-87/88 baseline, 8 more for the 2.0.0 round, scored with throwaway scripts. Each fix round
-pays that tax again, which is why `run-case` sits above every skill-level item.
+`tools/run-eval` exercises `trigger-queries.json` (whether the router fires);
+`tools/run-case` scores the behaviour layer against `evals.json`. A skill opts into the
+latter by shipping `evals/run-case.json`.
 
-- [ ] **`tools/run-case` — dispatch runner + grader over `evals.json` / `corpus.md`.** The
-  protocol is already proven by hand and should be baked in rather than re-derived each
-  round: **blind runner** (loads the skill's `SKILL.md` + all `references/`, must not open
-  `evals/`; case input extracted to prompt-only, expectations withheld), **separated
-  graders** (one per chunk, gets only that chunk's runner output and that chunk's key —
-  no skill, no `results-*.md`), and **denominator reconciliation** printed with the score.
-  One lesson to encode: the grader brief must match `regression-protocol.md`'s stated bar
-  and nothing stricter — the 2.0.0 round's deliberately-strict first brief scored 80/88
-  where the neutral brief scored 83/88, and the two rounds were then incomparable to the
-  baseline. Wants per-chunk parallel dispatch (the shape the two hand rounds converged on),
-  not a single-shot pair.
+`corpus.md` is still hand-run — `run-case` reads `evals.json` only, and the corpus's
+judgment-table format is a different parse. Whether that is worth automating depends on
+whether the corpus stays a regression guard (see the saturation item in
+[`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md)); a saturated fixture
+does not earn a harness.
+
+- [ ] **`tools/run-eval` redacts its stderr tail in the wrong order.** `tools/run-eval:190-193`
+  pipes `tail -c 400 | sed` — it slices the window *before* redacting, so a key straddling the
+  cut loses its `sk-` prefix and the surviving suffix prints verbatim. Found while reviewing
+  `run-case`, which had the identical bug and now sanitizes first, then tails. Left unfixed
+  there deliberately: it is a different tool, and folding a silent one-line security fix into
+  an unrelated change is how such fixes escape review. Low severity — dev-side diagnostics
+  only — but it is a one-line reorder.
 
 - [ ] **`tools/add-case` — append a judged case in the frozen format without hand-editing
   JSON.** Lowest in value of the tools proposed so far, and the one most likely to be
