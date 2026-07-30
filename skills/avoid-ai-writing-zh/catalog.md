@@ -19,14 +19,12 @@ whenNot:
 highlights:
   en:
     - "Three modes: rewrite, detect-only audit, or edit a file in place with minimal fixes"
-    - "One rule set, 45 rules in 8 classes: 33 work in both Chinese and English, 12 are Chinese-specific"
-    - "Locks a 保護清單 first — prices, quotes, commitments and the author's own rough edges survive verbatim"
+    - "Traditional Chinese layer flags 空話, 確保 filler, 破折號濫用, and over-translated proper nouns"
     - "Detect-only structure audit names what a soulless draft is missing, not just bad phrases"
     - "Signals not proof: tuned against false positives on non-native and technical writing"
   zh:
     - "三種模式：改寫、只標記、直接改檔"
-    - "同一套規則八大類 45 條：33 條中英通用，12 條中文專有"
-    - "動筆前先鎖保護清單：價格、原話、承諾條款與作者的手工痕跡逐字保留"
+    - "中文層抓空話、確保贅字、破折號濫用、生造譯名"
     - "偵測模式點出草稿缺什麼，不只挑錯句"
     - "只當訊號不當判決，避免誤傷非母語與技術寫作"
 ---

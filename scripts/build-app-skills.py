@@ -4,8 +4,8 @@
 The Claude app (claude.ai > Settings > Capabilities > Skills) reads only the
 `name`, `description`, and `license` frontmatter fields, and enforces a
 1024-character limit on `description`. Several of our SKILL.md files carry
-richer multi-platform frontmatter, and a description can run past that limit.
-This script produces clean upload packages without touching source:
+richer multi-platform frontmatter and, in one case, a description longer than
+the limit. This script produces clean upload packages without touching source:
 
   * copies each skill to dist/<name>/ (dropping .DS_Store / design-notes.md)
   * rewrites frontmatter down to name / description / license
