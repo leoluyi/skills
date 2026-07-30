@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Score a skill's behaviour evals (``evals.json``) and report ship/no-ship.
+
+Opt-in per skill: a skill is scored only if it ships ``evals/run-case.json``.
+Without that file the skill is skipped cleanly, so this tool stays runnable
+across every skill rather than erroring on the ones that never opted in. Once
+the config exists, a file it declares but that is missing is a hard error.
+
+What it does, in one pass:
+
+1. Materializes two arms into a scratch workspace — ``new/`` from the working
+   tree and ``base/`` from a git ref — expanding the config's ``skill_paths``
+   prefixes against each arm separately, because the two arms genuinely carry
+   different ``references/`` filenames and counts.
+2. Dispatches one blind runner per (chunk x arm) through a coding-agent CLI.
+   The rule text is inlined into the prompt, the working directory is empty,
+   and the cases handed over carry ``id`` and ``prompt`` only — nothing the
+   harness sends a runner names an expectation or points at ``evals/``.
+   How firm that is differs by family: ``claude`` runs with ``--tools=`` and
+   can read nothing at all, while ``codex`` runs under ``-s read-only``, which
+   restricts writes and not reads — that runner keeps filesystem access, and
+   the inlined SKILL.md frontmatter names the skill, so a determined agent
+   could go looking for the fixture. The blinding is in what is supplied, not
+   in a sandbox, on the codex side.
+3. Dispatches one blind grader per chunk on the other CLI family, with both
+   arms' outputs labelled A/B under a per-run mapping, that chunk's scoring
+   key, the source prompts the outputs came from, and the protocol's criteria
+   section verbatim. The grader never sees the skill, the version labels, or
+   any previous results file.
+4. Reconciles and reports. The verdict class of every row is decided here,
+   not by the grader, so the "zero protection-class false kills" gate means
+   the same thing in every chunk and every run.
+
+Everything runs through coding-agent CLIs (``codex exec`` / ``claude -p``);
+this repo never spends a billed vendor API key on eval dispatch.
+"""
+
+import sys
+from pathlib import Path
+
+# tools/ is not a package root, so put it on sys.path before importing run_case.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from run_case.cli import main
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv[1:]))

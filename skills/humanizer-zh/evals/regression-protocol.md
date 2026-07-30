@@ -9,7 +9,7 @@
 | 層 | 資產 | 跑法 |
 |---|---|---|
 | 觸發層 | `trigger-queries.json` | `tools/run-eval humanizer-zh`（已自動化，本文不重複） |
-| 行為層 | `evals.json` 的案例與 expectations | 本文核心 |
+| 行為層 | `evals.json` 的案例與 expectations | `tools/run-case humanizer-zh --baseline <ref>`；本文是它實作的判準 |
 | 品味層 | `judged-cases.md` | 人工終判語料，爭議條目的最終依據 |
 
 ## 判分標準
