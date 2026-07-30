@@ -41,11 +41,16 @@ pays that tax again, which is why these three sit above every skill-level item.
   JSON.** Lowest of the three in value, and the one most likely to be unnecessary once
   `annotate` exists.
 
-- [ ] **Wire `tools/check-labels` into `docs-check.yml`.** It validates every rule label
-  against the names the skill actually declares, plus the corpus 解析契約, and is
-  regression-tested against six injected fault classes (unresolvable name, non-substring
-  引文片段, invalid 判定, a purely parenthetical `（缺口` label, an invented sub-signal under a
-  real parent, a malformed judgment row). Today it gates only when run by hand.
+- [ ] **`check-labels` has no equivalent gate for skills other than humanizer-zh.**
+  Found 2026-07-30 while wiring it into CI (`.github/workflows/humanizer-zh-labels.yml`, a
+  separate workflow file rather than a second job in `docs-check.yml` — GitHub Actions applies
+  `on.paths` at the whole-workflow level, not per-job, so a second job in that file would still
+  run, and could block, on a catalog-only PR that never touches humanizer-zh). The tool
+  hard-depends on `references/zh-rules.md`, `references/hidden-author.md`, and
+  `evals/corpus.md` — no other skill has these, so running it against one fails with
+  `missing rule file` (exit 2), not a clean skip. Worth deciding whether a second skill ever
+  grows a `corpus.md` in this same shape, or whether label hygiene for everyone else needs a
+  different, lighter check.
 
 ## `tools/run-eval`
 
