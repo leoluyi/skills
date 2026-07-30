@@ -17,6 +17,14 @@ whether the corpus stays a regression guard (see the saturation item in
 [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md)); a saturated fixture
 does not earn a harness.
 
+- [ ] **`tools/run-eval` redacts its stderr tail in the wrong order.** `tools/run-eval:190-193`
+  pipes `tail -c 400 | sed` — it slices the window *before* redacting, so a key straddling the
+  cut loses its `sk-` prefix and the surviving suffix prints verbatim. Found while reviewing
+  `run-case`, which had the identical bug and now sanitizes first, then tails. Left unfixed
+  there deliberately: it is a different tool, and folding a silent one-line security fix into
+  an unrelated change is how such fixes escape review. Low severity — dev-side diagnostics
+  only — but it is a one-line reorder.
+
 - [ ] **`tools/add-case` — append a judged case in the frozen format without hand-editing
   JSON.** Lowest in value of the tools proposed so far, and the one most likely to be
   unnecessary once `annotate` exists — that item now lives in
