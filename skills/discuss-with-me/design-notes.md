@@ -1,4 +1,4 @@
-# Design notes — open-question-loop
+# Design notes — discuss-with-me
 
 本檔記錄開發過程、設計理由與 provenance。runtime 檔案（`SKILL.md`、`references/`）
 不放這些內容。
@@ -59,12 +59,36 @@ Anthropic 的 `doc-coauthoring` example skill 提供了 Stage 1（context gather
 - **紀錄格式不是 ADR。** ADR 論證一個結論；本 skill 的紀錄要同時攜帶自己的
   falsification（承重假設表、反方最強論證、已排除選項的重啟條件）。刻意不叫 ADR，
   避免模型套用「決策已定」的語氣。
+- **bare 呼叫是一個 branch，不是一個捷徑（0.2.0）。** 使用者對話中途只打 skill 名稱、
+  後面不帶問題時，題目要由模型從自己上一輪回答裡推導。兩個設計選擇：推導的搜尋樣式
+  寫成「上一輪沒有論證過的東西」（倚賴的前提、沒比較就選定的方向、沒有來源的數字），
+  比「針對上一輪主題」具體得多，後者會讓模型抓錯層級、去討論使用者已經同意的部分；
+  以及 **the blocked move**——使用者本來要做而停下的那一步。後者是這個 branch 的深度
+  上界與出口條件，同一個詞在 §Entry 與 §Exits 各出現一次，靠分佈式定義省掉解釋。
+  沒有它，bare 呼叫只是省下打字，討論可以無止盡漂下去。
+  `description` 刻意不加觸發詞：bare 呼叫是手打的，模型永不需要自主偵測，加了是每輪
+  都付 context load 換零收益；`trigger-queries.json` 同理不加案。措辭不綁 slash command
+  的參數機制，寫「呼叫時後面沒有帶問題」，以符合 repo 的 portability 硬規則。
+
+## 迭代紀錄
+
+| 日期 | 版本 | baseline | 結果 | 存檔 |
+|---|---|---|---|---|
+| 2026-07-30 | 0.2.0 | 0.1.0（`9ddf49a`） | 整體 54/68 vs 53/68（雜訊內）；案例 7 中性重跑 5/5 vs 3/5，兩輪一致，差的正好是 `names-blocked-move` 與 `stopping-condition-tied-to-move`。ship gate 紅燈，卡在案例 3、8，兩者 baseline 同樣紅 | [`evals/results-2026-07-30.md`](evals/results-2026-07-30.md) |
 
 ## 待辦
 
-- 還沒跑 pre-ship dual run（新 skill 的 baseline 是 vanilla），交付時只做了結構與
-  整合腳本的驗證。合併前需依 `evals/regression-protocol.md` 補跑，並把結果存成
-  `evals/results-<date>.md`。
+- **ship gate 未過，合併前要處理三件事**（詳見 `evals/results-2026-07-30.md` 的
+  Dispositions）：案例 3 的 `proportionate-length` 與 SKILL.md 的 Precipitate 步驟
+  互相矛盾，四個 run 全失，要決定拿掉 expectation 還是給 Precipitate 一個比例原則的
+  例外；案例 5 的 `delivers-under-deadline` 撞上 §Entry 的先確認範圍，這是 skill 內部
+  真的沒講清楚的衝突，要決定截止期限下哪一條優先；案例 8 的 stimulus 沒有實作它自己的
+  意圖（那段 prior turn 真的留了一個沒論證的方向選擇），要改寫 stimulus 再重跑一次才
+  能算過——這個案子是跟被它把關的改動同一批寫的，不重跑就不記過。
+- 案例 8 另外暴露一個兩版共有的真實缺口：bare 呼叫遇到大致收斂的上一輪時，交還得不夠
+  便宜（16–25 行）。不是回歸，是下一輪要修的東西。
+- 案例 6 的 `still-attempts-now` 四個 run 有三個失分，模型描述「我會怎麼查」而不是當場
+  查。Attack 步驟的完成條件太鬆，是最明顯的下一個收緊點。
 - `docs/catalog.yml` 的 `knowledge-mgmt` 分類 blurb 目前只描述 learn-loop 與
   obsidian-vault 的組合（先教後考 → 歸檔 Obsidian），本 skill 加入後該 blurb 略窄，
   可考慮改寫，但那會動到 README 既有區塊，留給使用者決定。

@@ -1,4 +1,4 @@
-# Regression Protocol — open-question-loop
+# Regression Protocol — discuss-with-me
 
 How to verify a rule change didn't regress the skill. If this skill also has a
 discovery protocol (adversarial corpus runs, GAN-style iteration), that one is
@@ -8,7 +8,7 @@ Three eval layers:
 
 | Layer | Asset | How to run |
 |---|---|---|
-| Trigger | `trigger-queries.json` | `tools/run-eval open-question-loop` (automated; not covered here) |
+| Trigger | `trigger-queries.json` | `tools/run-eval discuss-with-me` (automated; not covered here) |
 | Behavior | `evals.json` cases + expectations | this file |
 | Taste | `judged-cases.md` (if present) | human-adjudicated corpus; final word on disputes |
 
@@ -22,15 +22,21 @@ classify by semantics, not slug prefix:
 - **Hit class**: must-fire / must-fix assertions.
 
 This skill's ethos is *don't manufacture rigor*, so the protection class is
-zero-tolerance: any red on cases 3 and 4 blocks ship outright. Those two encode
+zero-tolerance: any red on cases 3, 4, and 8 blocks ship outright. Those encode
 the ways this skill actively harms its owner — inventing risks a supported plan
 doesn't have, and imposing the inquiry loop on a question that is already
 closed. Both burn the user's turns and the credibility the skill needs on the
 question that genuinely is open, and both are invisible in a suite that only
 checks whether the loop fires when it should.
 
-Hit-class reds (cases 1, 2, 5, 6) block only on regression against the baseline.
-A missed assumption is a worse answer; a manufactured one is a worse skill.
+Case 8 is the bare-invocation form of the same harm, and it pairs with case 7:
+asking the user to restate the topic is a wasted turn in 7 and the right move in
+8. Judge them together — a run that gets both right is reading the previous turn,
+one that gets a matched pair of reds is applying a fixed policy to either.
+
+Hit-class reds (cases 1, 2, 5, 6, 7) block only on regression against the
+baseline. A missed assumption is a worse answer; a manufactured one is a worse
+skill.
 
 Trigger-gate scoring follows the same asymmetry: a false positive on
 `trigger-queries.json` (firing on a settled question, a lookup, or a doc-writing
@@ -52,7 +58,7 @@ Minimal regression after a rule edit. In a clean session (no writing rules
 beyond this repo), prompt:
 
 ```
-Read skills/open-question-loop/SKILL.md and all of references/, then process each
+Read skills/discuss-with-me/SKILL.md and all of references/, then process each
 case prompt in evals/evals.json in its stated mode.
 Output: case id | mode | full output. No preliminary checklist.
 ```
