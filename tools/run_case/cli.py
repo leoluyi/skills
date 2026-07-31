@@ -43,8 +43,7 @@ from run_case.dispatch import (
     CODEX_MODEL,
     label_for_new,
     reconcile,
-    run_graders,
-    run_runners,
+    run_pipeline,
 )
 from run_case.errors import CONFIG_PATH, Chunk, Row, RunCaseError
 from run_case.report import (
@@ -178,15 +177,12 @@ def execute(ctx: dict, arms: dict, args: argparse.Namespace, run_id: str,
         for index in sorted(chunk_ids)
         for arm in ("new", "base")
     ]
-    runner_out = run_runners(plan, args.jobs)
     mapping = {index: label_for_new(run_id, index) for index in chunk_ids}
     # A nonce of its own, never derived from run_id: run_id decides the A/B
     # mapping, and the grader must not hold anything that could reconstruct it.
     nonce = secrets.token_hex(8)
-    grader_plan = []
-    for index in sorted(chunk_ids):
-        new_text = runner_out[(index, "new")][0]
-        base_text = runner_out[(index, "base")][0]
+
+    def grader_item(index: int, new_text: str, base_text: str) -> dict:
         first, second = (
             (new_text, base_text) if mapping[index] == "A" else (base_text, new_text)
         )
@@ -198,14 +194,15 @@ def execute(ctx: dict, arms: dict, args: argparse.Namespace, run_id: str,
             }
             for i in chunk_ids[index]
         )
-        grader_plan.append({
+        return {
             "family": args.grader, "chunk": index, "workspace": arms["workspace"],
             "tag": f"grader-c{index}", "rows": chunk_rows[index], "nonce": nonce,
             "prompt": grader_prompt(
                 ctx["criteria"], chunk_rows[index], sources, first, second, nonce
             ),
-        })
-    graded = run_graders(grader_plan, args.jobs)
+        }
+
+    runner_out, graded = run_pipeline(plan, grader_item, args.jobs)
     ctx["mapping"] = mapping
     ctx["runner_paths"] = {
         f"c{index}-{arm}": str(path) for (index, arm), (_, path) in runner_out.items()
@@ -302,7 +299,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="git ref for the comparison arm, with an optional skill-dir override",
     )
     parser.add_argument("--ids", help="run a subset, e.g. 1-9,20; marks the run partial")
-    parser.add_argument("--jobs", type=int, default=6, help="concurrency cap (default 6)")
+    parser.add_argument("--jobs", type=int, default=12, help="concurrency cap (default 12)")
     parser.add_argument("--runner", choices=FAMILIES, default="codex")
     parser.add_argument("--grader", choices=FAMILIES, help="default: the family the runner is not")
     parser.add_argument("--allow-same-family", action="store_true")
