@@ -24,6 +24,8 @@ Two habits decide whether that goes well.
 
 **空洞就標出來，不代筆.** When stripping the tone leaves nothing standing, the paragraph was tone all the way down. Mark it in place, in the user's output language —「此段扣除語氣後無實質內容，建議作者補入具體經驗」— and hand it back to the author. Supplying the missing experience yourself is the one failure this skill cannot recover from: it manufactures exactly the thing the reader was missing.
 
+That is what separates a **改法方向** from ghostwriting, and every flag owes one — in `detect` as much as in `rewrite`, where the rewritten span shows it. A direction names the *kind* of thing the span should become and the grammatical move that gets it there: 「主詞換回被說明的主題，改第三人稱陳述」, 「指向期程或頻率，不要另一組成語」, 「留下論證真正轉折的那一句，其餘改直述」, 「這裡要日期、數量與負責單位」. It is an instruction to the author, so it stays empty of content only the author holds — the moment you write the date, the number, or the experience itself, you have crossed into 代筆. Flagging without a direction is the opposite failure and just as real: it hands back a list of defects the author cannot act on.
+
 ## Output Language
 
 Match the language of the user's request, and apply it to *all* user-facing output — option labels, generated-document headings, table column names — not just prose. If the user explicitly asks for another language, that wins.
@@ -49,7 +51,7 @@ Signals, not proof. Every pattern here is more frequent in LLM output, and every
 | mode | select it when | deliver |
 |---|---|---|
 | `rewrite` (default) | the ask is to fix the text | flagged items (canonical rule name + quoted span), the rewritten text, a short list of what changed, then one corrective self-pass (step 6) |
-| `detect` | the user says 先標出來就好／不用改／flag only／audit／scan | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. The text stays untouched. |
+| `detect` | the user says 先標出來就好／不用改／flag only／audit／scan | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. Every flag also carries its **改法方向** — one clause naming what the span should become. The text stays untouched. |
 | `edit` | the user names a file to fix in place | read the file, apply targeted edits to flagged spans only, re-read, and report before → after per span. Passages with no tells stay byte-identical. |
 
 **作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 44 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
@@ -73,7 +75,7 @@ Six steps, in order. Each one finishes on something you can check.
 
 **Sparing a span is a ruling, and it carries the same burden as flagging one.** Every rule's `保留` clauses are *alternatives*: satisfying any one spares the span, and a span that matches the first clause is spared whether or not the others hold. To spare, quote the span's own evidence for the clause you are invoking, and name the rule that clause belongs to — a carve-out written under one rule never licenses a span under another. Where the evidence cannot be quoted from the text in front of you, the carve-out does not apply. 保護清單⑥ has the strictest form of this: it covers features the user or a sibling skill actually declared, so point at the declaration; a passage that merely sounds like the author is not a declared feature.
 **One span, one flag.** When two rules fire on the same span, the defect is one defect — report it under the rule that names it most precisely and drop the other. Listing it twice reads to the author as two problems to fix and inflates the count; noticing 「與上一條同源」 and filing both rows anyway is the failure mode to avoid. Distinct spans in one sentence still get their own rows.
-*Done when* every flag has a rule name and a disposition (fixed / 受保護 / carve-out applies), no span appears on the flag list twice, every spared span has its clause and its quoted evidence recorded, and the two habits at the top of this file held for each one.
+*Done when* every flag has a rule name and a disposition (fixed / 受保護 / carve-out applies), every flag that stays on the list carries its 改法方向, no span appears on the flag list twice, every spared span has its clause and its quoted evidence recorded, and the two habits at the top of this file held for each one.
 
 **5. 保真驗證.** Read the input and the output side by side for facts alone. Every number, date, name, deliverable, owner and commitment in the input appears in the output, unchanged.
 
@@ -81,8 +83,9 @@ Facts travel one direction. Anything you flagged as missing — an undelivered c
 
 Removing tone means restating the surviving fact in different words, so the bar is zero new **claims**, not zero new words — and a claim is anything the reader could take as true of the world, not just a number, tool or date. Two moves look alike and are not:
 
-- **Making a source term explicit** — unpacking 「講得出道理的主張」 into 「在什麼前提下，系統應該產生什麼結果」 spells out what the term already denoted. Allowed.
+- **Making a source term explicit** — unpacking 「逾期未取」 into 「超過取書期限仍未領取」 restates what the term already denotes, in words the source itself supplies. Allowed.
 - **Supplying a consequence the source never stated** — the source says a template was copied; adding that such tests 「只是把現況固定下來，不會驗證任何東西」 asserts an outcome the author never claimed. Not allowed, however true it sounds.
+- **Specifying a form the source only named** — the source asks that an assertion be 「一句話講得出道理的主張」; writing that it should say 「在什麼前提下，系統應該產生什麼結果」 hands the author a template they never wrote, because 「講得出道理」 does not denote premise-and-expected-result. This is the one that reads as harmless and is not: naming a quality is not specifying its form, and filling in the form is 代筆. Not allowed.
 
 Check it by quotation, not by impression: for each clause of the rewrite, point at the span of the input it came from. A clause with nothing to point at is a new claim, and self-certifying 「未新增原文沒有的事實」 while one is present is the failure this step exists to catch.
 *Done when* every clause of the rewrite is traceable to a quoted input span, you can point to where each load-bearing fact landed, no paragraph was silently deleted or hollowed rather than flagged, and every spared span has survived the re-read.
