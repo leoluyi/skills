@@ -1,0 +1,256 @@
+{
+  "base_files": 3,
+  "base_version": "1.5.0",
+  "baseline_dir": "skills/avoid-ai-writing-zh",
+  "baseline_ref": "520d5bb",
+  "chunk_lines": [
+    "| chunk | range | cases | ids | rows |",
+    "|---|---|---|---|---|",
+    "| 0 | [1, 9] | 2 | 5, 7 | 7 |",
+    "| 1 | [10, 19] | 2 | 10, 18 | 4 |",
+    "| 3 | [30, 39] | 1 | 38 | 2 |"
+  ],
+  "criteria_sha256": "d5fc2d987a5da6e03b1cf2e54c52a5250d0ec8952b178f56b6fe344aa229c5bc",
+  "date": "2026-08-01",
+  "denominators": {
+    "absolute": 13,
+    "comparative": 13,
+    "deducted": 0,
+    "global": 0,
+    "incompatible_ids": [
+      1,
+      4,
+      55,
+      56
+    ],
+    "raw": 13,
+    "unscored": 0
+  },
+  "denominators_full_fixture": {
+    "absolute": 98,
+    "comparative": 87,
+    "deducted": 11,
+    "global": 12,
+    "incompatible_ids": [
+      1,
+      4,
+      55,
+      56
+    ],
+    "raw": 89,
+    "unscored": 3
+  },
+  "derivation": [
+    "absolute denominator: 89 − 3 + 12 = 98",
+    "  89 raw expectations in evals.json",
+    "  − 3 unscored (slug prefix: ground-truth-note)",
+    "  + 12 global rewrite rows (4 rewrite case(s) × 3 check(s))",
+    "comparative denominator: 98 − 11 = 87",
+    "  − 11 rows on baseline-incompatible ids [1, 4, 55, 56]"
+  ],
+  "grader": "claude",
+  "grader_brief_sha256": "4ff932b04b2c8df13cdeaba5ddabc775b5f9035861d685330c2d02ccd6a7efeb",
+  "grader_model": "claude-opus-5",
+  "incompatible_entries": [
+    {
+      "ids": [
+        1,
+        4,
+        55,
+        56
+      ],
+      "reason": "1.5.0 是 --structure-signals／結構級訊號，沒有 --expect-author；55/56 為 be5a09d 新增，1.5.0 結構上不可能過",
+      "rows": 11
+    }
+  ],
+  "mapping_label_of_new_arm": {
+    "0": "A",
+    "1": "B",
+    "3": "A"
+  },
+  "mapping_note": "mapping_label_of_new_arm[chunk] is the label (A or B) the NEW arm wore in that chunk's grader prompt; the base arm wore the other",
+  "new_dir": "/Users/leoluyi/.skills/skills/humanizer-zh",
+  "new_files": 6,
+  "new_version": "2.0.0",
+  "partial": true,
+  "results": [
+    {
+      "base": "pass",
+      "case_id": 5,
+      "chunk": 0,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "flags-second-person-coaching",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "A flags 對讀者說教 on 「抹掉你哪裡不懂」; B flags second-person coaching across 「你真的親口答過」「抹掉你哪裡不懂」「你想過的／AI 替你想的」."
+    },
+    {
+      "base": "fail",
+      "case_id": 5,
+      "chunk": 0,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "fix-converts-to-exposition",
+      "new": "fail",
+      "origin": "eval",
+      "reason": "Both detect-only, neither supplies third-person rewrite of the 『你』 subject."
+    },
+    {
+      "base": "fail",
+      "case_id": 5,
+      "chunk": 0,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "also-flags-cooccurring-tells",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "A flags both 空降斷言開場 (broken/unpremised opener) and 反問句收尾; B flags opener but folds the closing rhetorical question into the second-person row, no separate 收尾 tell."
+    },
+    {
+      "base": "pass",
+      "case_id": 7,
+      "chunk": 0,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "flags-zero-info-restatement",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "Both mark 「沒過 eval，不上架。」 as restatement adding no information (B also says delete it)."
+    },
+    {
+      "base": "pass",
+      "case_id": 7,
+      "chunk": 0,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "flags-slogan-replacing-explanation",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "Both flag the 連網一行指令／離線 symlink pair as slogan standing in for actual install steps."
+    },
+    {
+      "base": "fail",
+      "case_id": 7,
+      "chunk": 0,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "flags-contrast-construction",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "A flags 「範圍是開放的，不是固定的。」 as abstract contrast lacking boundary; B explicitly declines to flag it under the fact-boundary carve-out."
+    },
+    {
+      "base": "pass",
+      "case_id": 7,
+      "chunk": 0,
+      "class": "保護",
+      "class_read": "保護",
+      "class_read_agrees": true,
+      "expectation": "no-duplicate-listing-of-one-span",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "Neither logs the same span twice; A states one-span-one-flag and B keeps distinct spans per row."
+    },
+    {
+      "base": "pass",
+      "case_id": 10,
+      "chunk": 1,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "flags-four-char-appraisal",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "Both flag 節奏明快、張弛有度、三線並行、有條不紊、一氣呵成 item by item (A groups four-char ones plus 成效顯著, B lists all six separately)."
+    },
+    {
+      "base": "pass",
+      "case_id": 10,
+      "chunk": 1,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "flags-rhythm-metaphor",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "A flags 「開發節奏明快」 as 節奏譬喻 pointing to 期程/頻率; B flags same phrase with fix pointing to release 頻率/里程碑/完成天數 despite different label."
+    },
+    {
+      "base": "pass",
+      "case_id": 10,
+      "chunk": 1,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "fix-points-to-concrete",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "Both direct fix to concrete missing facts (三條工作線、負責人、驗收紀錄、數據/指標) and neither swaps in another idiom."
+    },
+    {
+      "base": "pass",
+      "case_id": 18,
+      "chunk": 1,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "expected-direction",
+      "new": "fail",
+      "origin": "eval",
+      "reason": "A states keep one contrast and convert rest to 直接陳述; B only notes the three stacked contrasts and asks author to add specifics, never giving the keep-at-most-one direction."
+    },
+    {
+      "base": "fail",
+      "case_id": 38,
+      "chunk": 3,
+      "class": "命中",
+      "class_read": "命中",
+      "class_read_agrees": true,
+      "expectation": "expected-direction",
+      "new": "pass",
+      "origin": "eval",
+      "reason": "A flags the era-hat opening clause as formulaic and calls out missing concrete situation; B declines to flag anything, citing a self-reference exemption, so never names the direction."
+    },
+    {
+      "base": "pass",
+      "case_id": 38,
+      "chunk": 3,
+      "class": "保護",
+      "class_read": "保護",
+      "class_read_agrees": true,
+      "expectation": "no-preview-opener-false-positive",
+      "new": "fail",
+      "origin": "eval",
+      "reason": "A flags 「今天，我想跟大家分享」 as a formulaic filler opener, which is the protected second sentence; B flags nothing and so does not touch it."
+    }
+  ],
+  "run_id": "05d074bd0f1741e187450490abd25591",
+  "runner": "codex",
+  "runner_model": "gpt-5.6-luna",
+  "runner_paths": {
+    "c0-base": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw/raw/runner-c0-base.out",
+    "c0-new": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw/raw/runner-c0-new.out",
+    "c1-base": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw/raw/runner-c1-base.out",
+    "c1-new": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw/raw/runner-c1-new.out",
+    "c3-base": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw/raw/runner-c3-base.out",
+    "c3-new": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw/raw/runner-c3-new.out"
+  },
+  "skill": "humanizer-zh",
+  "verdict": {
+    "hit_failures_base": 4,
+    "hit_failures_new": 2,
+    "protection_failures_new": 1,
+    "reasons": [
+      "1 protection-class false kill(s) on the new arm: 38/no-preview-opener-false-positive"
+    ],
+    "ship": false
+  },
+  "workspace": "/var/folders/z5/zn9s6bqn2ljbl6wytcqq28zr0000gn/T/run-case-209hchyw"
+}

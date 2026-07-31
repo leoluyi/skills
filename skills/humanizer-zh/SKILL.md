@@ -42,6 +42,8 @@ Signals, not proof. Every pattern here is more frequent in LLM output, and every
 
 **Language.** CJK present → the zh layer, [references/zh-rules.md](references/zh-rules.md). Pure English → the English layer, [references/en-rules.md](references/en-rules.md). Mixed zh/en → audit each language under its own layer, and leave English technical terms (API, Kubernetes, CI/CD) standing inside the Chinese prose; that is correct Taiwan usage.
 
+**Lookup.** The zh layer's rules are judgements; [references/zh-phrase-rules.md](references/zh-phrase-rules.md) is its word-level lookup — 空話、確保家族、至關重要、AI 句式、慣用詞（含「節奏」譬喻）、四字評語、台灣用語偏好, one row per term. Read it whenever zh text is in scope. A term that matches a row is flagged as its own item under the row's canonical rule, and the row's Fix column *is* the direction you report — the tables exist so that six idioms in one sentence come back as six named entries with six concrete replacements, not one lumped span.
+
 **Mode.** Natural language selects it; explicit options (`--mode`, `--voice`, `--context`, `--file`, `--expect-author`, `--iterate`) do the same job for power users — `--iterate` is the one that governs how far the pass runs, capping the corrective passes of step 6 at 2.
 
 | mode | select it when | deliver |
