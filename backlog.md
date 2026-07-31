@@ -25,6 +25,15 @@ does not earn a harness.
   an unrelated change is how such fixes escape review. Low severity — dev-side diagnostics
   only — but it is a one-line reorder.
 
+- [ ] **`tools/run-case` is silent for its whole dispatch phase.** Between the prepare lines and
+  the final verdict it prints nothing — `dispatch.py` has no output at all — so a 20-minute run
+  is a black box, and the only way to read progress is to count `raw/*.out` against the expected
+  12 runner + 6 grader jobs. Fix: emit one line per job completion to **stderr**, not stdout
+  (stdout is the result surface; `--dry-run`'s output has to stay parseable), carrying a
+  `[n/total]` counter and the job tag. `print(..., flush=True)` is load-bearing — redirected to a
+  file, Python block-buffers, so an unflushed progress line is still invisible until exit. The
+  counter needs a lock or `as_completed` sequencing, since the pool runs `--jobs` wide.
+
 - [ ] **`tools/add-case` — append a judged case in the frozen format without hand-editing
   JSON.** Lowest in value of the tools proposed so far, and the one most likely to be
   unnecessary once `annotate` exists — that item now lives in
