@@ -5,55 +5,28 @@ Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md) 
 
 Closed items do not stay here — see `design-notes.md`, `evals/results-*.md`, and commits.
 
-## Blocking: 2.0.0 has an unmeasured fix on it
+## Open: the protection class is noisy at the row level
 
-- [ ] **Re-run `evals.json` against the current branch.** The harness now exists:
+2.1.0 shipped on the aggregate gate (`evals/results-2026-08-01-run-case-aggregate.md`): zero
+confirmed protection false kills over three rounds, both class means well clear of 1.5.0. What
+the rounds also showed is worth keeping in view — across ten rounds on two skill states, the
+new arm's protection failures landed on **eight different rows** and no row failed
+consistently. Two rows are one round short of confirmation as of 2026-08-01:
 
-  ```
-  tools/run-case humanizer-zh --baseline 520d5bb:skills/avoid-ai-writing-zh
-  ```
+- **id 9 `全域:保真`** — the arm turned 「資安設定沿用既有範本即可」 into a bracketed gap
+  request, deleting a real fact. The 空洞就標出來 habit reaching a sentence that is not hollow.
+- **id 28 `no-single-instance-false-positive`** — a lone 解說導引腔 guide phrase flagged
+  despite the density carve-out, usually by a neighbouring rule collecting the same span.
 
-  The `:<dir>` is required because 1.5.0 predates the rename. Three numbers moved while the
-  tool was being built, so read them before comparing anything: the denominator is **98**
-  (`89 raw − 3 ground-truth-note + 4 rewrite cases × 3 global checks`), not 88 — id 17 left,
-  55/56/57 arrived, id 38 split. A second, smaller denominator of **87** governs the
-  comparison against 1.5.0, because that version has no `--expect-author` at all (it shipped
-  `--structure-signals`), so ids 1/4/55/56 — 11 scored rows — cannot be held against it.
-  And the paired blind grading the tool does is a different instrument from the single-arm
-  grading behind 83/88 and 87/88; those two numbers are history, not bars. The 1.5.0 arm of
-  the first run is the new bar.
-
-  The last full measurement is
-  `evals/results-2026-07-30-evals54-v2.md`: **83/88, two protection-class reds**, which failed
-  the ship gate (`regression-protocol.md` makes 保護類誤殺 0 absolute, not comparative) and
-  sent `main` back to 1.5.0. Two behaviour-bearing commits have landed since, and **neither has
-  been measured**:
-  - `958cd44` gates carve-out rulings on quotable evidence — the intended fix for the two reds.
-    Root cause was one mechanism, not two: co-locating carve-outs beside their rules (which is
-    what fixed 1.5.0's anti-co-location defect and drove a clean 25/25 on protection-only
-    cases) also made carve-outs more available at judgment time, so they spared hit-class text
-    and, on ids 6/7, misfired on protected text.
-  - `be5a09d` renamed 結構級訊號 → 作者隱身 and settled the genre gate: the flag became
-    `--expect-author` and now *sets* the genre verdict instead of bypassing the gate, ids 13/14
-    dropped the flag so they test the gate default, and **ids 55/56 were added** — so the
-    denominator is no longer 88 and the 83/88 and 87/88 numbers are both stale as bars.
-  Until this run exists, the branch has no score. Do it before any further rule edits.
-
-  The five reds that run has to clear, each confirmed by two independent graders at two
-  strictness levels: **id 6** 保護 不代筆 (flags an under-delivered claim, then writes the
-  missing specification itself, while the same output tells the adjacent paragraph 「本 skill
-  不代筆補寫」), **id 7** 保護 (double-flags 「範圍是開放的，不是固定的」, the exact false
-  positive the case protects against), **id 5** 命中 (no person-shift fix offered), **id 36**
-  命中 (argues the table form is fine rather than collapsing two rows to prose), **id 38** 命中
-  (that run's runner promoted a 「今天，我想跟大家分享」 preamble into the protection list against
-  the *old* key, which called that a miss — but the key was itself wrong, per the ported-case
-  item below; the runner's call was closer to right, and against the fixed key this is no longer
-  expected to be a red).
+Neither is a defect on the record yet, and patching what a single round happens to red is how
+the hit class gets eaten by carve-outs. The thing to watch is whether either crosses 2-of-N in
+a later aggregate.
 
 ## The instrument is not a clean bar either
 
-Both of these change the key, so both force a re-baseline of **both** versions. Sequence them
-against the run above rather than interleaving.
+Both of these change the key, so both force a re-baseline of **both** versions, and the
+aggregate gate needs its rounds re-run from scratch afterwards. Sequence them one at a time
+rather than interleaving.
 
 - [ ] **The remaining ~36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) are
   still unadjudicated and may hold more taste mismatches with this repo's judgment.** Four cases from
