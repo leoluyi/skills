@@ -153,6 +153,82 @@ against the run above rather than interleaving.
   `uv` fine, never part of skill runtime. The immediate consumer is the ported-case sweep
   above — resuming it at ids 15/16, 18 by hand is the same transcription tax a second time.
 
+  A second use arrived 2026-08-01 and is the reason for the sub-items below: the same
+  ask-the-author-blind loop is also the only way to test **人機判定** claims. A real judgment
+  session that round produced three candidate criteria — 語體漂移 (a sentence trying to be both
+  a bullet heading and a full sentence, standing as neither: nominal front half with no
+  predicate, the only verb stranded sentence-final reaching back across a comma for its object,
+  no licensing marker 「將」「等」「——」 in between, and a comma cannot license fronting);
+  組裝感＋高完成度 as the decisive contradiction (human failure is subtractive — dropped words,
+  missing subjects, inconsistent punctuation; AI has every part present but the frame is skewed,
+  reading frictionlessly until you stop and notice nothing connected); and 結構訊號 outweighing
+  內容訊號 (content can be inherited from a table, a template, or a source document — syntax is
+  generated on the spot). **None of it counts as evidence.** That session was not blind: the
+  annotator knew the answer, and mid-session was handed a human-written contrast rewrite that
+  steered the model. No confidence movement in it can be attributed to evidence rather than to
+  persuasion. All three are hypotheses awaiting a blind run, and this tool is the only route.
+
+  **MVP — the least that yields a first usable dataset:** blind presentation (A) + the two
+  required output fields (B) + ground-truth writeback (C). Everything after that widens the
+  claim; those three make it a measurement at all.
+
+  - [ ] **(A) Blind presentation.** Hide labels, randomise item order, and never disclose the
+    AI share of the set — a stated ratio turns the task into counting rather than judging, and
+    the annotator's prior alone will then hit the reported base rate. Prerequisite for every
+    item below; nothing here means anything if the annotator can infer the answer.
+
+  - [ ] **(B) Required per-judgment fields: 信心度 and 證據類型.** Confidence is mandatory, not
+    optional, because a calibration curve cannot be reconstructed after the fact. 證據類型 records
+    whether the primary evidence was 語法類 or 詞彙類 — that field is the whole test of the
+    結構訊號 > 內容訊號 claim, and without it the run answers only "were we right", never "was
+    the reason right".
+
+  - [ ] **(C) Ground-truth writeback.** After a judgment closes, the annotator reveals the true
+    source and the tool writes it straight into `skills/humanizer-zh/evals/evals.json`. Reveal
+    must be strictly after the verdict is recorded — a reveal that can be triggered early is
+    just (A) with extra steps. Depends on (A).
+
+  - [ ] **(D) Paired corpus — same content, human version and AI version side by side.** Holds
+    subject matter and vocabulary constant so a correct call can only have come from structure.
+    Corpus work, not tool code — it can be collected in parallel with (A)–(C), but the
+    結構訊號 > 內容訊號 claim is not testable without it, so (B)'s 證據類型 field is under-powered
+    until this lands.
+
+  - [ ] **(E) Human blind-label baseline.** Produce a baseline of an unaided human judging the
+    same corpus, not just the existing no-skill model baseline. The question the skill has to
+    answer is whether it beats a person's intuition; against a no-skill model arm it can win and
+    still be worthless. Depends on (A). **Mutually exclusive per sample per annotator:** once
+    someone has judged a sample with the skill, they are no longer a naive baseline on it — the
+    two arms need disjoint annotators or disjoint samples, and running both on the same pair is
+    the failure mode to design against.
+
+  - [ ] **(F) 難例池 — misjudged samples flow back into `evals.json`.** Prioritise three
+    near-miss classes: 非母語寫作, 翻譯體, 模板填空. All three carry 組裝感 with low 完成度, which
+    is exactly where the 組裝感 criterion will kill real humans. Depends on (C).
+
+  - [ ] **(G) Primary metric is 誤殺率 (human text called AI), not accuracy.** For a de-AI tool a
+    false positive costs more than a miss — it tells an author to rewrite prose that was fine, and
+    at scale it is an accusation. Accuracy hides this: a set with few AI samples scores well while
+    burning every human one. Depends on (C) and (F).
+
+  - [ ] **(H) 雙軸評分 (組裝感 × 完成度) — hypothesis, gated on two conditions, both required.**
+    (1) blind data shows the contradiction quadrant actually separates; (2) the separating boundary
+    can be written as SKILL.md criterion prose rather than a score threshold. Meeting (1) alone
+    means the finding is recorded in `design-notes.md` and stops there — it does **not** enter the
+    skill. These two outcomes are mutually exclusive by construction; decide which one the data
+    bought before touching any rule text. Depends on (A)–(C) and (G).
+
+  - [ ] **(I) 最小對照改寫引出器 — debrief-phase only.** Takes a suspect sentence and generates two
+    human-form rewrites (promoted to a full sentence / demoted to a parenthetical note), then diffs
+    all three to locate the defect. **Mutually exclusive with any judging round** — this is the
+    exact contamination that invalidated the 2026-08-01 session, and the tool must refuse to run
+    while a judgment is open rather than merely documenting the rule. Depends on (C).
+
+  Reuse, do not rebuild: `evals.json` read/write and the report rendering already exist under
+  `tools/run-case`, and the 有/沒有 prompt loop is the same one described above — the blind layer
+  is new, the plumbing is not. If this ships, `tools/add-case` in the root
+  [`backlog.md`](../../backlog.md) is redundant and should be closed rather than built.
+
 ## Behaviour changes, each on its own branch and its own re-run
 
 - [ ] **Make `detect` the default mode, and ask before rewriting.** Requested 2026-07-30. Today

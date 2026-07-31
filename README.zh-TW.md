@@ -140,6 +140,9 @@ tools/sync-skills
 | `tools/sync-skills` | 為每個技能建立 symlink，連進 `~/.claude/skills/`（Claude Code、Cursor）**與** `~/.agents/skills/`（Codex、OpenHands）。離線／內網替代做法。 |
 | `tools/archive-skill <name>` | 用 `git mv` 把技能（含 evals）搬進 `_archive/`。 |
 | `tools/usage-report [days]` | 統計 `~/.claude/projects/` transcript 裡的技能觸發次數。預設 90 天。 |
+| `tools/run-eval <name>` | 觸發層 eval：description 對 `evals/trigger-queries.json` 是否會觸發。 |
+| `tools/run-case <name> --baseline REF[:DIR]` | 行為層 eval：以盲測 runner 與 grader 對 `evals/evals.json` 評分（新版 vs 基準版），輸出 ship／no-ship。需 `evals/run-case.json` 才啟用。 |
+| `tools/check-labels <name> \| --all` | 唯讀的 eval 標籤衛生檢查：`evals.json`／corpus 用到的規則名稱都要對得上真實規則，corpus 的引文片段要是原文的精確子字串。需 `evals/label-check.json` 才啟用。 |
 | `tools/build-docs` | 從 `skills/*/catalog.md` 重新產生 `docs/index.html`、`docs/skills.json`，以及兩份 README 的技能目錄表格。 |
 
 硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[engineering-guidelines.md](engineering-guidelines.md)**。想貢獻的話，請先讀 **[CONTRIBUTING.md](CONTRIBUTING.md)**。

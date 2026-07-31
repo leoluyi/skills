@@ -60,7 +60,7 @@ does not earn a harness.
 
 ## Per-skill backlogs
 
-- [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) — 2.0.0's ship path, the instrument defects under it, and `tools/annotate`
+- [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) — 2.0.0's ship path, the instrument defects under it, and `tools/annotate` (now also the blind human-vs-AI judgment harness)
 - [`skills/avoid-china-writing/backlog.md`](skills/avoid-china-writing/backlog.md) — one missing eval axis
 - [`skills/blog-writing-zh/backlog.md`](skills/blog-writing-zh/backlog.md) — source-derived voice profile
 - [`skills/infographic-design/backlog.md`](skills/infographic-design/backlog.md) — negation in `references/`
