@@ -25,6 +25,14 @@ does not earn a harness.
   an unrelated change is how such fixes escape review. Low severity — dev-side diagnostics
   only — but it is a one-line reorder.
 
+- [ ] **`tools/run-case` leaves the grader's A/B labels unresolved in the Markdown report.** The
+  non-green table gives resolved `new`/`base` verdict columns, but the grader-reason text beside
+  them still says "A does X, B does Y" — and the A/B mapping is per-chunk, keyed on
+  `sha256(run_id + chunk)`, so the reader cannot tell which arm a reason describes without
+  opening the `.json`. Anonymity is the point *during* grading; keeping it *after* just makes the
+  most useful column unreadable. Fix: substitute the resolved arm names into the reason string
+  when rendering the Markdown, leaving the raw A/B text in the `.json` for audit.
+
 - [ ] **`tools/run-case` is silent for its whole dispatch phase.** Between the prepare lines and
   the final verdict it prints nothing — `dispatch.py` has no output at all — so a 20-minute run
   is a black box, and the only way to read progress is to count `raw/*.out` against the expected
