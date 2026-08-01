@@ -164,6 +164,12 @@ Place names, political figures, brands and food terms have a long tail that does
 - 靠譜 → 可靠／靠得住
 - 特…／賊…（特好、賊快，大陸口語強調)→ 超…／非常…
 
+**標點慣例** — 中文句子的標點在台灣一律用全形：`，。！？：；「」（）`。半形 `,` `.` `!` `?` `:` `;` 混進中文句子，通常是從外部來源複製或轉檔留下的痕跡。
+
+這一項的性質與本 skill 其他項不同，值得說清楚：半形標點**不是陸源訊號**——大陸的中文排版同樣用全形。它是台灣正體中文的**排版慣例**問題，歸在這裡是因為本 skill 的職責含「改成台灣正體中文慣例」，而不是因為它指向大陸來源。因此一律列 **P2**，並在報告裡與 P0／P1 的陸源判斷分開陳述，讓讀者不會把半形逗號讀成「這份文件來自大陸」。
+
+判斷方式：看標點所在的句子是中文還是英文或程式碼。中文句子內的斷句與句末標點改全形；其餘依下方排除項保留。
+
 ---
 
 ## Carve-outs — do NOT flag
@@ -179,6 +185,7 @@ When you need to name this concept in Chinese output, call it **排除項** or *
 | Terms Taiwan has adopted（網紅、直播、掃碼、二維碼→QR碼但可理解、打卡、秒殺) | Cross-strait borrowings now in normal TW use — soft-flag at most |
 | Context-neutral senses（物理「質量」、法律「程序」、公文「文件」、幾何「水平」) | Same word, different meaning — replacing changes the meaning |
 | 簡體 inside code identifiers / URLs / file paths / variable names | Not prose; changing it breaks things |
+| 半形標點 in code, URLs, file paths, English sentences, 數字千分位（1,000）, 版本號（v1.2.3）, 時間（11:59） | These take half-width by convention; full-width there is the error |
 | Whole-document Simplified | Route to a full 簡→繁 conversion, not piecemeal flags |
 | 專業慣用組合詞／術語 term-of-art（模型對齊、權限顆粒度、程式碼複用、數據分析、大數據) | The field's standard term with a concrete referent — register-correct, not a defect. See the [term-of-art carve-out](#b-互聯網／職場黑話-prc-corp-speak) under 黑話 |
 | Industry-standard terms where the 大陸 form is the accepted TW technical term | Some finance / 半導體 / 生醫 / 法遵 fields — verify before "correcting" |
@@ -194,7 +201,7 @@ Prioritize by how loudly a term signals a mainland source. Use P0+P1 for a quick
 
 **P1 — 黑話與語法（發布前改）.** The whole 互聯網／職場黑話 axis, and the mainland grammar tics in [D](#d-音譯與專名語法差異). These are readable to a Taiwan audience but mark the text as mainland-sourced, and the jargon usually hides an unsaid specific.
 
-**P2 — 邊界與已在地化（有時間再改）.** Borrowings now in normal Taiwan use (網紅、直播、優化), 口語 (立馬、靠譜), and context-sensitive vocabulary where the sense is genuinely ambiguous. Soft-flag; a cluster of P2s still signals a mainland source even when no single one does.
+**P2 — 邊界與已在地化（有時間再改）.** Borrowings now in normal Taiwan use (網紅、直播、優化), 口語 (立馬、靠譜), and context-sensitive vocabulary where the sense is genuinely ambiguous. Soft-flag; a cluster of P2s still signals a mainland source even when no single one does. 半形標點混入中文句 also sits here, with one difference worth stating in the report: it is a 台灣排版慣例 fix and carries no information about where the text came from, so a pile of it says nothing about a mainland source.
 
 ---
 

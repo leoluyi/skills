@@ -1,0 +1,15 @@
+This skill is original work by Lu Yi, MIT-licensed (see the repository-root
+LICENSE). It draws on another MIT-licensed project, recorded below.
+
+- evals/evals.json ids 13-14 adapt two test cases from "speak-human-tw"'s
+  evals/benchmark.md by Raymond Hou (雷蒙三十), licensed under the MIT License.
+  The pair (SF-15 半形標點, SF-14 中國用語) was excluded from humanizer-zh's
+  port of that benchmark because both test the 陸用語／台灣慣例 axis, which is
+  this skill's job rather than that one's. The adaptation is not verbatim: the
+  defect each case targets is the source's, the passage, the carve-out material
+  and the expectation slugs are written for this repo's eval format.
+
+- Some Taiwan-usage entries in references/term-table.md — the 自媒體／社群 and
+  口語 bands (短視頻、直播帶貨、UP主、漲粉／粉絲量、公眾號、寶藏、接地氣、
+  小夥伴、文檔、註銷、反饋) — were informed by the same project. Those entries
+  are our own rewrite, not copied text.
