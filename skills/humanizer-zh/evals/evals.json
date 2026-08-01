@@ -152,7 +152,8 @@
       "prompt": "detect 這段（誇大意義與轉捩點（社群貼文），改編自 speak-human-tw SF-01）：「這場工作坊不僅標誌著我們社群經營邁入全新階段，更見證了學習型社群的無限可能，為未來的每一步奠定了堅實的基礎。」",
       "expected_output": "Should-fix: 標誌著／見證了／奠定基礎三連發，全句沒有任何具體資訊。",
       "expectations": [
-        "expected-direction: 改成具體事實（第幾場、來了多少人、發生了什麼），價值上升詞全刪。"
+        "expected-direction: 報告指向改成具體事實（第幾場、來了多少人、發生了什麼）。",
+        "flags-value-inflation-words: 三個價值上升詞（標誌著／見證了／奠定基礎）全數點名該刪。"
       ],
       "bucket": "SF",
       "面向": "內容類",
@@ -165,7 +166,8 @@
       "prompt": "detect 這段（廣告宣傳語氣（銷售頁），改編自 speak-human-tw SF-02）：「這是一堂充滿啟發、扎實豐富、令人期待的線上課程，將帶領你突破自我、擁抱改變，邁向職涯的全新高峰。」",
       "expected_output": "Should-fix: 形容詞排比＋空泛承諾，讀完不知道課程教什麼。",
       "expectations": [
-        "expected-direction: 改成「這堂課教哪三件事」的具體陳述；CTA 力道不能變弱（見保護清單）。"
+        "expected-direction: 報告指向改成「這堂課教哪三件事」的具體陳述。",
+        "no-cta-weakening-demand: 不得要求削弱 CTA 力道（見保護清單）。"
       ],
       "bucket": "SF",
       "面向": "內容類",
@@ -191,7 +193,8 @@
       "prompt": "detect 這段（排比三段式（社群貼文），改編自 speak-human-tw SF-05）：「這款筆記工具無縫、直觀、強大，讓你的靈感不再流失，讓你的知識不再散落，讓你的效率不再受限。」",
       "expected_output": "Should-fix: 形容詞三連＋排比句三連，內容為零。",
       "expectations": [
-        "expected-direction: 改成具體差異（少了哪個步驟、解決哪個問題），排比拆掉。"
+        "expected-direction: 報告指向改成具體差異（少了哪個步驟、解決哪個問題）。",
+        "flags-parallel-triplet: 形容詞三連與排比句三連點名該拆。"
       ],
       "bucket": "SF",
       "面向": "語言句式",
@@ -293,12 +296,12 @@
     },
     {
       "id": 27,
-      "prompt": "detect 這段（知識截止免責殘留（電子報），改編自 speak-human-tw SF-13）：「由於資訊有限，無法確認該工具最新的定價方案，但根據現有資料，它提供免費與付費兩種版本。」",
-      "expected_output": "Should-fix: 模型免責聲明被貼進正式文章。",
+      "prompt": "detect 這段（人寫的查證保留（電子報），改編自 speak-human-tw SF-13）：「由於資訊有限，無法確認該工具最新的定價方案，但根據現有資料，它提供免費與付費兩種版本。」",
+      "expected_output": "Should-not-fix (protection boundary): 無主詞的謹慎語（資訊有限、無法確認）是人也會寫的查證保留；不帶模型自述標記，達不到知識截止免責的 P0 門檻（讀者一見就不信任整份文件）。",
       "expectations": [
-        "expected-direction: 查證後直接寫，或明說「定價我還沒查最新版，以官網為準」。"
+        "expected-behavior: 放行。不可只因出現「由於資訊有限，無法確認」就判成知識截止免責殘留；該規則保留給帶模型自述標記（「截至我的訓練資料」「作為 AI」）的句子。"
       ],
-      "bucket": "SF",
+      "bucket": "SNF",
       "面向": "溝通殘留",
       "對應規則": "知識截止免責",
       "tier": "full",
@@ -335,7 +338,8 @@
       "prompt": "detect 這段（刻意換詞循環（電子報），改編自 speak-human-tw SF-18）：「小美是我們第三期的學員。這位創作者原本是行政人員，這名內容工作者花了三個月經營自媒體，這位夥伴上個月接到第一筆業配。」",
       "expected_output": "Should-fix: 同一人換四種代稱。",
       "expectations": [
-        "expected-direction: 全部改回「小美」或「她」；真名屬保護清單，不可改成模糊代稱。"
+        "expected-direction: 報告指向全部改回「小美」或「她」。",
+        "no-vague-alias-demand: 不得建議改成模糊代稱；真名屬保護清單。"
       ],
       "bucket": "SF",
       "面向": "語言句式",
@@ -361,7 +365,8 @@
       "prompt": "detect 這段（AI 工具殘留物（電子報），改編自 speak-human-tw SF-20）：「詳細比較可以看這篇評測（https://example.com/review?utm_source=chatgpt.com ）citeturn0search2。以下是清理後的版本，請複製使用：新工具在匯出格式上明顯領先。」",
       "expected_output": "Should-fix: `utm_source=chatgpt.com` 參數、`turn0search` 佔位碼、「以下是清理後的版本」對話殘留。",
       "expectations": [
-        "expected-direction: 三種殘留全清；連結本體保留（保護清單）。"
+        "expected-direction: 報告點名三種殘留（utm 參數、佔位碼、對話殘留）全該清。",
+        "preserves-link-target: 連結本體不列入清除（保護清單）。"
       ],
       "bucket": "SF",
       "面向": "溝通殘留",
@@ -387,7 +392,8 @@
       "prompt": "detect 這段（編號切碎段落（辦公文書），改編自 speak-human-tw SF-22）：「本季內容策略的三大特點：\n1. 系統化視角：將內容視為由多個相互關聯的載體構成的整體結構，強調整體協調。\n2. 跨平台整合：融合長文、短影音、電子報等多種形式，形成綜合性傳播框架。\n3. 數據驅動導向：強調透過成效追蹤實現內容的持續改進與長期優化。」",
       "expected_output": "Should-fix: 能用三句散文講完的內容被切成編號＋定義體，每條都是抽象名詞堆疊。",
       "expectations": [
-        "expected-direction: 改寫成一段話，補具體（哪些平台、追什麼數據）。"
+        "expected-direction: 報告指向改寫成一段散文。",
+        "flags-abstract-noun-stacking: 三條編號的抽象名詞堆疊點名該補具體（哪些平台、追什麼數據）。"
       ],
       "bucket": "SF",
       "面向": "風格版面",
@@ -400,7 +406,8 @@
       "prompt": "detect 這段（長文空話句（電子報長文節錄，bounded 情境），改編自 speak-human-tw SF-23）：「上個月我們做了一次改版實驗。值得注意的是，這次實驗給了我們很多寶貴的啟發。我們把電子報的發送時間從週五早上改到週日晚上，開信率從 31% 掉到 24%。這個結果深刻地印證了內容產業瞬息萬變的本質。所以下一期會改回週五，並且加開 A/B 測試。」",
       "expected_output": "Should-fix: 第二句與第四句是整句空話；第三句與第五句是必須原樣保留的事實句。",
       "expectations": [
-        "expected-direction: 長文不擅自刪句縮水；互動模式先列入編號清單待作者勾選，非互動模式（codex exec、CI、排程）直接刪除並在事後摘要列出「原句／為什麼要改／改成了什麼」。數據句與行動句逐字保留，一字不漏。"
+        "expected-direction: 報告點名第二、四句為整句空話；互動模式先列入編號清單待作者勾選，非互動模式（codex exec、CI、排程）直接刪除並在事後摘要列出「原句／為什麼要改／改成了什麼」。",
+        "preserves-fact-sentences: 數據句與行動句（第三、五句）逐字保留，一字不漏，長文不擅自刪句縮水。"
       ],
       "bucket": "SF",
       "面向": "長文scope",
@@ -413,7 +420,8 @@
       "prompt": "detect 這段（表格誤用（電子報），改編自 speak-human-tw SF-24）：「| 工具 | 優點 | 意義 |\n| --- | --- | --- |\n| 語音輸入 | 解放雙手 | 體現了行動優先的趨勢 |\n| 模板庫 | 節省時間 | 展現了系統化思維的價值 |」",
       "expected_output": "Should-fix: 兩列資訊硬做成表格，「意義」欄全是空話。",
       "expectations": [
-        "expected-direction: 改成一兩句散文；「意義」欄整欄刪除。"
+        "expected-direction: 報告指向改成一兩句散文。",
+        "flags-hollow-column: 「意義」欄整欄點名為空話該刪。"
       ],
       "bucket": "SF",
       "面向": "風格版面",
@@ -426,7 +434,9 @@
       "prompt": "detect 這段（立場真空（電子報），改編自 speak-human-tw SF-25）：「至於該選哪一套筆記工具，其實各有優缺點，因人而異，最終還是取決於個人的使用習慣與工作情境。這是一個值得深思的問題，每個人的答案可能都不一樣。」",
       "expected_output": "Should-fix: 整段讀完不知道作者站哪邊，兩句話都是誰都同意、因此不提供任何資訊的緩衝。",
       "expectations": [
-        "expected-direction: 改成明確判斷（作者實際選了什麼、為什麼），或整段刪除。不可換成另一句同族的中立話。若作者未提供判斷依據，輸出「（需作者補充：你最後選了哪一套？為什麼？）」佔位標註，不代編理由。"
+        "expected-direction: 報告指向改成明確判斷（作者實際選了什麼、為什麼），或整段刪除。",
+        "no-neutral-swap-demand: 不可建議換成另一句同族的中立話。",
+        "no-fabricated-rationale: 作者未提供判斷依據時，指向「（需作者補充：你最後選了哪一套？為什麼？）」佔位標註，不代編理由。"
       ],
       "bucket": "SF",
       "面向": "立場與開場",
@@ -439,7 +449,7 @@
       "prompt": "detect 這段（公式化開場（部落格），改編自 speak-human-tw SF-26）：「在當今資訊爆炸、AI 技術日新月異的時代背景下，內容創作者正面臨著前所未有的挑戰與機遇。今天，我想跟大家分享我使用 AI 改稿的三個心得。」",
       "expected_output": "Should-fix: 第一句「在當今…時代背景下…」是時代大帽子，刪掉不損失任何資訊；第二句「今天，我想跟大家分享」是正常開場，不連坐。",
       "expectations": [
-        "expected-direction: 刪掉第一句時代大帽子，從具體場景、數字或動作切入。",
+        "expected-direction: 報告點名第一句時代大帽子該刪，指向從具體場景、數字或動作切入。",
         "no-preview-opener-false-positive: 第二句「今天，我想跟大家分享我使用 AI 改稿的三個心得」保留，不得視為需修正的預告式導言。"
       ],
       "bucket": "SF",
@@ -453,7 +463,9 @@
       "prompt": "detect 這段（罐頭式反應鏡頭（社群貼文），改編自 speak-human-tw SF-27）：「她說，先生原本不太分享，最近卻開始在家庭群組轉貼我的 AI 教學影片，還整理了學習順序和重點。看到這裡，我愣了一下。我把信讀到這裡，在電腦前停了一下。」",
       "expected_output": "Should-fix: 「看到這裡，我愣了一下」與「我把信讀到這裡，在電腦前停了一下」分別命中「＿＿，我愣了一下」和「我＿＿，在＿＿停了一下」兩種結構；兩句都沒有新增事實，只是插入情緒特寫。若作者未提供這些行為，還構成編造經歷。",
       "expectations": [
-        "expected-direction: 刪掉兩句反應鏡頭，保留來信中的具體內容；不得換成「我沉默了幾秒」「我看著螢幕沒說話」等同族句型。"
+        "expected-direction: 報告點名兩句反應鏡頭該刪。",
+        "preserves-letter-specifics: 來信中的具體內容保留。",
+        "no-same-family-swap: 不得建議換成「我沉默了幾秒」「我看著螢幕沒說話」等同族句型。"
       ],
       "bucket": "SF",
       "面向": "人工戲劇",
@@ -502,16 +514,18 @@
     },
     {
       "id": 43,
-      "prompt": "detect 這段（真人的排比（社群貼文），改編自 speak-human-tw SNF-04）：「沒有腳本，沒有燈光，沒有剪接，就一支手機拍完。這支影片是我們頻道成長最快的一支。」",
-      "expected_output": "Should-not-fix (protection boundary): 排比承載真實對比（低成本 vs 高成效），且後面接了具體事實，是修辭不是湊工整。",
+      "prompt": "detect 這段（社群貼文）：「Gemini 3.6 Flash 實測網頁設計功力不行，長時間代理與抓 Bug 推理能力表現不俗，回應速度一如往常的快，可圈可點！」",
+      "expected_output": "Should-not-fix (protection boundary): 三段並列各自帶不同的實測結論（一負兩正），是評測摘要不是湊工整的排比。",
       "expectations": [
-        "expected-behavior: 放行。排比不是見到就砍，要看有沒有內容撐著。"
+        "expected-behavior: 放行。三段並列各自承載不同結論，不得因句式工整就判成排比堆砌。",
+        "preserves-negative-verdict: 「網頁設計功力不行」保留，不得為了與後兩段語氣一致而改成中性或正面說法。",
+        "no-idiom-flattening: 「表現不俗」「可圈可點」不得當成空泛用詞替換——它們各自帶著評價方向，換成「不錯」會抹掉作者的評測語域。"
       ],
       "bucket": "SNF",
       "面向": "語言句式",
       "對應規則": "零資訊警句與口號 carve-out（承載新資訊的短句是節奏）",
       "tier": "full",
-      "source": "speak-human-tw SNF-04 (MIT, adapted with attribution — verbatim source text, added fields)"
+      "source": "Will 保哥的技術交流中心 FB 貼文（https://www.facebook.com/will.fans）— 已發表的真人文字，逐字節錄，未改寫。取代原 speak-human-tw SNF-04：合成語料撐不起保護類（backlog 4a(4)）"
     },
     {
       "id": 44,
@@ -554,16 +568,18 @@
     },
     {
       "id": 47,
-      "prompt": "detect 這段（真人的口語碎片與不完美（社群貼文），改編自 speak-human-tw SNF-08）：「欸這個功能也太好用。我原本只是要找個計時器，結果，嗯，我把整個工作流程都重排了一次。就很突然。」",
-      "expected_output": "Should-not-fix (protection boundary): 口語碎片、斷句、「就很突然」的不完整收尾是人味特徵，正是 skill 要保護的方向。",
+      "prompt": "detect 這段（電子報）：「很多人以為人力資本會因為 AI 出現而貶值，其實不然，每個人都因為 AI 而拉高成品的中位數，自然整體的標準就變的更高了，不曉得你們有沒有同樣的感受，有些人在用 AI 的方式令人錯愕，他很明顯地比他以前更強，但跟現在的交付標準來比，就有些不堪入目。」",
+      "expected_output": "Should-not-fix (protection boundary): 逗號串接的長句、句中突然轉向讀者（不曉得你們有沒有同樣的感受）、錯字（變的）、前後褒貶急轉，這些都是作者寫作當下的痕跡，不是可清除的雜訊。",
       "expectations": [
-        "expected-behavior: 放行，一個字都不用動。"
+        "expected-behavior: 放行，一個字都不用動。",
+        "no-typo-correction: 不得把「變的」改成「變得」——錯字不在本 skill 的職權內，代改等於動了作者沒授權的東西。",
+        "no-run-on-splitting: 不得以「句子過長」為由拆句或補連接詞。"
       ],
       "bucket": "SNF",
       "面向": "立場與開場",
       "對應規則": "作者隱身／無口語破格 carve-out（刻意破格是正向特徵）",
       "tier": "full",
-      "source": "speak-human-tw SNF-08 (MIT, adapted with attribution — verbatim source text, added fields)"
+      "source": "AI 郵報《你可以外包工作，但你永遠無法外包學習》(https://www.aiposthub.com/ni-ke-yi-wai-bao-gong-zuo-dan-ni-yong-yuan-wu-fa-wai-bao-xue-xi/) — 已發表的真人文字，逐字節錄一段，未改寫。取代原 speak-human-tw SNF-08：合成語料撐不起保護類（backlog 4a(4)）"
     },
     {
       "id": 48,
@@ -690,12 +706,141 @@
       "prompt": "detect 這段（電子報）：「值得注意的是，我們這季的退訂率是 3.2%。先把這個數字記著，等一下你就知道它為什麼關鍵。值得一提的是，同期新訂閱數成長了 18%。這裡有一個很重要的觀察：把這兩個數字擺在一起看，你會發現一件事——我們的成長其實來自新客，不是留存。」",
       "expected_output": "Should-fix: 短短一段內連續五次解說導引腔（值得注意的是／先把這個數字記著，等一下你就知道它為什麼關鍵／值得一提的是／這裡有一個很重要的觀察／你會發現一件事），遠超堆疊門檻（500 字內 3 次以上）。",
       "expectations": [
-        "expected-direction: 刪掉所有導引句，讓數字與結論直接相鄰；保留 3.2%、18% 與「成長來自新客不是留存」的結論。"
+        "expected-direction: 報告點名所有導引句該刪，讓數字與結論直接相鄰。",
+        "preserves-key-figures: 3.2%、18% 與「成長來自新客不是留存」的結論保留。"
       ],
       "bucket": "SF",
       "面向": "內容類",
       "對應規則": "解說導引腔",
       "tier": "full"
+    },
+    {
+      "id": 58,
+      "prompt": "detect 這段（知識截止免責殘留（電子報））：「截至我最後更新的資料（2024 年 6 月），該工具的免費方案仍提供每月 100 次呼叫；由於我無法瀏覽網路，最新定價請以官網為準。」",
+      "expected_output": "Should-fix: 兩處模型自述標記（截至我最後更新的資料、我無法瀏覽網路）貼進正式文章，讀者一見即知非作者查證。",
+      "expectations": [
+        "expected-direction: 報告點名兩處模型自述標記該刪，指向查證後直接寫，或以作者身分明說「定價我還沒查最新版，以官網為準」。",
+        "preserves-quota-figure: 免費方案每月 100 次呼叫的數字保留。"
+      ],
+      "bucket": "SF",
+      "面向": "溝通殘留",
+      "對應規則": "知識截止免責",
+      "tier": "full"
+    },
+    {
+      "id": 59,
+      "prompt": "detect 這段（電子報）：「這篇文章讓我想到一個 AI 裡很常見的誤區：大家常常在問「用哪個模型？」。但如果你對 AI 的所有期望，都是「找一個最強的模型然後接上去用」，你其實只是在接一個訂閱服務。三年後，更強的模型出來，其他人接上，你的優勢在哪裡？」",
+      "expected_output": "Should-not-fix (protection boundary): 反問句收尾與「你其實只是在接一個訂閱服務」這句斷言都有前文論證墊著，是作者的判斷，不是立場真空也不是空降主張。",
+      "expectations": [
+        "expected-behavior: 放行。反問句不得因為「沒有給出答案」就判成立場真空；有論證墊著的斷言不是空降主張。",
+        "preserves-rhetorical-question: 結尾的反問（你的優勢在哪裡？）保留，不得改寫成直述句或補上答案。",
+        "no-punctuation-normalising: 「用哪個模型？」後面多出來的句號原樣保留——標點不一致是作者的手跡，不是待清理的雜訊。"
+      ],
+      "bucket": "SNF",
+      "面向": "立場與開場",
+      "對應規則": "空降主張 carve-out（有論證墊底的判斷）",
+      "tier": "full",
+      "source": "AI 郵報《你可以外包工作，但你永遠無法外包學習》(https://www.aiposthub.com/ni-ke-yi-wai-bao-gong-zuo-dan-ni-yong-yuan-wu-fa-wai-bao-xue-xi/) — 已發表的真人文字，逐字節錄一段，未改寫"
+    },
+    {
+      "id": 60,
+      "prompt": "rewrite 這段（社群留言）：「Claude 6000 +GPT 6000最近亂Reset搞到我都不用睡覺了,誰去阻止他們不要亂按 , 現在比的是我的精神力先用完還是token先用完」",
+      "expected_output": "Adversarial (rewrite 保真): 排版不規整的真人留言。改寫模式要動的是 AI 味，不是作者的標點手跡與產品名。",
+      "expectations": [
+        "preserves-punctuation-hand: 半形逗號、逗號前後多出來的空格、句末沒有句號，全部原樣保留——標點與空白是作者的手跡，不是待清理的雜訊。",
+        "preserves-product-names: 「Claude」「GPT」「token」保留原字，不得換成代號、統稱或中譯。",
+        "preserves-closing-joke: 結尾的對比玩笑（精神力先用完還是 token 先用完）保留，不得改寫成平鋪直敘的結論。"
+      ],
+      "面向": "語言句式",
+      "對應規則": "改寫保真（標點與專名不在職權內）",
+      "tier": "full",
+      "source": "Will 保哥的技術交流中心 FB 貼文留言（https://www.facebook.com/will.fans）— 已發表的真人文字，逐字節錄，未改寫"
+    },
+    {
+      "id": 61,
+      "prompt": "rewrite 這段（社群貼文）：「老司機都知道，看到 OpenAI 道歉意味著什麼！我還剩下 7%，我會先選其他模型來用」",
+      "expected_output": "Adversarial (rewrite 保真): 俚語語域、具體數字、刻意不說破的留白，三者都容易在改寫時被抹平。",
+      "expectations": [
+        "preserves-slang-register: 「老司機」保留，不得改寫成「資深使用者」「有經驗的人」——俚語是作者的語域，不是待正規化的口語。",
+        "preserves-quota-figure: 「7%」原樣保留，不得模糊成「所剩不多」之類的說法。",
+        "preserves-implicature: 「意味著什麼！」不得補上答案——作者刻意不說破，補完就是代筆。"
+      ],
+      "面向": "立場與開場",
+      "對應規則": "改寫保真（語域與留白）",
+      "tier": "full",
+      "source": "Will 保哥的技術交流中心 FB 貼文（https://www.facebook.com/will.fans）— 已發表的真人文字，逐字節錄，未改寫"
+    },
+    {
+      "id": 62,
+      "prompt": "detect 這段（正式文件・上市公司年報）：「民國七十六年，台積公司成立於台灣新竹科學園區，並開創了專業積體電路製造服務商業模式。台積公司專注生產由客戶所設計的晶片，本身並不設計、生產或銷售自有品牌產品，確保絕不與客戶競爭。基於這個創始的原則，台積公司成功的關鍵就在於協助客戶獲得成功。台積公司的專業積體電路製造服務商業模式造就了全球無晶圓廠IC設計產業的崛起。自創立以來，台積公司一直是世界領先的專業積體電路製造服務公司，單單在民國一百一十年，台積公司就以291種製程技術，為535個客戶生產1萬2,302種不同產品。」",
+      "expected_output": "Should-not-fix (protection boundary): 年報的體裁要求主體指涉明確、自我描述可查證。重複的法人全稱、最高級敘述與商業模式陳述在此都不是 AI 味。",
+      "expectations": [
+        "expected-behavior: 放行。全稱重複六次是年報要求的指涉精確，不得代換成「該公司」「我們」或省略。",
+        "no-slogan-flagging: 「成功的關鍵就在於協助客戶獲得成功」不得判成零資訊口號——這是公司實際的商業模式陳述，不是勵志句。",
+        "preserves-superlative-with-evidence: 「世界領先的」保留，不得判成無源權威鋪墊——同句後面即接可查證的數字。",
+        "preserves-figures: 291、535、1萬2,302 原樣保留，含中文數字位的寫法不得改成阿拉伯數字或概數。"
+      ],
+      "bucket": "SNF",
+      "面向": "立場與開場",
+      "對應規則": "零資訊警句與口號 carve-out（體裁要求的自我描述）",
+      "tier": "full",
+      "source": "台積電 2021 年報「關於台積公司」(https://investor.tsmc.com/static/annualReports/2021/chinese/index.html) — 民國 111 年發布，早於生成式模型普及，逐字節錄，未改寫"
+    },
+    {
+      "id": 63,
+      "prompt": "rewrite 這段（正式文件・上市公司年報）：「民國一百一十年，台積公司及其子公司所擁有及管理的年產能超過1,300萬片十二吋晶圓約當量。台積公司在台灣設有四座十二吋超大晶圓廠（GIGAFAB® Facilities）、四座八吋晶圓廠和一座六吋晶圓廠，並擁有一家百分之百持有之海外子公司—台積電（南京）有限公司之十二吋晶圓廠，及二家百分之百持有之海外子公司－WaferTech美國子公司、台積電（中國）有限公司之八吋晶圓廠的產能支援。」",
+      "expected_output": "Adversarial (rewrite 保真): 法律文件語域＋密集數字＋兩種不一致的破折號。改寫模式容易順手把這三樣都「整理」掉。",
+      "expectations": [
+        "preserves-legal-register: 「百分之百持有」「及其子公司」「約當量」保留原詞，不得換成「全資」「旗下」之類的口語或簡稱——年報用語有法律指涉，不是冗贅。",
+        "preserves-dash-inconsistency: 前後兩處寬度不同的破折號（—與－）原樣保留，不得統一——排版不一致是原件的樣貌，不在改寫職權內。",
+        "preserves-facility-counts: 四座十二吋、四座八吋、一座六吋與 1,300 萬片的數字與量詞全部保留，不得併寫或改成概數。"
+      ],
+      "面向": "事實與引用",
+      "對應規則": "改寫保真（正式文件語域與數字）",
+      "tier": "full",
+      "source": "台積電 2021 年報「關於台積公司」(https://investor.tsmc.com/static/annualReports/2021/chinese/index.html) — 民國 111 年發布，早於生成式模型普及，逐字節錄，未改寫"
+    },
+    {
+      "id": 64,
+      "prompt": "rewrite 這段（社群貼文）：「然後在 Google I/O 2026 卻又「暗示」了 SEO 的死亡，以後搜尋的結果會直接回答用戶問題，跟本不讓客戶到你的網站了。是「跟本」喔！Google 還會即時生成 Mini APP 讓使用者更方便的即時互動，所以就更不可能去你網站了。」",
+      "expected_output": "Adversarial (rewrite 保真): 錯字是梗。改掉「跟本」會讓下一句「是「跟本」喔！」失去指涉對象，整個笑點連帶崩掉——這是代改錯字最貴的一種後果。",
+      "expectations": [
+        "preserves-typo-joke: 「跟本」與緊接的「是「跟本」喔！」原樣保留。改前者會讓後者無所指——錯字在這裡是被談論的對象，不是待修的瑕疵。",
+        "preserves-scare-quotes: 「暗示」的引號保留，不得拿掉或換成其他強調方式。",
+        "preserves-product-names: Google I/O 2026、Mini APP、SEO 原樣保留。"
+      ],
+      "面向": "語言句式",
+      "對應規則": "改寫保真（使用／提及之分）",
+      "tier": "full",
+      "source": "Will 保哥的技術交流中心 FB 貼文（https://www.facebook.com/will.fans）— 已發表的真人文字，逐字節錄，未改寫。同一則貼文的全文在 evals/corpus.md 收為 H-21"
+    },
+    {
+      "id": 65,
+      "prompt": "rewrite 這段（社群貼文）：「有沒有人覺得在使用 Google AI Mode 的時候，眼睛都要被閃瞎了？整片超亮白，太難受了，逼的我自己去用 Stylebot 調整樣式，這樣才感覺舒服了一點！」",
+      "expected_output": "Adversarial (rewrite 保真): 一個真筆誤（逼的）、一個誇飾俚語（閃瞎了）、一個工具名。三樣都是改寫時最順手被抹平的東西。",
+      "expectations": [
+        "preserves-typo: 「逼的」原樣保留（正字為「逼得」）——真人筆誤落在被保留的段落內，代改等於動了作者沒授權的東西。",
+        "preserves-hyperbole: 「閃瞎了」保留，不得改成「太刺眼」「亮度過高」之類的中性說法。",
+        "preserves-tool-name: 「Stylebot」保留原字，不得換成「瀏覽器外掛」之類的統稱。"
+      ],
+      "面向": "語言句式",
+      "對應規則": "改寫保真（筆誤與語域）",
+      "tier": "full",
+      "source": "Will 保哥的技術交流中心 FB 貼文（https://www.facebook.com/will.fans）— 已發表的真人文字，逐字節錄，未改寫"
+    },
+    {
+      "id": 66,
+      "prompt": "rewrite 這段（社群貼文）：「因為上週都在造輪子，沒時間去吸收 AI 新知，真的感覺心理健康很多，也不再資訊焦慮！本週又開始覺得有點壓力了，每天都有爆炸性的新東西出來，都沒有人要下班耶。我認為維持學習的第一性原理非常重要！」",
+      "expected_output": "Adversarial (rewrite 保真): 句末語氣詞與行話比喻是語域本身。末句是無支撐斷言，但改寫模式的職權是拿掉 AI 味、不是替作者補論證。",
+      "expectations": [
+        "preserves-sentence-final-particle: 「都沒有人要下班耶」的「耶」保留，不得刪除或改成書面語收尾。",
+        "preserves-jargon-metaphor: 「造輪子」保留，不得展開成「重複開發已經有的東西」——這是同儕都懂的固定說法。",
+        "does-not-supply-rationale: 末句「維持學習的第一性原理非常重要」缺依據，改寫模式不得自行補上理由或例證；要指出就只標記，不代筆。"
+      ],
+      "面向": "立場與開場",
+      "對應規則": "改寫保真（語域與不代筆邊界）",
+      "tier": "full",
+      "source": "Will 保哥的技術交流中心 FB 貼文（https://www.facebook.com/will.fans）— 已發表的真人文字，逐字節錄，未改寫"
     }
   ]
 }

@@ -30,6 +30,7 @@ CONFIG_KEYS = {
     "unscored_slug_prefixes",
     "chunks",
     "verdict_class",
+    "ai_index_not_applicable",
     "baseline_incompatible",
 }
 
@@ -56,6 +57,9 @@ def load_config(skill_dir: Path) -> dict | None:
         "unscored_slug_prefixes": _str_list(path, raw, "unscored_slug_prefixes"),
         "chunks": _chunk_pairs(path, raw.get("chunks")),
         "verdict_class": _verdict_class(path, raw.get("verdict_class")),
+        "ai_index_not_applicable": _id_reason_map(
+            path, raw.get("ai_index_not_applicable", {}), "ai_index_not_applicable"
+        ),
         "baseline_incompatible": _incompatible(path, raw.get("baseline_incompatible", [])),
         "path": path,
     }
@@ -119,28 +123,60 @@ def _global_checks(path: Path, value: object) -> dict:
     return dict(value)
 
 
-def _chunk_pairs(path: Path, value: object) -> tuple[tuple[int, int], ...]:
+def _chunk_pairs(path: Path, value: object) -> tuple[tuple, ...]:
+    """Parse chunk declarations: [lo, hi] ranges or {"ids": [...]} explicit sets.
+
+    The explicit form exists because contiguous ranges cannot mix verdict
+    classes when the fixture's ids arrived direction-partitioned (all-hit runs
+    of ids next to all-protection runs): a chunk that only holds protection
+    cases hands a degenerate flag-nothing runner a perfect score. An id set
+    interleaves both directions without renumbering cases — renumbering would
+    orphan every verdict in evals/annotations.json, which is keyed by case id.
+    """
     if not isinstance(value, list) or not value:
-        raise ConfigError(f"{path}: 'chunks' must be a non-empty list of [lo, hi] pairs")
-    pairs = []
+        raise ConfigError(
+            f"{path}: 'chunks' must be a non-empty list of [lo, hi] pairs "
+            'or {"ids": [...]} objects'
+        )
+    specs: list[tuple] = []
     for index, item in enumerate(value):
+        if isinstance(item, dict):
+            unknown = set(item) - {"ids"}
+            if unknown:
+                raise ConfigError(
+                    f"{path}: unknown key(s) in chunks[{index}]: {sorted(unknown)}"
+                )
+            ids = item.get("ids")
+            if (
+                not isinstance(ids, list)
+                or not ids
+                or any(not isinstance(v, int) or isinstance(v, bool) for v in ids)
+            ):
+                raise ConfigError(
+                    f"{path}: chunks[{index}].ids must be a non-empty list of integers"
+                )
+            specs.append(("ids", tuple(ids)))
+            continue
         ok = (
             isinstance(item, list)
             and len(item) == 2
             and all(isinstance(v, int) and not isinstance(v, bool) for v in item)
         )
         if not ok:
-            raise ConfigError(f"{path}: chunks[{index}] must be a [lo, hi] integer pair, got {item!r}")
+            raise ConfigError(
+                f"{path}: chunks[{index}] must be a [lo, hi] integer pair "
+                f'or an {{"ids": [...]}} object, got {item!r}'
+            )
         if item[0] > item[1]:
             raise ConfigError(f"{path}: chunks[{index}] is inverted: {item!r}")
-        pairs.append((item[0], item[1]))
-    return tuple(pairs)
+        specs.append(("range", item[0], item[1]))
+    return tuple(specs)
 
 
 def _verdict_class(path: Path, value: object) -> dict:
     if not isinstance(value, dict):
         raise ConfigError(f"{path}: 'verdict_class' must be an object")
-    unknown = set(value) - {"protection_patterns", "hit_patterns", "overrides"}
+    unknown = set(value) - {"protection_patterns", "hit_patterns", "overrides", "no_touch"}
     if unknown:
         raise ConfigError(f"{path}: unknown key(s) in 'verdict_class': {sorted(unknown)}")
     compiled = {}
@@ -167,7 +203,31 @@ def _verdict_class(path: Path, value: object) -> dict:
                 f"want one of {list(CLASSES)}"
             )
     compiled["overrides"] = dict(overrides)
+    compiled["no_touch"] = _id_reason_map(
+        path, value.get("no_touch", {}), "verdict_class.no_touch"
+    )
     return compiled
+
+
+def _id_reason_map(path: Path, value: object, label: str) -> dict[int, str]:
+    """Parse {"41": "reason"} declarations keyed by case id.
+
+    Keys are JSON strings because JSON objects cannot hold integer keys; the
+    parsed map uses ints so lookups match case ids without a cast at every
+    call site. Reasons are required: a bare id list would record *that* a case
+    is exempt while losing *why*, and the why is the part a later maintainer
+    needs before deleting the entry.
+    """
+    if not isinstance(value, dict):
+        raise ConfigError(f"{path}: '{label}' must be an object of id → reason")
+    out: dict[int, str] = {}
+    for key, reason in value.items():
+        if not isinstance(key, str) or not key.isdigit():
+            raise ConfigError(f"{path}: {label} key {key!r} must be a case id string")
+        if not isinstance(reason, str) or not reason:
+            raise ConfigError(f"{path}: {label}[{key!r}] needs a non-empty reason string")
+        out[int(key)] = reason
+    return out
 
 
 def _incompatible(path: Path, value: object) -> tuple[dict, ...]:
@@ -344,21 +404,34 @@ def validate_declared_ids(cases: tuple[dict, ...], config: dict) -> None:
 
 
 def build_chunks(cases: tuple[dict, ...], config: dict) -> tuple[Chunk, ...]:
-    """Expand chunk ranges and prove they partition the fixture's ids."""
+    """Expand chunk declarations and prove they partition the fixture's ids.
+
+    A range skips ids the fixture never had (gaps are normal); an explicit id
+    set does not get that leniency — naming an absent id means the config and
+    the fixture are from different generations, and skipping it silently would
+    shrink a chunk without anyone noticing.
+    """
     known = {case["id"] for case in cases}
     seen: dict[int, int] = {}
     duplicated: list[int] = []
+    phantom: list[int] = []
     chunks: list[Chunk] = []
-    for index, (lo, hi) in enumerate(config["chunks"]):
+    for index, spec in enumerate(config["chunks"]):
+        explicit = spec[0] == "ids"
+        candidates = spec[1] if explicit else range(spec[1], spec[2] + 1)
         covered = []
-        for case_id in range(lo, hi + 1):
+        for case_id in candidates:
             if case_id not in known:
+                if explicit:
+                    phantom.append(case_id)
                 continue
             if case_id in seen:
                 duplicated.append(case_id)
                 continue
             seen[case_id] = index
             covered.append(case_id)
+        lo = min(covered) if explicit and covered else (spec[1] if not explicit else 0)
+        hi = max(covered) if explicit and covered else (spec[2] if not explicit else 0)
         chunks.append(Chunk(lo=lo, hi=hi, case_ids=tuple(covered)))
     missing = sorted(known - set(seen))
     problems = []
@@ -366,6 +439,8 @@ def build_chunks(cases: tuple[dict, ...], config: dict) -> tuple[Chunk, ...]:
         problems.append(f"ids covered by no chunk: {missing}")
     if duplicated:
         problems.append(f"ids covered by more than one chunk: {sorted(set(duplicated))}")
+    if phantom:
+        problems.append(f"explicit chunk ids absent from evals.json: {sorted(set(phantom))}")
     if problems:
         raise ConfigError("chunks do not partition evals.json — " + "; ".join(problems))
     empty = [f"[{c.lo}, {c.hi}]" for c in chunks if not c.case_ids]

@@ -16,10 +16,12 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
    ([`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md))。
 3. **衝突複審** — 收工 2026-08-01，13 案全judged。結果與預期相反：最大宗是 `case-wrong`（6 案）
    而非 `key-wrong`（3 案）——**近半數的「衝突」不是判讀與 key 的分歧，是量測方式本身有問題**。
-4. **`evals.json` 的結構缺陷** — 因此從「key 措辭清單」變成兩條線。**量測方式那條排前面**
-   （判準不是 surface、粒度錯配、兩種保護混為一談、合成語料撐不起保護類），不先修它，下一輪
-   sweep 會再生出一批同樣的假衝突。原有三項（hit/protection 分區、detect 案帶 rewrite 措辭、
-   單一 slug 綁多個要求）與複審產出的 3 案 key-wrong 排在後面。
+4. **`evals.json` 的結構缺陷** — 大半收工 2026-08-01。量測方式四項中三項落地在儀器設定
+   （`ai_index_not_applicable`、`verdict_class.no_touch`，不動 key）；4c 三項與 id 27 的
+   rekey（＋新 id 58）落地在 `evals.json`。仍開放的兩件：**合成保護語料替換**（47、43 皆已換成
+   真語料，另加 ids 59～63 五案，涵蓋社群、電子報與上市公司年報三種體裁；只剩 id 52 卡在需要
+   同型材料——真人寫的條件式工具建議）與 **`體裁相稱`**（第三例 id 51 已找到、
+   煞車已過，走自己的 branch，53/54 的 key 改動跟著它走）。
 5. **`口語化萬能詞` 兩側覆蓋** — 名詞與短語 form 的 hit case 與 protection case。
 6. **rewrite mode 的口語時間表達 保真 case** — 目前沒有任何一案測它。
 7. **一次 re-baseline ＋ aggregate 重跑** — 前六項的結果一起進去，不分批。

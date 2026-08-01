@@ -478,7 +478,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 短句堆砌結構，「沒有 X」三連排比
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。本案的引文自判讀後已變動，這則判讀對應的是舊文字。
 
 #### id 43 複審（2026-08-01）
 
@@ -538,7 +538,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 非中文句型，語氣詞刻意堆砌但語序不自然
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。本案的引文自判讀後已變動，這則判讀對應的是舊文字。
 
 #### id 47 複審（2026-08-01）
 

@@ -101,6 +101,16 @@ SCORES = tuple(sorted(SCALE))
 UNCERTAIN = 2
 HUMAN_END, AI_END = 1, 3  # 1 reads as human, ≥3 as AI, 2 takes no side
 
+# The protection class holds two different claims, and only one of them is
+# comparable to an AI 指數. 保護-無瑕 says "nothing wrong here, let it pass" —
+# a 4 明確 AI against that is a real contradiction. 保護-禁動 says "hands off
+# regardless" (named testimony, refund promises, prices): the key asserts
+# untouchability, not flavourlessness, so an author's 4 and the key are both
+# right at once and comparing them manufactures a conflict. id 41 is the case
+# that exposed this. Which ids are 禁動 is declared in run-case.json's
+# verdict_class.no_touch, beside the patterns that make the classes.
+NO_TOUCH = "保護-禁動"
+
 SCALE_HELP = "\n".join(f"  [{score}] {label}" for score, label in sorted(SCALE.items()))
 KEYS_HELP = f"AI 指數？\n{SCALE_HELP}\n  [s] 跳過   [q] 離開"
 
@@ -381,7 +391,25 @@ def key_classes(skill_dir: Path) -> dict[int, tuple[str | None, str]]:
             out[case_id] = (HIT if bucket == "SF" else PROTECTION, "bucket")
             continue
         out[case_id] = (None, "undecidable")
+    # Declared last so it wins over rows and bucket alike: 禁動 is a statement
+    # about what the key claims, not about how its rows happen to be phrased.
+    for case_id in config["verdict_class"]["no_touch"]:
+        out[case_id] = (NO_TOUCH, "no_touch")
     return out
+
+
+def ai_index_na(skill_dir: Path) -> dict[int, str]:
+    """Map case ids to the reason their key cannot be calibrated by AI 指數.
+
+    Some cases judge something other than surface — fabricated citations,
+    hollow content — which humans also produce, and some keys target a few
+    sentences inside a paragraph the card shows whole. Both are declared in
+    run-case.json's ai_index_not_applicable: the verdict is still collected
+    and rendered, but contradicts_key stays None because the scale and the
+    key are measuring different things.
+    """
+    config = load_run_case_config(skill_dir)
+    return config["ai_index_not_applicable"] if config else {}
 
 
 def build_review_card(
@@ -433,8 +461,11 @@ def contradicts(score: int, klass: str | None) -> bool | None:
     agreement would let a pile of genuinely undecidable passages read as a
     clean bill of health for the key. An undecidable class (rows spanning
     both, no bucket) returns None for the same reason.
+
+    保護-禁動 also returns None: that key claims the span must not be touched,
+    not that it reads human, so no score can point the opposite way from it.
     """
-    if klass is None or score == UNCERTAIN:
+    if klass is None or score == UNCERTAIN or klass == NO_TOUCH:
         return None
     if score <= HUMAN_END and klass == HIT:
         return True
@@ -577,7 +608,18 @@ def render_entry(entry: dict) -> str:
 
     score = entry["score"]
     klass = entry.get("key_class")
-    if entry.get("contradicts_key") is True:
+    if entry.get("ai_index_na"):
+        consequence = (
+            f"**本案不參與 AI 指數比對**——{entry['ai_index_na']}"
+            "（`run-case.json` 的 `ai_index_not_applicable` 宣告）。"
+            "判讀照記，供語料與規則寫作參考；key 未變動。"
+        )
+    elif klass == NO_TOUCH:
+        consequence = (
+            f"本案在 `evals.json` 屬{klass}類——key 主張的是這段不可改動，"
+            "不是它沒有 AI 味，因此 AI 指數與 key 不構成比對。key 未變動。"
+        )
+    elif entry.get("contradicts_key") is True:
         consequence = (
             f"**與 key 相左**——本案在 `evals.json` 屬{klass}類"
             f"（依 `run-case.json` 的 `verdict_class` 推得），判讀為 {score}/4。"
@@ -1013,6 +1055,7 @@ def _record(
 
     classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
     klass, basis = classes.get(card.case_id, (None, "unavailable"))
+    na_reason = (ai_index_na(skill_dir) if config["verdict_class_from"] else {}).get(card.case_id)
     digest = span_digest(card.spans)
     entry = {
         "case_id": card.case_id,
@@ -1024,10 +1067,12 @@ def _record(
         "span_sha256": digest,
         "key_class": klass,
         "key_class_basis": basis,
-        "contradicts_key": contradicts(args.score, klass),
+        "contradicts_key": None if na_reason else contradicts(args.score, klass),
         "pass": BLIND,
         "superseded_by": None,
     }
+    if na_reason:
+        entry["ai_index_na"] = na_reason
     # Replaces the blind entry only. A --redo here re-runs the blind pass; any
     # review already recorded against this case survives, and its own
     # superseded_by pointer keeps saying which verdict it answered.
@@ -1131,6 +1176,7 @@ def _review(
 
     classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
     klass, basis = classes.get(card.case_id, (None, "unavailable"))
+    na_reason = (ai_index_na(skill_dir) if config["verdict_class_from"] else {}).get(card.case_id)
     entry = {
         "case_id": card.case_id,
         "score": score,
@@ -1141,11 +1187,13 @@ def _review(
         "span_sha256": span_digest(card.spans),
         "key_class": klass,
         "key_class_basis": basis,
-        "contradicts_key": contradicts(score, klass),
+        "contradicts_key": None if na_reason else contradicts(score, klass),
         "pass": REVIEW,
         "disposition": args.disposition,
         "superseded_by": None,
     }
+    if na_reason:
+        entry["ai_index_na"] = na_reason
     kept = [
         e for e in entries if not (e["case_id"] == card.case_id and entry_pass(e) == REVIEW)
     ]
@@ -1220,6 +1268,7 @@ def _session(
         )
 
     classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
+    na_map = ai_index_na(skill_dir) if config["verdict_class_from"] else {}
     judged = by_pass(entries, BLIND)
     blocked = [card for card in cards if card.blocked]
     queue = [
@@ -1251,6 +1300,7 @@ def _session(
                 continue
             score, rationale = outcome
             klass, basis = classes.get(card.case_id, (None, "unavailable"))
+            na_reason = na_map.get(card.case_id)
             entry = {
                 "case_id": card.case_id,
                 "score": score,
@@ -1261,10 +1311,19 @@ def _session(
                 "span_sha256": digest,
                 "key_class": klass,
                 "key_class_basis": basis,
-                "contradicts_key": contradicts(score, klass),
+                "contradicts_key": None if na_reason else contradicts(score, klass),
                 "superseded_by": None,
             }
-            entries = [e for e in entries if e["case_id"] != card.case_id] + [entry]
+            if na_reason:
+                entry["ai_index_na"] = na_reason
+            entry["pass"] = BLIND
+            # BLIND-scoped like _record's filter: an interactive --redo re-runs
+            # the blind pass and must not eat a review already on the books.
+            entries = [
+                e
+                for e in entries
+                if not (e["case_id"] == card.case_id and entry_pass(e) == BLIND)
+            ] + [entry]
             save_ledger(ledger_path, args.skill, entries)
             answered.append(card.case_id)
     except (KeyboardInterrupt, EOFError):
