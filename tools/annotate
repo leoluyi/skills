@@ -1,0 +1,1038 @@
+#!/usr/bin/env python3
+"""Blind adjudication helper for eval cases.
+
+Shows the author a case's quoted span and nothing else, takes a 1-4 AI 指數
+plus a one-line rationale (required for 3 and 4 only — see rationale_required),
+and records the verdict in evals/annotations.json — then renders that ledger
+into a marked region of evals/judged-cases.md.
+
+Why the card and the prompts go to stderr while stdout carries only results:
+`tools/run_case/dispatch.py` states the rule (stdout is the result surface),
+and it pays off here specifically — `--preview` writes cards to stdout so the
+leak check can grep them, while an interactive session's UI stays out of any
+redirect the author sets up.
+
+What this tool must never do, and the reason it exists: it never writes
+evals.json. It is the one step in humanizer-zh's current backlog round that
+does not move the answer key, which is what lets it run before the re-baseline
+rather than inside it. A verdict that contradicts the key is reported, not
+applied.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import re
+import sys
+import tempfile
+from datetime import date
+from pathlib import Path
+from typing import NamedTuple
+
+# tools/ is not a package root, so put it on sys.path before importing run_case.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from run_case.config import (
+    build_rows,
+    load_config as load_run_case_config,
+    load_fixture,
+    resolve_ids,
+)
+from run_case.errors import HIT, PROTECTION, RunCaseError
+
+CONFIG_PATH = Path("evals") / "annotate.json"
+
+CONFIG_KEYS = {
+    "fixture",
+    "ledger",
+    "rendered",
+    "render_marker",
+    "verdict_class_from",
+    "genres",
+    "genre_aliases",
+    "leak_tokens",
+}
+
+# The noun phrase between 「這段／這篇／這兩段」 and the first colon or paren.
+# ids 1, 4, 10, 11 carry their genre only here; ids 13/14/55/56 carry a better
+# one here than in the parenthetical.
+NOUN_RE = re.compile(r"這(?:段|篇|兩段)\s*([^：（\n]*)")
+
+# Splits a parenthetical into its comma-separated parts. Only the first part is
+# ever a genre: id 3's 「technical-blog，個人語氣」, id 5's 「docs／正式文件，說明一套
+# distillation 流程」 and id 35's 「電子報長文節錄，bounded 情境」 all trail
+# instrument jargon or a content summary after the genre itself.
+GENRE_SPLIT_RE = re.compile(r"[，、]")
+
+# The scale replaced a 有/沒有 binary on 2026-08-01, after the author's very
+# first rationale reached for a degree on its own (「AI指數70%: 過分空虛的形容詞
+# …但不排除人也會這樣寫」). A binary cannot hold that sentence: it forces a
+# borderline passage into one of two confident buckets, and the borderline is
+# exactly where this instrument's noise lives — ten aggregate rounds put
+# protection-class failures on eight different rows with none failing
+# consistently.
+#
+# The four points are deliberately asymmetric: one human level, one 不確定,
+# two AI levels. The question this instrument asks is how AI-flavoured a
+# passage is, so resolution is worth paying for on the AI end and not on the
+# human end — 「明確人寫」 and 「偏人」 would both mean the same thing to every
+# downstream reader (this is not AI), while 偏 AI and 明確 AI separate a
+# passage a rule should flag from one it must.
+#
+# 不確定 sits at 2 rather than being omitted: a scale with no such option
+# forces a fabricated direction out of genuinely undecidable passages, and a
+# fabricated direction is worse than a recorded abstention when the whole
+# point is to audit an answer key.
+#
+# The anchors print with every card rather than being left to feel, because a
+# 36-case sweep spans sessions: an unanchored scale drifts between the first
+# sitting and the fifth, and drifted scores cannot be compared across cases,
+# which is the only thing a scale buys over a binary.
+SCALE = {
+    1: "偏人",
+    2: "不確定",
+    3: "偏 AI",
+    4: "明確 AI",
+}
+SCORES = tuple(sorted(SCALE))
+UNCERTAIN = 2
+HUMAN_END, AI_END = 1, 3  # 1 reads as human, ≥3 as AI, 2 takes no side
+
+SCALE_HELP = "\n".join(f"  [{score}] {label}" for score, label in sorted(SCALE.items()))
+KEYS_HELP = f"AI 指數？\n{SCALE_HELP}\n  [s] 跳過   [q] 離開"
+
+
+class AnnotateError(RunCaseError):
+    """Raised when this tool's own config or ledger is unusable."""
+
+
+class Card(NamedTuple):
+    """Everything the author is allowed to see about a case.
+
+    This type is the leak guard, not the regexes that fill it. A scrubber that
+    redacts the biasing parts of `prompt` can be defeated by a prompt shape
+    added next month; a type that cannot hold the expectation, the rule name,
+    or the bucket cannot leak them no matter what the fixture grows into. The
+    case dict never reaches the renderer — only a Card does.
+    """
+
+    case_id: int
+    genre: str
+    spans: tuple[str, ...]
+    blocked: str  # "" when presentable, else the needs-manual reason
+
+
+# ---------------------------------------------------------------- config
+
+
+def load_config(skill_dir: Path) -> dict | None:
+    """Return the validated config, or None when the skill has not opted in."""
+    path = skill_dir / CONFIG_PATH
+    if not path.exists():
+        return None
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise AnnotateError(f"{path}: {exc}") from exc
+    if not isinstance(raw, dict):
+        raise AnnotateError(f"{path}: top level must be an object")
+    unknown = set(raw) - CONFIG_KEYS
+    if unknown:
+        raise AnnotateError(f"{path}: unknown key(s) {sorted(unknown)}")
+    return {
+        "fixture": _req_str(path, raw, "fixture"),
+        "ledger": _req_str(path, raw, "ledger"),
+        "rendered": _req_str(path, raw, "rendered"),
+        "render_marker": _req_str(path, raw, "render_marker"),
+        "verdict_class_from": raw.get("verdict_class_from") or "",
+        "genres": _str_list(path, raw, "genres", required=True),
+        "genre_aliases": _str_map(path, raw, "genre_aliases"),
+        "leak_tokens": _str_list(path, raw, "leak_tokens"),
+        "path": path,
+    }
+
+
+def _req_str(path: Path, raw: dict, key: str) -> str:
+    value = raw.get(key)
+    if not isinstance(value, str) or not value:
+        raise AnnotateError(f"{path}: '{key}' is required and must be a non-empty string")
+    return value
+
+
+def _str_list(path: Path, raw: dict, key: str, required: bool = False) -> tuple[str, ...]:
+    value = raw.get(key, [])
+    if required and not value:
+        raise AnnotateError(f"{path}: '{key}' is required and must be a non-empty list")
+    if not isinstance(value, list) or any(not isinstance(v, str) or not v for v in value):
+        raise AnnotateError(f"{path}: '{key}' must be a list of non-empty strings")
+    return tuple(value)
+
+
+def _str_map(path: Path, raw: dict, key: str) -> dict[str, str]:
+    value = raw.get(key, {})
+    if not isinstance(value, dict) or any(
+        not isinstance(k, str) or not isinstance(v, str) or not k or not v
+        for k, v in value.items()
+    ):
+        raise AnnotateError(f"{path}: '{key}' must be an object of non-empty strings")
+    return dict(value)
+
+
+# ---------------------------------------------------------------- extraction
+
+
+def scan_spans(prompt: str) -> tuple[tuple[int, int], ...]:
+    """Return the (start, end) offsets of the prompt's top-level 「…」 spans.
+
+    A regex cannot do this, and two real cases prove it. ids 45 and 48 put
+    corner quotes inside the head's parenthetical (「一次到位的「不是 A 而是 B」
+    （電子報）」), so anchoring on the first 「 extracts the *rule name* as the
+    span. ids 31 and 41 nest corner quotes inside the real span (「愛因斯坦也說
+    過：「複利是…」」), so a non-greedy match truncates it.
+
+    Hence one linear scan with two counters that are mutually exclusive:
+    parens only count outside a span, quotes only count outside a paren. Both
+    directions are needed — id 2's span contains 「（對，就是這麼蠢）」, which
+    would desynchronise a paren counter that kept running inside spans.
+    """
+    paren = quote = 0
+    start = -1
+    spans: list[tuple[int, int]] = []
+    for index, char in enumerate(prompt):
+        if quote == 0 and char == "（":
+            paren += 1
+        elif quote == 0 and char == "）":
+            paren = max(0, paren - 1)
+        elif paren == 0 and char == "「":
+            if quote == 0:
+                start = index
+            quote += 1
+        elif paren == 0 and char == "」":
+            quote = max(0, quote - 1)
+            if quote == 0 and start >= 0:
+                spans.append((start, index + 1))
+                start = -1
+    return tuple(spans)
+
+
+def _last_top_level_paren(head: str) -> str:
+    """Return the content of the last top-level （…） in the head, or ""."""
+    depth = 0
+    start = -1
+    found = ""
+    for index, char in enumerate(head):
+        if char == "（":
+            if depth == 0:
+                start = index
+            depth += 1
+        elif char == "）":
+            depth = max(0, depth - 1)
+            if depth == 0 and start >= 0:
+                found = head[start + 1 : index]
+                start = -1
+    return found
+
+
+def _inner_paren(text: str) -> str:
+    """Return the first nested （…） content, or "" when there is none.
+
+    This is the SF/SNF shape: the outer group is the rule name plus
+    「改編自 speak-human-tw SF-01」, the inner one is the genre.
+    """
+    depth = 0
+    start = -1
+    for index, char in enumerate(text):
+        if char == "（":
+            depth += 1
+            if depth == 1:
+                start = index
+        elif char == "）":
+            if depth == 1 and start >= 0:
+                return text[start + 1 : index]
+            depth = max(0, depth - 1)
+    return ""
+
+
+def _first_chunk(text: str) -> str:
+    return GENRE_SPLIT_RE.split(text.strip(), 1)[0].strip()
+
+
+def _resolve_genre(token: str, config: dict) -> str:
+    """Return the token if it survives aliasing and the allowlist, else ""."""
+    if not token:
+        return ""
+    resolved = config["genre_aliases"].get(token, token)
+    return resolved if resolved in config["genres"] else ""
+
+
+def build_card(case: dict, config: dict) -> Card:
+    """Project a fixture case down to what the author may see.
+
+    Four fail-closed gates send a case to needs-manual rather than showing it.
+    The third — anything left after the last span — is the one that earns its
+    keep on shape alone, with no vocabulary list behind it: it is what catches
+    id 2, whose prompt ends 「…幫我把 AI 味拿掉，但風格照 profile 保留。」 and so
+    answers the question before it is asked.
+    """
+    case_id = case["id"]
+    prompt = case["prompt"]
+    offsets = scan_spans(prompt)
+    if not offsets:
+        return Card(case_id, "", (), "沒有頂層引號段落")
+
+    head = prompt[: offsets[0][0]]
+    tail = prompt[offsets[-1][1] :]
+    if tail.strip():
+        return Card(case_id, "", (), f"最後一段引文之後仍有文字：{tail.strip()[:30]}…")
+
+    paren = _last_top_level_paren(head)
+    paren_token = _first_chunk(_inner_paren(paren) or paren)
+    noun_match = NOUN_RE.search(head)
+    noun_token = _first_chunk(noun_match.group(1)) if noun_match else ""
+
+    parts = [
+        genre
+        for genre in (
+            _resolve_genre(noun_token, config),
+            _resolve_genre(paren_token, config),
+        )
+        if genre
+    ]
+    # Both slots can resolve to the same allowlisted genre (id 57 has only the
+    # parenthetical; ids 13/55 have 「API 文件」 and 「docs 語境」, which differ).
+    deduped = list(dict.fromkeys(parts))
+    if not deduped:
+        rejected = " / ".join(t for t in (noun_token, paren_token) if t) or "（無）"
+        return Card(case_id, "", (), f"文體不在白名單：{rejected}")
+
+    genre = deduped[0] if len(deduped) == 1 else f"{deduped[0]}（{deduped[1]}）"
+    leaked = [token for token in config["leak_tokens"] if token in genre]
+    if leaked:
+        return Card(case_id, "", (), f"文體字串含洩題詞：{', '.join(leaked)}")
+
+    # Exactly one character off each end, never str.strip("「」"): scan_spans
+    # guarantees the delimiters sit at those two offsets, and stripping by
+    # character class eats a nested quote that ends the span. id 31 ends
+    # 「…愛因斯坦也說過：「複利是…第九大。」」 and lost its inner 」 that way,
+    # which showed the author a passage the fixture does not contain.
+    spans = tuple(prompt[start + 1 : end - 1] for start, end in offsets)
+    return Card(case_id, genre, spans, "")
+
+
+# ---------------------------------------------------------------- key class
+
+
+def key_classes(skill_dir: Path) -> dict[int, tuple[str | None, str]]:
+    """Map each case id to (class, basis) using run-case.json's declaration.
+
+    The regexes stay in exactly one file. annotate.json points at run-case.json
+    rather than copying them; a second copy would drift and then two tools
+    would disagree about what the ship gate is even measured over.
+
+    The backlog asks for a contradiction against each case's `expected-direction`,
+    which is not literally implementable — that slug is one entry in
+    verdict_class.overrides and most cases never carry it. The class is the
+    implementable substitute, and it is the unit the ship gate is already
+    stated over.
+    """
+    config = load_run_case_config(skill_dir)
+    if config is None:
+        raise AnnotateError(
+            f"{skill_dir / 'evals' / 'run-case.json'}: declared by annotate.json's "
+            "verdict_class_from but not present"
+        )
+    cases = load_fixture(skill_dir)
+    buckets = {case["id"]: case.get("bucket") for case in cases}
+    by_case: dict[int, set[str]] = {}
+    for row in build_rows(cases, config):
+        by_case.setdefault(row.case_id, set()).add(row.klass)
+
+    out: dict[int, tuple[str | None, str]] = {}
+    for case_id, classes in by_case.items():
+        if len(classes) == 1:
+            out[case_id] = (next(iter(classes)), "rows")
+            continue
+        bucket = buckets.get(case_id)
+        if bucket in ("SF", "SNF"):
+            out[case_id] = (HIT if bucket == "SF" else PROTECTION, "bucket")
+            continue
+        out[case_id] = (None, "undecidable")
+    return out
+
+
+def contradicts(score: int, klass: str | None) -> bool | None:
+    """True when the score points the opposite way from the key's class.
+
+    A 不確定 returns None rather than False. An abstention is not agreement
+    with the key — it is a refusal to take either side, and recording it as
+    agreement would let a pile of genuinely undecidable passages read as a
+    clean bill of health for the key. An undecidable class (rows spanning
+    both, no bucket) returns None for the same reason.
+    """
+    if klass is None or score == UNCERTAIN:
+        return None
+    if score <= HUMAN_END and klass == HIT:
+        return True
+    return score >= AI_END and klass == PROTECTION
+
+
+def rationale_required(score: int) -> bool:
+    """True for the scores that assert AI flavour, false for 偏人 and 不確定.
+
+    Asymmetric on purpose, requested by the author on 2026-08-01 after id 19
+    and id 22 (「沒感覺」/「emoji 太多但人也會這樣發」): a 3 or 4 claims a
+    passage carries AI 味, and that claim is what a rule gets written against,
+    so it has to say what it saw. A 1 or 2 asserts nothing to write a rule
+    from — 偏人 and 不確定 are the absence of a signal, and forcing a sentence
+    out of an absence produces filler that reads like evidence a year later.
+    A 36-case sweep also runs on friction; charging the author a sentence for
+    every shrug is how a sweep stalls, and a stalled sweep records nothing.
+    """
+    return score >= AI_END
+
+
+# ---------------------------------------------------------------- ledger
+
+
+def load_ledger(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise AnnotateError(f"{path}: {exc}") from exc
+    entries = raw.get("annotations") if isinstance(raw, dict) else None
+    if not isinstance(entries, list):
+        raise AnnotateError(f"{path}: 'annotations' must be a list")
+    for index, entry in enumerate(entries):
+        if not isinstance(entry, dict) or not isinstance(entry.get("case_id"), int):
+            raise AnnotateError(f"{path}: annotations[{index}] needs an integer case_id")
+        score = entry.get("score")
+        if not isinstance(score, int) or isinstance(score, bool) or score not in SCALE:
+            raise AnnotateError(
+                f"{path}: annotations[{index}].score must be one of {list(SCORES)}"
+            )
+    return entries
+
+
+def save_ledger(path: Path, skill: str, entries: list[dict]) -> None:
+    """Write the ledger atomically, sorted by case id.
+
+    Atomic-per-answer is the resume contract: a Ctrl-C between question four
+    and question five must not cost answer four. Sorting keeps the diff stable
+    when a sweep is resumed out of order.
+    """
+    payload = {
+        "skill_name": skill,
+        "annotations": sorted(entries, key=lambda e: e["case_id"]),
+    }
+    text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    handle = tempfile.NamedTemporaryFile(
+        "w", encoding="utf-8", dir=path.parent, delete=False, suffix=".tmp"
+    )
+    try:
+        with handle:
+            handle.write(text)
+        os.replace(handle.name, path)
+    except OSError as exc:
+        Path(handle.name).unlink(missing_ok=True)
+        raise AnnotateError(f"{path}: {exc}") from exc
+
+
+def span_digest(spans: tuple[str, ...]) -> str:
+    """Hash the presented spans, not the whole prompt.
+
+    The head is exactly the part that gets re-keyed when a rule is renamed or a
+    `source` line is edited. Hashing the prompt would invalidate every verdict
+    on a cosmetic change; hashing the spans invalidates only when the judged
+    text actually moved.
+    """
+    return hashlib.sha256("\n\n".join(spans).encode("utf-8")).hexdigest()
+
+
+# ---------------------------------------------------------------- rendering
+
+
+def _blockquote(text: str) -> str:
+    """Prefix every line so lists and tables survive inside the quote.
+
+    ids 21, 34 and 36 carry Markdown inside the span; the hand-written id 21
+    entry already quotes them this way.
+    """
+    return "\n".join(f"> {line}" if line else ">" for line in text.split("\n"))
+
+
+def render_entry(entry: dict) -> str:
+    """Render one ledger entry in judged-cases.md's own voice.
+
+    Naming the key class here is not a leak: the bias rule governs what the
+    author sees while deciding, and this text is written after the verdict is
+    fixed. Do not "fix" this by removing it — the class is what a contradiction
+    is computed against, so a record without it cannot be audited.
+
+    The rule name is deliberately absent. This tool has no opinion on which
+    rule should have caught the span, and asserting one would put a guess into
+    a ground-truth file. Hand-written entries name rules because a person
+    decided; generated ones must not.
+    """
+    spans = entry.get("spans") or [entry.get("span_text", "")]
+    lead = "全案就是這一段：" if len(spans) == 1 else f"全案有 {len(spans)} 段："
+    quoted = "\n>\n".join(_blockquote(span) for span in spans)
+
+    score = entry["score"]
+    klass = entry.get("key_class")
+    if entry.get("contradicts_key") is True:
+        consequence = (
+            f"**與 key 相左**——本案在 `evals.json` 屬{klass}類"
+            f"（依 `run-case.json` 的 `verdict_class` 推得），判讀為 {score}/4。"
+            "`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。"
+        )
+    elif score == UNCERTAIN and klass:
+        consequence = (
+            f"**判讀為不確定**——本案在 `evals.json` 屬{klass}類，而作者盲判後不選邊，"
+            "既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。"
+        )
+    elif klass:
+        consequence = (
+            f"與 key 一致——本案在 `evals.json` 屬{klass}類"
+            "（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。"
+        )
+    else:
+        consequence = (
+            "本案的 key 類別無法判定（該案的計分列同時涵蓋命中與保護，且無 `bucket` 可據），"
+            "因此不做一致性比對。key 未變動。"
+        )
+    if entry.get("stale"):
+        consequence += "本案的引文自判讀後已變動，這則判讀對應的是舊文字。"
+
+    # One level deeper than the hand-written entries on purpose: these sit
+    # under the generated section's own heading, which states the provenance
+    # that makes them different. The labels and the prose match the
+    # hand-written entries exactly; only the nesting differs, and it has to.
+    # The rationale block is dropped rather than filled with a placeholder when
+    # the author left it blank (only 1 and 2 allow that — see
+    # rationale_required). The generated section's intro states the rule once;
+    # repeating 「作者未給理由」 per entry would put more words on the page for
+    # the verdicts that carry the least, and a reader who meets the rule in the
+    # intro will not read a missing block as a truncated file.
+    turned_on = f"**What the verdict turned on.** {entry['rationale']}\n\n" if entry["rationale"] else ""
+    return (
+        f"### id {entry['case_id']}（{entry['genre']}）\n\n"
+        f"**Source material.** `evals.json` id {entry['case_id']}，"
+        f"一則{entry['genre']}，{lead}\n\n"
+        f"{quoted}\n\n"
+        f"**Verdict (author, {entry['date']}, blind 1-4 on the raw span).** "
+        f"AI 指數 {score}/4（{SCALE[score]}）。\n\n"
+        f"{turned_on}"
+        f"**Consequence for the instrument.** {consequence}\n"
+    )
+
+
+def mark_stale(entries: list[dict], by_id: dict[int, dict], config: dict) -> list[dict]:
+    """Return render-time copies flagged where the judged text has since moved.
+
+    Staleness is derived, never stored: a ledger that records it would keep
+    saying so after the fixture was put back, and a stale flag that lies is
+    worse than none. A stale entry is kept and labelled rather than dropped —
+    a disappearing verdict is the one outcome an audit trail must not have.
+    """
+    marked = []
+    for entry in entries:
+        case = by_id.get(entry["case_id"])
+        current = span_digest(build_card(case, config).spans) if case else ""
+        marked.append({**entry, "stale": bool(current) and current != entry.get("span_sha256")})
+    return marked
+
+
+def render_region(entries: list[dict]) -> str:
+    if not entries:
+        return ""
+    intro = (
+        "## 逐案判讀（工具產出）\n\n"
+        "以下由 `tools/annotate` 產生，資料來源是 `evals/annotations.json`——"
+        "要修改請改帳本，不要改這一段。與上方手寫條目的差別在來源："
+        "這些判讀是為了裁決 run 與答案卡的分歧而做的盲判，不早於 eval run，"
+        "因此它們量的是答案卡的正確性，"
+        "不是使用者價值。每則只呈現引文與文體，判讀當下作者未看到該案的 expectation、"
+        "規則名或 bucket。指數 3 與 4 一定附理由；1 與 2 不強制，"
+        "因此沒有「What the verdict turned on」的條目是作者沒給，不是漏掉。\n"
+    )
+    body = "\n".join(render_entry(entry) for entry in sorted(entries, key=lambda e: e["case_id"]))
+    return f"{intro}\n{body}"
+
+
+def splice(existing: str, region: str, marker: str) -> str:
+    """Replace the marked region, leaving every byte outside it untouched.
+
+    A lone opening or closing marker is a hard error rather than a rewrite: it
+    means someone hand-edited across the boundary, and overwriting would eat
+    their work.
+
+    Whitespace around the seams is normalised rather than preserved, because
+    the result has to be a fixed point: `--check` compares this function's
+    output against the file it last wrote, and a seam that gains one newline
+    per pass would report drift after every successful render.
+    """
+    begin = f"<!-- {marker}:begin — generated from evals/annotations.json; edit the ledger, not this block -->"
+    end = f"<!-- {marker}:end -->"
+    has_begin, has_end = begin in existing, end in existing
+    if has_begin != has_end:
+        raise AnnotateError(
+            f"只找到半個 {marker} marker（begin={has_begin}, end={has_end}）；"
+            "生成區被手改過，拒絕覆寫"
+        )
+    if has_begin:
+        head = existing.split(begin, 1)[0].rstrip()
+        rest = existing.split(end, 1)[1].strip()
+    else:
+        head, rest = existing.rstrip(), ""
+    parts = [part for part in (head, _block(begin, end, region), rest) if part]
+    return "\n\n".join(parts) + "\n" if parts else ""
+
+
+def _block(begin: str, end: str, region: str) -> str:
+    body = region.strip()
+    return f"{begin}\n\n{body}\n\n{end}" if body else ""
+
+
+# ---------------------------------------------------------------- selection
+
+
+def failed_ids(path: Path, include_global: bool) -> tuple[tuple[int, ...], tuple[int, ...]]:
+    """Return (selected ids, ids dropped for being global-origin only).
+
+    A `全域:保真` failure means the rewrite output dropped a fact. The question
+    this tool asks — does this source span have AI 味 — cannot settle that, so
+    selecting the case would put an unrelated question in front of the author.
+    """
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise AnnotateError(f"{path}: {exc}") from exc
+    rows = raw.get("results") if isinstance(raw, dict) else None
+    if not isinstance(rows, list):
+        raise AnnotateError(f"{path}: 'results' must be a list")
+    selected: set[int] = set()
+    global_only: set[int] = set()
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict) or not isinstance(row.get("case_id"), int):
+            raise AnnotateError(f"{path}: results[{index}] needs an integer case_id")
+        if row.get("new") != "fail":
+            continue
+        if row.get("origin") == "global" and not include_global:
+            global_only.add(row["case_id"])
+            continue
+        selected.add(row["case_id"])
+    return tuple(sorted(selected)), tuple(sorted(global_only - selected))
+
+
+# ---------------------------------------------------------------- interaction
+
+
+def present(card: Card, position: str) -> None:
+    print(f"\n{position} id {card.case_id} · {card.genre}\n", file=sys.stderr)
+    for index, span in enumerate(card.spans):
+        if index:
+            print("  ——", file=sys.stderr)
+        for line in span.split("\n"):
+            print(f"  {line}", file=sys.stderr)
+    print(f"\n{KEYS_HELP}", file=sys.stderr)
+
+
+def ask(card: Card, position: str) -> tuple[int, str] | str:
+    """Return (score, rationale), or the control token 's' / 'q'."""
+    present(card, position)
+    while True:
+        answer = input("> ").strip().lower()
+        if answer in ("s", "q"):
+            return answer
+        if not answer.isdigit() or int(answer) not in SCALE:
+            print(KEYS_HELP, file=sys.stderr)
+            continue
+        score = int(answer)
+        if not rationale_required(score):
+            # Still asked, just not enforced: 1 and 2 are where the author's
+            # 「沒感覺」/「emoji 太多但人也會這樣發」 lines came from, and those
+            # sentences are worth having. Skipping the prompt would collect
+            # nothing; requiring an answer would collect filler.
+            return score, input("一句話理由（選填）> ").strip()
+        while True:
+            rationale = input("一句話理由 > ").strip()
+            if rationale:
+                return score, rationale
+            print("理由不能空白——一年後只有這一行能解釋這個判讀。", file=sys.stderr)
+
+
+# ---------------------------------------------------------------- main
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("skill", help="slug under skills/")
+    parser.add_argument("--ids", help="id selector, e.g. 15,16,18-20")
+    parser.add_argument("--failed-run", type=Path, help="select cases this results JSON failed")
+    parser.add_argument(
+        "--include-global-origin",
+        action="store_true",
+        help="with --failed-run, also select cases failing only global rewrite checks",
+    )
+    parser.add_argument("--preview", action="store_true", help="print the cards and stop")
+    parser.add_argument("--render", action="store_true", help="regenerate from the ledger and stop")
+    parser.add_argument("--check", action="store_true", help="exit 1 if the rendered file would change")
+    parser.add_argument("--redo", action="store_true", help="re-ask cases already in the ledger")
+    parser.add_argument("--card", type=int, metavar="ID", help="print one case's card and stop")
+    parser.add_argument("--record", type=int, metavar="ID", help="record one verdict non-interactively")
+    parser.add_argument("--score", type=int, choices=SCORES, help="with --record: the AI 指數 1-4")
+    parser.add_argument(
+        "--rationale",
+        help="with --record: the author's one-line reason, verbatim (required for 3 and 4)",
+    )
+    return parser
+
+
+def main(argv: list[str]) -> int:
+    parser = build_parser()
+    args = parser.parse_args(argv)
+    modes = [
+        args.preview,
+        args.render,
+        args.check,
+        args.card is not None,
+        args.record is not None,
+    ]
+    if sum(1 for mode in modes if mode) > 1:
+        parser.error("--preview / --render / --check / --card / --record are mutually exclusive")
+    if args.record is not None and args.score is None:
+        parser.error("--record needs --score")
+    if (args.card is not None or args.record is not None) and (args.ids or args.failed_run):
+        parser.error("--card / --record take a single id; --ids and --failed-run do not apply")
+
+    repo_root = Path(__file__).resolve().parent.parent
+    skill_dir = repo_root / "skills" / args.skill
+    if not skill_dir.is_dir():
+        raise AnnotateError(f"no such skill: {skill_dir}")
+
+    config = load_config(skill_dir)
+    if config is None:
+        print(f"{args.skill}: no {CONFIG_PATH} — not opted in, skipped")
+        return 0
+
+    fixture_path = skill_dir / config["fixture"]
+    if not fixture_path.exists():
+        raise AnnotateError(f"missing declared fixture: {fixture_path}")
+    try:
+        cases = json.loads(fixture_path.read_text(encoding="utf-8"))["evals"]
+    except (OSError, KeyError, json.JSONDecodeError) as exc:
+        raise AnnotateError(f"{fixture_path}: {exc}") from exc
+    by_id = {case["id"]: case for case in cases}
+
+    ledger_path = skill_dir / config["ledger"]
+    entries = load_ledger(ledger_path)
+    rendered_path = skill_dir / config["rendered"]
+
+    if args.render or args.check:
+        return _render_only(args, config, rendered_path, mark_stale(entries, by_id, config))
+
+    if args.card is not None:
+        return _card(args, config, by_id, entries)
+
+    if args.record is not None:
+        return _record(args, config, by_id, skill_dir, ledger_path, rendered_path, entries)
+
+    selected = _select(args, config, by_id)
+    cards = [build_card(by_id[case_id], config) for case_id in selected]
+
+    if args.preview:
+        return _preview(cards)
+
+    return _session(args, config, cards, by_id, skill_dir, ledger_path, rendered_path, entries)
+
+
+def _select(args: argparse.Namespace, config: dict, by_id: dict[int, dict]) -> tuple[int, ...]:
+    known = set(by_id)
+    chosen: set[int] = set()
+    if args.ids:
+        chosen |= set(resolve_ids(args.ids, known))
+    if args.failed_run:
+        picked, dropped = failed_ids(args.failed_run, args.include_global_origin)
+        unknown = sorted(i for i in picked if i not in known)
+        if unknown:
+            raise AnnotateError(
+                f"{args.failed_run}: names case id(s) absent from the fixture: {unknown}; "
+                "the results and the fixture are from different generations"
+            )
+        chosen |= set(picked)
+        if dropped:
+            print(
+                f"--failed-run: 略過只在全域改寫檢核上失敗的 case {list(dropped)}"
+                "（那是改寫輸出掉了事實，不是原文有沒有 AI 味）；"
+                "要納入請加 --include-global-origin",
+                file=sys.stderr,
+            )
+    if not chosen:
+        chosen = known
+    return tuple(sorted(chosen))
+
+
+CARD_INSTRUCTION = (
+    "以下逐字呈現給作者，不得增刪改寫、不得摘要、不得補充評語——"
+    "盲判保護的是作者看到什麼，agent 只是轉貼管道。"
+)
+
+
+def _card(args: argparse.Namespace, config: dict, by_id: dict[int, dict], entries: list[dict]) -> int:
+    """Print one case's card for an agent to relay verbatim, then stop.
+
+    This and --record are the only non-interactive doors into the tool: an
+    agent (Claude Code, Codex, any chat UI) can drive a judging session by
+    shelling out to --card, pasting the result unmodified, collecting the
+    author's own y/n and rationale through its own UI, and then shelling out
+    to --record. The tool stays the single source of truth for extraction,
+    the leak gates, class derivation, and the marker splice; the agent is a
+    dumb pipe between two subprocess calls, never a party that reads
+    evals.json or writes a rationale on the author's behalf.
+    """
+    case = by_id.get(args.card)
+    if case is None:
+        raise AnnotateError(f"no such case id in the fixture: {args.card}")
+    card = build_card(case, config)
+    if card.blocked:
+        print(f"needs-manual id {card.case_id}：{card.blocked}", file=sys.stderr)
+        return 2
+    judged = {entry["case_id"] for entry in entries}
+    if card.case_id in judged and not args.redo:
+        print(
+            f"注意：id {card.case_id} 已在 ledger 裡有判讀；--record 若沒加 --redo 會被拒絕。",
+            file=sys.stderr,
+        )
+    print(CARD_INSTRUCTION)
+    print(f"\nid {card.case_id} · {card.genre}\n")
+    for index, span in enumerate(card.spans):
+        if index:
+            print("  ——")
+        for line in span.split("\n"):
+            print(f"  {line}")
+    # The anchors ship with the card, not just with the interactive loop: an
+    # agent relaying this to the author is the only place the author sees them,
+    # and an unanchored 1-4 drifts across a multi-session sweep.
+    print(f"\nAI 指數？\n{SCALE_HELP}")
+    return 0
+
+
+def _record(
+    args: argparse.Namespace,
+    config: dict,
+    by_id: dict[int, dict],
+    skill_dir: Path,
+    ledger_path: Path,
+    rendered_path: Path,
+    entries: list[dict],
+) -> int:
+    """Record one verdict non-interactively, then re-render.
+
+    Re-derives the card rather than trusting the caller's last --card output,
+    so a case that was presentable when --card ran but has since gone stale
+    (or was never valid) cannot be recorded through this door either.
+    """
+    case = by_id.get(args.record)
+    if case is None:
+        raise AnnotateError(f"no such case id in the fixture: {args.record}")
+    card = build_card(case, config)
+    if card.blocked:
+        raise AnnotateError(f"case {card.case_id} is needs-manual: {card.blocked}")
+    rationale = (args.rationale or "").strip()
+    if not rationale and rationale_required(args.score):
+        raise AnnotateError(
+            f"AI 指數 {args.score} 需要 --rationale：指向 AI 的判讀要說出看到什麼，"
+            "1 與 2 才可留空"
+        )
+
+    judged = {entry["case_id"]: entry for entry in entries}
+    if card.case_id in judged and not args.redo:
+        raise AnnotateError(
+            f"case {card.case_id} already has a verdict in the ledger; pass --redo to overwrite it"
+        )
+
+    classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
+    klass, basis = classes.get(card.case_id, (None, "unavailable"))
+    digest = span_digest(card.spans)
+    entry = {
+        "case_id": card.case_id,
+        "score": args.score,
+        "rationale": rationale,
+        "date": date.today().isoformat(),
+        "genre": card.genre,
+        "spans": list(card.spans),
+        "span_sha256": digest,
+        "key_class": klass,
+        "key_class_basis": basis,
+        "contradicts_key": contradicts(args.score, klass),
+        "superseded_by": None,
+    }
+    entries = [e for e in entries if e["case_id"] != card.case_id] + [entry]
+    save_ledger(ledger_path, args.skill, entries)
+
+    existing = rendered_path.read_text(encoding="utf-8") if rendered_path.exists() else ""
+    region = render_region(mark_stale(entries, by_id, config))
+    updated = splice(existing, region, config["render_marker"])
+    if updated != existing:
+        rendered_path.write_text(updated, encoding="utf-8")
+        print(f"wrote {rendered_path}")
+
+    print(f"recorded id {card.case_id}: {args.score}/4（{SCALE[args.score]}）")
+    if entry["contradicts_key"] is True:
+        print(f"與 key 相左：id {card.case_id} 屬 {klass} 類")
+    return 0
+
+
+def _preview(cards: list[Card]) -> int:
+    blocked = [card for card in cards if card.blocked]
+    for card in cards:
+        if card.blocked:
+            continue
+        print(f"\nid {card.case_id} · {card.genre}\n")
+        for index, span in enumerate(card.spans):
+            if index:
+                print("  ——")
+            for line in span.split("\n"):
+                print(f"  {line}")
+    print(f"\n可呈現 {len(cards) - len(blocked)} 案，needs-manual {len(blocked)} 案。")
+    for card in blocked:
+        print(f"  needs-manual id {card.case_id}：{card.blocked}")
+    return 0
+
+
+def _render_only(
+    args: argparse.Namespace, config: dict, rendered_path: Path, entries: list[dict]
+) -> int:
+    existing = rendered_path.read_text(encoding="utf-8") if rendered_path.exists() else ""
+    updated = splice(existing, render_region(entries), config["render_marker"])
+    if args.check:
+        if updated != existing:
+            print(f"{rendered_path}: 生成區與帳本不同步——跑 --render")
+            return 1
+        print(f"{rendered_path}: 生成區與帳本同步")
+        return 0
+    if updated != existing:
+        rendered_path.write_text(updated, encoding="utf-8")
+        print(f"wrote {rendered_path}")
+    else:
+        print(f"{rendered_path}: 無變動")
+    return 0
+
+
+def _session(
+    args: argparse.Namespace,
+    config: dict,
+    cards: list[Card],
+    by_id: dict[int, dict],
+    skill_dir: Path,
+    ledger_path: Path,
+    rendered_path: Path,
+    entries: list[dict],
+) -> int:
+    if not sys.stdin.isatty():
+        raise AnnotateError(
+            "互動判讀需要 tty；管線呼叫會把 EOF 當成離開，看起來像跑完一輪空 sweep。"
+            "要非互動檢視請用 --preview"
+        )
+
+    classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
+    judged = {entry["case_id"]: entry for entry in entries}
+    blocked = [card for card in cards if card.blocked]
+    queue = [
+        card
+        for card in cards
+        if not card.blocked and (args.redo or card.case_id not in judged)
+    ]
+
+    seen_digests: dict[str, int] = {}
+    answered: list[int] = []
+    stopped = False
+    try:
+        for index, card in enumerate(queue, start=1):
+            digest = span_digest(card.spans)
+            twin = seen_digests.get(digest)
+            if twin is not None:
+                print(
+                    f"注意：id {card.case_id} 的引文與 id {twin} 逐字相同"
+                    "（fixture 裡的重複，不是錯誤）——同一段問兩次，答案不一致會看起來像訊號。",
+                    file=sys.stderr,
+                )
+            seen_digests.setdefault(digest, card.case_id)
+
+            outcome = ask(card, f"[{index}/{len(queue)}]")
+            if outcome == "q":
+                stopped = True
+                break
+            if outcome == "s":
+                continue
+            score, rationale = outcome
+            klass, basis = classes.get(card.case_id, (None, "unavailable"))
+            entry = {
+                "case_id": card.case_id,
+                "score": score,
+                "rationale": rationale,
+                "date": date.today().isoformat(),
+                "genre": card.genre,
+                "spans": list(card.spans),
+                "span_sha256": digest,
+                "key_class": klass,
+                "key_class_basis": basis,
+                "contradicts_key": contradicts(score, klass),
+                "superseded_by": None,
+            }
+            entries = [e for e in entries if e["case_id"] != card.case_id] + [entry]
+            save_ledger(ledger_path, args.skill, entries)
+            answered.append(card.case_id)
+    except (KeyboardInterrupt, EOFError):
+        stopped = True
+        print(file=sys.stderr)
+
+    existing = rendered_path.read_text(encoding="utf-8") if rendered_path.exists() else ""
+    region = render_region(mark_stale(entries, by_id, config))
+    updated = splice(existing, region, config["render_marker"])
+    if updated != existing:
+        rendered_path.write_text(updated, encoding="utf-8")
+        print(f"wrote {rendered_path}")
+
+    print(f"本次判讀 {len(answered)} 案：{answered}" if answered else "本次未判讀任何案。")
+    conflicting = sorted(e["case_id"] for e in entries if e.get("contradicts_key") is True)
+    if conflicting:
+        print(f"與 key 相左：{conflicting}")
+    undecidable = sorted(
+        e["case_id"] for e in entries if e.get("key_class") is None and e.get("key_class_basis") != "unavailable"
+    )
+    if undecidable:
+        print(f"無法判定 key 類別：{undecidable}")
+    if blocked:
+        print(f"needs-manual（未呈現）：{sorted(c.case_id for c in blocked)}")
+    if stopped:
+        remaining = [
+            card.case_id
+            for card in queue
+            if card.case_id not in answered and card.case_id not in judged
+        ]
+        if remaining:
+            spec = ",".join(str(i) for i in remaining)
+            print(
+                f"下次接續：uv run tools/annotate {args.skill} --ids {spec}",
+                file=sys.stderr,
+            )
+    return 0
+
+
+def cli(argv: list[str]) -> int:
+    try:
+        return main(argv)
+    except RunCaseError as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(cli(sys.argv[1:]))

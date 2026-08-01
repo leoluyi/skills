@@ -32,7 +32,7 @@ than interleaving; **step 1 exists to make step 2 affordable.**
 
 ### 1. `tools/annotate` — 判讀輔助工具
 
-- [ ] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
+- [x] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
   straight out of the session that found it. When a run disagrees with the key, the fastest
   way to settle it turned out not to be reading rule text — it was showing the author the raw
   sentence and asking 「這句有沒有 AI 味？」 with two buttons. Four such questions overturned
@@ -45,7 +45,47 @@ than interleaving; **step 1 exists to make step 2 affordable.**
   `uv` fine, never part of skill runtime. The immediate consumer is step 2: resuming that
   sweep by hand is the same transcription tax a second time.
 
-### 2. ported-case sweep — 續走 ids 15/16、18
+  落地 2026-08-01。實際行為與上面這段原始描述有兩處差異，先記在這裡：
+
+  - **判讀先進帳本，`judged-cases.md` 由帳本渲染。** `evals/annotations.json` 是機器可讀的
+    真相來源，`judged-cases.md` 末端一個 `annotate:begin/end` 圍起來的區段從它渲染而來，
+    marker 外一個 byte 不動。續跑狀態只讀帳本——散文檔沒有機器可讀的 case id，任何解析器
+    都會在有人重排標題的那天開始靜默漏案。
+  - **判讀是 1-4 的 AI 指數，不是 有/沒有。** 原描述寫的是兩個按鈕；實際第一次判讀時作者
+    自己就伸手要了一個程度（「AI指數70%: 過分空虛的形容詞…但不排除人也會這樣寫」），二元裝
+    不下那句話。四個固定錨點（1 偏人／2 不確定／3 偏 AI／4 明確 AI）隨每張卡一起印——
+    36 案會跨 session 判，沒有錨點的量表在第一次與第五次之間會漂移，漂移過的分數無法跨案
+    比較，而那正是量表相對二元的唯一收益。**錨點刻意不對稱**：人側一級、AI 側兩級。這支
+    儀器問的是 AI 味有多強，所以解析度值得花在 AI 端——「明確人寫」與「偏人」對任何下游讀者
+    都是同一件事（這不是 AI），而「偏 AI」與「明確 AI」分開的是規則該抓與必須抓。
+    **2「不確定」不算與 key 一致**：它回傳 `null` 而非 `false`，因為不選邊不是同意；
+    記成同意會讓一堆真正判不出來的案讀起來像答案卡的健康證明。
+  - **比對的是類別，不是 `expected-direction`。** 那個 slug 只是 `run-case.json`
+    `verdict_class.overrides` 的一個條目，多數 case 根本不帶它，照字面無法實作；改成比對
+    **命中／保護**，也就是 ship gate 本來就據以陳述的單位。代價要記著：ids 1、2、6、7、8、9
+    的計分列橫跨兩類又沒有 `bucket` 可據，類別判不出來，這六案只記判讀、不做一致性比對。
+    原措辭隱含這種情況不存在。
+
+  - **理由 3/4 必填、1/2 選填。** 兩者都會問，1/2 的提示標「（選填）」。指向 AI 的判讀是規則
+    寫作的依據，必須說出看到什麼；1 偏人與 2 不確定是訊號的缺席，逼一句話出來只會產出一年後
+    讀起來像證據的填充物。空理由的條目在生成區直接省略 `What the verdict turned on`，規則寫
+    在生成區 intro 講一次，不逐則塞「作者未給理由」。
+  - **`--card ID` / `--record ID`：非互動的兩道門，給 agent TUI 驅動用。** 互動迴圈本來就是
+    呈現、收答、落帳三段；agent 相容不是移植 UI，是把三段拆開讓 agent 當啞管道。`--card` 印
+    卡片（blocked 案 exit 2），`--record` 重跑 `build_card` 驗證後才落帳，從不信任呼叫端上一次
+    `--card` 的輸出。tty 閘只繞這一條——`--record` 語義上就是「答案已在別處收好」。
+
+  單檔 1038 行，超過 `check-labels`（395）這個實質上限，是刻意留的：其中 153 行空行，其餘
+  大半是記錄反例的 docstring——ids 45/48 把引號放在規則名裡、ids 31/41 引文內有巢狀引號，
+  這兩組正是「span 抽取不能用 regex」的證據，而它們都不在 sweep 目標裡，砍掉不會立刻被發現。
+  五個關注點（config／extract／ledger／render／loop）一條線讀得下來，拆 package 還要連帶
+  改名（`tools/annotate` 與 `tools/annotate/` 撞名），不划算。
+
+  另外三案（ids 2、4、12）的 prompt 形狀無法在不洩題的前提下剝乾淨，標為 needs-manual、
+  不進判讀流；全部落在 repo 自撰的 1-12，sweep 目標一案未失。這份名單是 fixture 不變式——
+  它一變就代表有人改了 prompt 形狀，剝離邏輯要重讀。
+
+### 2. ported-case sweep — 續走 id 33
 
 - [ ] **The remaining ~36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) are
   still unadjudicated and may hold more taste mismatches with this repo's judgment.** Four cases from
@@ -62,8 +102,20 @@ than interleaving; **step 1 exists to make step 2 affordable.**
   in [`evals/judged-cases.md`](evals/judged-cases.md) — closing the hand-transcription gap this
   item used to note.
 
-  **Resume at ids 15/16, 18** — that is where the sweep stalled (PR #20) before finding these
-  four. Two cases from the same source batch were deliberately *not* ported here because they
+  **進度 2026-08-01：15/36 判完，續跑從 id 33 開始。** 已判 ids 15、16、18、19、20、22、23、
+  24、25、26、27、29、30、31、32；剩 ids 33-37、39-54。判讀走 `tools/annotate` 的
+  `--card` / `--record`，帳本在 [`evals/annotations.json`](evals/annotations.json)，
+  渲染結果在 `judged-cases.md` 的 `annotate:begin/end` 區段。**與 key 相左 3 例：ids 23、27、
+  31**，三案都是作者判 1 偏人而 key 屬命中類。要不要改 key 是第 3 項與第 4 項的決定，
+  這一步只記錄，`evals.json` 未動。
+
+  這輪判讀期間修掉的一個真 bug：span 抽取用 `strip("「」")` 剝界定符，會連帶吃掉以巢狀引號
+  結尾的內層 `」`（id 31「…愛因斯坦也說過：「複利是…第九大。」」少一個收尾），等於拿一段
+  fixture 裡不存在的文字去問作者。改成剝頭尾各一字元。已記的判讀 digest 無漂移。
+
+  The sweep originally stalled at ids 15/16, 18 (PR #20) before finding those four; that stall
+  is what `tools/annotate` was built to clear, and ids 15-32 above are the first stretch it
+  cleared. Two cases from the same source batch were deliberately *not* ported here because they
   test the 陸用語／簡體殘留 axis; they are tracked in
   [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither side
   blocks the other.

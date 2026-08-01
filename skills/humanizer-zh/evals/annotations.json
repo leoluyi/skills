@@ -1,0 +1,230 @@
+{
+  "skill_name": "humanizer-zh",
+  "annotations": [
+    {
+      "case_id": 15,
+      "score": 3,
+      "rationale": "空泛形容詞 ＋ 排比句型",
+      "date": "2026-08-01",
+      "genre": "社群貼文",
+      "spans": [
+        "這場工作坊不僅標誌著我們社群經營邁入全新階段，更見證了學習型社群的無限可能，為未來的每一步奠定了堅實的基礎。"
+      ],
+      "span_sha256": "562fb12e72497c8001d5b4bac2f5551df5a06aa25cacae0ca15add29a5cd46c2",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    },
+    {
+      "case_id": 16,
+      "score": 4,
+      "rationale": "形容詞堆疊 ＋ 空洞承諾，整句沒有具體資訊",
+      "date": "2026-08-01",
+      "genre": "銷售頁",
+      "spans": [
+        "這是一堂充滿啟發、扎實豐富、令人期待的線上課程，將帶領你突破自我、擁抱改變，邁向職涯的全新高峰。"
+      ],
+      "span_sha256": "b1f6a2463dd889f2257ed92b299a72fffc51f3cd1e82bc80415c1d36a03f557a",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    },
+    {
+      "case_id": 18,
+      "score": 4,
+      "rationale": "三段對比句排比，每句都是「不是 X 而是 Y」",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "這不只是一堂課，更是一場自我升級的旅程。重點不是工具，而是思維。真正的效率不是做得更多，而是想得更清楚。"
+      ],
+      "span_sha256": "253396b73ca499a7351b2815666f0d36b5e9fbc8b2f1c4328c93c69926fed377",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    },
+    {
+      "case_id": 19,
+      "score": 2,
+      "rationale": "沒感覺",
+      "date": "2026-08-01",
+      "genre": "社群貼文",
+      "spans": [
+        "這款筆記工具無縫、直觀、強大，讓你的靈感不再流失，讓你的知識不再散落，讓你的效率不再受限。"
+      ],
+      "span_sha256": "1dbdca0539d3a7f5a54bf7e3d195b2000319afb76a23acdc8736c937df1970c9",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": null,
+      "superseded_by": null
+    },
+    {
+      "case_id": 20,
+      "score": 3,
+      "rationale": "太多 —— ，然後看起來就像英文的句法直翻譯",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "我最近換了一套新的寫作流程——其實也不算全新——重點是先寫爛草稿——對，就是允許自己寫爛——然後隔天再修。這個方法救了我——至少救了我的交稿日。"
+      ],
+      "span_sha256": "28e4f1d5e57ae241e1d470dfc140de8d274bda0859498bc4b51fe26451109024",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    },
+    {
+      "case_id": 22,
+      "score": 2,
+      "rationale": "emoji 太多但人也會這樣發",
+      "date": "2026-08-01",
+      "genre": "社群貼文",
+      "spans": [
+        "🚀 新功能上線啦！💡 這次更新真的超有感！✅ 立即體驗，你會回不去！🔥🔥🔥"
+      ],
+      "span_sha256": "993ea431c280c4abffd2740f83b8044895db5f669d8bdc1eac35e5639ab524fc",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": null,
+      "superseded_by": null
+    },
+    {
+      "case_id": 23,
+      "score": 1,
+      "rationale": "沒AI感",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "以上就是這期電子報的全部內容。希望這對你有幫助！如果你需要我調整任何段落的語氣，隨時告訴我。"
+      ],
+      "span_sha256": "34adbcff069df72e7e7ccf5a966f58761b2f4d84a30c1eb6a8d7e531aae2bd6a",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "superseded_by": null
+    },
+    {
+      "case_id": 24,
+      "score": 4,
+      "rationale": "諂媚開場 ＋ 三句都在誇問題本身，沒回答問題",
+      "date": "2026-08-01",
+      "genre": "客服回信",
+      "spans": [
+        "這真是一個非常棒的問題！您的觀察完全正確，這確實是許多學員都會遇到的重要疑問。關於您提到的作業繳交方式⋯⋯"
+      ],
+      "span_sha256": "598f84409a8ef4c00d741aefda7ee3819c8fcf5e315c44cb5b167b3f293847da",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    },
+    {
+      "case_id": 25,
+      "score": 2,
+      "rationale": "",
+      "date": "2026-08-01",
+      "genre": "銷售頁",
+      "spans": [
+        "未來的職場充滿無限可能，讓我們一起擁抱變化、持續學習，邁向更美好的明天。"
+      ],
+      "span_sha256": "c5a048606de22bc7352bc3a97213e8dd65ea0667de2145cd868d1533f792f71b",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": null,
+      "superseded_by": null
+    },
+    {
+      "case_id": 26,
+      "score": 2,
+      "rationale": "「或許值得」這四個字不太會在職場出現",
+      "date": "2026-08-01",
+      "genre": "辦公文書",
+      "spans": [
+        "這個調整可能潛在地會對本季的轉換率產生一定程度的影響，或許值得我們在某種程度上加以關注。"
+      ],
+      "span_sha256": "351e981f1686a80510903f48c873a526012719ed542856f7f2cf397a642a2668",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": null,
+      "superseded_by": null
+    },
+    {
+      "case_id": 27,
+      "score": 1,
+      "rationale": "這是人類會寫的",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "由於資訊有限，無法確認該工具最新的定價方案，但根據現有資料，它提供免費與付費兩種版本。"
+      ],
+      "span_sha256": "dd240fa410d8d6ebb1a9de901cca0c4826e598aa845a62befbf98c7002d9e3f6",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "superseded_by": null
+    },
+    {
+      "case_id": 29,
+      "score": 2,
+      "rationale": "",
+      "date": "2026-08-01",
+      "genre": "社群貼文",
+      "spans": [
+        "與其繼續焦慮 AI 會不會取代你，不如現在就開始學習與它協作。畢竟，機會永遠留給準備好的人，不是嗎？"
+      ],
+      "span_sha256": "cd1621016bd9e9139f1e4a7cf5b086c65dd4e6a44a46da9110ae7491d538a650",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": null,
+      "superseded_by": null
+    },
+    {
+      "case_id": 30,
+      "score": 4,
+      "rationale": "一句話換了三個主詞",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "小美是我們第三期的學員。這位創作者原本是行政人員，這名內容工作者花了三個月經營自媒體，這位夥伴上個月接到第一筆業配。"
+      ],
+      "span_sha256": "d97a67953a7e0215eecb96a9c833ef051272d056c2d0419e0f6c8a288d9c3e15",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    },
+    {
+      "case_id": 31,
+      "score": 1,
+      "rationale": "",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "哈佛商學院 2024 年的研究指出，使用第二大腦筆記法的工作者，生產力平均提升 47.3%。愛因斯坦也說過：「複利是世界第八大奇蹟，筆記則是第九大。」"
+      ],
+      "span_sha256": "4ef068156542d3d17615f4bd34b139a30632817845e652912a506e95caf9b3e6",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "superseded_by": null
+    },
+    {
+      "case_id": 32,
+      "score": 4,
+      "rationale": "citeturn0search2 是 chatgpt 的 artifact",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "詳細比較可以看這篇評測（https://example.com/review?utm_source=chatgpt.com ）citeturn0search2。以下是清理後的版本，請複製使用：新工具在匯出格式上明顯領先。"
+      ],
+      "span_sha256": "f0cbfd869b459a7fd1d1edf9d8f1abb900dcee7b4954e2320993be98342d35d0",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "superseded_by": null
+    }
+  ]
+}
