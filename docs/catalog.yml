@@ -31,6 +31,15 @@ categories:
       en: "Learn a concept by being taught and quizzed, then file your own note into an Obsidian vault on PARA structure."
       zh: "先教後考學懂一個概念，再把親手寫的筆記歸檔進 PARA 結構的 Obsidian 筆記庫。"
 
+  - key: data-recovery
+    label: { en: "Data Recovery", zh: "資料救援" }
+    blurb:
+      en: "Pull deleted or lost data back out of an application's own cache before it's evicted for good."
+      zh: "在應用程式自身快取被清掉之前，把刪掉或遺失的資料救回來。"
+    readmeNote:
+      en: "Language-agnostic; runs on any agent with shell access."
+      zh: "跨語言工具，適用任何有 shell 存取權的 agent。"
+
   - key: agent-workflow
     label: { en: "Agent Workflow", zh: "Agent 工作流" }
     blurb:

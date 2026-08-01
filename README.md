@@ -4,7 +4,7 @@
 
 **Agent skills that write Traditional Chinese like a real person — straight from my `~/.skills`.**
 
-[![Skills](https://img.shields.io/badge/skills-13-6d4aff?style=flat-square)](#skill-catalog)
+[![Skills](https://img.shields.io/badge/skills-14-6d4aff?style=flat-square)](#skill-catalog)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-second-setup)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -73,7 +73,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-13 skills across 5 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+14 skills across 6 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
@@ -108,6 +108,14 @@ Language-agnostic professional tools that stand on their own — no Chinese requ
 | **Learn Loop**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault |
 | **Obsidian Vault Notes**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks |
 | **Discuss With Me**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | Think through a question neither of you can answer yet — widen the options, label what's found vs guessed, attack the load-bearing assumptions, and leave a record that says what would overturn it |
+
+### Data Recovery
+
+Language-agnostic; runs on any agent with shell access.
+
+| Skill | What it does |
+|---|---|
+| **Recover a Deleted Claude Conversation**<br>[`recover-deleted-claude-conversation`](skills/recover-deleted-claude-conversation/SKILL.md) `invoke-only` | Pull a deleted Claude Desktop/claude.ai conversation and its artifacts back out of the Chromium cache before it's evicted |
 
 ### Agent Workflow
 

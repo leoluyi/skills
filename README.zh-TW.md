@@ -4,7 +4,7 @@
 
 **寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
-[![Skills](https://img.shields.io/badge/skills-13-6d4aff?style=flat-square)](#技能目錄)
+[![Skills](https://img.shields.io/badge/skills-14-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-13 個技能、5 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+14 個技能、6 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -103,6 +103,14 @@ tools/sync-skills
 | **結構化學習迴圈**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian |
 | **Obsidian 筆記庫**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | 在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構 |
 | **陪我想一想**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | 陪你想一個雙方都還沒有答案的問題：先展開選項，標出哪句是查到的、哪句是猜的，再拆掉承重假設，留下一份寫明「什麼會推翻它」的紀錄 |
+
+### 資料救援
+
+跨語言工具，適用任何有 shell 存取權的 agent。
+
+| Skill | 做什麼 |
+|---|---|
+| **救回被刪除的 Claude 對話**<br>[`recover-deleted-claude-conversation`](skills/recover-deleted-claude-conversation/SKILL.md) `invoke-only` | 在 Chromium 快取被清掉之前，把刪除的 Claude Desktop／claude.ai 對話與產出檔案救回來 |
 
 ### Agent 工作流
 
