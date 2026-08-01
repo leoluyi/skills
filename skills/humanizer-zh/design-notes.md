@@ -9,7 +9,7 @@ A zh-first bilingual skill with **one** canonical rule set. A rule carries both 
 ```
 SKILL.md                      — 114 lines: routing, the six-step spine, the shared vocabulary, severity, profiles
 references/
-  zh-rules.md                 — all 46 rules under the 8 classes, each with 抓 / 保留 / a before-after pair
+  zh-rules.md                 — all 47 rules under the 8 classes, each with 抓 / 保留 / a before-after pair
   en-rules.md                 — the English manifestations, keyed to the same 8 classes
   hidden-author.md            — the detect-only 作者隱身 aggregate: gate, threshold, 5 sub-signals
   zh-phrase-rules.md          — the seven zh「詞→替換」lookup tables (data, not rules)
@@ -17,6 +17,20 @@ references/
 ```
 
 [`docs/humanizer-zh.md`](../../docs/humanizer-zh.md) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
+
+## 自我背書 — 第 47 條，過煞車的方式與前兩條都不同（2026-08-01）
+
+來源是作者提供的一句真實工作文字：「邊界判斷表。以下收錄的是灰色地帶，判斷依據皆來自前文的三個結構性因素。」作者給的人寫對照是「以下為灰色地帶案例，依前述的三個結構性因素判斷如下」。兩句帶的資訊一樣，差別在後半句的職能：AI 版把「怎麼讀下文」的操作句寫成「我的依據很完整」的稽核句，「皆」在防守一個沒人問過的質疑。
+
+**先確認是缺口再開規則。** 掃過 `corpus.md`、`evals.json`、`research/`，`皆來自／均基於／依據皆` 這組形態在 fixture 文字裡零命中——三個 `皆` 全部出現在 repo 自己的註解散文。46 條逐條比對後也沒有家：`文件自述` 抓的是交付物對委託者說話與後設敘事開場（本文將探討…），那是**取代**交付；本條的子句**伴隨**交付，形不同。`避險堆疊` 是反面（不敢斷言，不是過度自證），`懸念與自我貼標籤` 指的是內容聰明而非方法完整。
+
+**煞車是怎麼過的，這一項與 `體裁相稱` 不同。** backlog:472 那條煞車寫的是「兩案不足以立一條規則——先在既有語料裡找同型案例」。這裡作者 1 案、語料庫 0 案，照字面過不了。實際過關的理由是作者當輪直接裁示開規則，不是舉證數達標。**這件事要記著，因為它是這條規則目前最大的弱點**：`語體漂移` 有五輪量測、`體裁相稱` 被同一條煞車擋了一輪，本條兩者皆無。
+
+**保護案是合成的，舉證力照 4a(4) 打折。** ids 73（消歧義）、74（來源註記）都是為了測 carve-out 現寫的。第 4a(4) 項已經判定「保護類的整個主張是『這是真人會寫的東西，不准動它』，用造出來的句子去測等於用人味的演出代替人味本身」。命中案 id 72 是真語料，保護側不是。真語料替換記在 backlog。
+
+**carve-out 的重點是消歧義與防守的分界，判準寫成可執行的檢查。** 「拿掉這句，讀者會不會套錯判準？」會就保留。這個問法把一個看起來很主觀的分界變成單一動作——沒有它，方法章節、稽核報告、資料表註記全都表面命中，而那三種文體裡宣告來源與涵蓋範圍本來就是交付物本身。
+
+**沒有寫 `改法` 行。** 手段（把稽核句換回操作句、主詞從名物化的「判斷依據」回到動作）照 backlog 第 9 項的判別式是**搬得動的**——名物化轉動詞適用於任何句子，脫離本規則的形態仍然成立，與 `語體漂移` 那次外溢同型。方向由前／後對照承載。
 
 ## 過度簡寫 / 破碎短句堆疊 的邊界重切（2026-08-01，語體漂移之後）
 
@@ -40,7 +54,7 @@ references/
 
 第二項是「缺陷與完成度不匹配」：人的失誤是減法（漏字、漏主詞、標點不一致），AI 的失誤是骨架歪掉但零件樣樣俱全，因此組裝感與高完成度同時出現才是決定性訊號。這句話問的是**誰寫的**，而 `SKILL.md` 的〈What this skill is and isn't〉明文只判 surface、不判 provenance。照字面寫成命中門檻，skill 就開始做它拒絕做的主張。處置是把它翻面：**組裝感伴隨完成度下降時放行**，寫進 `語體漂移` 的保留條款。非母語寫作、翻譯體、多來源剪貼因此照樣被保護，而規則一句話都沒說作者是誰。`backlog.md` 的 (H) 雙軸評分閘沒有放行，仍等盲測資料。
 
-第三項是「結構訊號權重高於內容訊號」。它不屬於任何單一規則——內容可以從表格、模板或來源文件繼承，語法是當場生成的——所以落在 `SKILL.md` 步驟 4 的一行，而不是第 47 條規則。
+第三項是「結構訊號權重高於內容訊號」。它不屬於任何單一規則——內容可以從表格、模板或來源文件繼承，語法是當場生成的——所以落在 `SKILL.md` 步驟 4 的一行，而不是自成一條規則。
 
 **判準本身沒有證據支撐，這一點要說清楚。** 三項判準全部出自 2026-08-01 一場非盲測的 annotate session：判讀者知道答案，中途又拿到一份人寫的對照改寫。落地的理由是第一項屬 surface、可由既有的 run-case 儀器直接量測，不是那場 session 證明了什麼。
 
