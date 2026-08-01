@@ -22,11 +22,30 @@ Neither is a defect on the record yet, and patching what a single round happens 
 the hit class gets eaten by carve-outs. The thing to watch is whether either crosses 2-of-N in
 a later aggregate.
 
-## The instrument is not a clean bar either
+## 下一輪，照這個順序做
 
-Both of these change the key, so both force a re-baseline of **both** versions, and the
-aggregate gate needs its rounds re-run from scratch afterwards. Sequence them one at a time
-rather than interleaving.
+The instrument is not a clean bar either, and everything in this section changes the key —
+which forces a re-baseline of **both** versions and a from-scratch re-run of the aggregate
+gate's rounds. That cost is paid once per round, not once per item, so these four land
+together and re-baseline once at the end. Within the round, do them one at a time rather
+than interleaving; **step 1 exists to make step 2 affordable.**
+
+### 1. `tools/annotate` — 判讀輔助工具
+
+- [ ] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
+  straight out of the session that found it. When a run disagrees with the key, the fastest
+  way to settle it turned out not to be reading rule text — it was showing the author the raw
+  sentence and asking 「這句有沒有 AI 味？」 with two buttons. Four such questions overturned
+  three cases in one round, where two rounds of rule-wording argument had settled nothing.
+  The tool should: pull a case's quoted span out of `evals.json`, present span + genre + one
+  line of context (never the expectation, never the rule name — those bias the answer), take
+  有/沒有, and write the verdict plus a one-line rationale into `evals/judged-cases.md` as
+  品味層 語料, flagging any case whose verdict now contradicts its `expected-direction`. Runs
+  over a filtered set (a whole id range, or only cases that failed a given run). Dev-side,
+  `uv` fine, never part of skill runtime. The immediate consumer is step 2: resuming that
+  sweep by hand is the same transcription tax a second time.
+
+### 2. ported-case sweep — 續走 ids 15/16、18
 
 - [ ] **The remaining ~36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) are
   still unadjudicated and may hold more taste mismatches with this repo's judgment.** Four cases from
@@ -49,32 +68,7 @@ rather than interleaving.
   [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither side
   blocks the other.
 
-- [ ] **`模糊歸屬` may be scoped too wide — id 17's adjudication found it catching a defect
-  ordinary human writers also commit, not just an AI tell.** The author ruled a 「業界專家普遍認為」
-  -shaped sentence has no AI 味, in isolation, even after being shown the rule's own 抓／保留 text
-  (`references/zh-rules.md:218-222`) — reasoning 「規則本身抓得太寬」「是一般人類文章也可能犯的錯誤」；
-  full record in [`evals/judged-cases.md`](evals/judged-cases.md). Explicitly scoped to that one
-  case by the author, not a mandate to change the rule now — but the shape is worth naming:
-  `解說導引腔` already has a density carve-out (a single instance doesn't count, only stacking
-  does — `references/zh-rules.md:58-63`); `模糊歸屬` has no isolated-instance equivalent. Whether
-  it needs one — and whether other rules share the gap — is a behaviour change and needs its own
-  branch and re-run, not a fold-in to a key-fix round. `corpus.md`'s A-06 (`:789`) is the
-  distinguishing datapoint already on record: the same 模糊歸屬 pattern there co-occurs with
-  `對比句式` and a 「值得深思的現象」 framing sentence, and stays flagged — so any fix is about
-  isolation, not about weakening the rule wholesale.
-
-- [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
-  widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
-  generally-understood term belongs (「兩條路」→「兩個方式」; ruling in `evals/judged-cases.md`).
-  Nothing measures it yet:
-  - **Hit case** — id 7's 「兩條路」 is the adjudicated example but is not in that case's key.
-  - **Protection case** — this is the one that matters. Widening a catch from verbs to nouns
-    and phrases puts every figurative noun in range, so a register that legitimately carries
-    figuration must be shown to survive: `casual` voice, and a 署名文體 draft whose metaphor
-    system is declared under 保護清單⑥. The two carve-outs written for it (已成通用術語的比喻;
-    宣告過的比喻系統) are untested prose until a case fires at them.
-  Until both exist, treat the widening as unverified — it is the kind of change that buys one
-  hit and pays for it in false positives nobody measured.
+### 3. `evals.json` 三個結構缺陷
 
 - [ ] **Three structural defects in `evals.json`.** Found by the 2026-07-30 54-case run; the
   instrument was left frozen that round so the skill fix stayed comparable to the baseline.
@@ -92,41 +86,43 @@ rather than interleaving.
   not merely bundled; the fix rewrote the direction rather than decomposing it. The remaining
   unadjudicated ported cases may hold more of either shape.
 
-- [ ] **`corpus.md` is saturated — it detects regressions, it does not measure progress.**
-  1.5.0 scores 89/89 on it (52/52 protection, 37/37 hits) and 2.0.0 matches at 89/89. Keep
-  running it as a guard, but stop reading a flat 89/89 as evidence of anything. New,
-  unsaturated material is what any future "we are better" claim needs.
+### 4. `口語化萬能詞` 名詞與短語 form 的兩側覆蓋
 
-- [ ] **The English side's evidence is not independent.** Three before/after pairs in
-  `references/en-rules.md` were written while looking at corpus gold fragments (the
-  post-regression patch), so the English hits they produce are recognition, not derivation.
-  Same shape as **id 51**, whose pass may be recognition too — the runner justified its
-  carve-out by citing a rule example that is near-verbatim the test input. Replace both with
-  synthetic material once new, unused English cases exist. Related: no **cross-family judge**
-  was reachable in the 2.0.0 round, so its result supports "no regression detected", never
-  "we are better".
+- [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
+  widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
+  generally-understood term belongs (「兩條路」→「兩個方式」; ruling in `evals/judged-cases.md`).
+  Nothing measures it yet:
+  - **Hit case** — id 7's 「兩條路」 is the adjudicated example but is not in that case's key.
+  - **Protection case** — this is the one that matters. Widening a catch from verbs to nouns
+    and phrases puts every figurative noun in range, so a register that legitimately carries
+    figuration must be shown to survive: `casual` voice, and a 署名文體 draft whose metaphor
+    system is declared under 保護清單⑥. The two carve-outs written for it (已成通用術語的比喻;
+    宣告過的比喻系統) are untested prose until a case fires at them.
+  Until both exist, treat the widening as unverified — it is the kind of change that buys one
+  hit and pays for it in false positives nobody measured.
+
+### 5. rewrite mode 的口語時間表達 保真 case
 
 - [ ] **A 保真 case for colloquial time expressions in rewrite mode.** In the 2026-07-30 run,
   id 40's runner normalised 「3/31 晚上 11:59」 to 「3/31 23:59」 inside its own report. Harmless
   in detect mode (the text was untouched and the verdict stood), but the identical reflex in
   rewrite mode is a 保真 failure, and nothing currently tests for it.
 
-## Tooling the adjudication needs
-
-- [ ] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
-  straight out of the session that found it. When a run disagrees with the key, the fastest
-  way to settle it turned out not to be reading rule text — it was showing the author the raw
-  sentence and asking 「這句有沒有 AI 味？」 with two buttons. Four such questions overturned
-  three cases in one round, where two rounds of rule-wording argument had settled nothing.
-  The tool should: pull a case's quoted span out of `evals.json`, present span + genre + one
-  line of context (never the expectation, never the rule name — those bias the answer), take
-  有/沒有, and write the verdict plus a one-line rationale into `evals/judged-cases.md` as
-  品味層 語料, flagging any case whose verdict now contradicts its `expected-direction`. Runs
-  over a filtered set (a whole id range, or only cases that failed a given run). Dev-side,
-  `uv` fine, never part of skill runtime. The immediate consumer is the ported-case sweep
-  above — resuming it at ids 15/16, 18 by hand is the same transcription tax a second time.
-
 ## Behaviour changes, each on its own branch and its own re-run
+
+- [ ] **`模糊歸屬` may be scoped too wide — id 17's adjudication found it catching a defect
+  ordinary human writers also commit, not just an AI tell.** The author ruled a 「業界專家普遍認為」
+  -shaped sentence has no AI 味, in isolation, even after being shown the rule's own 抓／保留 text
+  (`references/zh-rules.md:218-222`) — reasoning 「規則本身抓得太寬」「是一般人類文章也可能犯的錯誤」；
+  full record in [`evals/judged-cases.md`](evals/judged-cases.md). Explicitly scoped to that one
+  case by the author, not a mandate to change the rule now — but the shape is worth naming:
+  `解說導引腔` already has a density carve-out (a single instance doesn't count, only stacking
+  does — `references/zh-rules.md:58-63`); `模糊歸屬` has no isolated-instance equivalent. Whether
+  it needs one — and whether other rules share the gap — is a behaviour change and needs its own
+  branch and re-run, not a fold-in to a key-fix round. `corpus.md`'s A-06 (`:789`) is the
+  distinguishing datapoint already on record: the same 模糊歸屬 pattern there co-occurs with
+  `對比句式` and a 「值得深思的現象」 framing sentence, and stays flagged — so any fix is about
+  isolation, not about weakening the rule wholesale.
 
 - [ ] **Make `detect` the default mode, and ask before rewriting.** Requested 2026-07-30. Today
   `rewrite` is the default and the skill edits text without being asked twice; the wanted

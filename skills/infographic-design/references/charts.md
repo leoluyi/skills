@@ -29,7 +29,7 @@ comparison is a second element, or it isn't evidence — it's a dataset.
 The single most powerful quantity-as-evidence element. Pattern:
 
 - Numeral at 4–8× body size, heaviest weight, accent color.
-- Unit/symbol (%, $, ×) at ~40–50% of numeral size, lighter weight — don't let "%" compete with "68".
+- Unit/symbol (%, $, ×) at ~40–50% of numeral size, lighter weight, so "68" stays the thing the eye lands on and "%" reads as its unit.
 - One-line context directly beneath in Level-2 style ("of teams shipped faster").
 - Optional micro-visual echo (tiny ring at 68%, or 68 of 100 waffle cells filled) reinforcing the value.
 - Round aggressively: 2.7× not 2.71×; "~1 in 3" often lands harder than "34%".
@@ -58,7 +58,7 @@ Title = the finding, not the topic. "Mobile overtook desktop in 2024" not "Traff
 
 ## SVG chart construction tips
 
-- Compute bar/point positions from data with explicit math in your head or a script — don't eyeball; misaligned scales are instantly visible.
+- Compute bar/point positions from data with explicit math in your head or a script — misaligned scales from an eyeballed layout are instantly visible.
 - Direct-label bars at the bar end (inside if the bar is long enough with contrast-checked text, outside otherwise).
 - Round bar corners subtly (2–4px) or not at all; heavy rounding distorts perceived length.
 - For lines: 2.5–3px stroke, `stroke-linecap="round"`, dots only on emphasized points, series label at the line's right end in the line's color.

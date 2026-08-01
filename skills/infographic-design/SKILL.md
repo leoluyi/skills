@@ -21,7 +21,7 @@ description: >-
   names a chart, plot, or dashboard instead. Quantities that serve as
   evidence inside an explanation (a funnel's drop-off, a cache hit-rate)
   stay in scope.
-version: 0.11.1
+version: 0.11.2
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:

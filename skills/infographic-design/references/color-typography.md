@@ -126,17 +126,17 @@ Applying the specific palettes:
 | L3 Body / label | 13–16px | 400–500 | Secondary text |
 | L3 Caption / source / kicker | 10–12px | 500, kickers in ALL-CAPS + letter-spacing 0.08em | Tertiary text |
 
-Rules: line-height ~1.1–1.2 for headlines, 1.4–1.5 for body; line length ≤ ~70 characters; never justify text; ALL-CAPS only for short kickers/labels, never sentences; don't letter-space lowercase body text.
+Rules: line-height ~1.1–1.2 for headlines, 1.4–1.5 for body; line length ≤ ~70 characters; set text ragged-right; reserve ALL-CAPS for short kickers and labels, and keep sentences in sentence case; letter-spacing belongs to ALL-CAPS runs, where it earns its keep.
 
 ## Icon style
 
-Consistency beats beauty: all icons same construction (all line at one stroke weight — 1.75–2px at 24px size — or all filled), same corner rounding, same optical size, drawn on a common grid. Color them with the theme color or text color, not a rainbow. Draw simple geometric line icons as SVG paths; avoid emoji in professional infographics (inconsistent rendering and style).
+Consistency beats beauty: all icons same construction (all line at one stroke weight — 1.75–2px at 24px size — or all filled), same corner rounding, same optical size, drawn on a common grid. Color them with the theme color or text color, so the icon set reads as one system. Draw simple geometric line icons as SVG paths — they render identically everywhere and inherit the icon system's stroke weight, which is what makes emoji the wrong tool for a professional infographic.
 
 ## Backgrounds and depth
 
-- Flat color or a very subtle (<5% lightness range) gradient; never busy patterns behind text.
+- Flat color or a very subtle (<5% lightness range) gradient — text sits on an even field, so pattern stays out from under it.
 - Cards: background surface 2–4% lighter/darker than canvas, 8–16px radius, either a hairline border (~8% opacity of text color) OR a soft shadow (`0 1px 3px rgba(0,0,0,.08)`) — not both.
-- Decorative shapes (blobs, dot grids) only in empty corners at low opacity, never behind data or text.
+- Decorative shapes (blobs, dot grids) live in empty corners at low opacity, where data and text are absent.
 
 **One surface = one meaning.** Surfaces are an encoding channel, not
 decoration, so fix the vocabulary before you build and hold it everywhere.

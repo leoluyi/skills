@@ -5,6 +5,28 @@ Repo-wide and `tools/` work. A single skill's own items live in `skills/<name>/b
 Signal: friction hit 2+ times. Closed items do not stay here — provenance lives in commit
 messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 
+## Next round — humanizer-zh 的量測儀器，一條線
+
+剩下的 open items 幾乎都掛在 humanizer-zh 的同一次 re-baseline 底下。它們不是可以任選順序的清單：
+每一項都動 `evals.json` 的 key，而動 key 就要求**兩個版本一起重跑基線**，aggregate gate 的 rounds
+也得從頭再跑一次。分開做等於重跑數次 aggregate。順序如下，一次做完再一起重跑：
+
+1. **`tools/annotate`** — 判讀輔助工具（下方）。先做，因為第 2 步靠它省下逐案手抄的成本。
+2. **ported-case sweep** — 從 ids 15/16、18 續走
+   ([`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md))。
+3. **`evals.json` 三個結構缺陷** — hit/protection 分區、detect 案帶 rewrite 措辭的 key、
+   單一 slug 綁多個要求。
+4. **`口語化萬能詞` 兩側覆蓋** — 名詞與短語 form 的 hit case 與 protection case。
+5. **rewrite mode 的口語時間表達 保真 case** — 目前沒有任何一案測它。
+6. **一次 re-baseline ＋ aggregate 重跑** — 前五項的結果一起進去，不分批。
+
+跑完這條線之後才輪到行為變更，每個各自 branch、各自重跑：`模糊歸屬` 的 isolated-instance 判斷、
+detect 預設、進階補完模式（順序固定，進階補完要等 detect 預設先落地）。細節都在
+[`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md)。
+
+`corpus.md` 飽和與英文側證據不獨立這兩件事不在上面，因為它們不是待辦——它們是讀任何一份
+`results-*.md` 的前提，已寫進 [`skills/humanizer-zh/evals/regression-protocol.md`](skills/humanizer-zh/evals/regression-protocol.md)。
+
 ## Measurement infrastructure
 
 `tools/run-eval` exercises `trigger-queries.json` (whether the router fires);
@@ -17,52 +39,20 @@ whether the corpus stays a regression guard (see the saturation item in
 [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md)); a saturated fixture
 does not earn a harness.
 
-- [ ] **`tools/run-eval` redacts its stderr tail in the wrong order.** `tools/run-eval:190-193`
-  pipes `tail -c 400 | sed` — it slices the window *before* redacting, so a key straddling the
-  cut loses its `sk-` prefix and the surviving suffix prints verbatim. Found while reviewing
-  `run-case`, which had the identical bug and now sanitizes first, then tails. Left unfixed
-  there deliberately: it is a different tool, and folding a silent one-line security fix into
-  an unrelated change is how such fixes escape review. Low severity — dev-side diagnostics
-  only — but it is a one-line reorder.
+**`tools/add-case` 排在 `annotate` 後面，先不列為待辦。** 它要做的事——用固定格式把一則已判讀的
+case 追加進去，免去手改 JSON——與 `annotate` 的寫入端重疊：`annotate` 本來就要把 有/沒有 的判讀
+結果寫進 `evals/judged-cases.md`。先蓋一個獨立工具，很可能蓋出一段之後要刪的重複程式。
 
-- [ ] **`tools/run-case` leaves the grader's A/B labels unresolved in the Markdown report.** The
-  non-green table gives resolved `new`/`base` verdict columns, but the grader-reason text beside
-  them still says "A does X, B does Y" — and the A/B mapping is per-chunk, keyed on
-  `sha256(run_id + chunk)`, so the reader cannot tell which arm a reason describes without
-  opening the `.json`. Anonymity is the point *during* grading; keeping it *after* just makes the
-  most useful column unreadable. Fix: substitute the resolved arm names into the reason string
-  when rendering the Markdown, leaving the raw A/B text in the `.json` for audit.
-
-- [ ] **`tools/run-case` is silent for its whole dispatch phase.** Between the prepare lines and
-  the final verdict it prints nothing — `dispatch.py` has no output at all — so a 20-minute run
-  is a black box, and the only way to read progress is to count `raw/*.out` against the expected
-  12 runner + 6 grader jobs. Fix: emit one line per job completion to **stderr**, not stdout
-  (stdout is the result surface; `--dry-run`'s output has to stay parseable), carrying a
-  `[n/total]` counter and the job tag. `print(..., flush=True)` is load-bearing — redirected to a
-  file, Python block-buffers, so an unflushed progress line is still invisible until exit. The
-  counter needs a lock or `as_completed` sequencing, since the pool runs `--jobs` wide.
-
-- [ ] **`tools/add-case` — append a judged case in the frozen format without hand-editing
-  JSON.** Lowest in value of the tools proposed so far, and the one most likely to be
-  unnecessary once `annotate` exists — that item now lives in
-  [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md), since the 有/沒有 question
-  it asks is that skill's judgment call. This one stays repo-level: `evals/judged-cases.md`
-  exists under `infographic-design` too, so the append format is not one skill's.
-
-- [ ] **Nobody but humanizer-zh has opted into `check-labels`.** The tool stopped being
-  humanizer-specific on 2026-07-30 — it now reads `skills/<name>/evals/label-check.json` for
-  where a skill's rule names live, skips any skill without that file, and CI
-  (`.github/workflows/eval-labels.yml`) runs `--all` over `skills/**`. So the mechanism exists
-  and the open question is narrower: which other skills actually want label hygiene gated.
-  `infographic-design` is the near candidate — it has `evals/judged-cases.md` but no rule
-  taxonomy to resolve labels against, so opting it in means deciding what its canonical names
-  even are. Don't opt a skill in just because it can be.
+順序因此固定：`annotate` 先落地，用一輪真實的 sweep 之後再看「追加 case」這件事還缺什麼。真的
+還缺，那時的需求會是具體的，而不是現在這個從對稱性推出來的猜測。這一項留在 repo 層而不是掛在
+humanizer-zh 底下：`evals/judged-cases.md` 在 `infographic-design` 也有一份，追加格式不屬於單一
+skill。
 
 ## Per-skill backlogs
 
-- [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) — 2.0.0's ship path, the instrument defects under it, and `tools/annotate`
-- [`skills/avoid-china-writing/backlog.md`](skills/avoid-china-writing/backlog.md) — one missing eval axis
-- [`skills/blog-writing-zh/backlog.md`](skills/blog-writing-zh/backlog.md) — source-derived voice profile
-- [`skills/infographic-design/backlog.md`](skills/infographic-design/backlog.md) — negation in `references/`
-- [`skills/knowledge-doc-writing/backlog.md`](skills/knowledge-doc-writing/backlog.md) — no open items
-- [`skills/plain-speak/backlog.md`](skills/plain-speak/backlog.md) — real transcripts needed for two untestable-by-prompt behaviours
+- [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) — **the next round**, in the
+  order above, plus `tools/annotate`
+- [`skills/blog-writing-zh/backlog.md`](skills/blog-writing-zh/backlog.md) — source-derived voice
+  profile (獨立於主線之外，需要自己的 eval bar)
+- [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) 以外，其餘 skill 皆無 open
+  items：`avoid-china-writing`、`infographic-design`、`knowledge-doc-writing`、`plain-speak`。
