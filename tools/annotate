@@ -778,8 +778,22 @@ def _select(args: argparse.Namespace, config: dict, by_id: dict[int, dict]) -> t
     return tuple(sorted(chosen))
 
 
+AGENT_PROTOCOL = (
+    "［agent 協定——這一段不要貼給作者］\n"
+    "分數與理由分成兩題問，不要合併：先收分數，收到之後才問理由。合併成一題時"
+    "作者是先看到理由欄才回頭選分數，那個順序會讓理由反過來決定分數。\n"
+    "第一題只問分數，選項照下方卡片印出的 1→2→3→4 逐字排列，不得增刪、改寫或重排——"
+    "四個錨點是刻意不對稱的量表，換了順序或措辭就換了一把尺。\n"
+    "第二題問理由，選項依第一題的分數分兩種：\n"
+    "  1 或 2——固定兩個選項：「無想法」與「自己輸入」。選前者理由留空。\n"
+    "  3 或 4——理由必填。讀完下方卡片的 span 後自己提 3-4 個候選理由當選項，"
+    "另附「自己輸入」。候選只是給作者挑的：作者沒挑中的候選一律不算數，"
+    "把你自己的讀法寫進 --record 等於偽造作者判讀。\n"
+    "兩題都收齊才呼叫 --record。你不讀 evals.json，也不替作者寫理由。"
+)
+
 CARD_INSTRUCTION = (
-    "以下逐字呈現給作者，不得增刪改寫、不得摘要、不得補充評語——"
+    "［以下逐字呈現給作者］不得增刪改寫、不得摘要、不得補充評語——"
     "盲判保護的是作者看到什麼，agent 只是轉貼管道。"
 )
 
@@ -789,9 +803,13 @@ def _card(args: argparse.Namespace, config: dict, by_id: dict[int, dict], entrie
 
     This and --record are the only non-interactive doors into the tool: an
     agent (Claude Code, Codex, any chat UI) can drive a judging session by
-    shelling out to --card, pasting the result unmodified, collecting the
-    author's own y/n and rationale through its own UI, and then shelling out
-    to --record. The tool stays the single source of truth for extraction,
+    shelling out to --card, pasting the card portion unmodified, collecting
+    the author's own score and rationale through its own UI as two separate
+    questions, and then shelling out to --record. The question protocol ships
+    with the card rather than living in a doc the agent may never read: a
+    combined score-and-rationale prompt, or a reordered scale, changes what
+    the ledger's numbers mean, and nothing downstream can detect that it
+    happened. The tool stays the single source of truth for extraction,
     the leak gates, class derivation, and the marker splice; the agent is a
     dumb pipe between two subprocess calls, never a party that reads
     evals.json or writes a rationale on the author's behalf.
@@ -809,7 +827,8 @@ def _card(args: argparse.Namespace, config: dict, by_id: dict[int, dict], entrie
             f"注意：id {card.case_id} 已在 ledger 裡有判讀；--record 若沒加 --redo 會被拒絕。",
             file=sys.stderr,
         )
-    print(CARD_INSTRUCTION)
+    print(AGENT_PROTOCOL)
+    print(f"\n{CARD_INSTRUCTION}")
     print(f"\nid {card.case_id} · {card.genre}\n")
     for index, span in enumerate(card.spans):
         if index:
