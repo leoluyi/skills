@@ -68,57 +68,57 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-14 個技能、6 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+14 個技能、6 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
-| Skill | 做什麼 |
-|---|---|
-| **去除 AI 味（中英雙語）**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
-| **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，又不誤傷真正的術語 |
-| **把技術術語翻成白話**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 |
-| **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
+| Skill | 叫用方式 | 做什麼 |
+|---|---|---|
+| **去除 AI 味（中英雙語）**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | `model-invoked` | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
+| **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | `model-invoked` | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，又不誤傷真正的術語 |
+| **把技術術語翻成白話**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | `model-invoked` | 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 |
+| **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | `model-invoked` | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
 
 ### 台灣商務公文
 
-| Skill | 做什麼 |
-|---|---|
-| **說明提綱**<br>[`briefing-outline`](skills/briefing-outline/SKILL.md) | 把厚重的來源文件收斂成一份高空俯瞰的說明提綱，讓主管一眼掌握全貌、需要時再往下鑽 |
-| **正式公文結構**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | 把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走 |
-| **技術 RFP 撰寫與審查**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | 站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語 |
+| Skill | 叫用方式 | 做什麼 |
+|---|---|---|
+| **說明提綱**<br>[`briefing-outline`](skills/briefing-outline/SKILL.md) | `model-invoked` | 把厚重的來源文件收斂成一份高空俯瞰的說明提綱，讓主管一眼掌握全貌、需要時再往下鑽 |
+| **正式公文結構**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | `model-invoked` | 把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走 |
+| **技術 RFP 撰寫與審查**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | `model-invoked` | 站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語 |
 
 ### 文件與設計
 
 跨語言的專業工具，能獨當一面，不需要中文也能用。
 
-| Skill | 做什麼 |
-|---|---|
-| **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
-| **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
+| Skill | 叫用方式 | 做什麼 |
+|---|---|---|
+| **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
+| **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
 
 ### 知識管理
 
-| Skill | 做什麼 |
-|---|---|
-| **結構化學習迴圈**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian |
-| **Obsidian 筆記庫**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | 在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構 |
-| **陪我想一想**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | 陪你想一個雙方都還沒有答案的問題：先展開選項，標出哪句是查到的、哪句是猜的，再拆掉承重假設，留下一份寫明「什麼會推翻它」的紀錄 |
+| Skill | 叫用方式 | 做什麼 |
+|---|---|---|
+| **結構化學習迴圈**<br>[`learn-loop`](skills/learn-loop/SKILL.md) | `user-invoked` | 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian |
+| **Obsidian 筆記庫**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | `model-invoked` | 在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構 |
+| **陪我想一想**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | `model-invoked` | 陪你想一個雙方都還沒有答案的問題：先展開選項，標出哪句是查到的、哪句是猜的，再拆掉承重假設，留下一份寫明「什麼會推翻它」的紀錄 |
 
 ### 資料救援
 
 跨語言工具，適用任何有 shell 存取權的 agent。
 
-| Skill | 做什麼 |
-|---|---|
-| **救回被刪除的 Claude 對話**<br>[`recover-deleted-claude-conversation`](skills/recover-deleted-claude-conversation/SKILL.md) `invoke-only` | 在 Chromium 快取被清掉之前，把刪除的 Claude Desktop／claude.ai 對話與產出檔案救回來 |
+| Skill | 叫用方式 | 做什麼 |
+|---|---|---|
+| **救回被刪除的 Claude 對話**<br>[`recover-deleted-claude-conversation`](skills/recover-deleted-claude-conversation/SKILL.md) | `user-invoked` | 在 Chromium 快取被清掉之前，把刪除的 Claude Desktop／claude.ai 對話與產出檔案救回來 |
 
 ### Agent 工作流
 
 跨語言工具，適用任何能無人值守執行計畫的 agent。
 
-| Skill | 做什麼 |
-|---|---|
-| **計畫轉 Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | 在 agent 自己跑起來之前，把粗略的計畫變成有邊界、完成條件機器可驗的 goal，別讓它對著模糊目標燒 token |
+| Skill | 叫用方式 | 做什麼 |
+|---|---|---|
+| **計畫轉 Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | `model-invoked` | 在 agent 自己跑起來之前，把粗略的計畫變成有邊界、完成條件機器可驗的 goal，別讓它對著模糊目標燒 token |
 <!-- CATALOG:END -->
 
 ---

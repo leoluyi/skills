@@ -73,57 +73,57 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-14 skills across 6 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+14 skills across 6 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
-| Skill | What it does |
-|---|---|
-| **Humanizer (English + zh-TW)**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose |
-| **Cross-Strait Chinese Localizer**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms |
-| **Plain Speak: Jargon into Plain Language**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back |
-| **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Humanizer (English + zh-TW)**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | `model-invoked` | Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose |
+| **Cross-Strait Chinese Localizer**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | `model-invoked` | Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms |
+| **Plain Speak: Jargon into Plain Language**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | `model-invoked` | Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back |
+| **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | `model-invoked` | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
 
 ### Taiwan Business Documents
 
-| Skill | What it does |
-|---|---|
-| **Briefing Outline**<br>[`briefing-outline`](skills/briefing-outline/SKILL.md) | Distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into |
-| **Formal Internal Doc Structure**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs |
-| **Technical RFP Writing & Review**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler |
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Briefing Outline**<br>[`briefing-outline`](skills/briefing-outline/SKILL.md) | `model-invoked` | Distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into |
+| **Formal Internal Doc Structure**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | `model-invoked` | Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs |
+| **Technical RFP Writing & Review**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | `model-invoked` | Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler |
 
 ### Docs & Design
 
 Language-agnostic professional tools that stand on their own — no Chinese required.
 
-| Skill | What it does |
-|---|---|
-| **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | Design-system-grade explanatory graphics — timelines, comparisons, process diagrams — as clean, self-contained SVG or a single HTML file. Language-agnostic; built to be saved and reshared |
-| **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | Engineering-grade knowledge docs on the Diátaxis model — tutorial, how-to, reference, explanation — writing only what the material supports and flagging the gaps honestly. A discipline that travels across domains |
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | Design-system-grade explanatory graphics — timelines, comparisons, process diagrams — as clean, self-contained SVG or a single HTML file. Language-agnostic; built to be saved and reshared |
+| **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | Engineering-grade knowledge docs on the Diátaxis model — tutorial, how-to, reference, explanation — writing only what the material supports and flagging the gaps honestly. A discipline that travels across domains |
 
 ### Knowledge Management
 
-| Skill | What it does |
-|---|---|
-| **Learn Loop**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault |
-| **Obsidian Vault Notes**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks |
-| **Discuss With Me**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | Think through a question neither of you can answer yet — widen the options, label what's found vs guessed, attack the load-bearing assumptions, and leave a record that says what would overturn it |
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Learn Loop**<br>[`learn-loop`](skills/learn-loop/SKILL.md) | `user-invoked` | Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault |
+| **Obsidian Vault Notes**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | `model-invoked` | Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks |
+| **Discuss With Me**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | `model-invoked` | Think through a question neither of you can answer yet — widen the options, label what's found vs guessed, attack the load-bearing assumptions, and leave a record that says what would overturn it |
 
 ### Data Recovery
 
 Language-agnostic; runs on any agent with shell access.
 
-| Skill | What it does |
-|---|---|
-| **Recover a Deleted Claude Conversation**<br>[`recover-deleted-claude-conversation`](skills/recover-deleted-claude-conversation/SKILL.md) `invoke-only` | Pull a deleted Claude Desktop/claude.ai conversation and its artifacts back out of the Chromium cache before it's evicted |
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Recover a Deleted Claude Conversation**<br>[`recover-deleted-claude-conversation`](skills/recover-deleted-claude-conversation/SKILL.md) | `user-invoked` | Pull a deleted Claude Desktop/claude.ai conversation and its artifacts back out of the Chromium cache before it's evicted |
 
 ### Agent Workflow
 
 Language-agnostic; runs on any agent that can execute a plan unattended.
 
-| Skill | What it does |
-|---|---|
-| **Plan → Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | Turn a rough plan into a bounded goal with machine-checkable done conditions, before an autonomous run burns tokens on a vague target |
+| Skill | Invocation | What it does |
+|---|---|---|
+| **Plan → Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | `model-invoked` | Turn a rough plan into a bounded goal with machine-checkable done conditions, before an autonomous run burns tokens on a vague target |
 <!-- CATALOG:END -->
 
 ---

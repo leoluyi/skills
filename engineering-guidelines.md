@@ -57,7 +57,7 @@ kebab-case, action-flavored, specific over generic: `oracle-exadata-cutover` not
 
 ## Invocation modes
 
-Every skill is **model-invoked** (agent or user can fire it — the default) or **user-invoked** (only the human typing its name, via `disable-model-invocation: true`). The catalog marks the latter `invoke-only`. Which to pick, and how it changes what the `description` is written for, is in [`.agents/invocation.md`](.agents/invocation.md). Caveat for this repo: `disable-model-invocation` is a Claude-Code field Codex reads as a no-op (see [Portability](#portability)), so user-invoked is not yet enforced on the Codex side — a skill that must never auto-fire can't rely on the flag alone across tools.
+Every skill is **model-invoked** (agent or user can fire it — the default) or **user-invoked** (only the human typing its name, via `disable-model-invocation: true`). The catalog labels every skill with one of these two, on the card pill and the README table. Which to pick, and how it changes what the `description` is written for, is in [`.agents/invocation.md`](.agents/invocation.md). Caveat for this repo: `disable-model-invocation` is a Claude-Code field Codex reads as a no-op (see [Portability](#portability)), so user-invoked is not yet enforced on the Codex side — a skill that must never auto-fire can't rely on the flag alone across tools.
 
 ## Write generative-first
 

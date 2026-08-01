@@ -36,6 +36,7 @@
   var groups = [];
   var searchInput, noResults;
   var activeCat = "all";
+  var activeInv = "all";
   var query = "";
 
   function normalize(s) { return (s || "").toLowerCase().trim(); }
@@ -50,8 +51,9 @@
       var groupCards = group.querySelectorAll(".card");
       groupCards.forEach(function (card) {
         var matchCat = activeCat === "all" || card.dataset.cat === activeCat;
+        var matchInv = activeInv === "all" || card.dataset.inv === activeInv;
         var matchQ = q === "" || (card.dataset.search || "").indexOf(q) !== -1;
-        var show = matchCat && matchQ;
+        var show = matchCat && matchInv && matchQ;
         card.hidden = !show;
         if (show) { groupVisible = true; anyVisible = true; }
       });
@@ -126,8 +128,11 @@
 
     document.querySelectorAll(".chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
-        activeCat = chip.dataset.cat || "all";
-        document.querySelectorAll(".chip").forEach(function (c) {
+        var group = chip.closest(".filters");
+        if (chip.dataset.cat !== undefined) activeCat = chip.dataset.cat || "all";
+        if (chip.dataset.inv !== undefined) activeInv = chip.dataset.inv || "all";
+        var scope = group ? group.querySelectorAll(".chip") : [chip];
+        scope.forEach(function (c) {
           c.setAttribute("aria-pressed", String(c === chip));
         });
         runFilter();
