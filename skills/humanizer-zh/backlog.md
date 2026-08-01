@@ -369,6 +369,46 @@ grader 用軟尺。(3) 綁包的 slug 全數拆開（15、16、19、30、32、34
   in detect mode (the text was untouched and the verdict stood), but the identical reflex in
   rewrite mode is a 保真 failure, and nothing currently tests for it.
 
+### 7. `破碎短句堆疊` 完全沒有 eval 覆蓋，而它剛長大
+
+- [ ] **`evals.json` 對 `破碎短句堆疊` 的 case 數是 0。** 對照：`語體漂移` 落地時配 13 案，
+  `過度簡寫` 有 2 案。這條規則不是這次才失去覆蓋——它從來沒有被量過，而 2026-08-01 的邊界重切
+  又把 `繫詞架構被抽掉` 與新寫的 `缺連接詞` 兩個形態搬了進來（理由記在 `design-notes.md`）。
+  等於一條沒有儀器的規則上面又疊了一個新的誤標面。
+
+  **要補的兩側，保護側才是重點。** 命中側三形態各一案（推論鏈缺前提、目的與條件子句抽成裸動詞
+  片語、句末繫詞架構懸空）是直白的部分。真正沒有被考驗到的是 `缺連接詞` 開出來的誤標面：中文
+  本來意合，關係從語序讀得出來就不該補。carve-out 已經寫了，但在有一案打在它身上之前，那句話
+  只是散文。保護案要挑正常台灣人會這樣寫、而規則表面上命中的句子——「資料量超過一百萬列，這個
+  查詢會退回全表掃描」這種。這與第 5 項是同型的問題，那一項的結論照樣適用：把一個 catch 從
+  A 擴到 B，買到一次命中，代價付在沒人量過的誤標上。
+
+  **順帶要確認的回歸**：目前掛 `過度簡寫` 的標記散在三處——`evals.json` 2 案、`corpus.md`
+  3 處、`zh-phrase-rules.md` 的定型列（`這些技能照台灣人實際的寫法寫` 已隨這次改判改掛）。
+  跑之前先逐處確認 key 跟著邊界搬，否則量到的會是 label 沒對齊，不是行為變差。
+
+### 8. `check-labels` 在 main 上連紅三個 commit
+
+- [ ] **閘紅了，而且不是因為有人寫錯 label。** `1ec104a` 起紅（此前一路綠），`661e402`、
+  `a4536c7` 續紅，8 個 FAIL，兩個各自獨立的成因，共通點是**兩個名字都是合法的，只是
+  `load_canonical()` 讀不到它們宣告的地方**：
+
+  - `改寫保真`（evals ids 60、61、63、64、65、66）——`1ec104a` 引進的跨規則期望類別，
+    形如 `改寫保真（標點與專名不在職權內）`。它不是任何一條規則，而 `label-check.json` 的
+    `sources` 只讀 `zh-rules.md` 的 `### ` header、`hidden-author.md` 的子訊號、`SKILL.md`
+    的保護清單編號。
+  - `四字評語`（corpus H-21、H-24）——`zh-phrase-rules.md` 的 section header，而那個檔
+    整個不在 `sources` 裡。
+
+  **修法有分歧點，所以這一項是決定不是補丁。** `改寫保真` 該進 `names` 常數（等於承認
+  期望類別與規則是兩種東西，各自宣告），還是該在 config 裡長出自己的一層？`zh-phrase-rules.md`
+  要不要整檔納為 source——納了會把「台灣用語偏好」「AI 慣用詞替換」這種非規則 header 一起
+  收進 canonical，而 `resolve()` 是精確比對、刻意不做寬鬆匹配，混進去的名字會讓別處的錯字
+  變成合法。
+
+  **為什麼不能就這樣放著**：`CLAUDE.md` 的硬規則寫著 a distrusted gate is worse than none。
+  一個連紅三個 commit 的閘正在變成那種東西——下一個真正的 label 錯誤會混在這 8 行裡沒人看見。
+
 ## `tools/annotate` 的第二個用途 — 人機判定盲測
 
 上面第 1 項落地的 `tools/annotate` 判的是 **AI 味**：這句讀起來像不像 AI 的手筆。第二個用途
