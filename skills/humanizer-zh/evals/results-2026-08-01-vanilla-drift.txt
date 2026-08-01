@@ -1,0 +1,23 @@
+```json-6a6722fdfec1
+{"rows": [
+{"case_id": 67, "expectation": "flags-register-drift", "class_read": "命中", "A": "fail", "B": "pass", "reason": "A never names 語體漂移 and only calls the subject of 「取得」unclear, while B flags it as a hard defect and points at 「取得」needing the deliverables as its object."},
+{"case_id": 67, "expectation": "fix-names-one-register", "class_read": "命中", "A": "fail", "B": "pass", "reason": "A offers two competing full-sentence rewrites while keeping 時程 as a co-equal label端; B picks upgrade-to-sentence and demotes the schedule to a time adverbial."},
+{"case_id": 67, "expectation": "no-formal-convention-false-positive", "class_read": "保護", "A": "fail", "B": "pass", "reason": "A cites 「訪談後」略顯口語、時間起點不夠精確, i.e. the omitted antecedent, as evidence; B lists 3 至 4 週 and Lab as protected."},
+{"case_id": 68, "expectation": "flags-register-drift", "class_read": "命中", "A": "fail", "B": "pass", "reason": "A outputs a bare rewrite with no diagnosis; B marks 語體漂移 as a hard defect with the clause-position fix."},
+{"case_id": 68, "expectation": "fix-picks-one-register", "class_read": "命中", "A": "pass", "B": "fail", "reason": "A's rewrite is one complete predicate-bearing clause; B only inserts 的/於 and leaves 確認 still reaching back across the comma, keeping the half-label half-sentence shape."},
+{"case_id": 68, "expectation": "facts-preserved-verbatim", "class_read": "保護", "A": "fail", "B": "pass", "reason": "A changes 「第一次會議」to 「首次會議」; B keeps 跨部門工作小組、外部顧問、協作機制、第一次會議、兩週 intact."},
+{"case_id": 68, "expectation": "no-parallel-promotion", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Neither output adds 時程 as a second parallel label term in the heading."},
+{"case_id": 68, "expectation": "全域:保真", "class_read": "保護", "A": "fail", "B": "pass", "reason": "A alters 第一次→首次 and expands the object list; B reproduces every original term."},
+{"case_id": 68, "expectation": "全域:不換湯", "class_read": "命中", "A": "pass", "B": "pass", "reason": "Neither swaps a removed empty phrase for another from the same family."},
+{"case_id": 68, "expectation": "全域:不代筆", "class_read": "保護", "A": "fail", "B": "pass", "reason": "A invents deliverables 「協作機制、工作分工及後續執行方式」not supplied by the source; B explicitly declines to add unstated detail."},
+{"case_id": 69, "expectation": "no-template-false-positive", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Neither marks 語體漂移 on the noun-phrase table cells."},
+{"case_id": 69, "expectation": "no-label-mirroring-flag", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Neither treats field-name/field-value mirroring as a flag on its own."},
+{"case_id": 69, "expectation": "does-not-rewrite-in-detect", "class_read": "保護", "A": "fail", "B": "pass", "reason": "A supplies substitute wordings in a 原文/建議 table and prescribes splitting the 分項負責人 column and restructuring sections; B gives only 改法方向 and states 原文保持不動."},
+{"case_id": 70, "expectation": "no-weak-signal-stacking", "class_read": "保護", "A": "fail", "B": "pass", "reason": "A stacks half-width punctuation, spacing inconsistency and English retention to conclude the text 尚未完全符合正式事務文體; B protects the English terms and never claims register drift."},
+{"case_id": 70, "expectation": "no-noun-phrase-item-false-positive", "class_read": "保護", "A": "fail", "B": "fail", "reason": "A flags both 外部廠商 (Sourcing) and 提供技術專業、業務系統專業; B flags 「技術專業、業務系統專業」as 列舉代替論述."},
+{"case_id": 70, "expectation": "preserves-list-form", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Neither converts the bullet items into prose or supplies missing predicates for them."},
+{"case_id": 71, "expectation": "no-notes-false-positive", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Both accept the casual note register and report no register-drift finding."},
+{"case_id": 71, "expectation": "no-typo-correction", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Neither corrects 「humanize」to the -zh form."},
+{"case_id": 71, "expectation": "no-run-on-splitting", "class_read": "保護", "A": "pass", "B": "pass", "reason": "Neither splits the comma-chained sentence or adds a subject."}
+]}
+```
