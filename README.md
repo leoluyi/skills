@@ -153,6 +153,10 @@ tools/sync-skills
 | `tools/sync-skills` | Per-skill symlinks into `~/.claude/skills/` (Claude Code, Cursor) **and** `~/.agents/skills/` (Codex, OpenHands). Offline / airgapped fallback. |
 | `tools/archive-skill <name>` | `git mv` a skill (and its evals) to `_archive/`. |
 | `tools/usage-report [days]` | Count skill triggers in `~/.claude/projects/` transcripts. Default 90 days. |
+| `tools/run-eval <name>` | Trigger-layer eval: does the description fire on `evals/trigger-queries.json`? |
+| `tools/run-case <name> --baseline REF[:DIR]` | Behaviour-layer eval: score `evals/evals.json` new-vs-baseline through blind runners and graders, and report ship/no-ship. Opt-in — needs `evals/run-case.json`. |
+| `tools/check-labels <name> \| --all` | Read-only eval hygiene gate: every rule label in `evals.json`/corpus resolves to a real rule name, every corpus 引文片段 is an exact substring. Opt-in — needs `evals/label-check.json`. |
+| `tools/annotate <name> [--ids 15,18-20]` | Blind adjudication: show a case's span with the expectation and rule name stripped, take an AI 指數 1-4 plus a rationale, and record it in `evals/annotations.json`. Renders the ledger into `evals/judged-cases.md` between `annotate:begin/end`; `--check` fails if that render is stale. |
 | `tools/build-docs` | Regenerate `docs/index.html`, `docs/skills.json`, and both READMEs' catalog tables from `skills/*/catalog.md`. |
 
 The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full authoring guide — anatomy, frontmatter gotchas, naming, portability, and test discipline — is in **[engineering-guidelines.md](engineering-guidelines.md)**. To contribute, start with **[CONTRIBUTING.md](CONTRIBUTING.md)**.

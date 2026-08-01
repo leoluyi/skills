@@ -51,7 +51,8 @@ skill。
 ## Per-skill backlogs
 
 - [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) — **the next round**, in the
-  order above, plus `tools/annotate`
+  order above, plus `tools/annotate` — shipped for adjudication, still open as the blind
+  人機判定 harness
 - [`skills/blog-writing-zh/backlog.md`](skills/blog-writing-zh/backlog.md) — source-derived voice
   profile (獨立於主線之外，需要自己的 eval bar)
 - [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) 以外，其餘 skill 皆無 open
