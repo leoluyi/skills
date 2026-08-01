@@ -104,6 +104,27 @@ HUMAN_END, AI_END = 1, 3  # 1 reads as human, ≥3 as AI, 2 takes no side
 SCALE_HELP = "\n".join(f"  [{score}] {label}" for score, label in sorted(SCALE.items()))
 KEYS_HELP = f"AI 指數？\n{SCALE_HELP}\n  [s] 跳過   [q] 離開"
 
+# Two passes over the same case, kept side by side rather than one overwriting
+# the other. The blind verdict is the measurement — it is what the sweep bought
+# and the only entry whose conditions can be stated exactly. The review verdict
+# is the decision that follows from showing the author the key. Collapsing them
+# into one row would leave a ledger that cannot answer "what did the author
+# think before they saw the answer", which is the question the whole blind
+# design exists to make answerable.
+BLIND, REVIEW = "blind", "review"
+PASS_RANK = {BLIND: 0, REVIEW: 1}
+
+# A review does not re-score, it assigns blame. A second 1-4 would record that
+# the author still disagrees without saying whether the key, the verdict, or the
+# case itself is the thing that has to change — and only the first of those
+# feeds the key-fix round.
+DISPOSITIONS = {
+    "key-wrong": "作者維持原判，key 該改",
+    "judgment-wrong": "作者改判，key 站得住",
+    "case-wrong": "兩邊各自都對，是這個 case 測錯東西",
+}
+DISPOSITION_HELP = "\n".join(f"  {name:<16}{gloss}" for name, gloss in DISPOSITIONS.items())
+
 
 class AnnotateError(RunCaseError):
     """Raised when this tool's own config or ledger is unusable."""
@@ -363,6 +384,47 @@ def key_classes(skill_dir: Path) -> dict[int, tuple[str | None, str]]:
     return out
 
 
+def build_review_card(
+    case: dict, card: Card, blind: dict, klass: str | None, basis: str
+) -> str:
+    """Lay the case open: everything the blind card withheld, plus the blind verdict.
+
+    The opposite of build_card by design. That one is a set of fail-closed
+    gates against leaking the expectation; this one exists to leak all of it,
+    because the review's question — is the key wrong, the verdict wrong, or the
+    case wrong — cannot be answered without seeing the key. Keeping it a
+    separate function rather than a flag on build_card means no future edit can
+    accidentally route a blind session through the unblinding path.
+    """
+    spans = "\n\n".join(f"  {span}" for span in card.spans)
+    expectations = case.get("expectations") or []
+    expected = case.get("expected_output", "")
+    rationale = blind.get("rationale") or "（作者未給理由——1 與 2 不強制）"
+    verdict = f"{blind['score']}/4（{SCALE[blind['score']]}）"
+    relation = {True: "與 key 相左", False: "與 key 一致", None: "不比對"}[
+        blind.get("contradicts_key")
+    ]
+    lines = [
+        f"id {case['id']} · {card.genre}",
+        "",
+        "【判讀的引文】",
+        spans,
+        "",
+        f"【作者盲判】{verdict}　{blind.get('date', '')}",
+        f"  理由：{rationale}",
+        f"  與答案卡的關係：{relation}",
+        "",
+        f"【key 類別】{klass or '判不出來'}（依據：{basis}）",
+        "",
+        "【答案卡怎麼說】",
+        f"  expected_output：{expected}",
+    ]
+    for item in expectations:
+        lines.append(f"  expectation：{item}")
+    lines += ["", "【完整 prompt（含規則名與體裁標註）】", f"  {case['prompt']}"]
+    return "\n".join(lines)
+
+
 def contradicts(score: int, klass: str | None) -> bool | None:
     """True when the score points the opposite way from the key's class.
 
@@ -407,6 +469,7 @@ def load_ledger(path: Path) -> list[dict]:
     entries = raw.get("annotations") if isinstance(raw, dict) else None
     if not isinstance(entries, list):
         raise AnnotateError(f"{path}: 'annotations' must be a list")
+    seen: set[tuple[int, str]] = set()
     for index, entry in enumerate(entries):
         if not isinstance(entry, dict) or not isinstance(entry.get("case_id"), int):
             raise AnnotateError(f"{path}: annotations[{index}] needs an integer case_id")
@@ -415,7 +478,36 @@ def load_ledger(path: Path) -> list[dict]:
             raise AnnotateError(
                 f"{path}: annotations[{index}].score must be one of {list(SCORES)}"
             )
+        # Absent means blind: the ledger predates the review pass, and rewriting
+        # 36 rows to say so would be a migration that buys nothing.
+        which = entry.get("pass", BLIND)
+        if which not in PASS_RANK:
+            raise AnnotateError(
+                f"{path}: annotations[{index}].pass must be {BLIND!r} or {REVIEW!r}"
+            )
+        disposition = entry.get("disposition")
+        if which == REVIEW and disposition not in DISPOSITIONS:
+            raise AnnotateError(
+                f"{path}: annotations[{index}] is a review and needs a disposition "
+                f"from {list(DISPOSITIONS)}"
+            )
+        if which == BLIND and disposition is not None:
+            raise AnnotateError(
+                f"{path}: annotations[{index}] is blind and must not carry a disposition"
+            )
+        key = (entry["case_id"], which)
+        if key in seen:
+            raise AnnotateError(f"{path}: two {which} entries for case {entry['case_id']}")
+        seen.add(key)
     return entries
+
+
+def entry_pass(entry: dict) -> str:
+    return entry.get("pass", BLIND)
+
+
+def by_pass(entries: list[dict], which: str) -> dict[int, dict]:
+    return {e["case_id"]: e for e in entries if entry_pass(e) == which}
 
 
 def save_ledger(path: Path, skill: str, entries: list[dict]) -> None:
@@ -427,7 +519,7 @@ def save_ledger(path: Path, skill: str, entries: list[dict]) -> None:
     """
     payload = {
         "skill_name": skill,
-        "annotations": sorted(entries, key=lambda e: e["case_id"]),
+        "annotations": sorted(entries, key=lambda e: (e["case_id"], PASS_RANK[entry_pass(e)])),
     }
     text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -520,6 +612,15 @@ def render_entry(entry: dict) -> str:
     # the verdicts that carry the least, and a reader who meets the rule in the
     # intro will not read a missing block as a truncated file.
     turned_on = f"**What the verdict turned on.** {entry['rationale']}\n\n" if entry["rationale"] else ""
+    if entry_pass(entry) == REVIEW:
+        disposition = entry["disposition"]
+        return (
+            f"#### id {entry['case_id']} 複審（{entry['date']}）\n\n"
+            f"**Verdict (author, unblinded — key, expectation and rule names all shown).** "
+            f"AI 指數 {score}/4（{SCALE[score]}）。\n\n"
+            f"{turned_on}"
+            f"**Disposition.** `{disposition}`——{DISPOSITIONS[disposition]}。\n"
+        )
     return (
         f"### id {entry['case_id']}（{entry['genre']}）\n\n"
         f"**Source material.** `evals.json` id {entry['case_id']}，"
@@ -559,9 +660,16 @@ def render_region(entries: list[dict]) -> str:
         "因此它們量的是答案卡的正確性，"
         "不是使用者價值。每則只呈現引文與文體，判讀當下作者未看到該案的 expectation、"
         "規則名或 bucket。指數 3 與 4 一定附理由；1 與 2 不強制，"
-        "因此沒有「What the verdict turned on」的條目是作者沒給，不是漏掉。\n"
+        "因此沒有「What the verdict turned on」的條目是作者沒給，不是漏掉。\n\n"
+        "與 key 相左的案子會有第二則「複審」條目，縮排在該案底下。複審是**解盲**的——"
+        "作者看過 key、expectation 與規則名之後才判——所以它量的不是 AI 味，"
+        "而是錯的一方是誰。盲判條目一律保留：複審不覆蓋它，兩者並存才看得出"
+        "作者在看到答案之前想的是什麼。\n"
     )
-    body = "\n".join(render_entry(entry) for entry in sorted(entries, key=lambda e: e["case_id"]))
+    body = "\n".join(
+        render_entry(entry)
+        for entry in sorted(entries, key=lambda e: (e["case_id"], PASS_RANK[entry_pass(e)]))
+    )
     return f"{intro}\n{body}"
 
 
@@ -689,7 +797,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--score", type=int, choices=SCORES, help="with --record: the AI 指數 1-4")
     parser.add_argument(
         "--rationale",
-        help="with --record: the author's one-line reason, verbatim (required for 3 and 4)",
+        help="with --record: the author's one-line reason, verbatim (required for 3 and 4); "
+        "with --review: always required",
+    )
+    parser.add_argument(
+        "--review-card", type=int, metavar="ID", help="print one case's unblinded review card and stop"
+    )
+    parser.add_argument(
+        "--review", type=int, metavar="ID", help="record one unblinded review verdict"
+    )
+    parser.add_argument(
+        "--disposition",
+        choices=tuple(DISPOSITIONS),
+        help="with --review: which side the review found at fault",
     )
     return parser
 
@@ -697,19 +817,28 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str]) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
-    modes = [
-        args.preview,
-        args.render,
-        args.check,
-        args.card is not None,
-        args.record is not None,
-    ]
+    single = {
+        "--card": args.card,
+        "--record": args.record,
+        "--review-card": args.review_card,
+        "--review": args.review,
+    }
+    modes = [args.preview, args.render, args.check] + [v is not None for v in single.values()]
     if sum(1 for mode in modes if mode) > 1:
-        parser.error("--preview / --render / --check / --card / --record are mutually exclusive")
+        parser.error(
+            "--preview / --render / --check / --card / --record / --review-card / --review "
+            "are mutually exclusive"
+        )
     if args.record is not None and args.score is None:
         parser.error("--record needs --score")
-    if (args.card is not None or args.record is not None) and (args.ids or args.failed_run):
-        parser.error("--card / --record take a single id; --ids and --failed-run do not apply")
+    if args.review is not None and args.disposition is None:
+        parser.error("--review needs --disposition")
+    if args.disposition is not None and args.review is None:
+        parser.error("--disposition only applies to --review")
+    if any(v is not None for v in single.values()) and (args.ids or args.failed_run):
+        parser.error(
+            f"{' / '.join(single)} take a single id; --ids and --failed-run do not apply"
+        )
 
     repo_root = Path(__file__).resolve().parent.parent
     skill_dir = repo_root / "skills" / args.skill
@@ -742,6 +871,12 @@ def main(argv: list[str]) -> int:
 
     if args.record is not None:
         return _record(args, config, by_id, skill_dir, ledger_path, rendered_path, entries)
+
+    if args.review_card is not None:
+        return _review_card(args, config, by_id, skill_dir, entries)
+
+    if args.review is not None:
+        return _review(args, config, by_id, skill_dir, ledger_path, rendered_path, entries)
 
     selected = _select(args, config, by_id)
     cards = [build_card(by_id[case_id], config) for case_id in selected]
@@ -821,7 +956,7 @@ def _card(args: argparse.Namespace, config: dict, by_id: dict[int, dict], entrie
     if card.blocked:
         print(f"needs-manual id {card.case_id}：{card.blocked}", file=sys.stderr)
         return 2
-    judged = {entry["case_id"] for entry in entries}
+    judged = set(by_pass(entries, BLIND))
     if card.case_id in judged and not args.redo:
         print(
             f"注意：id {card.case_id} 已在 ledger 裡有判讀；--record 若沒加 --redo 會被拒絕。",
@@ -870,7 +1005,7 @@ def _record(
             "1 與 2 才可留空"
         )
 
-    judged = {entry["case_id"]: entry for entry in entries}
+    judged = by_pass(entries, BLIND)
     if card.case_id in judged and not args.redo:
         raise AnnotateError(
             f"case {card.case_id} already has a verdict in the ledger; pass --redo to overwrite it"
@@ -890,9 +1025,15 @@ def _record(
         "key_class": klass,
         "key_class_basis": basis,
         "contradicts_key": contradicts(args.score, klass),
+        "pass": BLIND,
         "superseded_by": None,
     }
-    entries = [e for e in entries if e["case_id"] != card.case_id] + [entry]
+    # Replaces the blind entry only. A --redo here re-runs the blind pass; any
+    # review already recorded against this case survives, and its own
+    # superseded_by pointer keeps saying which verdict it answered.
+    entries = [
+        e for e in entries if not (e["case_id"] == card.case_id and entry_pass(e) == BLIND)
+    ] + [entry]
     save_ledger(ledger_path, args.skill, entries)
 
     existing = rendered_path.read_text(encoding="utf-8") if rendered_path.exists() else ""
@@ -905,6 +1046,124 @@ def _record(
     print(f"recorded id {card.case_id}: {args.score}/4（{SCALE[args.score]}）")
     if entry["contradicts_key"] is True:
         print(f"與 key 相左：id {card.case_id} 屬 {klass} 類")
+    return 0
+
+
+REVIEW_INSTRUCTION = (
+    "［解盲複審卡——盲判已落帳，這張整份都可以給作者看］\n"
+    "盲判時作者只看到引文與文體。下面把當時藏起來的全部攤開：key 類別、"
+    "答案卡的 expectation、完整 prompt（含規則名），以及作者自己那筆盲判。\n"
+    "複審問的不是「這句幾分」，是**錯的一方是誰**：\n"
+    f"{DISPOSITION_HELP}\n"
+    "分數可以改也可以維持——改不改由 disposition 說明，不是由分數說明。\n"
+    "複審不覆蓋盲判：帳本兩筆並存。"
+)
+
+
+def _review_card(
+    args: argparse.Namespace,
+    config: dict,
+    by_id: dict[int, dict],
+    skill_dir: Path,
+    entries: list[dict],
+) -> int:
+    """Print the unblinded review card for one case, then stop."""
+    case = by_id.get(args.review_card)
+    if case is None:
+        raise AnnotateError(f"no such case id in the fixture: {args.review_card}")
+    blind = by_pass(entries, BLIND).get(args.review_card)
+    if blind is None:
+        raise AnnotateError(
+            f"case {args.review_card} has no blind verdict yet; review is the second pass, "
+            "not the first"
+        )
+    card = build_card(case, config)
+    if card.blocked:
+        raise AnnotateError(f"case {card.case_id} is needs-manual: {card.blocked}")
+    classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
+    klass, basis = classes.get(card.case_id, (None, "unavailable"))
+    print(REVIEW_INSTRUCTION)
+    print()
+    print(build_review_card(case, card, blind, klass, basis))
+    return 0
+
+
+def _review(
+    args: argparse.Namespace,
+    config: dict,
+    by_id: dict[int, dict],
+    skill_dir: Path,
+    ledger_path: Path,
+    rendered_path: Path,
+    entries: list[dict],
+) -> int:
+    """Record one unblinded review verdict beside its blind verdict."""
+    case = by_id.get(args.review)
+    if case is None:
+        raise AnnotateError(f"no such case id in the fixture: {args.review}")
+    blind = by_pass(entries, BLIND).get(args.review)
+    if blind is None:
+        raise AnnotateError(
+            f"case {args.review} has no blind verdict to review; run --record first"
+        )
+    if args.disposition not in DISPOSITIONS:
+        raise AnnotateError(
+            f"--disposition must be one of {list(DISPOSITIONS)}"
+        )
+    card = build_card(case, config)
+    if card.blocked:
+        raise AnnotateError(f"case {card.case_id} is needs-manual: {card.blocked}")
+
+    # Defaults to the blind score: a review that only assigns blame is the
+    # common case, and forcing the author to retype an unchanged number invites
+    # a typo that would read as a changed mind.
+    score = args.score if args.score is not None else blind["score"]
+    rationale = (args.rationale or "").strip()
+    if not rationale:
+        raise AnnotateError(
+            "複審一律需要 --rationale：解盲之後的判斷是要拿去改 key 的依據，"
+            "盲判那條「1 與 2 可留空」的規則不適用"
+        )
+    if args.review in by_pass(entries, REVIEW) and not args.redo:
+        raise AnnotateError(
+            f"case {args.review} already has a review; pass --redo to overwrite it"
+        )
+
+    classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
+    klass, basis = classes.get(card.case_id, (None, "unavailable"))
+    entry = {
+        "case_id": card.case_id,
+        "score": score,
+        "rationale": rationale,
+        "date": date.today().isoformat(),
+        "genre": card.genre,
+        "spans": list(card.spans),
+        "span_sha256": span_digest(card.spans),
+        "key_class": klass,
+        "key_class_basis": basis,
+        "contradicts_key": contradicts(score, klass),
+        "pass": REVIEW,
+        "disposition": args.disposition,
+        "superseded_by": None,
+    }
+    kept = [
+        e for e in entries if not (e["case_id"] == card.case_id and entry_pass(e) == REVIEW)
+    ]
+    for existing in kept:
+        if existing["case_id"] == card.case_id and entry_pass(existing) == BLIND:
+            existing["superseded_by"] = REVIEW
+    entries = kept + [entry]
+    save_ledger(ledger_path, args.skill, entries)
+
+    text = rendered_path.read_text(encoding="utf-8") if rendered_path.exists() else ""
+    region = render_region(mark_stale(entries, by_id, config))
+    updated = splice(text, region, config["render_marker"])
+    if updated != text:
+        rendered_path.write_text(updated, encoding="utf-8")
+        print(f"wrote {rendered_path}")
+
+    moved = "" if score == blind["score"] else f"（盲判 {blind['score']}/4 → 複審 {score}/4）"
+    print(f"reviewed id {card.case_id}: {args.disposition}{moved}")
     return 0
 
 
@@ -961,7 +1220,7 @@ def _session(
         )
 
     classes = key_classes(skill_dir) if config["verdict_class_from"] else {}
-    judged = {entry["case_id"]: entry for entry in entries}
+    judged = by_pass(entries, BLIND)
     blocked = [card for card in cards if card.blocked]
     queue = [
         card
