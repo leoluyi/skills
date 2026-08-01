@@ -1,0 +1,59 @@
+{
+  "skill_name": "plan-to-goal",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我在 plan mode 想好一個計畫要把 auth 模組從 session 改成 JWT，但這個 plan 還很粗。幫我把它變成一個可以自動跑的 goal。",
+      "expected_output": "Phase 1 review with the four sections (done-state, machine-verifiable conditions, holes-as-questions, high-risk steps), then a stop at the gate. No goal spec is emitted in this turn.",
+      "expectations": [
+        "four-sections: Output contains all four Phase 1 sections in order — what done looks like, verifiable completion conditions, holes, high-risk steps.",
+        "conditions-are-commands: Every completion condition names a command and its expected result (test suite, typecheck, search returning nothing); none is an adjective like 'auth is clean'.",
+        "gate-holds: Does NOT emit the Part B goal spec in the same turn; ends by asking the user to rule on the open holes and confirm the picture.",
+        "no-execution: Does not edit files or start implementing the migration.",
+        "output-language: Reply is in Traditional Chinese, including section headings and option labels, since the request is in Chinese."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "這是我的重構計畫（已附）。保留舊的 PaymentGateway 介面、別動 legacy/ 底下。我已經確認完成條件是測試過、typecheck 過、沒有殘留舊 import。直接幫我轉成 goal。",
+      "expected_output": "Recognizes the gate is effectively satisfied on the way in, keeps the confirmation light, then emits Part A (decision record) and Part B (pasteable goal spec) carrying the do-not constraints and a stop limit.",
+      "expectations": [
+        "light-confirmation: Echoes the resolved picture back briefly instead of staging a fresh round of questions the user already answered.",
+        "both-parts: Emits Part A (decision record) and Part B (goal spec) — not the spec alone.",
+        "constraints-carried: The 'Do not' line carries both stated constraints — keep the PaymentGateway interface, don't modify legacy/.",
+        "stop-limit: Part B includes an explicit stop-after-N-turns limit.",
+        "conditions-only-confirmed: Completion conditions are exactly the three the user confirmed; no extra condition is invented."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "幫我把這個一行 typo 修好，check 一下就好。",
+      "expected_output": "Boundary case — the task is too small for a goal spec. Fixes the typo directly (or asks which file) rather than wrapping it in a Phase 1 review.",
+      "expectations": [
+        "no-trigger: Does NOT produce the Phase 1 four-section review or a goal spec for a one-line fix.",
+        "proportionate-response: Handles the request directly at the size it was asked, without ceremony about scope or gates."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "計畫是把 log 格式從自訂字串換成 structured JSON，全 repo 大概 30 個檔案。我要它自己跑完。順便你覺得該加什麼就加。",
+      "expected_output": "Runs Phase 1, and at the gate keeps the goal scoped to the log-format change — extra work the model itself proposed is listed separately as follow-ups, not folded into the goal.",
+      "expectations": [
+        "scope-discipline: The goal covers only the log-format migration; any additional improvement the model suggested is listed separately as an optional follow-up, not inside the goal's objective or conditions.",
+        "scope-stated: Explicitly says the goal is bounded to the original plan's scope.",
+        "gate-holds: Stops for confirmation before emitting the goal spec."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Here's my plan to migrate the cache layer from Redis to an in-process LRU. Turn it into a goal I can run unattended overnight in headless mode.",
+      "expected_output": "Phase 1 then the gate; on approval the goal spec is emitted, plus a note that unattended execution needs the agent's non-interactive mode with tool permissions pre-granted, and a one-line cost heads-up.",
+      "expectations": [
+        "unattended-note: Mentions that a truly unattended run needs non-interactive mode with tool permissions pre-granted, or it stalls on a permission prompt — framed as the user's call.",
+        "cost-note: Gives a one-line heads-up that an autonomous run costs an order of magnitude more than a normal turn.",
+        "tool-agnostic: Does not present one vendor's slash command as the only way to run the goal; the spec itself is usable as a prompt.",
+        "output-language: Reply is in English, matching the request."
+      ]
+    }
+  ]
+}
