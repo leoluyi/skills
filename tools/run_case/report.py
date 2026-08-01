@@ -4,7 +4,13 @@ and render the markdown report.
 
 from __future__ import annotations
 
+import re
+
 from run_case.errors import CLASSES, HIT, PROTECTION, Chunk, Row
+
+# A standalone A or B in a grader's reason. CJK counts as \w, so 「段落B」 and
+# 「A-08」 never match — only the labels the grader used for the two outputs.
+ARM_TOKEN_RE = re.compile(r"(?<![\w-])[AB](?![\w-])")
 
 
 def denominators(rows: tuple[Row, ...], cases: tuple[dict, ...], config: dict) -> dict:
@@ -141,7 +147,7 @@ def report_markdown(ctx: dict) -> str:
         *class_counts(results), "",
         "## Non-green rows", "",
     ]
-    lines += _rows_block(non_green)
+    lines += _rows_block(non_green, ctx.get("mapping_label_of_new_arm", {}))
     lines += ["", "## class_read disagreements", ""]
     lines += _disagreement_block(disagreed)
     gate = ctx["verdict"]
@@ -162,12 +168,35 @@ def report_markdown(ctx: dict) -> str:
     return "\n".join(lines)
 
 
-def _rows_block(rows: list[dict]) -> list[str]:
+def arm_legend(reason: str, mapping: dict, chunk) -> str:
+    """Resolve the grader's A/B labels for a reason that uses them.
+
+    The A/B mapping is per-chunk and keyed on ``sha256(run_id + chunk)``, so a
+    reason saying "A does X, B does Y" is unreadable in the Markdown without it.
+    Anonymity is the point *during* grading; keeping it after just makes the
+    most useful column undecodable.
+
+    Appended rather than substituted into the sentence: graders also write
+    「paragraph B」 and other non-arm A/B referents, and rewriting those would
+    silently corrupt the grader's own words. The raw text stays verbatim.
+    """
+    if not ARM_TOKEN_RE.search(reason):
+        return ""
+    # A reloaded .json has string keys; an in-run mapping has int keys.
+    new_label = mapping.get(chunk, mapping.get(str(chunk), ""))
+    if new_label not in ("A", "B"):
+        return ""
+    base_label = "B" if new_label == "A" else "A"
+    return f" _({new_label}=new, {base_label}=base)_"
+
+
+def _rows_block(rows: list[dict], mapping: dict) -> list[str]:
     if not rows:
         return ["None."]
     out = ["| case | expectation | class | new | base | grader reason |", "|---|---|---|---|---|---|"]
     for row in rows:
         reason = row["reason"].replace("|", "｜").replace("\n", " ")
+        reason += arm_legend(reason, mapping, row.get("chunk"))
         out.append(
             f"| {row['case_id']} | {row['expectation']} | {row['class']} | "
             f"{row['new']} | {row['base']} | {reason} |"

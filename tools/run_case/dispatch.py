@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 from run_case.errors import DispatchError, Row
@@ -225,6 +226,18 @@ def grade_chunk(item: dict) -> tuple[dict, ...]:
     )
 
 
+def progress(done: int, total: int, tag: str, outcome: str) -> None:
+    """One line per finished job, on stderr.
+
+    stdout is the result surface — ``--dry-run``'s output has to stay
+    parseable — so progress can only go to stderr. ``flush`` is load-bearing:
+    redirected to a file, Python block-buffers, and an unflushed progress line
+    stays invisible until the process exits, which is exactly the 20-minute
+    black box this exists to remove.
+    """
+    print(f"[{done}/{total}] {tag} {outcome}", file=sys.stderr, flush=True)
+
+
 def run_pipeline(runner_plan: list[dict], grader_item, jobs: int
                  ) -> tuple[dict[tuple[int, str], tuple[str, Path]], dict[int, tuple[dict, ...]]]:
     """Run every runner and grader in one pool, grading each chunk the moment
@@ -246,6 +259,10 @@ def run_pipeline(runner_plan: list[dict], grader_item, jobs: int
     # A chunk whose sibling arm failed must never be graded: half a pair would
     # be scored against the full key and every row in it would read as a miss.
     dead_chunks: set[int] = set()
+    # One grader per chunk, but only for chunks whose pair both land — so this
+    # is the ceiling, not a promise. A run that loses runners finishes below it.
+    total = len(runner_plan) + len({item["chunk"] for item in runner_plan})
+    done_count = 0
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as pool:
         pending = {
@@ -262,18 +279,26 @@ def run_pipeline(runner_plan: list[dict], grader_item, jobs: int
             for future in done:
                 item = pending.pop(future)
                 kind = item.get("kind", "runner")
+                # Counted here, in the single thread that drains the pool — no
+                # lock needed, and every job reports exactly once whether it
+                # succeeded or died.
+                done_count += 1
+                tag = item.get("tag", "unknown job")
                 try:
                     result = future.result()
                 except DispatchError as exc:
                     (grader_errors if kind == "grader" else runner_errors).append(str(exc))
                     dead_chunks.add(item["chunk"])
+                    progress(done_count, total, tag, "FAILED")
                     continue
                 except Exception as exc:
                     (grader_errors if kind == "grader" else runner_errors).append(
                         worker_failure(item, exc)
                     )
                     dead_chunks.add(item["chunk"])
+                    progress(done_count, total, tag, "FAILED")
                     continue
+                progress(done_count, total, tag, "ok")
                 if kind == "grader":
                     graded[item["chunk"]] = result
                     continue

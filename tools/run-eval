@@ -187,10 +187,13 @@ invoke_router() {
           # model, sandbox mode) runs 150-200+ bytes before any real error,
           # so a leading snippet reliably shows the banner and never the
           # failure. Verified 2026-07-30 against an invalid-model error.
+          # Redact before slicing: a tail cut through the middle of a key would
+          # strip the prefix the redaction matches on and print the remainder
+          # verbatim.
           printf '  stderr: %s\n' \
             "$(LC_ALL=C tr -d '\000-\010\013\014\016-\037' <"$err_file" \
-               | tail -c 400 \
-               | sed -E 's/sk-[A-Za-z0-9_-]+/<redacted>/g; s/ey[A-Za-z0-9_-]{20,}/<redacted>/g')"
+               | sed -E 's/sk-[A-Za-z0-9_-]+/<redacted>/g; s/ey[A-Za-z0-9_-]{20,}/<redacted>/g' \
+               | tail -c 400)"
           echo "  check: is 'codex' authenticated, and is model 'gpt-5.6-luna' available to it?"
         } >&2
       fi
