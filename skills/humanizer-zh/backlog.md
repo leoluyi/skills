@@ -24,11 +24,12 @@ a later aggregate.
 
 ## 下一輪，照這個順序做
 
-The instrument is not a clean bar either, and everything in this section changes the key —
+The instrument is not a clean bar either, and everything in this section ends in a changed key —
 which forces a re-baseline of **both** versions and a from-scratch re-run of the aggregate
-gate's rounds. That cost is paid once per round, not once per item, so these four land
+gate's rounds. That cost is paid once per round, not once per item, so these land
 together and re-baseline once at the end. Within the round, do them one at a time rather
-than interleaving; **step 1 exists to make step 2 affordable.**
+than interleaving; **step 1 exists to make step 2 affordable, and step 3 must not start
+until step 2 has closed.**
 
 ### 1. `tools/annotate` — 判讀輔助工具
 
@@ -106,8 +107,11 @@ than interleaving; **step 1 exists to make step 2 affordable.**
   24、25、26、27、29、30、31、32；剩 ids 33-37、39-54。判讀走 `tools/annotate` 的
   `--card` / `--record`，帳本在 [`evals/annotations.json`](evals/annotations.json)，
   渲染結果在 `judged-cases.md` 的 `annotate:begin/end` 區段。**與 key 相左 3 例：ids 23、27、
-  31**，三案都是作者判 1 偏人而 key 屬命中類。要不要改 key 是第 3 項與第 4 項的決定，
-  這一步只記錄，`evals.json` 未動。
+  31**，三案都是作者判 1 偏人而 key 屬命中類。這一步只記錄，`evals.json` 未動——相左的案子
+  在第 3 項複審，不在這裡處置。
+
+  **這一項要跑到底才交棒。** 剩下的 21 案必須全部盲判完成，第 3 項才能開；作者在 sweep 途中
+  看過任何一份 key，之後的盲判就不再是盲判。
 
   這輪判讀期間修掉的一個真 bug：span 抽取用 `strip("「」")` 剝界定符，會連帶吃掉以巢狀引號
   結尾的內層 `」`（id 31「…愛因斯坦也說過：「複利是…第九大。」」少一個收尾），等於拿一段
@@ -120,7 +124,42 @@ than interleaving; **step 1 exists to make step 2 affordable.**
   [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither side
   blocks the other.
 
-### 3. `evals.json` 三個結構缺陷
+### 3. 衝突複審 — 相左的案子連 key 一起攤開，再判一次
+
+- [ ] **`contradicts_key: true` 的案子要有第二輪非盲判讀，判的是錯的一方是誰。** 盲判說「這句
+  沒有 AI 味」而 key 說它屬命中類，這個分歧本身不指向任何一邊——可能 key 抓太寬，也可能作者那
+  一眼看漏了。目前 3 例（ids 23、27、31），sweep 跑完會更多。先例已經有：id 17 就是盲判一次、
+  看過 `模糊歸屬` 規則文字後再判一次，兩次同向才退出計分。
+
+  **時序是硬約束，不是偏好。** 第 2 項整輪 sweep 關閉之前不得開始。作者一旦在途中看過幾份
+  key，剩下的盲判就在對答案卡做 pattern-match，而盲判正是這支儀器唯一的產出。這與下方
+  `tools/annotate` 第二個用途裡 (I) 「引出器與判讀輪次互斥」是同一條規則的另一個實例。
+
+  **複審集合只收 `contradicts_key: true`。** score 2 不確定回傳 `null` 而非 `false` 是刻意的：
+  不選邊不是同意，也同樣不是不同意，把它拉進複審等於逼作者在沒有訊號的地方選邊。ids 1、2、6、
+  7、8、9 那六案的 `null` 是類別判不出來（計分列橫跨兩類又無 `bucket`），那是 `evals.json` 的
+  結構問題，屬第 4 項，不屬複審。
+
+  **複審卡把盲判卡藏的東西全部攤開**：key class、expectation、規則名，外加作者自己那筆盲判的
+  分數與理由。這是另一個 card builder，不是 `build_card` 加一個旗標——兩張卡要呈現的東西是互補
+  的，共用一條路徑遲早會有人把 expectation 漏進盲判卡。
+
+  **產出是三選一的處置，不是重打分**，記進帳本的 `disposition` 欄位：
+
+  - `key-wrong` — 作者維持原判，key 該改。**這一類是第 4 項的輸入**，也是複審存在的理由。
+  - `judgment-wrong` — 作者改判，key 站得住，盲判筆退場。
+  - `case-wrong` — 兩邊各自都對，是這個 case 測錯東西，重寫或退出計分（id 17 的處置）。
+
+  純粹重打一次 1-4 分接不上這件事：「作者維持原判」與「案子該退場」會記成同一筆。
+
+  **實作要點**（`tools/annotate`）：帳本目前每個 `case_id` 只留一筆，`_record` 是
+  `[e for e in entries if e["case_id"] != card.case_id] + [entry]`，走 `--redo` 複審會把盲判筆
+  直接刪掉——而盲判是資料點、複審是決定，兩者都要留。改成同一 case 多筆，複審筆帶
+  `pass: "review"`，盲判筆填 `superseded_by`；那個欄位已經在 schema 裡，但 `tools/annotate:874`
+  與 `:987` 只寫 `None`，全檔沒有任何地方讀它，等於預留了洞沒接管線。連帶要動 `load_ledger`
+  的唯一性假設、`render_entry`、`mark_stale`（多筆之後 stale 要逐筆對自己的 `span_sha256`）。
+
+### 4. `evals.json` 三個結構缺陷
 
 - [ ] **Three structural defects in `evals.json`.** Found by the 2026-07-30 54-case run; the
   instrument was left frozen that round so the skill fix stayed comparable to the baseline.
@@ -138,7 +177,7 @@ than interleaving; **step 1 exists to make step 2 affordable.**
   not merely bundled; the fix rewrote the direction rather than decomposing it. The remaining
   unadjudicated ported cases may hold more of either shape.
 
-### 4. `口語化萬能詞` 名詞與短語 form 的兩側覆蓋
+### 5. `口語化萬能詞` 名詞與短語 form 的兩側覆蓋
 
 - [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
   widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
@@ -153,7 +192,7 @@ than interleaving; **step 1 exists to make step 2 affordable.**
   Until both exist, treat the widening as unverified — it is the kind of change that buys one
   hit and pays for it in false positives nobody measured.
 
-### 5. rewrite mode 的口語時間表達 保真 case
+### 6. rewrite mode 的口語時間表達 保真 case
 
 - [ ] **A 保真 case for colloquial time expressions in rewrite mode.** In the 2026-07-30 run,
   id 40's runner normalised 「3/31 晚上 11:59」 to 「3/31 23:59」 inside its own report. Harmless

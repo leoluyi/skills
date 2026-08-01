@@ -11,14 +11,18 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 每一項都動 `evals.json` 的 key，而動 key 就要求**兩個版本一起重跑基線**，aggregate gate 的 rounds
 也得從頭再跑一次。分開做等於重跑數次 aggregate。順序如下，一次做完再一起重跑：
 
-1. **`tools/annotate`** — 判讀輔助工具（下方）。先做，因為第 2 步靠它省下逐案手抄的成本。
-2. **ported-case sweep** — 從 ids 15/16、18 續走
+1. **`tools/annotate`** — 判讀輔助工具（下方）。落地 2026-08-01；第 2 步靠它省下逐案手抄的成本。
+2. **ported-case sweep** — 從 id 33 續走
    ([`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md))。
-3. **`evals.json` 三個結構缺陷** — hit/protection 分區、detect 案帶 rewrite 措辭的 key、
-   單一 slug 綁多個要求。
-4. **`口語化萬能詞` 兩側覆蓋** — 名詞與短語 form 的 hit case 與 protection case。
-5. **rewrite mode 的口語時間表達 保真 case** — 目前沒有任何一案測它。
-6. **一次 re-baseline ＋ aggregate 重跑** — 前五項的結果一起進去，不分批。
+3. **衝突複審** — 把 `contradicts_key: true` 的案子連 key 一起攤開，請作者再判一次，判的是
+   錯的一方是 key、是判讀、還是這個 case 根本測錯東西。**必須等整輪 sweep 關閉才開**：邊判邊
+   複審會讓作者看熟答案卡的形狀，剩下的盲判就退化成 pattern-match——與 `tools/annotate` 第二個
+   用途裡「引出器與判讀輪次互斥」是同一個失效模式。要動 `tools/annotate`（帳本多筆＋複審卡）。
+4. **`evals.json` 三個結構缺陷** — hit/protection 分區、detect 案帶 rewrite 措辭的 key、
+   單一 slug 綁多個要求。第 3 步判為 key 錯的案子在這裡收斂。
+5. **`口語化萬能詞` 兩側覆蓋** — 名詞與短語 form 的 hit case 與 protection case。
+6. **rewrite mode 的口語時間表達 保真 case** — 目前沒有任何一案測它。
+7. **一次 re-baseline ＋ aggregate 重跑** — 前六項的結果一起進去，不分批。
 
 跑完這條線之後才輪到行為變更，每個各自 branch、各自重跑：`模糊歸屬` 的 isolated-instance 判斷、
 detect 預設、進階補完模式（順序固定，進階補完要等 detect 預設先落地）。細節都在
