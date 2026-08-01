@@ -77,15 +77,15 @@ tools/sync-skills
 | **去除 AI 味（中英雙語）**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | 揪出讓中英文讀起來像機器寫的破綻，改回像人講話的樣子 |
 | **台灣正體中文在地化**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | 把混進來的陸用語、簡體字和互聯網黑話，改回台灣讀者習慣的正體中文，又不誤傷真正的術語 |
 | **把技術術語翻成白話**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | 把術語、程式碼、工程長文翻成非技術主管聽得懂、還能複述的一句話 |
-| **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
+| **繁中部落格寫作**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) `invoke-only` | 把筆記、演講或一個題目，寫成有立場、有親身經歷、讀起來像真人的繁中部落格文 |
 
 ### 台灣商務公文
 
 | Skill | 做什麼 |
 |---|---|
 | **說明提綱**<br>[`briefing-outline`](skills/briefing-outline/SKILL.md) | 把厚重的來源文件收斂成一份高空俯瞰的說明提綱，讓主管一眼掌握全貌、需要時再往下鑽 |
-| **正式公文結構**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | 把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走 |
-| **技術 RFP 撰寫與審查**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | 站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語 |
+| **正式公文結構**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) `invoke-only` | 把粗略需求變成可直接送簽的簽呈、會議紀錄或評估報告，結構跟著讀者的決策需求走 |
+| **技術 RFP 撰寫與審查**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) `invoke-only` | 站在招標方立場撰寫與審查技術 RFP，砍掉重複章節、附錄灌水與 AI 填充語 |
 
 ### 文件與設計
 

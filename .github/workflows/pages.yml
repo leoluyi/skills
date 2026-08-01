@@ -10,6 +10,7 @@ on:
     paths:
       - "docs/**"
       - "skills/**/catalog.md"
+      - "skills/**/guide.*.md"
       - "skills/**/SKILL.md"
       - "tools/build-docs"
       - ".github/workflows/pages.yml"

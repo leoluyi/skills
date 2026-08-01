@@ -82,15 +82,15 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 | **Humanizer (English + zh-TW)**<br>[`humanizer-zh`](skills/humanizer-zh/SKILL.md) | Catches the tells that make English and Traditional Chinese read as machine-written, then rewrites them into human prose |
 | **Cross-Strait Chinese Localizer**<br>[`avoid-china-writing`](skills/avoid-china-writing/SKILL.md) | Strips mainland-China wording, jargon, and leaked Simplified from Traditional Chinese and rewrites it into natural Taiwan usage without over-correcting real terms |
 | **Plain Speak: Jargon into Plain Language**<br>[`plain-speak`](skills/plain-speak/SKILL.md) | Turn a technical term, snippet, or dense paragraph into one line your PM, exec, or customer can actually repeat back |
-| **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
+| **Traditional Chinese Blog Writer**<br>[`blog-writing-zh`](skills/blog-writing-zh/SKILL.md) `invoke-only` | Turn notes, a talk, or a bare topic into a Taiwan-Chinese blog post that reads like a real person wrote it |
 
 ### Taiwan Business Documents
 
 | Skill | What it does |
 |---|---|
 | **Briefing Outline**<br>[`briefing-outline`](skills/briefing-outline/SKILL.md) | Distill one long report or many docs into a high-altitude 說明提綱 a manager can grasp, then drill into |
-| **Formal Internal Doc Structure**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) | Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs |
-| **Technical RFP Writing & Review**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) | Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler |
+| **Formal Internal Doc Structure**<br>[`formal-doc-structure`](skills/formal-doc-structure/SKILL.md) `invoke-only` | Turns a rough ask into a ready-to-circulate 簽呈, 會議紀錄, or 評估報告 with the structure its reader actually needs |
+| **Technical RFP Writing & Review**<br>[`rfp-writing`](skills/rfp-writing/SKILL.md) `invoke-only` | Draft and review technical RFPs from the issuer's side, cutting redundant sections, appendix bloat, and AI filler |
 
 ### Docs & Design
 

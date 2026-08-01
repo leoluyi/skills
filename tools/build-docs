@@ -1,18 +1,21 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.11"
-# dependencies = ["pyyaml"]
+# dependencies = ["pyyaml", "markdown"]
 # ///
-"""Generate docs/index.html, docs/skills.json, and the README catalog
-tables and skill-count badges from skills/<slug>/catalog.md + docs/catalog.yml.
+"""Generate docs/index.html, docs/skills.json, docs/guide/<slug>/index.html,
+and the README catalog tables and skill-count badges from skills/<slug>/catalog.md
++ skills/<slug>/guide.{en,zh}.md + docs/catalog.yml.
 
 skills/<slug>/catalog.md (front matter only) is the single source of truth
-for a skill's public-facing 說明. Nothing else should be hand-edited for a
-routine catalog update — see .agents/writing-docs.md.
+for a skill's public-facing 說明. skills/<slug>/guide.en.md / guide.zh.md are
+the optional reader-facing deep-dive pages. Nothing else should be hand-edited
+for a routine catalog update — see .agents/writing-docs.md.
 
 Usage:
   uv run tools/build-docs           # write docs/index.html, docs/skills.json,
-                                     # and the catalog sections + badges of both READMEs
+                                     # docs/guide/<slug>/index.html, and the
+                                     # catalog sections + badges of both READMEs
   uv run tools/build-docs --check   # write nothing; exit 1 if any of those would change
 """
 from __future__ import annotations
@@ -23,6 +26,7 @@ import re
 import sys
 from pathlib import Path
 
+import markdown
 import yaml
 
 REPO = Path(__file__).resolve().parent.parent
@@ -30,6 +34,10 @@ SKILLS_DIR = REPO / "skills"
 DOCS_DIR = REPO / "docs"
 CATALOG_YML = DOCS_DIR / "catalog.yml"
 TEMPLATE = DOCS_DIR / "index.template.html"
+GUIDE_TEMPLATE = DOCS_DIR / "guide.template.html"
+GUIDE_DIR = DOCS_DIR / "guide"
+MD_EXTENSIONS = ["tables", "fenced_code", "attr_list"]
+H1_RE = re.compile(r"^#\s+.*\n+")
 
 LANG_BADGE = {"en": "EN", "zh-TW": "繁中", "mixed": "中英"}
 BILINGUAL_FIELDS = ("title", "tagline", "whenUse", "whenNot")
@@ -63,6 +71,10 @@ def load_skill(catalog_path: Path) -> dict:
     fm = split_frontmatter(skill_md.read_text(encoding="utf-8"))
     invoke_only = bool(fm.get("disable-model-invocation", False))
 
+    guide_en = catalog_path.parent / "guide.en.md"
+    guide_zh = catalog_path.parent / "guide.zh.md"
+    has_guide = guide_en.exists() and guide_zh.exists()
+
     return {
         "slug": slug,
         "emoji": data["emoji"],
@@ -77,6 +89,9 @@ def load_skill(catalog_path: Path) -> dict:
         "whenNot": data["whenNot"],
         "highlights": data["highlights"],
         "skillUrl": f"https://github.com/leoluyi/skills/blob/main/skills/{slug}/SKILL.md",
+        "hasGuide": has_guide,
+        "guideUrl": f"https://leoluyi.tw/skills/guide/{slug}/" if has_guide else None,
+        "guidePaths": {"en": guide_en, "zh": guide_zh} if has_guide else None,
     }
 
 
@@ -127,6 +142,7 @@ def build_skills_json(site: dict, categories: list[dict], skills: list[dict]) ->
             "whenNot": s["whenNot"],
             "highlights": s["highlights"],
             "skillUrl": s["skillUrl"],
+            "guideUrl": s["guideUrl"],
         })
     doc = {
         "name": site["name"],
@@ -162,6 +178,11 @@ def render_card(s: dict) -> str:
         for en, zh in zip(s["highlights"]["en"], s["highlights"]["zh"])
     )
     tags = "".join(f'<span class="tag">#{e(t)}</span>' for t in s["tags"])
+    guide_link = (
+        f'          <a href="guide/{s["slug"]}/"><span class="l-en">Read the guide</span>'
+        f'<span class="l-zh">看說明</span> &rarr;</a>'
+        if s["hasGuide"] else ""
+    )
     return f"""      <article class="card" data-cat="{s['category']}" data-search="{search_text(s)}">
         <div class="card-top">
           <div class="emoji" aria-hidden="true">{s['emoji']}</div>
@@ -189,6 +210,7 @@ def render_card(s: dict) -> str:
         <div class="tags">{tags}</div>
         <div class="card-foot">
           <a href="{s['skillUrl']}"><span class="l-en">Read SKILL.md</span><span class="l-zh">看 SKILL.md</span> &rarr;</a>
+{guide_link}
         </div>
       </article>"""
 
@@ -257,6 +279,92 @@ def build_index_html(categories: list[dict], skills: list[dict]) -> str:
     return tpl
 
 
+# ---- guide pages (docs/guide/<slug>/index.html) -----------------------------
+
+def render_sidebar(categories: list[dict], skills: list[dict], current_slug: str) -> str:
+    e = lambda t: html.escape(t, quote=False)
+    groups = []
+    for cat in categories:
+        cat_skills = [s for s in skills if s["category"] == cat["key"] and s["hasGuide"]]
+        if not cat_skills:
+            continue
+        items = "\n".join(
+            (lambda cur: (
+                f'        <li><a href="../{s["slug"]}/"{cur}>'
+                f'<span class="l-en">{e(s["title"]["en"])}</span>'
+                f'<span class="l-zh">{e(s["title"]["zh"])}</span></a></li>'
+            ))(' aria-current="page" class="current"' if s["slug"] == current_slug else "")
+            for s in cat_skills
+        )
+        groups.append(
+            f'      <div class="side-group">\n'
+            f'        <h4><span class="l-en">{e(cat["label"]["en"])}</span>'
+            f'<span class="l-zh">{e(cat["label"]["zh"])}</span></h4>\n'
+            f'        <ul>\n{items}\n        </ul>\n'
+            f'      </div>'
+        )
+    return "\n".join(groups)
+
+
+def render_prev_next(skills_with_guides: list[dict], current_slug: str) -> str:
+    e = lambda t: html.escape(t, quote=False)
+    idx = next(i for i, s in enumerate(skills_with_guides) if s["slug"] == current_slug)
+    prev_s = skills_with_guides[idx - 1] if idx > 0 else None
+    next_s = skills_with_guides[idx + 1] if idx < len(skills_with_guides) - 1 else None
+
+    def link(s, label_en, label_zh, cls):
+        if not s:
+            return f'<span class="page-nav-empty"></span>'
+        return (
+            f'<a class="page-nav-link {cls}" href="../{s["slug"]}/">'
+            f'<span class="page-nav-dir"><span class="l-en">{label_en}</span><span class="l-zh">{label_zh}</span></span>'
+            f'<span class="page-nav-title"><span class="l-en">{e(s["title"]["en"])}</span>'
+            f'<span class="l-zh">{e(s["title"]["zh"])}</span></span></a>'
+        )
+
+    return (
+        '    <nav class="page-nav">\n'
+        f'      {link(prev_s, "← Previous", "← 上一篇", "prev")}\n'
+        f'      {link(next_s, "Next →", "下一篇 →", "next")}\n'
+        '    </nav>'
+    )
+
+
+def render_guide_body(path: Path) -> str:
+    """Render a guide.*.md file, dropping its leading H1 (the page already
+    renders the title from catalog.md in the guide-head chrome)."""
+    text = H1_RE.sub("", path.read_text(encoding="utf-8"), count=1)
+    return markdown.markdown(text, extensions=MD_EXTENSIONS)
+
+
+def build_guide_html(categories: list[dict], skills: list[dict], s: dict, guides_ordered: list[dict]) -> str:
+    tpl = GUIDE_TEMPLATE.read_text(encoding="utf-8")
+    body_en = render_guide_body(s["guidePaths"]["en"])
+    body_zh = render_guide_body(s["guidePaths"]["zh"])
+    e = lambda t: html.escape(t, quote=True)
+    tpl = tpl.replace("__TITLE_EN__", e(s["title"]["en"]))
+    tpl = tpl.replace("__TITLE_ZH__", e(s["title"]["zh"]))
+    tpl = tpl.replace("__TAGLINE_EN__", e(s["tagline"]["en"]))
+    tpl = tpl.replace("__TAGLINE_ZH__", e(s["tagline"]["zh"]))
+    tpl = tpl.replace("__SLUG__", s["slug"])
+    tpl = tpl.replace("__BADGES__", render_badges(s))
+    tpl = tpl.replace("__SKILL_URL__", s["skillUrl"])
+    tpl = tpl.replace("__GUIDE_URL__", s["guideUrl"])
+    tpl = tpl.replace("__SIDEBAR__", render_sidebar(categories, skills, s["slug"]))
+    tpl = tpl.replace("__PREV_NEXT__", render_prev_next(guides_ordered, s["slug"]))
+    tpl = tpl.replace("__BODY_EN__", body_en)
+    tpl = tpl.replace("__BODY_ZH__", body_zh)
+    return tpl
+
+
+def build_guide_pages(categories: list[dict], skills: list[dict]) -> dict[Path, str]:
+    guides_ordered = [s for s in skills if s["hasGuide"]]
+    return {
+        GUIDE_DIR / s["slug"] / "index.html": build_guide_html(categories, skills, s, guides_ordered)
+        for s in guides_ordered
+    }
+
+
 # ---- README catalog section ------------------------------------------------
 
 def build_readme_section(lang: str, categories: list[dict], skills: list[dict]) -> str:
@@ -315,6 +423,7 @@ def main() -> None:
 
     skills_json = build_skills_json(site, categories, skills)
     index_html = build_index_html(categories, skills)
+    guide_pages = build_guide_pages(categories, skills)
 
     # Committed surfaces: --check always verifies these, since a stale one is a
     # real defect that would ship.
@@ -329,6 +438,7 @@ def main() -> None:
     artifacts = {
         DOCS_DIR / "skills.json": skills_json,
         DOCS_DIR / "index.html": index_html,
+        **guide_pages,
     }
 
     if check_only:
@@ -341,9 +451,11 @@ def main() -> None:
         return
 
     for path, content in {**artifacts, **tracked}.items():
+        path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
 
-    print(f"generated {len(skills)} skills across {len(categories)} categories")
+    print(f"generated {len(skills)} skills across {len(categories)} categories, "
+          f"{len(guide_pages)} guide pages")
 
 
 if __name__ == "__main__":
