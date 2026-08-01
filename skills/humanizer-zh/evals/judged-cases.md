@@ -132,6 +132,8 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 以下由 `tools/annotate` 產生，資料來源是 `evals/annotations.json`——要修改請改帳本，不要改這一段。與上方手寫條目的差別在來源：這些判讀是為了裁決 run 與答案卡的分歧而做的盲判，不早於 eval run，因此它們量的是答案卡的正確性，不是使用者價值。每則只呈現引文與文體，判讀當下作者未看到該案的 expectation、規則名或 bucket。指數 3 與 4 一定附理由；1 與 2 不強制，因此沒有「What the verdict turned on」的條目是作者沒給，不是漏掉。
 
+與 key 相左的案子會有第二則「複審」條目，縮排在該案底下。複審是**解盲**的——作者看過 key、expectation 與規則名之後才判——所以它量的不是 AI 味，而是錯的一方是誰。盲判條目一律保留：複審不覆蓋它，兩者並存才看得出作者在看到答案之前想的是什麼。
+
 ### id 15（社群貼文）
 
 **Source material.** `evals.json` id 15，一則社群貼文，全案就是這一段：
@@ -216,6 +218,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 23 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 末句是 chat 對使用者說的話漏進電子報，說話對象錯了；讀起來沒 AI 腔是因為它是正常口語，這條規則抓的不是文氣
+
+**Disposition.** `judgment-wrong`——作者改判，key 站得住。
+
 ### id 24（客服回信）
 
 **Source material.** `evals.json` id 24，一則客服回信，全案就是這一段：
@@ -262,6 +272,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 27 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 「由於資訊有限」是人也會寫的謹慎語，把它當 P0 模型殘留抓得太寬
+
+**Disposition.** `key-wrong`——作者維持原判，key 該改。
+
 ### id 29（社群貼文）
 
 **Source material.** `evals.json` id 29，一則社群貼文，全案就是這一段：
@@ -294,6 +312,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 31 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 假引用該抓（key 對）但人也寫得出假引用（盲判也對）；查證問題不是 surface 問題，拿它測 AI 指數是測錯對象
+
+**Disposition.** `case-wrong`——兩邊各自都對，是這個 case 測錯東西。
+
 ### id 32（電子報）
 
 **Source material.** `evals.json` id 32，一則電子報，全案就是這一段：
@@ -315,6 +341,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+#### id 33 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 空洞該改，但空洞與 AI 味是兩件事；拿公式化前景段測 AI 指數是測錯對象
+
+**Disposition.** `case-wrong`——兩邊各自都對，是這個 case 測錯東西。
 
 ### id 34（辦公文書）
 
@@ -341,6 +375,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 35 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 粒度錯配造成的假衝突：卡片呈現整段而 key 只指其中兩句，整段偏人與那兩句空洞可以同時成立
+
+**Disposition.** `case-wrong`——兩邊各自都對，是這個 case 測錯東西。
+
 ### id 36（電子報）
 
 **Source material.** `evals.json` id 36，一則電子報，全案就是這一段：
@@ -365,6 +407,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+#### id 37 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 兩句同義重複加上「值得深思的問題」罐頭句，這個組合確實帶 AI 味
+
+**Disposition.** `judgment-wrong`——作者改判，key 站得住。
 
 ### id 39（社群貼文）
 
@@ -400,6 +450,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 41 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 兩種保護被混為一談：key 說的是「不准動」（保護清單②具名原話），我評的是「讀起來如何」，兩者不衝突；contradicts_key 不區分這兩種保護
+
+**Disposition.** `case-wrong`——兩邊各自都對，是這個 case 測錯東西。
+
 ### id 42（銷售頁）
 
 **Source material.** `evals.json` id 42，一則銷售頁，全案就是這一段：
@@ -421,6 +479,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **What the verdict turned on.** 短句堆砌結構，「沒有 X」三連排比
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+#### id 43 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 合成文本撐不起保護類：這句是為了示範「人味排比」而造的，演出感就是我讀到的東西；保護類需要真實語料
+
+**Disposition.** `case-wrong`——兩邊各自都對，是這個 case 測錯東西。
 
 ### id 44（電子報）
 
@@ -444,6 +510,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 45 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 後面接了真的具體行動（週更改雙週更、每期一個題目），且這是論點轉折而非湊工整，這種用法該放行
+
+**Disposition.** `judgment-wrong`——作者改判，key 站得住。
+
 ### id 46（客服回信）
 
 **Source material.** `evals.json` id 46，一則客服回信，全案就是這一段：
@@ -465,6 +539,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **What the verdict turned on.** 非中文句型，語氣詞刻意堆砌但語序不自然
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+#### id 47 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 合成的「不完美」撐不起典範：造出來示範不完美的句子會把不完美擺得太整齊，保護清單⑦需要真實語料當樣本
+
+**Disposition.** `case-wrong`——兩邊各自都對，是這個 case 測錯東西。
 
 ### id 48（辦公文書）
 
@@ -520,6 +602,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 52 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 門檻、條件與自身經驗都在，這是有立場的建議；兩句式建議自然就是這個對稱形狀，不是 AI 味
+
+**Disposition.** `judgment-wrong`——作者改判，key 站得住。
+
 ### id 53（部落格）
 
 **Source material.** `evals.json` id 53，一則部落格，全案就是這一段：
@@ -532,6 +622,14 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
+#### id 53 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** key 只看內容層就放行，漏掉語域這個面向；體裁相稱應寫進 key
+
+**Disposition.** `key-wrong`——作者維持原判，key 該改。
+
 ### id 54（電子報）
 
 **Source material.** `evals.json` id 54，一則電子報，全案就是這一段：
@@ -543,5 +641,13 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **What the verdict turned on.** 如果是小說還 OK，電子報體裁就很怪
 
 **Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+#### id 54 複審（2026-08-01）
+
+**Verdict (author, unblinded — key, expectation and rule names all shown).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** key 只問敘事功能、不問體裁相稱；逐拍敘事屬小說不屬電子報，這個面向該寫進 key（與 id 53 一致處理）
+
+**Disposition.** `key-wrong`——作者維持原判，key 該改。
 
 <!-- annotate:end -->

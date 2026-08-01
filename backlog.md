@@ -14,12 +14,12 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 1. **`tools/annotate`** — 判讀輔助工具（下方）。落地 2026-08-01；第 2 步靠它省下逐案手抄的成本。
 2. **ported-case sweep** — 從 id 33 續走
    ([`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md))。
-3. **衝突複審** — 把 `contradicts_key: true` 的案子連 key 一起攤開，請作者再判一次，判的是
-   錯的一方是 key、是判讀、還是這個 case 根本測錯東西。**必須等整輪 sweep 關閉才開**：邊判邊
-   複審會讓作者看熟答案卡的形狀，剩下的盲判就退化成 pattern-match——與 `tools/annotate` 第二個
-   用途裡「引出器與判讀輪次互斥」是同一個失效模式。要動 `tools/annotate`（帳本多筆＋複審卡）。
-4. **`evals.json` 三個結構缺陷** — hit/protection 分區、detect 案帶 rewrite 措辭的 key、
-   單一 slug 綁多個要求。第 3 步判為 key 錯的案子在這裡收斂。
+3. **衝突複審** — 收工 2026-08-01，13 案全judged。結果與預期相反：最大宗是 `case-wrong`（6 案）
+   而非 `key-wrong`（3 案）——**近半數的「衝突」不是判讀與 key 的分歧，是量測方式本身有問題**。
+4. **`evals.json` 的結構缺陷** — 因此從「key 措辭清單」變成兩條線。**量測方式那條排前面**
+   （判準不是 surface、粒度錯配、兩種保護混為一談、合成語料撐不起保護類），不先修它，下一輪
+   sweep 會再生出一批同樣的假衝突。原有三項（hit/protection 分區、detect 案帶 rewrite 措辭、
+   單一 slug 綁多個要求）與複審產出的 3 案 key-wrong 排在後面。
 5. **`口語化萬能詞` 兩側覆蓋** — 名詞與短語 form 的 hit case 與 protection case。
 6. **rewrite mode 的口語時間表達 保真 case** — 目前沒有任何一案測它。
 7. **一次 re-baseline ＋ aggregate 重跑** — 前六項的結果一起進去，不分批。

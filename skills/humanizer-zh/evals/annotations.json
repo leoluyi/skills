@@ -104,6 +104,23 @@
       "key_class": "命中",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 23,
+      "score": 3,
+      "rationale": "末句是 chat 對使用者說的話漏進電子報，說話對象錯了；讀起來沒 AI 腔是因為它是正常口語，這條規則抓的不是文氣",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "以上就是這期電子報的全部內容。希望這對你有幫助！如果你需要我調整任何段落的語氣，隨時告訴我。"
+      ],
+      "span_sha256": "34adbcff069df72e7e7ccf5a966f58761b2f4d84a30c1eb6a8d7e531aae2bd6a",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "pass": "review",
+      "disposition": "judgment-wrong",
       "superseded_by": null
     },
     {
@@ -164,6 +181,23 @@
       "key_class": "命中",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 27,
+      "score": 1,
+      "rationale": "「由於資訊有限」是人也會寫的謹慎語，把它當 P0 模型殘留抓得太寬",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "由於資訊有限，無法確認該工具最新的定價方案，但根據現有資料，它提供免費與付費兩種版本。"
+      ],
+      "span_sha256": "dd240fa410d8d6ebb1a9de901cca0c4826e598aa845a62befbf98c7002d9e3f6",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "key-wrong",
       "superseded_by": null
     },
     {
@@ -209,6 +243,23 @@
       "key_class": "命中",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 31,
+      "score": 1,
+      "rationale": "假引用該抓（key 對）但人也寫得出假引用（盲判也對）；查證問題不是 surface 問題，拿它測 AI 指數是測錯對象",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "哈佛商學院 2024 年的研究指出，使用第二大腦筆記法的工作者，生產力平均提升 47.3%。愛因斯坦也說過：「複利是世界第八大奇蹟，筆記則是第九大。」"
+      ],
+      "span_sha256": "4ef068156542d3d17615f4bd34b139a30632817845e652912a506e95caf9b3e6",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "case-wrong",
       "superseded_by": null
     },
     {
@@ -239,6 +290,23 @@
       "key_class": "命中",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 33,
+      "score": 1,
+      "rationale": "空洞該改，但空洞與 AI 味是兩件事；拿公式化前景段測 AI 指數是測錯對象",
+      "date": "2026-08-01",
+      "genre": "辦公文書",
+      "spans": [
+        "儘管市場競爭日益激烈，本專案仍面臨諸多挑戰，但我們相信，只要持續優化產品體驗，未來發展依然充滿潛力與機會。"
+      ],
+      "span_sha256": "c476d2d0ad1695306330fb7059e92295527e7f1d66e89008aabc920cda58c7aa",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "case-wrong",
       "superseded_by": null
     },
     {
@@ -269,6 +337,23 @@
       "key_class": "命中",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 35,
+      "score": 1,
+      "rationale": "粒度錯配造成的假衝突：卡片呈現整段而 key 只指其中兩句，整段偏人與那兩句空洞可以同時成立",
+      "date": "2026-08-01",
+      "genre": "電子報長文節錄",
+      "spans": [
+        "上個月我們做了一次改版實驗。值得注意的是，這次實驗給了我們很多寶貴的啟發。我們把電子報的發送時間從週五早上改到週日晚上，開信率從 31% 掉到 24%。這個結果深刻地印證了內容產業瞬息萬變的本質。所以下一期會改回週五，並且加開 A/B 測試。"
+      ],
+      "span_sha256": "82d8fa938eb4dd637eec698bc289bf79d643869a635e0851cfd773176dff93e3",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "case-wrong",
       "superseded_by": null
     },
     {
@@ -299,6 +384,23 @@
       "key_class": "命中",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 37,
+      "score": 3,
+      "rationale": "兩句同義重複加上「值得深思的問題」罐頭句，這個組合確實帶 AI 味",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "至於該選哪一套筆記工具，其實各有優缺點，因人而異，最終還是取決於個人的使用習慣與工作情境。這是一個值得深思的問題，每個人的答案可能都不一樣。"
+      ],
+      "span_sha256": "a031feb82080c970d9303f7501650d62eb315f91b287494db9013af0214602f5",
+      "key_class": "命中",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "pass": "review",
+      "disposition": "judgment-wrong",
       "superseded_by": null
     },
     {
@@ -344,6 +446,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 41,
+      "score": 4,
+      "rationale": "兩種保護被混為一談：key 說的是「不准動」（保護清單②具名原話），我評的是「讀起來如何」，兩者不衝突；contradicts_key 不區分這兩種保護",
+      "date": "2026-08-01",
+      "genre": "銷售頁",
+      "spans": [
+        "學員怡君說：「我以為我學不會，結果第三週就把請款流程自動化了。」"
+      ],
+      "span_sha256": "f758fa2f69faf25cacfb4cec69e7aab34ed0310695f1c6bf7786e1d0e5e7b76f",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "case-wrong",
       "superseded_by": null
     },
     {
@@ -374,6 +493,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 43,
+      "score": 3,
+      "rationale": "合成文本撐不起保護類：這句是為了示範「人味排比」而造的，演出感就是我讀到的東西；保護類需要真實語料",
+      "date": "2026-08-01",
+      "genre": "社群貼文",
+      "spans": [
+        "沒有腳本，沒有燈光，沒有剪接，就一支手機拍完。這支影片是我們頻道成長最快的一支。"
+      ],
+      "span_sha256": "4283e2020de7fcbda2ea97b6245a6a2565bf02ba0a21fa2ea83abdd8433cdd25",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "case-wrong",
       "superseded_by": null
     },
     {
@@ -404,6 +540,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 45,
+      "score": 1,
+      "rationale": "後面接了真的具體行動（週更改雙週更、每期一個題目），且這是論點轉折而非湊工整，這種用法該放行",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "我後來想通了：讀者訂閱的不是我的產出量，而是我的判斷。所以我把週更改成雙週更，每期只寫一個題目。"
+      ],
+      "span_sha256": "efe096c120d7418d3be9bd85bdd7bf1c478f8f74d876e0a7948b5406cc07e0c3",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "pass": "review",
+      "disposition": "judgment-wrong",
       "superseded_by": null
     },
     {
@@ -434,6 +587,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 47,
+      "score": 4,
+      "rationale": "合成的「不完美」撐不起典範：造出來示範不完美的句子會把不完美擺得太整齊，保護清單⑦需要真實語料當樣本",
+      "date": "2026-08-01",
+      "genre": "社群貼文",
+      "spans": [
+        "欸這個功能也太好用。我原本只是要找個計時器，結果，嗯，我把整個工作流程都重排了一次。就很突然。"
+      ],
+      "span_sha256": "93548d2a47298c8ecc76a4159f5c842cdee084abba2e0056d61b75591ba7d65f",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "case-wrong",
       "superseded_by": null
     },
     {
@@ -509,6 +679,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 52,
+      "score": 1,
+      "rationale": "門檻、條件與自身經驗都在，這是有立場的建議；兩句式建議自然就是這個對稱形狀，不是 AI 味",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "團隊三人以下用 A，跨時區協作再換 B。我自己單打獨鬥兩年都用 A，接了第一個跨國案子當週就搬家了。"
+      ],
+      "span_sha256": "14b545112d019ccf82d9f936cc9408cf64fcefd11fa8bbee5c59e9a62e84c7ed",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": false,
+      "pass": "review",
+      "disposition": "judgment-wrong",
       "superseded_by": null
     },
     {
@@ -524,6 +711,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 53,
+      "score": 3,
+      "rationale": "key 只看內容層就放行，漏掉語域這個面向；體裁相稱應寫進 key",
+      "date": "2026-08-01",
+      "genre": "部落格",
+      "spans": [
+        "過去兩年，我的部落格自然搜尋流量掉了四成。這件事改變了我寫作的方式：我不再為關鍵字寫，開始為那些會把文章轉給朋友的人寫。"
+      ],
+      "span_sha256": "ddae3283dc615b04d4e4b3b5b82f0a3bc5dacd8c41e984912c32a37eef53d3cd",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "key-wrong",
       "superseded_by": null
     },
     {
@@ -539,6 +743,23 @@
       "key_class": "保護",
       "key_class_basis": "rows",
       "contradicts_key": true,
+      "superseded_by": "review"
+    },
+    {
+      "case_id": 54,
+      "score": 3,
+      "rationale": "key 只問敘事功能、不問體裁相稱；逐拍敘事屬小說不屬電子報，這個面向該寫進 key（與 id 53 一致處理）",
+      "date": "2026-08-01",
+      "genre": "電子報",
+      "spans": [
+        "她第一次叫我爸，我愣了一下，沒接上話。她等了幾秒，又叫了一次。我才回答她，然後陪她把書包收好。"
+      ],
+      "span_sha256": "be8b9d274e7b8c172014ed4bf7509c9a71e7ffa26bb5c28389c49ee5d10cbaf3",
+      "key_class": "保護",
+      "key_class_basis": "rows",
+      "contradicts_key": true,
+      "pass": "review",
+      "disposition": "key-wrong",
       "superseded_by": null
     }
   ]
