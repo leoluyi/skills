@@ -86,10 +86,10 @@ until step 2 has closed.**
   不進判讀流；全部落在 repo 自撰的 1-12，sweep 目標一案未失。這份名單是 fixture 不變式——
   它一變就代表有人改了 prompt 形狀，剝離邏輯要重讀。
 
-### 2. ported-case sweep — 續走 id 33
+### 2. ported-case sweep — 收工 2026-08-01
 
-- [ ] **The remaining ~36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) are
-  still unadjudicated and may hold more taste mismatches with this repo's judgment.** Four cases from
+- [x] **The 36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) held more taste
+  mismatches with this repo's judgment than the first stretch suggested.** Four cases from
   the same batch were adjudicated 2026-07-30 and landed this round: **id 17** (「業界專家普遍認為」
   -shaped sentence ruled no-AI-味 twice — blind, then again after being shown `模糊歸屬`'s own
   rule text — retired from the scored suite since flipping it would contradict the rule's own
@@ -103,15 +103,23 @@ until step 2 has closed.**
   in [`evals/judged-cases.md`](evals/judged-cases.md) — closing the hand-transcription gap this
   item used to note.
 
-  **進度 2026-08-01：15/36 判完，續跑從 id 33 開始。** 已判 ids 15、16、18、19、20、22、23、
-  24、25、26、27、29、30、31、32；剩 ids 33-37、39-54。判讀走 `tools/annotate` 的
-  `--card` / `--record`，帳本在 [`evals/annotations.json`](evals/annotations.json)，
-  渲染結果在 `judged-cases.md` 的 `annotate:begin/end` 區段。**與 key 相左 3 例：ids 23、27、
-  31**，三案都是作者判 1 偏人而 key 屬命中類。這一步只記錄，`evals.json` 未動——相左的案子
-  在第 3 項複審，不在這裡處置。
+  **收工 2026-08-01：36/36 判完。** 判讀走 `tools/annotate` 的 `--card` / `--record`，帳本在
+  [`evals/annotations.json`](evals/annotations.json)，渲染結果在 `judged-cases.md` 的
+  `annotate:begin/end` 區段。分數分布 1 偏人 ×13、2 不確定 ×6、3 偏 AI ×9、4 明確 AI ×8。
+  這一步只記錄，`evals.json` 未動——相左的案子在第 3 項複審，不在這裡處置。
 
-  **這一項要跑到底才交棒。** 剩下的 21 案必須全部盲判完成，第 3 項才能開；作者在 sweep 途中
-  看過任何一份 key，之後的盲判就不再是盲判。
+  **與 key 相左 13 例，分成方向相反的兩群**，而兩群的存在本身就是第 4 項要處理的東西：
+
+  - **key 抓太寬（6 例，ids 23、27、31、33、35、37）** — 作者判 1 偏人，key 屬命中類。
+  - **key 放太鬆（7 例，ids 41、43、45、47、52、53、54）** — 作者判 3-4 偏 AI，key 屬保護類。
+    全部是改編自 speak-human-tw 的 SNF 保護案，其中 6 例落在 id 41 之後。
+
+  另有 6 例（ids 19、22、25、26、29、51）判 2 不確定，`contradicts_key` 為 `null`，不參與比對。
+
+  **後半群的理由反覆指向三個尚未成規則的東西**，這是 sweep 最值得帶走的收穫，不是相左計數：
+  短句堆砌（43、45、52）、太生硬（41、53）、**體裁錯配**（53「部落格應更強調連接詞」、
+  54「小說 OK，電子報就很怪」）。第三個特別值得看——那兩例判的不是句子本身，是句子與宣告體裁
+  的不相稱，而現有 45 條規則沒有任何一條問這件事。它是新規則的候選，不是既有規則的 carve-out。
 
   這輪判讀期間修掉的一個真 bug：span 抽取用 `strip("「」")` 剝界定符，會連帶吃掉以巢狀引號
   結尾的內層 `」`（id 31「…愛因斯坦也說過：「複利是…第九大。」」少一個收尾），等於拿一段
@@ -270,6 +278,23 @@ until step 2 has closed.**
 root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落地 ＋ 一輪真實 sweep」
 之後才決定——兩個前置現在都到齊了，而帳本加渲染這條寫入端已經蓋掉它原本想做的事，那一項該下
 結論而不是接著蓋。
+
+- [x] **`翻譯腔` 明文排除機翻做為保留理由.** Landed 2026-08-01 mid-sweep, at the author's explicit
+  request, accepting the contamination cost below rather than deferring to a clean branch.
+  `references/zh-rules.md`'s 翻譯腔 rule now states that whether a span is machine-translated
+  or human-written-under-English-influence does not change the verdict — the three checks
+  (回譯成流暢英文／中文是英文的影子／台灣同儕不會這樣講) decide it either way, and being
+  suspected MT is not a carve-out. This is a genuine behaviour change (rule text moved, not
+  just framing), so it does re-key any case whose expectation depended on the old silence on
+  this point.
+
+  **Sweep contamination, recorded rather than hidden:** this landed between id 47 and id 49 of
+  the ported-case sweep (item 2 below), which was still 6 cases short of closing (49–54
+  remaining as of this edit). The remaining cases are judged with this rule change in view,
+  the first 30 were not — the sweep's blind-judgment property does not hold uniformly across
+  its own 36 cases. Whatever the aggregate re-baseline (item 7) does with `contradicts_key`
+  counts, it cannot treat all 36 verdicts as interchangeable data; the pre-/post-47 split is
+  the fact to carry forward, not paper over.
 
 ## Behaviour changes, each on its own branch and its own re-run
 

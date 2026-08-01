@@ -306,4 +306,242 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
 
+### id 33（辦公文書）
+
+**Source material.** `evals.json` id 33，一則辦公文書，全案就是這一段：
+
+> 儘管市場競爭日益激烈，本專案仍面臨諸多挑戰，但我們相信，只要持續優化產品體驗，未來發展依然充滿潛力與機會。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 34（辦公文書）
+
+**Source material.** `evals.json` id 34，一則辦公文書，全案就是這一段：
+
+> 本季內容策略的三大特點：
+> 1. 系統化視角：將內容視為由多個相互關聯的載體構成的整體結構，強調整體協調。
+> 2. 跨平台整合：融合長文、短影音、電子報等多種形式，形成綜合性傳播框架。
+> 3. 數據驅動導向：強調透過成效追蹤實現內容的持續改進與長期優化。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 辦公文書對空泛用語容忍度更低——「強調透過成效追蹤實現內容的持續改進與長期優化」完全沒有實質意義
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 35（電子報長文節錄）
+
+**Source material.** `evals.json` id 35，一則電子報長文節錄，全案就是這一段：
+
+> 上個月我們做了一次改版實驗。值得注意的是，這次實驗給了我們很多寶貴的啟發。我們把電子報的發送時間從週五早上改到週日晚上，開信率從 31% 掉到 24%。這個結果深刻地印證了內容產業瞬息萬變的本質。所以下一期會改回週五，並且加開 A/B 測試。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 36（電子報）
+
+**Source material.** `evals.json` id 36，一則電子報，全案就是這一段：
+
+> | 工具 | 優點 | 意義 |
+> | --- | --- | --- |
+> | 語音輸入 | 解放雙手 | 體現了行動優先的趨勢 |
+> | 模板庫 | 節省時間 | 展現了系統化思維的價值 |
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 「意義」欄每一格都套「體現/展現了 X 的價值」句式，重複公式化
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 37（電子報）
+
+**Source material.** `evals.json` id 37，一則電子報，全案就是這一段：
+
+> 至於該選哪一套筆記工具，其實各有優缺點，因人而異，最終還是取決於個人的使用習慣與工作情境。這是一個值得深思的問題，每個人的答案可能都不一樣。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 39（社群貼文）
+
+**Source material.** `evals.json` id 39，一則社群貼文，全案就是這一段：
+
+> 她說，先生原本不太分享，最近卻開始在家庭群組轉貼我的 AI 教學影片，還整理了學習順序和重點。看到這裡，我愣了一下。我把信讀到這裡，在電腦前停了一下。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 短句堆砌結構，「愣了一下」與「停了一下」重複同一句式
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 40（銷售頁）
+
+**Source material.** `evals.json` id 40，一則銷售頁，全案就是這一段：
+
+> 早鳥價 4,800 元（原價 6,800 元），輸入折扣碼 EARLY500 再折 500，只到 3/31 晚上 11:59。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 41（銷售頁）
+
+**Source material.** `evals.json` id 41，一則銷售頁，全案就是這一段：
+
+> 學員怡君說：「我以為我學不會，結果第三週就把請款流程自動化了。」
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 見證引言太生硬，制式模板腔
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 42（銷售頁）
+
+**Source material.** `evals.json` id 42，一則銷售頁，全案就是這一段：
+
+> 開課後 14 天內，看完前兩章仍覺得不適合，寫信給我們即可全額退費，不需要任何理由。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 43（社群貼文）
+
+**Source material.** `evals.json` id 43，一則社群貼文，全案就是這一段：
+
+> 沒有腳本，沒有燈光，沒有剪接，就一支手機拍完。這支影片是我們頻道成長最快的一支。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 短句堆砌結構，「沒有 X」三連排比
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 44（電子報）
+
+**Source material.** `evals.json` id 44，一則電子報，全案就是這一段：
+
+> 根據我們後台的數據，這期電子報的開信率是 42%，比過去半年平均高了 9 個百分點。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 45（電子報）
+
+**Source material.** `evals.json` id 45，一則電子報，全案就是這一段：
+
+> 我後來想通了：讀者訂閱的不是我的產出量，而是我的判斷。所以我把週更改成雙週更，每期只寫一個題目。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 短句堆砌結構＋「不是…而是」對比句式
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 46（客服回信）
+
+**Source material.** `evals.json` id 46，一則客服回信，全案就是這一段：
+
+> 你的訂單已完成退款申請，款項會在 7 到 14 個工作天內退回原刷卡帳戶，實際入帳時間依發卡銀行作業為準。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 47（社群貼文）
+
+**Source material.** `evals.json` id 47，一則社群貼文，全案就是這一段：
+
+> 欸這個功能也太好用。我原本只是要找個計時器，結果，嗯，我把整個工作流程都重排了一次。就很突然。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 非中文句型，語氣詞刻意堆砌但語序不自然
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 48（辦公文書）
+
+**Source material.** `evals.json` id 48，一則辦公文書，全案就是這一段：
+
+> 這次改版優化了圖片載入邏輯：首屏改用 WebP、其餘 lazy load，LCP 從 3.2 秒降到 1.8 秒。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 49（辦公文書）
+
+**Source material.** `evals.json` id 49，一則辦公文書，全案就是這一段：
+
+> 因應系統升級，會員服務將於 3 月 15 日（週六）凌晨 2:00 至 6:00 暫停。造成不便，敬請見諒。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 50（電子報）
+
+**Source material.** `evals.json` id 50，一則電子報，全案就是這一段：
+
+> 我最近發現自己寫東西很愛用「賦能」這個詞，講三句就想賦能一下，後來決定把它從我的字典裡刪掉。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 51（電子報長文）
+
+**Source material.** `evals.json` id 51，一則電子報長文，全案就是這一段：
+
+> 第一個月，沒人退訂。第二個月，沒人退訂。第三個月，退了一個人，然後他隔週又訂回來了。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 2/4（不確定）。
+
+**What the verdict turned on.** 標點符號改一下應該就像真人寫的
+
+**Consequence for the instrument.** **判讀為不確定**——本案在 `evals.json` 屬保護類，而作者盲判後不選邊，既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。
+
+### id 52（電子報）
+
+**Source material.** `evals.json` id 52，一則電子報，全案就是這一段：
+
+> 團隊三人以下用 A，跨時區協作再換 B。我自己單打獨鬥兩年都用 A，接了第一個跨國案子當週就搬家了。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 句式對稱過整 ＋ 堆砌「短句」
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 53（部落格）
+
+**Source material.** `evals.json` id 53，一則部落格，全案就是這一段：
+
+> 過去兩年，我的部落格自然搜尋流量掉了四成。這件事改變了我寫作的方式：我不再為關鍵字寫，開始為那些會把文章轉給朋友的人寫。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 部落格體裁應更強調連接詞，這個句子太生硬
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 54（電子報）
+
+**Source material.** `evals.json` id 54，一則電子報，全案就是這一段：
+
+> 她第一次叫我爸，我愣了一下，沒接上話。她等了幾秒，又叫了一次。我才回答她，然後陪她把書包收好。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 如果是小說還 OK，電子報體裁就很怪
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
 <!-- annotate:end -->
