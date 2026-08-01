@@ -9,9 +9,11 @@ on:
   pull_request:
     paths:
       - "skills/**/catalog.md"
+      - "skills/**/guide.*.md"
       - "skills/**/SKILL.md"
       - "docs/catalog.yml"
       - "docs/index.template.html"
+      - "docs/guide.template.html"
       - "tools/build-docs"
       - "README.md"
       - "README.zh-TW.md"
@@ -20,9 +22,11 @@ on:
     branches: [main]
     paths:
       - "skills/**/catalog.md"
+      - "skills/**/guide.*.md"
       - "skills/**/SKILL.md"
       - "docs/catalog.yml"
       - "docs/index.template.html"
+      - "docs/guide.template.html"
       - "tools/build-docs"
       - "README.md"
       - "README.zh-TW.md"

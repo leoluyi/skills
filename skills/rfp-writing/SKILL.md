@@ -1,7 +1,8 @@
 ---
 name: rfp-writing
-description: Write or review technical RFP documents from the issuer's perspective in Traditional Chinese (需求規格書 / 需求規劃書 / 招標規格), enforcing structural rules for redundancy elimination, appendix bloat, thin-section consolidation, and formal plain-language style. Trigger only when the user explicitly asks for an RFP; do not invoke for migration plans, runbooks, ADR/ARB, design docs, meeting minutes, vendor-side bid proposals (投標提案 / RFP responses), or general formal Chinese writing — those conventions conflict with RFP rules.
+description: Write or review technical RFP documents from the issuer's perspective in Traditional Chinese (需求規格書 / 需求規劃書 / 招標規格), enforcing structural rules for redundancy elimination, appendix bloat, thin-section consolidation, and formal plain-language style. Manual trigger only — invoke by name when the user explicitly asks for an RFP; do not invoke for migration plans, runbooks, ADR/ARB, design docs, meeting minutes, vendor-side bid proposals (投標提案 / RFP responses), or general formal Chinese writing — those conventions conflict with RFP rules.
 app-description: 從發包方角度撰寫或審查繁體中文技術型 RFP（需求規格書、需求規劃書、招標規格）。檢查章節歸屬、消除重複、瘦身附錄、合併薄弱章節。不含簽呈、會議紀錄等一般公文。
+disable-model-invocation: true
 version: 1.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.

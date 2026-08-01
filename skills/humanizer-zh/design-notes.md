@@ -16,7 +16,7 @@ references/
   examples.md                 — 6 worked end-to-end scenarios (synthetic samples)
 ```
 
-[`docs/humanizer-zh.md`](../../docs/humanizer-zh.md) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
+[`guide.zh.md`](guide.zh.md) (and its English counterpart [`guide.en.md`](guide.en.md)) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
 
 ## 自我背書 — 第 47 條，過煞車的方式與前兩條都不同（2026-08-01）
 

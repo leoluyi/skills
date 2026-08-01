@@ -3,7 +3,8 @@ name: blog-writing-zh
 description: >-
   Write or rewrite Traditional Chinese (Taiwan) blog posts with a genuine human
   voice, modeled on seven studied blogs (知識倉鼠, 保哥, 高見龍,
-  90s.pm.investing, AI避坑情報員, Julia Evans, Simon Willison). Use when asked to 寫部落格文章／
+  90s.pm.investing, AI避坑情報員, Julia Evans, Simon Willison). Manual trigger
+  only — invoke by name when asked to 寫部落格文章／
   電子報／blog post, 把筆記改寫成文章, 把 Obsidian 筆記變成 blog, 翻譯改寫外文文章／演講／
   討論串成中文長文, or "用我的風格寫一篇 X", or 不確定該用什麼風格寫（本 skill 會依讀者與目的推薦配方）. Supports two modes — compose (from a topic
   or loose material) and rewrite (from an Obsidian note, translation source, or
@@ -27,6 +28,7 @@ app-description: >-
   撰寫或改寫具真實人味的繁體中文部落格文章／電子報，模仿知識倉鼠、保哥、高見龍、Julia Evans、Simon
   Willison 等風格。適用於「寫部落格文章」「把筆記改寫成文章」「把 Obsidian
   筆記變成 blog」「翻譯改寫外文文章成中文長文」，並附標題／副標備選。
+disable-model-invocation: true
 version: 0.14.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, etc.). No external tools or APIs required.
