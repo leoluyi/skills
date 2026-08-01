@@ -21,6 +21,8 @@ description: >-
   names a chart, plot, or dashboard instead. Quantities that serve as
   evidence inside an explanation (a funnel's drop-off, a cache hit-rate)
   stay in scope.
+app-description: >-
+  設計專業、精緻的解說型視覺圖像（SVG 或單檔 HTML）。適用於「資訊圖表」「懶人包」「圖解」「one-pager」、時間軸／比較／流程圖，或教學對話結束後的「學習總結成一張圖」視覺回顧，也可審閱既有圖表提出修改建議。
 version: 0.11.2
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
