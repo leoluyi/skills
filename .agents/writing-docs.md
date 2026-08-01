@@ -38,7 +38,7 @@ highlights:
 ---
 ```
 
-`invokeOnly` is **not** a field here — the generator reads it straight from the skill's own `SKILL.md` frontmatter (`disable-model-invocation: true`), so there is nothing to keep in sync.
+Invocation (`user-invoked` / `model-invoked`) is **not** a field here — the generator reads it straight from the skill's own `SKILL.md` frontmatter (`disable-model-invocation: true`), so there is nothing to keep in sync.
 
 **"When to use" / "When not to"** mirror the skill's own routing lines — if `SKILL.md`'s description already states "不要用於 X（用 Y）", that boundary belongs here verbatim in substance, not reinvented. **Highlights** are 3-5 bullets naming the skill's actual mechanisms (modes, gates, what it protects against) — never marketing adjectives with nothing behind them.
 
@@ -59,5 +59,5 @@ Add a category here before pointing any skill's `category` field at it — the g
 - `uv run tools/build-docs` exits 0 with no validation errors, and its "generated N skills across M categories" line matches the actual count.
 - `uv run tools/build-docs --check` exits 0 — this is the gate CI runs, so a stale catalog table or badge fails the PR.
 - `git diff` shows the expected `catalog.md` change plus the regenerated `README.md` / `README.zh-TW.md` catalog sections and badge counts — nothing else.
-- The `invoke-only` badge/table-suffix appears if and only if the skill's `SKILL.md` sets `disable-model-invocation: true`.
+- Every skill shows a `user-invoked` or `model-invoked` label on all three surfaces (card pill, README column), and it is `user-invoked` if and only if the skill's `SKILL.md` sets `disable-model-invocation: true`.
 - Every link (`skills/<slug>/SKILL.md` in READMEs, the full GitHub URL in `skillUrl`) resolves.

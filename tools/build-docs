@@ -70,6 +70,7 @@ def load_skill(catalog_path: Path) -> dict:
         "order": data.get("order", 0),
         "languages": data["languages"],
         "invokeOnly": invoke_only,
+        "invocation": "user" if invoke_only else "model",
         "tags": data["tags"],
         "title": data["title"],
         "tagline": data["tagline"],
@@ -120,6 +121,7 @@ def build_skills_json(site: dict, categories: list[dict], skills: list[dict]) ->
             "category": s["category"],
             "languages": s["languages"],
             "invokeOnly": s["invokeOnly"],
+            "invocation": s["invocation"],
             "tags": s["tags"],
             "title": s["title"],
             "tagline": s["tagline"],
@@ -142,16 +144,20 @@ def build_skills_json(site: dict, categories: list[dict], skills: list[dict]) ->
 # ---- index.html --------------------------------------------------------
 
 def search_text(s: dict) -> str:
+    inv_slug = "user-invoked" if s["invocation"] == "user" else "model-invoked"
     parts = [s["slug"], s["title"]["en"], s["title"]["zh"],
-              s["tagline"]["en"], s["tagline"]["zh"], *s["tags"]]
+              s["tagline"]["en"], s["tagline"]["zh"], inv_slug, *s["tags"]]
     return html.escape(" ".join(parts).lower(), quote=True)
 
 
 def render_badges(s: dict) -> str:
     badges = "".join(f'<span class="badge lang">{LANG_BADGE[lang]}</span>' for lang in s["languages"])
-    if s["invokeOnly"]:
-        badges += ('<span class="badge invoke"><span class="l-en">Invoke-only</span>'
-                   '<span class="l-zh">手動叫用</span></span>')
+    if s["invocation"] == "user":
+        badges += ('<span class="badge inv inv-user"><span class="l-en">User-invoked</span>'
+                   '<span class="l-zh">使用者叫用</span></span>')
+    else:
+        badges += ('<span class="badge inv inv-model"><span class="l-en">Model-invoked</span>'
+                   '<span class="l-zh">模型叫用</span></span>')
     return badges
 
 
@@ -162,7 +168,7 @@ def render_card(s: dict) -> str:
         for en, zh in zip(s["highlights"]["en"], s["highlights"]["zh"])
     )
     tags = "".join(f'<span class="tag">#{e(t)}</span>' for t in s["tags"])
-    return f"""      <article class="card" data-cat="{s['category']}" data-search="{search_text(s)}">
+    return f"""      <article class="card" data-cat="{s['category']}" data-inv="{s['invocation']}" data-search="{search_text(s)}">
         <div class="card-top">
           <div class="emoji" aria-hidden="true">{s['emoji']}</div>
           <div>
@@ -226,8 +232,29 @@ def render_filters(categories: list[dict], skills: list[dict]) -> str:
             f'<span class="l-zh">{e(cat["label"]["zh"])}</span>'
             f'<span class="count">{count}</span></button>'
         )
-    return ('      <div class="filters" role="group" aria-label="Filter by category">\n'
-            + "\n".join(chips) + "\n      </div>")
+    cat_filters = (
+        '      <div class="filters" data-group="cat" role="group" aria-label="Filter by category">\n'
+        + "\n".join(chips) + "\n      </div>"
+    )
+
+    user_count = sum(1 for s in skills if s["invocation"] == "user")
+    model_count = len(skills) - user_count
+    inv_chips = [
+        f'      <button class="chip" data-inv="all" aria-pressed="true">'
+        f'<span class="l-en">All</span><span class="l-zh">全部</span>'
+        f'<span class="count">{len(skills)}</span></button>',
+        f'      <button class="chip" data-inv="user" aria-pressed="false">'
+        f'<span class="l-en">User-invoked</span><span class="l-zh">使用者叫用</span>'
+        f'<span class="count">{user_count}</span></button>',
+        f'      <button class="chip" data-inv="model" aria-pressed="false">'
+        f'<span class="l-en">Model-invoked</span><span class="l-zh">模型叫用</span>'
+        f'<span class="count">{model_count}</span></button>',
+    ]
+    inv_filters = (
+        '      <div class="filters" data-group="inv" role="group" aria-label="Filter by invocation">\n'
+        + "\n".join(inv_chips) + "\n      </div>"
+    )
+    return cat_filters + "\n" + inv_filters
 
 
 def render_itemlist(skills: list[dict]) -> str:
@@ -262,16 +289,19 @@ def build_index_html(categories: list[dict], skills: list[dict]) -> str:
 def build_readme_section(lang: str, categories: list[dict], skills: list[dict]) -> str:
     heading = "## Skill catalog" if lang == "en" else "## 技能目錄"
     intro = (
-        f"{len(skills)} skills across {len(categories)} categories. Most fire automatically "
-        "when a task matches their trigger; ones marked `invoke-only` you call by name. "
+        f"{len(skills)} skills across {len(categories)} categories. Every skill is labelled "
+        "`model-invoked` (the agent fires it automatically on a matching task, and you can "
+        "also call it by name) or `user-invoked` (only you can, by name). "
         "Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any "
         "[`SKILL.md`](skills/) directly."
         if lang == "en" else
-        f"{len(skills)} 個技能、{len(categories)} 個分類。多數會在任務命中 trigger 時自動載入；"
-        "標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，"
+        f"{len(skills)} 個技能、{len(categories)} 個分類。每個技能都標了叫用方式："
+        "`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）"
+        "或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，"
         "或直接讀任何一份 [`SKILL.md`](skills/)。"
     )
     what_col = "What it does" if lang == "en" else "做什麼"
+    inv_col = "Invocation" if lang == "en" else "叫用方式"
 
     blocks = [heading, "", intro]
     for cat in categories:
@@ -285,14 +315,14 @@ def build_readme_section(lang: str, categories: list[dict], skills: list[dict]) 
             blocks.append("")
             blocks.append(note[lang if lang == "en" else "zh"])
         blocks.append("")
-        blocks.append(f"| Skill | {what_col} |")
-        blocks.append("|---|---|")
+        blocks.append(f"| Skill | {inv_col} | {what_col} |")
+        blocks.append("|---|---|---|")
         for s in cat_skills:
             name = s["title"][lang if lang == "en" else "zh"]
             tagline = s["tagline"][lang if lang == "en" else "zh"]
-            suffix = " `invoke-only`" if s["invokeOnly"] else ""
+            inv = "`user-invoked`" if s["invokeOnly"] else "`model-invoked`"
             blocks.append(
-                f"| **{name}**<br>[`{s['slug']}`](skills/{s['slug']}/SKILL.md){suffix} | {tagline} |"
+                f"| **{name}**<br>[`{s['slug']}`](skills/{s['slug']}/SKILL.md) | {inv} | {tagline} |"
             )
     return "\n".join(blocks)
 
