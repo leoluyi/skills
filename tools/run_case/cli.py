@@ -38,13 +38,13 @@ from run_case.config import (
     unscored_notes,
     validate_declared_ids,
 )
+from run_case.aggregate import aggregate, aggregate_markdown, load_round
 from run_case.dispatch import (
     CLAUDE_MODEL,
     CODEX_MODEL,
     label_for_new,
     reconcile,
-    run_graders,
-    run_runners,
+    run_pipeline,
 )
 from run_case.errors import CONFIG_PATH, Chunk, Row, RunCaseError
 from run_case.report import (
@@ -178,15 +178,12 @@ def execute(ctx: dict, arms: dict, args: argparse.Namespace, run_id: str,
         for index in sorted(chunk_ids)
         for arm in ("new", "base")
     ]
-    runner_out = run_runners(plan, args.jobs)
     mapping = {index: label_for_new(run_id, index) for index in chunk_ids}
     # A nonce of its own, never derived from run_id: run_id decides the A/B
     # mapping, and the grader must not hold anything that could reconstruct it.
     nonce = secrets.token_hex(8)
-    grader_plan = []
-    for index in sorted(chunk_ids):
-        new_text = runner_out[(index, "new")][0]
-        base_text = runner_out[(index, "base")][0]
+
+    def grader_item(index: int, new_text: str, base_text: str) -> dict:
         first, second = (
             (new_text, base_text) if mapping[index] == "A" else (base_text, new_text)
         )
@@ -198,14 +195,15 @@ def execute(ctx: dict, arms: dict, args: argparse.Namespace, run_id: str,
             }
             for i in chunk_ids[index]
         )
-        grader_plan.append({
+        return {
             "family": args.grader, "chunk": index, "workspace": arms["workspace"],
             "tag": f"grader-c{index}", "rows": chunk_rows[index], "nonce": nonce,
             "prompt": grader_prompt(
                 ctx["criteria"], chunk_rows[index], sources, first, second, nonce
             ),
-        })
-    graded = run_graders(grader_plan, args.jobs)
+        }
+
+    runner_out, graded = run_pipeline(plan, grader_item, args.jobs)
     ctx["mapping"] = mapping
     ctx["runner_paths"] = {
         f"c{index}-{arm}": str(path) for (index, arm), (_, path) in runner_out.items()
@@ -243,10 +241,19 @@ def build_context(args: argparse.Namespace, ctx: dict, arms: dict, dn: dict,
         "new_dir": str(ctx["skill_dir"]),
         "new_version": arms["new_version"],
         "new_files": len(arms["new_files"]),
+        # The blob is the exact text the runner was given, so its hash is the
+        # only honest answer to "did these rounds measure the same skill?".
+        # A version string is a claim; an unbumped edit leaves it unchanged.
+        "new_blob_sha256": hashlib.sha256(
+            arm_blob(arms["new_files"]).encode("utf-8")
+        ).hexdigest(),
         "baseline_ref": baseline[0],
         "baseline_dir": baseline[1],
         "base_version": arms["base_version"],
         "base_files": len(arms["base_files"]),
+        "base_blob_sha256": hashlib.sha256(
+            arm_blob(arms["base_files"]).encode("utf-8")
+        ).hexdigest(),
         "runner": args.runner,
         "runner_model": CODEX_MODEL if args.runner == "codex" else CLAUDE_MODEL,
         "grader": args.grader,
@@ -296,19 +303,38 @@ def write_outputs(report: dict, out_path: Path) -> None:
 
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
-    parser.add_argument("skill", help="skill slug under skills/")
+    parser.add_argument("skill", nargs="?", help="skill slug under skills/")
     parser.add_argument(
-        "--baseline", required=True, metavar="REF[:DIR]",
+        "--baseline", metavar="REF[:DIR]",
         help="git ref for the comparison arm, with an optional skill-dir override",
     )
+    parser.add_argument(
+        "--aggregate", nargs="+", metavar="RESULTS.json",
+        help="score N completed rounds together instead of dispatching a new one",
+    )
     parser.add_argument("--ids", help="run a subset, e.g. 1-9,20; marks the run partial")
-    parser.add_argument("--jobs", type=int, default=6, help="concurrency cap (default 6)")
+    parser.add_argument("--jobs", type=int, default=12, help="concurrency cap (default 12)")
     parser.add_argument("--runner", choices=FAMILIES, default="codex")
     parser.add_argument("--grader", choices=FAMILIES, help="default: the family the runner is not")
     parser.add_argument("--allow-same-family", action="store_true")
     parser.add_argument("--out", help="report path (default skills/<skill>/evals/results-<date>-run-case.md)")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
+    if args.aggregate:
+        conflicting = [
+            name for name, value in (
+                ("skill", args.skill), ("--baseline", args.baseline),
+                ("--ids", args.ids), ("--out", args.out),
+            ) if value
+        ]
+        if conflicting:
+            parser.error(
+                f"--aggregate scores rounds that already exist; it dispatches "
+                f"nothing, so {', '.join(conflicting)} has no meaning here"
+            )
+        return args
+    if args.skill is None or args.baseline is None:
+        parser.error("a skill slug and --baseline are required unless --aggregate is used")
     if args.grader is None:
         args.grader = "claude" if args.runner == "codex" else "codex"
     if args.grader == args.runner and not args.allow_same_family:
@@ -319,6 +345,13 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     if args.jobs < 1:
         parser.error(f"--jobs must be at least 1, got {args.jobs}")
     return args
+
+
+def run_aggregate(args: argparse.Namespace) -> int:
+    rounds = tuple(load_round(Path(p)) for p in args.aggregate)
+    agg = aggregate(rounds)
+    print(aggregate_markdown(agg))
+    return 0 if agg["ship"] else 1
 
 
 def run(args: argparse.Namespace, repo_root: Path) -> int:
@@ -360,6 +393,8 @@ def main(argv: list[str]) -> int:
     args = parse_args(argv)
     repo_root = Path(__file__).resolve().parent.parent.parent
     try:
+        if args.aggregate:
+            return run_aggregate(args)
         return run(args, repo_root)
     except RunCaseError as exc:
         print(f"error: {exc}", file=sys.stderr)

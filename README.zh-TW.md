@@ -4,7 +4,7 @@
 
 **寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
-[![Skills](https://img.shields.io/badge/skills-12-6d4aff?style=flat-square)](#技能目錄)
+[![Skills](https://img.shields.io/badge/skills-13-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-12 個技能、4 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+13 個技能、5 個分類。多數會在任務命中 trigger 時自動載入；標了 `invoke-only` 的則要輸入名稱手動啟動。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -103,6 +103,14 @@ tools/sync-skills
 | **結構化學習迴圈**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | 先教後考，筆記你親手寫，它負責查證來源、挑洞、歸檔進 Obsidian |
 | **Obsidian 筆記庫**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | 在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA 結構 |
 | **陪我想一想**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | 陪你想一個雙方都還沒有答案的問題：先展開選項，標出哪句是查到的、哪句是猜的，再拆掉承重假設，留下一份寫明「什麼會推翻它」的紀錄 |
+
+### Agent 工作流
+
+跨語言工具，適用任何能無人值守執行計畫的 agent。
+
+| Skill | 做什麼 |
+|---|---|
+| **計畫轉 Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | 在 agent 自己跑起來之前，把粗略的計畫變成有邊界、完成條件機器可驗的 goal，別讓它對著模糊目標燒 token |
 <!-- CATALOG:END -->
 
 ---
@@ -143,6 +151,7 @@ tools/sync-skills
 | `tools/run-eval <name>` | 觸發層 eval：description 對 `evals/trigger-queries.json` 是否會觸發。 |
 | `tools/run-case <name> --baseline REF[:DIR]` | 行為層 eval：以盲測 runner 與 grader 對 `evals/evals.json` 評分（新版 vs 基準版），輸出 ship／no-ship。需 `evals/run-case.json` 才啟用。 |
 | `tools/check-labels <name> \| --all` | 唯讀的 eval 標籤衛生檢查：`evals.json`／corpus 用到的規則名稱都要對得上真實規則，corpus 的引文片段要是原文的精確子字串。需 `evals/label-check.json` 才啟用。 |
+| `tools/annotate <name> [--ids 15,18-20]` | 盲判讀：把 case 的引文剝掉 expectation 與規則名後呈現，收 1-4 的 AI 指數與一句理由，寫進 `evals/annotations.json`。帳本再渲染進 `evals/judged-cases.md` 的 `annotate:begin/end` 區段；`--check` 在渲染過期時 exit 1。 |
 | `tools/build-docs` | 從 `skills/*/catalog.md` 重新產生 `docs/index.html`、`docs/skills.json`，以及兩份 README 的技能目錄表格。 |
 
 硬規則、永遠載入的部分在 **[CLAUDE.md](CLAUDE.md)**。完整撰寫指南（結構、frontmatter 陷阱、命名、可攜性、測試紀律）在 **[engineering-guidelines.md](engineering-guidelines.md)**。想貢獻的話，請先讀 **[CONTRIBUTING.md](CONTRIBUTING.md)**。

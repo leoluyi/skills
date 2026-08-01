@@ -1,6 +1,6 @@
 # Judged cases
 
-Ground-truth cases the user has already ruled on. Each records the source material, the verdict, what the verdict turned on, and the rule it produced. These pre-date the eval run, so a green result here measures user value, not internal consistency.
+Ground-truth cases the user has already ruled on. Each records the source material, the verdict, what the verdict turned on, and the rule it produced. The hand-written sections below pre-date the eval run, so a green result on them measures user value, not internal consistency. The generated section at the end of this file does not — it collects blind verdicts taken by `tools/annotate` to settle disagreements between a run and the answer key, and so measures whether the key is right. Both are the user's judgment; only their relation to the run differs.
 
 ## 對讀者說教 — 第二人稱教練口吻
 
@@ -125,3 +125,185 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 **What the verdict turned on.** `公式化開場` (`references/zh-rules.md:246-251`) carries a `保留` for openers that 「點名具體脈絡而非類別」. The first sentence is close to the rule's own `抓` example (在當今…的時代) and names no specific context. The second sentence names one — 「我使用 AI 改稿的三個心得」 is a concrete, specific topic, not a category placeholder. `corpus.md` applies the same referent-based logic elsewhere, though under a different rule: H-01's 「今天因為要維護一個 11 年前完工的專案」 and H-02's 「今天我打算用這篇文章來解決上述所有問題」 (`evals/corpus.md:171`, `:198`) are both judged `ok` under `空降斷言開場`'s carve-out (「非指涉未交代之物」) — same underlying question (does the opener name something concrete?), different rule than `公式化開場`. A referent-anchored 「今天…」 opener is not the same defect as a content-free one, regardless of which rule is doing the catching.
 
 **Consequence for the instrument.** `expected_output`/`expectations` split into two: cut the first sentence (time-era framing, loses no information), explicitly protect the second (`no-preview-opener-false-positive`) rather than treating it as a 「預告式導言」 that must also go. `corpus.md`'s A-08 annotation (`:849`) was reconciled to state the same referent-based condition explicitly — its flagged span 「今天想跟大家聊聊」 differs from id 38's second sentence in exactly this way: it names no specific context (what follows is the generic 「怎麼分辨真正有用的工具跟純粹的噱頭」), so it stays flagged; the verdict on A-08 itself is unchanged, only the stated reason is sharpened.
+
+<!-- annotate:begin — generated from evals/annotations.json; edit the ledger, not this block -->
+
+## 逐案判讀（工具產出）
+
+以下由 `tools/annotate` 產生，資料來源是 `evals/annotations.json`——要修改請改帳本，不要改這一段。與上方手寫條目的差別在來源：這些判讀是為了裁決 run 與答案卡的分歧而做的盲判，不早於 eval run，因此它們量的是答案卡的正確性，不是使用者價值。每則只呈現引文與文體，判讀當下作者未看到該案的 expectation、規則名或 bucket。指數 3 與 4 一定附理由；1 與 2 不強制，因此沒有「What the verdict turned on」的條目是作者沒給，不是漏掉。
+
+### id 15（社群貼文）
+
+**Source material.** `evals.json` id 15，一則社群貼文，全案就是這一段：
+
+> 這場工作坊不僅標誌著我們社群經營邁入全新階段，更見證了學習型社群的無限可能，為未來的每一步奠定了堅實的基礎。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 空泛形容詞 ＋ 排比句型
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 16（銷售頁）
+
+**Source material.** `evals.json` id 16，一則銷售頁，全案就是這一段：
+
+> 這是一堂充滿啟發、扎實豐富、令人期待的線上課程，將帶領你突破自我、擁抱改變，邁向職涯的全新高峰。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 形容詞堆疊 ＋ 空洞承諾，整句沒有具體資訊
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 18（電子報）
+
+**Source material.** `evals.json` id 18，一則電子報，全案就是這一段：
+
+> 這不只是一堂課，更是一場自我升級的旅程。重點不是工具，而是思維。真正的效率不是做得更多，而是想得更清楚。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 三段對比句排比，每句都是「不是 X 而是 Y」
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 19（社群貼文）
+
+**Source material.** `evals.json` id 19，一則社群貼文，全案就是這一段：
+
+> 這款筆記工具無縫、直觀、強大，讓你的靈感不再流失，讓你的知識不再散落，讓你的效率不再受限。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 2/4（不確定）。
+
+**What the verdict turned on.** 沒感覺
+
+**Consequence for the instrument.** **判讀為不確定**——本案在 `evals.json` 屬命中類，而作者盲判後不選邊，既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。
+
+### id 20（電子報）
+
+**Source material.** `evals.json` id 20，一則電子報，全案就是這一段：
+
+> 我最近換了一套新的寫作流程——其實也不算全新——重點是先寫爛草稿——對，就是允許自己寫爛——然後隔天再修。這個方法救了我——至少救了我的交稿日。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 3/4（偏 AI）。
+
+**What the verdict turned on.** 太多 —— ，然後看起來就像英文的句法直翻譯
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 22（社群貼文）
+
+**Source material.** `evals.json` id 22，一則社群貼文，全案就是這一段：
+
+> 🚀 新功能上線啦！💡 這次更新真的超有感！✅ 立即體驗，你會回不去！🔥🔥🔥
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 2/4（不確定）。
+
+**What the verdict turned on.** emoji 太多但人也會這樣發
+
+**Consequence for the instrument.** **判讀為不確定**——本案在 `evals.json` 屬命中類，而作者盲判後不選邊，既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。
+
+### id 23（電子報）
+
+**Source material.** `evals.json` id 23，一則電子報，全案就是這一段：
+
+> 以上就是這期電子報的全部內容。希望這對你有幫助！如果你需要我調整任何段落的語氣，隨時告訴我。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 沒AI感
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 24（客服回信）
+
+**Source material.** `evals.json` id 24，一則客服回信，全案就是這一段：
+
+> 這真是一個非常棒的問題！您的觀察完全正確，這確實是許多學員都會遇到的重要疑問。關於您提到的作業繳交方式⋯⋯
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 諂媚開場 ＋ 三句都在誇問題本身，沒回答問題
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 25（銷售頁）
+
+**Source material.** `evals.json` id 25，一則銷售頁，全案就是這一段：
+
+> 未來的職場充滿無限可能，讓我們一起擁抱變化、持續學習，邁向更美好的明天。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 2/4（不確定）。
+
+**Consequence for the instrument.** **判讀為不確定**——本案在 `evals.json` 屬命中類，而作者盲判後不選邊，既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。
+
+### id 26（辦公文書）
+
+**Source material.** `evals.json` id 26，一則辦公文書，全案就是這一段：
+
+> 這個調整可能潛在地會對本季的轉換率產生一定程度的影響，或許值得我們在某種程度上加以關注。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 2/4（不確定）。
+
+**What the verdict turned on.** 「或許值得」這四個字不太會在職場出現
+
+**Consequence for the instrument.** **判讀為不確定**——本案在 `evals.json` 屬命中類，而作者盲判後不選邊，既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。
+
+### id 27（電子報）
+
+**Source material.** `evals.json` id 27，一則電子報，全案就是這一段：
+
+> 由於資訊有限，無法確認該工具最新的定價方案，但根據現有資料，它提供免費與付費兩種版本。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**What the verdict turned on.** 這是人類會寫的
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 29（社群貼文）
+
+**Source material.** `evals.json` id 29，一則社群貼文，全案就是這一段：
+
+> 與其繼續焦慮 AI 會不會取代你，不如現在就開始學習與它協作。畢竟，機會永遠留給準備好的人，不是嗎？
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 2/4（不確定）。
+
+**Consequence for the instrument.** **判讀為不確定**——本案在 `evals.json` 屬命中類，而作者盲判後不選邊，既不支持也不推翻 key。答案卡把它當成方向明確的一案，這個落差本身就是資料。
+
+### id 30（電子報）
+
+**Source material.** `evals.json` id 30，一則電子報，全案就是這一段：
+
+> 小美是我們第三期的學員。這位創作者原本是行政人員，這名內容工作者花了三個月經營自媒體，這位夥伴上個月接到第一筆業配。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** 一句話換了三個主詞
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+### id 31（電子報）
+
+**Source material.** `evals.json` id 31，一則電子報，全案就是這一段：
+
+> 哈佛商學院 2024 年的研究指出，使用第二大腦筆記法的工作者，生產力平均提升 47.3%。愛因斯坦也說過：「複利是世界第八大奇蹟，筆記則是第九大。」
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
+
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+
+### id 32（電子報）
+
+**Source material.** `evals.json` id 32，一則電子報，全案就是這一段：
+
+> 詳細比較可以看這篇評測（https://example.com/review?utm_source=chatgpt.com ）citeturn0search2。以下是清理後的版本，請複製使用：新工具在匯出格式上明顯領先。
+
+**Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 4/4（明確 AI）。
+
+**What the verdict turned on.** citeturn0search2 是 chatgpt 的 artifact
+
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `run-case.json` 的 `verdict_class` 推得）。key 未變動。
+
+<!-- annotate:end -->

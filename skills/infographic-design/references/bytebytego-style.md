@@ -72,8 +72,9 @@ and a place.** Concretely:
    is how you render an invisible operation like encryption or hashing.
 
 2. **Spatialize the logical relationship.** Dependency, flow, hierarchy, and
-   containment become position, arrows, nesting, and lanes — never prose. If a
-   caption merely narrates what an arrow already shows, cut the caption. Static
+   containment become position, arrows, nesting, and lanes; prose carries only
+   what geometry cannot. If a caption merely narrates what an arrow already
+   shows, cut the caption. Static
    SVG: tiers as labeled horizontal bands, "A is part of B" as a nested
    rounded-rect, "A depends on B" as a directed edge, "these are peers" as
    equal-weight siblings on one row.
@@ -88,12 +89,12 @@ and a place.** Concretely:
    availability, push vs pull) become a side-by-side comparison with visible
    pros/cons, so the tension is *seen*, not read. Static SVG: the comparison
    archetype — one column per approach, aligned pro/con rows (tick/cross by
-   shape, never colour alone).
+   shape, with colour as reinforcement so the mark survives a greyscale print).
 
 5. **Sequence a progressive reveal.** ByteByteGo animates overview → detail →
    trade-offs; a static canvas can't, so **serialize** it: a strip of small
    multiples (or numbered zoom-ins), each making one point, read left to
-   right. Don't try to show all three depths in one dense frame — that's the
+   right. Give each depth its own frame: three depths in one frame is the
    density trap that makes a "one image" oversimplify.
 
 Guiding test: for every abstract noun in the content, ask "what object is it,
@@ -114,8 +115,8 @@ write a label where you should draw a thing.
   them monochrome (tint with theme color), not full-color vendor logos, so
   the palette stays controlled.
 - **Connectors**: 2px, arrowhead at the destination, gentle orthogonal
-  routing (right-angle elbows) that never crosses another connector where
-  avoidable. Request path in the theme color, response/return path in a
+  routing (right-angle elbows) that routes around other connectors wherever the
+  layout allows. Request path in the theme color, response/return path in a
   muted neutral or dashed — the split reads instantly.
 - **Lanes / grouping**: when steps span tiers (client / gateway / service /
   DB), use faint labeled bands or a light background per tier so the reader
@@ -140,11 +141,12 @@ that separate a reference diagram from a thinned-out walkthrough:
    the server's. A card floating between lanes loses the who-does-this
    information the lanes exist to carry.
 
-3. **Draw derivations as data-flow, never assert them in text.** If the
+3. **Draw derivations as data-flow.** A sentence stating the conclusion is the
+   thing this replaces. If the
    mechanism's point is that things *combine* (inputs → output, A+B+C →
    session key), show converging arrows into the result — on every party that
-   performs the combination, mirrored if both do. A sentence states the
-   conclusion; the converging mini-diagram lets the reader verify it. Give
+   performs the combination, mirrored if both do. The converging mini-diagram
+   lets the reader verify the claim instead of taking it on trust. Give
    recurring tokens a letter badge (A/B/C) plus a one-line footer legend.
 
 The failure mode these prevent: drift below the home position — parties
@@ -156,9 +158,9 @@ isn't *drawn*, the diagram isn't at home yet.
 ## Palette and tone
 
 Restrained and technical: one neutral surface, one theme color for the
-primary flow, one accent for step badges / the focal component. Avoid the
-rainbow — in these diagrams color carries meaning (request vs response,
-tier), so spending it on decoration destroys that signal. See
+primary flow, one accent for step badges / the focal component. Hold the
+palette to those three — in these diagrams color carries meaning (request vs
+response, tier), so every hue spent on decoration costs signal. See
 `color-typography.md`; the "Modern tech (dark)" and "Corporate trust"
 palettes both suit this style.
 
@@ -166,9 +168,9 @@ palettes both suit this style.
 appear in ≤3 places. Numbered step badges are a *system* use of the accent —
 one repeating element type — so a row of badges counts as **one** accent use,
 not one per badge. Keep the badge system, but then spend at most one *other*
-accent moment (usually the final payoff band); don't also accent a node, a
-title, and an arrow, or the sequence stops reading as the single accented
-thing.
+accent moment (usually the final payoff band). Once a node, a title and an
+arrow each take the accent too, the sequence stops reading as the single
+accented thing.
 
 ## When NOT to use this style
 

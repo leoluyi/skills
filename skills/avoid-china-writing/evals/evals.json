@@ -136,6 +136,31 @@
         "protects-identifiers: encodeVideo()、video_cache、defaultConfig 屬程式識別字，一律不動——即使 Video／cache／default 對應到被列管的詞。",
         "no-overreach-into-code: 不把識別字裡的英文當成待在地化的內容處理。"
       ]
+    },
+    {
+      "id": 13,
+      "prompt": "幫我把這段改成台灣正體中文的寫法:「這份報告下週一交,共有三個章節,請先看第二節. 版本是 v1.2.3,截止時間 3/31 23:59,預算上限 1,000,000 元. 細節請看 https://example.com/docs?a=1,b=2,程式碼在 render(a, b) 這一行. The English sentence here keeps its own punctuation, of course.」",
+      "expected_output": "半形標點軸（ported SF-15）。中文句子誤用半形逗號與句號，其餘半形標點各自落在排除項裡：版本號、時間、數字千分位、URL query、程式碼引數、英文句。這一案同時測「抓得到」與「不濫抓」，並測 tier 是否標成 P2、是否說明它不是陸源訊號。",
+      "expectations": [
+        "catches-halfwidth-in-chinese：中文句子裡的半形逗號與句號全數標出，改成全形「，」「。」。",
+        "keeps-version-and-time：v1.2.3 的點號與 23:59 的冒號保留半形，未被改成全形。",
+        "keeps-thousands-separator：1,000,000 的千分位逗號保留半形。",
+        "keeps-url-and-code：URL query 裡的 ?a=1,b=2 與 render(a, b) 的標點原樣保留。",
+        "keeps-english-sentence-punctuation：英文句子的逗號與句號保留半形。",
+        "tier-p2：半形標點列為 P2，與 P0／P1 的陸源判斷分開陳述。",
+        "not-a-prc-signal：報告明說半形標點是台灣排版慣例問題，不是文件來自大陸的證據。"
+      ]
+    },
+    {
+      "id": 14,
+      "prompt": "這則貼文幫我看有沒有大陸用詞：「這個視頻的質量真的很高，博主整理的信息也很完整，講話又接地氣，難怪粉絲量漲得這麼快。」",
+      "expected_output": "社群語域堆疊（ported SF-14）。視頻與質量 已有其他案覆蓋，信息／博主／接地氣 三個詞在既有案例中一次也沒出現。這一案的價值不在單詞，而在五個詞同時出現在一段社群語域文字裡，測 term-table 的深查在口語貼文語境下是否照樣發生。",
+      "expectations": [
+        "catches-social-register-terms：視頻→影片、質量→品質、博主→部落客、信息→資訊／訊息、接地氣→生活化／貼近日常 全數標出。",
+        "loads-term-table：信息／博主／接地氣 需要查 references/term-table.md，而不是憑 SKILL.md inline seed 硬猜。",
+        "xinxi-sense-choice：信息 依語境選「資訊」（泛指）而非「訊息」（一則），並說明選擇理由。",
+        "keeps-social-register：改寫後仍是社群貼文的語氣，未被拉成正式書面語。"
+      ]
     }
   ]
 }

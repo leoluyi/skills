@@ -4,7 +4,7 @@
 
 **Agent skills that write Traditional Chinese like a real person — straight from my `~/.skills`.**
 
-[![Skills](https://img.shields.io/badge/skills-12-6d4aff?style=flat-square)](#skill-catalog)
+[![Skills](https://img.shields.io/badge/skills-13-6d4aff?style=flat-square)](#skill-catalog)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-second-setup)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -73,7 +73,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-12 skills across 4 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+13 skills across 5 categories. Most fire automatically when a task matches their trigger; ones marked `invoke-only` you call by name. Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
@@ -108,6 +108,14 @@ Language-agnostic professional tools that stand on their own — no Chinese requ
 | **Learn Loop**<br>[`learn-loop`](skills/learn-loop/SKILL.md) `invoke-only` | Get taught and quizzed on a concept, then write the note yourself while it verifies sources and files it into your Obsidian vault |
 | **Obsidian Vault Notes**<br>[`obsidian-vault`](skills/obsidian-vault/SKILL.md) | Search, create, and link notes in an Obsidian vault that stays on PARA / Johnny-Decimal structure and wikilinks |
 | **Discuss With Me**<br>[`discuss-with-me`](skills/discuss-with-me/SKILL.md) | Think through a question neither of you can answer yet — widen the options, label what's found vs guessed, attack the load-bearing assumptions, and leave a record that says what would overturn it |
+
+### Agent Workflow
+
+Language-agnostic; runs on any agent that can execute a plan unattended.
+
+| Skill | What it does |
+|---|---|
+| **Plan → Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | Turn a rough plan into a bounded goal with machine-checkable done conditions, before an autonomous run burns tokens on a vague target |
 <!-- CATALOG:END -->
 
 ---
@@ -148,6 +156,7 @@ tools/sync-skills
 | `tools/run-eval <name>` | Trigger-layer eval: does the description fire on `evals/trigger-queries.json`? |
 | `tools/run-case <name> --baseline REF[:DIR]` | Behaviour-layer eval: score `evals/evals.json` new-vs-baseline through blind runners and graders, and report ship/no-ship. Opt-in — needs `evals/run-case.json`. |
 | `tools/check-labels <name> \| --all` | Read-only eval hygiene gate: every rule label in `evals.json`/corpus resolves to a real rule name, every corpus 引文片段 is an exact substring. Opt-in — needs `evals/label-check.json`. |
+| `tools/annotate <name> [--ids 15,18-20]` | Blind adjudication: show a case's span with the expectation and rule name stripped, take an AI 指數 1-4 plus a rationale, and record it in `evals/annotations.json`. Renders the ledger into `evals/judged-cases.md` between `annotate:begin/end`; `--check` fails if that render is stale. |
 | `tools/build-docs` | Regenerate `docs/index.html`, `docs/skills.json`, and both READMEs' catalog tables from `skills/*/catalog.md`. |
 
 The hard, always-loaded rules are in **[CLAUDE.md](CLAUDE.md)**. The full authoring guide — anatomy, frontmatter gotchas, naming, portability, and test discipline — is in **[engineering-guidelines.md](engineering-guidelines.md)**. To contribute, start with **[CONTRIBUTING.md](CONTRIBUTING.md)**.

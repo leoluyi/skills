@@ -1,0 +1,45 @@
+{
+  "fixture": "evals/evals.json",
+  "ledger": "evals/annotations.json",
+  "rendered": "evals/judged-cases.md",
+  "render_marker": "annotate",
+  "verdict_class_from": "evals/run-case.json",
+  "genres": [
+    "社群貼文",
+    "銷售頁",
+    "電子報",
+    "電子報長文",
+    "電子報長文節錄",
+    "辦公文書",
+    "客服回信",
+    "部落格",
+    "部落格草稿",
+    "觀點文",
+    "technical-blog",
+    "docs 語境",
+    "公文語境",
+    "API 文件",
+    "簽呈",
+    "專案報告",
+    "README 草稿",
+    "知識文件正文",
+    "技術文件正文"
+  ],
+  "genre_aliases": {
+    "docs／正式文件": "docs 語境"
+  },
+  "leak_tokens": [
+    "改編自",
+    "speak-human-tw",
+    "SF-",
+    "SNF-",
+    "真人",
+    "真實",
+    "AI 味",
+    "voice profile",
+    "carve-out",
+    "保護清單",
+    "adversarial",
+    "Should-fix"
+  ]
+}

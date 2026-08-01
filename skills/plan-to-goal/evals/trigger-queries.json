@@ -1,0 +1,70 @@
+{
+  "skill_name": "plan-to-goal",
+  "queries": [
+    {
+      "id": 1,
+      "query": "我 plan mode 剛想好一個重構計畫，但還很粗。幫我把它變成一個可以自動跑的 goal。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/rough-plan-to-goal"
+    },
+    {
+      "id": 2,
+      "query": "這個計畫你幫我補完，然後讓它自己跑完，不要中途一直問我。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/run-autonomously"
+    },
+    {
+      "id": 3,
+      "query": "Turn this plan into a /goal I can kick off and walk away from.",
+      "should_trigger": true,
+      "category": "positive/en/make-this-a-goal"
+    },
+    {
+      "id": 4,
+      "query": "Plan mode is done. What's next — how do I get the agent to actually execute all of this on its own?",
+      "should_trigger": true,
+      "category": "positive/en/post-plan-mode-next-step"
+    },
+    {
+      "id": 5,
+      "query": "I want to run this migration plan unattended overnight. Give me something with clear completion criteria so it doesn't drift.",
+      "should_trigger": true,
+      "category": "positive/en/completion-criteria-for-autonomous-run"
+    },
+    {
+      "id": 6,
+      "query": "幫我想一個把 auth 從 session 換成 JWT 的計畫，還沒有計畫，從頭規劃。",
+      "should_trigger": false,
+      "category": "negative/plan-from-scratch",
+      "note": "Writing the plan itself is plan mode's job; this skill starts from an existing plan."
+    },
+    {
+      "id": 7,
+      "query": "幫我把這個一行 typo 修好就好。",
+      "should_trigger": false,
+      "category": "negative/task-too-small",
+      "note": "A goal spec is overhead for a one-line fix."
+    },
+    {
+      "id": 8,
+      "query": "把這份專案規劃寫成正式的簽呈給主管核可。",
+      "should_trigger": false,
+      "category": "negative/formal-doc-routes-elsewhere",
+      "note": "Formal internal business document — formal-doc-structure's job, no autonomous execution involved."
+    },
+    {
+      "id": 9,
+      "query": "這個計畫的第三步為什麼要先做 migration？跟我解釋一下。",
+      "should_trigger": false,
+      "category": "negative/explain-the-plan",
+      "note": "User wants an explanation of an existing plan, not a goal spec for running it."
+    },
+    {
+      "id": 10,
+      "query": "Set up a cron job that runs the test suite every morning and posts failures to Slack.",
+      "should_trigger": false,
+      "category": "negative/scheduling-not-goal-spec",
+      "note": "Scheduling an existing command, not converting a rough plan into a bounded goal."
+    }
+  ]
+}

@@ -10,6 +10,7 @@ import hashlib
 import json
 import re
 import subprocess
+import sys
 from pathlib import Path
 
 from run_case.errors import DispatchError, Row
@@ -206,30 +207,6 @@ def worker_failure(item: dict, exc: Exception) -> str:
     )
 
 
-def run_runners(plan: list[dict], jobs: int) -> dict[tuple[int, str], tuple[str, Path]]:
-    results: dict[tuple[int, str], tuple[str, Path]] = {}
-    errors: list[str] = []
-    with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as pool:
-        futures = {
-            pool.submit(
-                dispatch, item["family"], item["prompt"], item["workspace"],
-                item["tag"], RUNNER_TIMEOUT,
-            ): item
-            for item in plan
-        }
-        for future in concurrent.futures.as_completed(futures):
-            item = futures[future]
-            try:
-                results[(item["chunk"], item["arm"])] = future.result()
-            except DispatchError as exc:
-                errors.append(str(exc))
-            except Exception as exc:
-                errors.append(worker_failure(item, exc))
-    if errors:
-        raise DispatchError("runner dispatch failed:\n  " + "\n  ".join(sorted(errors)))
-    return results
-
-
 def grade_chunk(item: dict) -> tuple[dict, ...]:
     """Grade one chunk, redispatching once when the returned rows do not match."""
     problems = []
@@ -249,22 +226,102 @@ def grade_chunk(item: dict) -> tuple[dict, ...]:
     )
 
 
-def run_graders(plan: list[dict], jobs: int) -> dict[int, tuple[dict, ...]]:
-    results: dict[int, tuple[dict, ...]] = {}
-    errors: list[str] = []
+def progress(done: int, total: int, tag: str, outcome: str) -> None:
+    """One line per finished job, on stderr.
+
+    stdout is the result surface — ``--dry-run``'s output has to stay
+    parseable — so progress can only go to stderr. ``flush`` is load-bearing:
+    redirected to a file, Python block-buffers, and an unflushed progress line
+    stays invisible until the process exits, which is exactly the 20-minute
+    black box this exists to remove.
+    """
+    print(f"[{done}/{total}] {tag} {outcome}", file=sys.stderr, flush=True)
+
+
+def run_pipeline(runner_plan: list[dict], grader_item, jobs: int
+                 ) -> tuple[dict[tuple[int, str], tuple[str, Path]], dict[int, tuple[dict, ...]]]:
+    """Run every runner and grader in one pool, grading each chunk the moment
+    both of its arms land.
+
+    A chunk's grader depends only on that chunk's own pair, so the barrier
+    between the two phases was costing a full wave of wall-clock for nothing:
+    the last runner of chunk 5 held back the grading of chunk 0. Sharing one
+    pool keeps the ``--jobs`` cap honest across both kinds of job.
+
+    ``grader_item`` is called with the chunk index and that chunk's two runner
+    texts, and returns the grader job dict — the A/B mapping and prompt cannot
+    be built before the pair exists.
+    """
+    runner_out: dict[tuple[int, str], tuple[str, Path]] = {}
+    graded: dict[int, tuple[dict, ...]] = {}
+    runner_errors: list[str] = []
+    grader_errors: list[str] = []
+    # A chunk whose sibling arm failed must never be graded: half a pair would
+    # be scored against the full key and every row in it would read as a miss.
+    dead_chunks: set[int] = set()
+    # One grader per chunk, but only for chunks whose pair both land — so this
+    # is the ceiling, not a promise. A run that loses runners finishes below it.
+    total = len(runner_plan) + len({item["chunk"] for item in runner_plan})
+    done_count = 0
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=jobs) as pool:
-        futures = {pool.submit(grade_chunk, item): item for item in plan}
-        for future in concurrent.futures.as_completed(futures):
-            item = futures[future]
-            try:
-                results[item["chunk"]] = future.result()
-            except DispatchError as exc:
-                errors.append(str(exc))
-            except Exception as exc:
-                errors.append(worker_failure(item, exc))
-    if errors:
-        raise DispatchError("grader dispatch failed:\n  " + "\n  ".join(sorted(errors)))
-    return results
+        pending = {
+            pool.submit(
+                dispatch, item["family"], item["prompt"], item["workspace"],
+                item["tag"], RUNNER_TIMEOUT,
+            ): item
+            for item in runner_plan
+        }
+        while pending:
+            done, _ = concurrent.futures.wait(
+                pending, return_when=concurrent.futures.FIRST_COMPLETED
+            )
+            for future in done:
+                item = pending.pop(future)
+                kind = item.get("kind", "runner")
+                # Counted here, in the single thread that drains the pool — no
+                # lock needed, and every job reports exactly once whether it
+                # succeeded or died.
+                done_count += 1
+                tag = item.get("tag", "unknown job")
+                try:
+                    result = future.result()
+                except DispatchError as exc:
+                    (grader_errors if kind == "grader" else runner_errors).append(str(exc))
+                    dead_chunks.add(item["chunk"])
+                    progress(done_count, total, tag, "FAILED")
+                    continue
+                except Exception as exc:
+                    (grader_errors if kind == "grader" else runner_errors).append(
+                        worker_failure(item, exc)
+                    )
+                    dead_chunks.add(item["chunk"])
+                    progress(done_count, total, tag, "FAILED")
+                    continue
+                progress(done_count, total, tag, "ok")
+                if kind == "grader":
+                    graded[item["chunk"]] = result
+                    continue
+                index = item["chunk"]
+                runner_out[(index, item["arm"])] = result
+                if index in dead_chunks:
+                    continue
+                if (index, "new") in runner_out and (index, "base") in runner_out:
+                    job = dict(
+                        grader_item(
+                            index,
+                            runner_out[(index, "new")][0],
+                            runner_out[(index, "base")][0],
+                        ),
+                        kind="grader",
+                    )
+                    pending[pool.submit(grade_chunk, job)] = job
+
+    if runner_errors:
+        raise DispatchError("runner dispatch failed:\n  " + "\n  ".join(sorted(runner_errors)))
+    if grader_errors:
+        raise DispatchError("grader dispatch failed:\n  " + "\n  ".join(sorted(grader_errors)))
+    return runner_out, graded
 
 
 def reconcile(chunk_rows: dict[int, tuple[Row, ...]], graded: dict[int, tuple[dict, ...]],

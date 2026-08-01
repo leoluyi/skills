@@ -5,55 +5,87 @@ Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md) 
 
 Closed items do not stay here — see `design-notes.md`, `evals/results-*.md`, and commits.
 
-## Blocking: 2.0.0 has an unmeasured fix on it
+## Open: the protection class is noisy at the row level
 
-- [ ] **Re-run `evals.json` against the current branch.** The harness now exists:
+2.1.0 shipped on the aggregate gate (`evals/results-2026-08-01-run-case-aggregate.md`): zero
+confirmed protection false kills over three rounds, both class means well clear of 1.5.0. What
+the rounds also showed is worth keeping in view — across ten rounds on two skill states, the
+new arm's protection failures landed on **eight different rows** and no row failed
+consistently. Two rows are one round short of confirmation as of 2026-08-01:
 
-  ```
-  tools/run-case humanizer-zh --baseline 520d5bb:skills/avoid-ai-writing-zh
-  ```
+- **id 9 `全域:保真`** — the arm turned 「資安設定沿用既有範本即可」 into a bracketed gap
+  request, deleting a real fact. The 空洞就標出來 habit reaching a sentence that is not hollow.
+- **id 28 `no-single-instance-false-positive`** — a lone 解說導引腔 guide phrase flagged
+  despite the density carve-out, usually by a neighbouring rule collecting the same span.
 
-  The `:<dir>` is required because 1.5.0 predates the rename. Three numbers moved while the
-  tool was being built, so read them before comparing anything: the denominator is **98**
-  (`89 raw − 3 ground-truth-note + 4 rewrite cases × 3 global checks`), not 88 — id 17 left,
-  55/56/57 arrived, id 38 split. A second, smaller denominator of **87** governs the
-  comparison against 1.5.0, because that version has no `--expect-author` at all (it shipped
-  `--structure-signals`), so ids 1/4/55/56 — 11 scored rows — cannot be held against it.
-  And the paired blind grading the tool does is a different instrument from the single-arm
-  grading behind 83/88 and 87/88; those two numbers are history, not bars. The 1.5.0 arm of
-  the first run is the new bar.
+Neither is a defect on the record yet, and patching what a single round happens to red is how
+the hit class gets eaten by carve-outs. The thing to watch is whether either crosses 2-of-N in
+a later aggregate.
 
-  The last full measurement is
-  `evals/results-2026-07-30-evals54-v2.md`: **83/88, two protection-class reds**, which failed
-  the ship gate (`regression-protocol.md` makes 保護類誤殺 0 absolute, not comparative) and
-  sent `main` back to 1.5.0. Two behaviour-bearing commits have landed since, and **neither has
-  been measured**:
-  - `958cd44` gates carve-out rulings on quotable evidence — the intended fix for the two reds.
-    Root cause was one mechanism, not two: co-locating carve-outs beside their rules (which is
-    what fixed 1.5.0's anti-co-location defect and drove a clean 25/25 on protection-only
-    cases) also made carve-outs more available at judgment time, so they spared hit-class text
-    and, on ids 6/7, misfired on protected text.
-  - `be5a09d` renamed 結構級訊號 → 作者隱身 and settled the genre gate: the flag became
-    `--expect-author` and now *sets* the genre verdict instead of bypassing the gate, ids 13/14
-    dropped the flag so they test the gate default, and **ids 55/56 were added** — so the
-    denominator is no longer 88 and the 83/88 and 87/88 numbers are both stale as bars.
-  Until this run exists, the branch has no score. Do it before any further rule edits.
+## 下一輪，照這個順序做
 
-  The five reds that run has to clear, each confirmed by two independent graders at two
-  strictness levels: **id 6** 保護 不代筆 (flags an under-delivered claim, then writes the
-  missing specification itself, while the same output tells the adjacent paragraph 「本 skill
-  不代筆補寫」), **id 7** 保護 (double-flags 「範圍是開放的，不是固定的」, the exact false
-  positive the case protects against), **id 5** 命中 (no person-shift fix offered), **id 36**
-  命中 (argues the table form is fine rather than collapsing two rows to prose), **id 38** 命中
-  (that run's runner promoted a 「今天，我想跟大家分享」 preamble into the protection list against
-  the *old* key, which called that a miss — but the key was itself wrong, per the ported-case
-  item below; the runner's call was closer to right, and against the fixed key this is no longer
-  expected to be a red).
+The instrument is not a clean bar either, and everything in this section changes the key —
+which forces a re-baseline of **both** versions and a from-scratch re-run of the aggregate
+gate's rounds. That cost is paid once per round, not once per item, so these four land
+together and re-baseline once at the end. Within the round, do them one at a time rather
+than interleaving; **step 1 exists to make step 2 affordable.**
 
-## The instrument is not a clean bar either
+### 1. `tools/annotate` — 判讀輔助工具
 
-Both of these change the key, so both force a re-baseline of **both** versions. Sequence them
-against the run above rather than interleaving.
+- [x] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
+  straight out of the session that found it. When a run disagrees with the key, the fastest
+  way to settle it turned out not to be reading rule text — it was showing the author the raw
+  sentence and asking 「這句有沒有 AI 味？」 with two buttons. Four such questions overturned
+  three cases in one round, where two rounds of rule-wording argument had settled nothing.
+  The tool should: pull a case's quoted span out of `evals.json`, present span + genre + one
+  line of context (never the expectation, never the rule name — those bias the answer), take
+  有/沒有, and write the verdict plus a one-line rationale into `evals/judged-cases.md` as
+  品味層 語料, flagging any case whose verdict now contradicts its `expected-direction`. Runs
+  over a filtered set (a whole id range, or only cases that failed a given run). Dev-side,
+  `uv` fine, never part of skill runtime. The immediate consumer is step 2: resuming that
+  sweep by hand is the same transcription tax a second time.
+
+  落地 2026-08-01。實際行為與上面這段原始描述有兩處差異，先記在這裡：
+
+  - **判讀先進帳本，`judged-cases.md` 由帳本渲染。** `evals/annotations.json` 是機器可讀的
+    真相來源，`judged-cases.md` 末端一個 `annotate:begin/end` 圍起來的區段從它渲染而來，
+    marker 外一個 byte 不動。續跑狀態只讀帳本——散文檔沒有機器可讀的 case id，任何解析器
+    都會在有人重排標題的那天開始靜默漏案。
+  - **判讀是 1-4 的 AI 指數，不是 有/沒有。** 原描述寫的是兩個按鈕；實際第一次判讀時作者
+    自己就伸手要了一個程度（「AI指數70%: 過分空虛的形容詞…但不排除人也會這樣寫」），二元裝
+    不下那句話。四個固定錨點（1 偏人／2 不確定／3 偏 AI／4 明確 AI）隨每張卡一起印——
+    36 案會跨 session 判，沒有錨點的量表在第一次與第五次之間會漂移，漂移過的分數無法跨案
+    比較，而那正是量表相對二元的唯一收益。**錨點刻意不對稱**：人側一級、AI 側兩級。這支
+    儀器問的是 AI 味有多強，所以解析度值得花在 AI 端——「明確人寫」與「偏人」對任何下游讀者
+    都是同一件事（這不是 AI），而「偏 AI」與「明確 AI」分開的是規則該抓與必須抓。
+    **2「不確定」不算與 key 一致**：它回傳 `null` 而非 `false`，因為不選邊不是同意；
+    記成同意會讓一堆真正判不出來的案讀起來像答案卡的健康證明。
+  - **比對的是類別，不是 `expected-direction`。** 那個 slug 只是 `run-case.json`
+    `verdict_class.overrides` 的一個條目，多數 case 根本不帶它，照字面無法實作；改成比對
+    **命中／保護**，也就是 ship gate 本來就據以陳述的單位。代價要記著：ids 1、2、6、7、8、9
+    的計分列橫跨兩類又沒有 `bucket` 可據，類別判不出來，這六案只記判讀、不做一致性比對。
+    原措辭隱含這種情況不存在。
+
+  - **理由 3/4 必填、1/2 選填。** 兩者都會問，1/2 的提示標「（選填）」。指向 AI 的判讀是規則
+    寫作的依據，必須說出看到什麼；1 偏人與 2 不確定是訊號的缺席，逼一句話出來只會產出一年後
+    讀起來像證據的填充物。空理由的條目在生成區直接省略 `What the verdict turned on`，規則寫
+    在生成區 intro 講一次，不逐則塞「作者未給理由」。
+  - **`--card ID` / `--record ID`：非互動的兩道門，給 agent TUI 驅動用。** 互動迴圈本來就是
+    呈現、收答、落帳三段；agent 相容不是移植 UI，是把三段拆開讓 agent 當啞管道。`--card` 印
+    卡片（blocked 案 exit 2），`--record` 重跑 `build_card` 驗證後才落帳，從不信任呼叫端上一次
+    `--card` 的輸出。tty 閘只繞這一條——`--record` 語義上就是「答案已在別處收好」。
+
+  單檔 1038 行，超過 `check-labels`（395）這個實質上限，是刻意留的：其中 153 行空行，其餘
+  大半是記錄反例的 docstring——ids 45/48 把引號放在規則名裡、ids 31/41 引文內有巢狀引號，
+  這兩組正是「span 抽取不能用 regex」的證據，而它們都不在 sweep 目標裡，砍掉不會立刻被發現。
+  五個關注點（config／extract／ledger／render／loop）一條線讀得下來，拆 package 還要連帶
+  改名（`tools/annotate` 與 `tools/annotate/` 撞名），不划算。
+
+  另外三案（ids 2、4、12）的 prompt 形狀無法在不洩題的前提下剝乾淨，標為 needs-manual、
+  不進判讀流；全部落在 repo 自撰的 1-12，sweep 目標一案未失。這份名單是 fixture 不變式——
+  它一變就代表有人改了 prompt 形狀，剝離邏輯要重讀。
+
+### 2. ported-case sweep — 續走 id 33
 
 - [ ] **The remaining ~36 ported speak-human-tw cases (ids 15/16, 18–20, 22–27, 29–37, 39–54) are
   still unadjudicated and may hold more taste mismatches with this repo's judgment.** Four cases from
@@ -70,38 +102,25 @@ against the run above rather than interleaving.
   in [`evals/judged-cases.md`](evals/judged-cases.md) — closing the hand-transcription gap this
   item used to note.
 
-  **Resume at ids 15/16, 18** — that is where the sweep stalled (PR #20) before finding these
-  four. Two cases from the same source batch were deliberately *not* ported here because they
+  **進度 2026-08-01：15/36 判完，續跑從 id 33 開始。** 已判 ids 15、16、18、19、20、22、23、
+  24、25、26、27、29、30、31、32；剩 ids 33-37、39-54。判讀走 `tools/annotate` 的
+  `--card` / `--record`，帳本在 [`evals/annotations.json`](evals/annotations.json)，
+  渲染結果在 `judged-cases.md` 的 `annotate:begin/end` 區段。**與 key 相左 3 例：ids 23、27、
+  31**，三案都是作者判 1 偏人而 key 屬命中類。要不要改 key 是第 3 項與第 4 項的決定，
+  這一步只記錄，`evals.json` 未動。
+
+  這輪判讀期間修掉的一個真 bug：span 抽取用 `strip("「」")` 剝界定符，會連帶吃掉以巢狀引號
+  結尾的內層 `」`（id 31「…愛因斯坦也說過：「複利是…第九大。」」少一個收尾），等於拿一段
+  fixture 裡不存在的文字去問作者。改成剝頭尾各一字元。已記的判讀 digest 無漂移。
+
+  The sweep originally stalled at ids 15/16, 18 (PR #20) before finding those four; that stall
+  is what `tools/annotate` was built to clear, and ids 15-32 above are the first stretch it
+  cleared. Two cases from the same source batch were deliberately *not* ported here because they
   test the 陸用語／簡體殘留 axis; they are tracked in
   [`skills/avoid-china-writing/backlog.md`](../avoid-china-writing/backlog.md), and neither side
   blocks the other.
 
-- [ ] **`模糊歸屬` may be scoped too wide — id 17's adjudication found it catching a defect
-  ordinary human writers also commit, not just an AI tell.** The author ruled a 「業界專家普遍認為」
-  -shaped sentence has no AI 味, in isolation, even after being shown the rule's own 抓／保留 text
-  (`references/zh-rules.md:218-222`) — reasoning 「規則本身抓得太寬」「是一般人類文章也可能犯的錯誤」；
-  full record in [`evals/judged-cases.md`](evals/judged-cases.md). Explicitly scoped to that one
-  case by the author, not a mandate to change the rule now — but the shape is worth naming:
-  `解說導引腔` already has a density carve-out (a single instance doesn't count, only stacking
-  does — `references/zh-rules.md:58-63`); `模糊歸屬` has no isolated-instance equivalent. Whether
-  it needs one — and whether other rules share the gap — is a behaviour change and needs its own
-  branch and re-run, not a fold-in to a key-fix round. `corpus.md`'s A-06 (`:789`) is the
-  distinguishing datapoint already on record: the same 模糊歸屬 pattern there co-occurs with
-  `對比句式` and a 「值得深思的現象」 framing sentence, and stays flagged — so any fix is about
-  isolation, not about weakening the rule wholesale.
-
-- [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
-  widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
-  generally-understood term belongs (「兩條路」→「兩個方式」; ruling in `evals/judged-cases.md`).
-  Nothing measures it yet:
-  - **Hit case** — id 7's 「兩條路」 is the adjudicated example but is not in that case's key.
-  - **Protection case** — this is the one that matters. Widening a catch from verbs to nouns
-    and phrases puts every figurative noun in range, so a register that legitimately carries
-    figuration must be shown to survive: `casual` voice, and a 署名文體 draft whose metaphor
-    system is declared under 保護清單⑥. The two carve-outs written for it (已成通用術語的比喻;
-    宣告過的比喻系統) are untested prose until a case fires at them.
-  Until both exist, treat the widening as unverified — it is the kind of change that buys one
-  hit and pays for it in false positives nobody measured.
+### 3. `evals.json` 三個結構缺陷
 
 - [ ] **Three structural defects in `evals.json`.** Found by the 2026-07-30 54-case run; the
   instrument was left frozen that round so the skill fix stayed comparable to the baseline.
@@ -119,117 +138,115 @@ against the run above rather than interleaving.
   not merely bundled; the fix rewrote the direction rather than decomposing it. The remaining
   unadjudicated ported cases may hold more of either shape.
 
-- [ ] **`corpus.md` is saturated — it detects regressions, it does not measure progress.**
-  1.5.0 scores 89/89 on it (52/52 protection, 37/37 hits) and 2.0.0 matches at 89/89. Keep
-  running it as a guard, but stop reading a flat 89/89 as evidence of anything. New,
-  unsaturated material is what any future "we are better" claim needs.
+### 4. `口語化萬能詞` 名詞與短語 form 的兩側覆蓋
 
-- [ ] **The English side's evidence is not independent.** Three before/after pairs in
-  `references/en-rules.md` were written while looking at corpus gold fragments (the
-  post-regression patch), so the English hits they produce are recognition, not derivation.
-  Same shape as **id 51**, whose pass may be recognition too — the runner justified its
-  carve-out by citing a rule example that is near-verbatim the test input. Replace both with
-  synthetic material once new, unused English cases exist. Related: no **cross-family judge**
-  was reachable in the 2.0.0 round, so its result supports "no regression detected", never
-  "we are better".
+- [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
+  widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
+  generally-understood term belongs (「兩條路」→「兩個方式」; ruling in `evals/judged-cases.md`).
+  Nothing measures it yet:
+  - **Hit case** — id 7's 「兩條路」 is the adjudicated example but is not in that case's key.
+  - **Protection case** — this is the one that matters. Widening a catch from verbs to nouns
+    and phrases puts every figurative noun in range, so a register that legitimately carries
+    figuration must be shown to survive: `casual` voice, and a 署名文體 draft whose metaphor
+    system is declared under 保護清單⑥. The two carve-outs written for it (已成通用術語的比喻;
+    宣告過的比喻系統) are untested prose until a case fires at them.
+  Until both exist, treat the widening as unverified — it is the kind of change that buys one
+  hit and pays for it in false positives nobody measured.
+
+### 5. rewrite mode 的口語時間表達 保真 case
 
 - [ ] **A 保真 case for colloquial time expressions in rewrite mode.** In the 2026-07-30 run,
   id 40's runner normalised 「3/31 晚上 11:59」 to 「3/31 23:59」 inside its own report. Harmless
   in detect mode (the text was untouched and the verdict stood), but the identical reflex in
   rewrite mode is a 保真 failure, and nothing currently tests for it.
 
-## Tooling the adjudication needs
+## `tools/annotate` 的第二個用途 — 人機判定盲測
 
-- [ ] **`tools/annotate` — yes/no adjudication helper for eval cases.** Wanted 2026-07-30,
-  straight out of the session that found it. When a run disagrees with the key, the fastest
-  way to settle it turned out not to be reading rule text — it was showing the author the raw
-  sentence and asking 「這句有沒有 AI 味？」 with two buttons. Four such questions overturned
-  three cases in one round, where two rounds of rule-wording argument had settled nothing.
-  The tool should: pull a case's quoted span out of `evals.json`, present span + genre + one
-  line of context (never the expectation, never the rule name — those bias the answer), take
-  有/沒有, and write the verdict plus a one-line rationale into `evals/judged-cases.md` as
-  品味層 語料, flagging any case whose verdict now contradicts its `expected-direction`. Runs
-  over a filtered set (a whole id range, or only cases that failed a given run). Dev-side,
-  `uv` fine, never part of skill runtime. The immediate consumer is the ported-case sweep
-  above — resuming it at ids 15/16, 18 by hand is the same transcription tax a second time.
+上面第 1 項落地的 `tools/annotate` 判的是 **AI 味**：這句讀起來像不像 AI 的手筆。第二個用途
+問的是另一件事——**這段究竟是不是 AI 寫的**。同一個問作者的迴圈，不同的問題；而後者是驗證任何
+人機判定主張的唯一路線。排在上面那一輪之後，不與 re-baseline 交錯。
 
-  A second use arrived 2026-08-01 and is the reason for the sub-items below: the same
-  ask-the-author-blind loop is also the only way to test **人機判定** claims. A real judgment
-  session that round produced three candidate criteria — 語體漂移 (a sentence trying to be both
-  a bullet heading and a full sentence, standing as neither: nominal front half with no
-  predicate, the only verb stranded sentence-final reaching back across a comma for its object,
-  no licensing marker 「將」「等」「——」 in between, and a comma cannot license fronting);
-  組裝感＋高完成度 as the decisive contradiction (human failure is subtractive — dropped words,
-  missing subjects, inconsistent punctuation; AI has every part present but the frame is skewed,
-  reading frictionlessly until you stop and notice nothing connected); and 結構訊號 outweighing
-  內容訊號 (content can be inherited from a table, a template, or a source document — syntax is
-  generated on the spot). **None of it counts as evidence.** That session was not blind: the
-  annotator knew the answer, and mid-session was handed a human-written contrast rewrite that
-  steered the model. No confidence movement in it can be attributed to evidence rather than to
-  persuasion. All three are hypotheses awaiting a blind run, and this tool is the only route.
+2026-08-01 的一次判讀 session 產出三個候選判準：
 
-  **MVP — the least that yields a first usable dataset:** blind presentation (A) + the two
-  required output fields (B) + ground-truth writeback (C). Everything after that widens the
-  claim; those three make it a measurement at all.
+- **語體漂移** — 一句話同時想當條列標題與完整句子，兩邊都不成立：前半名詞化而無謂語，唯一的
+  動詞卡在句末、跨過一個逗號回頭找受詞，中間沒有「將」「等」「——」任何一個授權標記，而逗號
+  授權不了這種前置。
+- **組裝感 ＋ 高完成度，這個矛盾才是決定性的** — 人的失敗是減法：漏字、缺主詞、標點不一致；
+  AI 每個零件都在，但框架是歪的，讀起來毫無阻力，停下來才發現沒有一處真的接上。
+- **結構訊號重於內容訊號** — 內容可以從一張表、一份模板、一份來源文件繼承而來，語法是當場
+  生成的。
 
-  - [ ] **(A) Blind presentation.** Hide labels, randomise item order, and never disclose the
-    AI share of the set — a stated ratio turns the task into counting rather than judging, and
-    the annotator's prior alone will then hit the reported base rate. Prerequisite for every
-    item below; nothing here means anything if the annotator can infer the answer.
+**這三項都不算證據。** 那場 session 不是盲測：判讀者知道答案，中途又拿到一份人寫的對照改寫，
+模型被引導過。裡面任何信心度的移動都無法歸因於證據而非說服。三項都是待盲測驗證的假設。
 
-  - [ ] **(B) Required per-judgment fields: 信心度 and 證據類型.** Confidence is mandatory, not
-    optional, because a calibration curve cannot be reconstructed after the fact. 證據類型 records
-    whether the primary evidence was 語法類 or 詞彙類 — that field is the whole test of the
-    結構訊號 > 內容訊號 claim, and without it the run answers only "were we right", never "was
-    the reason right".
+**MVP —— 拿到第一份可用資料集的最小集合：** 盲呈現 (A) ＋ 兩個必填欄位 (B) ＋ ground-truth
+回寫 (C)。少於這三項，跑出來的東西根本不構成量測。
 
-  - [ ] **(C) Ground-truth writeback.** After a judgment closes, the annotator reveals the true
-    source and the tool writes it straight into `skills/humanizer-zh/evals/evals.json`. Reveal
-    must be strictly after the verdict is recorded — a reveal that can be triggered early is
-    just (A) with extra steps. Depends on (A).
+- [ ] **(A) 盲呈現。** 藏標籤、隨機化順序，並且絕不揭露這一批的 AI 佔比——講出比例會把判讀變成
+  數數而不是判斷，判讀者光靠先驗就能命中報出來的 base rate。既有的判讀卡已經藏掉 expectation
+  與規則名，那是為了不洩題給 AI 味判讀；這裡要藏的是**來源**，是另一層。以下每一項的前提：判讀
+  者若推得出答案，這裡沒有一項還有意義。
 
-  - [ ] **(D) Paired corpus — same content, human version and AI version side by side.** Holds
-    subject matter and vocabulary constant so a correct call can only have come from structure.
-    Corpus work, not tool code — it can be collected in parallel with (A)–(C), but the
-    結構訊號 > 內容訊號 claim is not testable without it, so (B)'s 證據類型 field is under-powered
-    until this lands.
+- [ ] **(B) 每則判讀必填 信心度 與 證據類型。** 信心度必填而非選填，因為校準曲線無法事後重建。
+  既有的 1-4 AI 指數只部分覆蓋它：那把尺量的是 AI 味有多強，錨點 2「不確定」回傳 `null` 已經
+  是不選邊的出口，但人機判定要的是「有多確定這段是 AI 寫的」——量的東西不同，錨點文字要另寫，
+  不能沿用。證據類型記的是主要證據屬 語法類 或 詞彙類，那個欄位就是 結構訊號 > 內容訊號 這項
+  主張的全部檢驗；沒有它，一輪跑完只答得出「我們判對了沒」，答不出「理由對了沒」。
 
-  - [ ] **(E) Human blind-label baseline.** Produce a baseline of an unaided human judging the
-    same corpus, not just the existing no-skill model baseline. The question the skill has to
-    answer is whether it beats a person's intuition; against a no-skill model arm it can win and
-    still be worthless. Depends on (A). **Mutually exclusive per sample per annotator:** once
-    someone has judged a sample with the skill, they are no longer a naive baseline on it — the
-    two arms need disjoint annotators or disjoint samples, and running both on the same pair is
-    the failure mode to design against.
+- [ ] **(C) Ground-truth 回寫。** 判讀關閉後由判讀者揭露真實來源，工具寫進帳本。寫入端跟著既有
+  實作走：真相來源是 [`evals/annotations.json`](evals/annotations.json)，`judged-cases.md` 的
+  `annotate:begin/end` 區段從帳本渲染而來，不要繞過帳本直接改 `evals.json`。揭露必須嚴格晚於
+  判讀落帳——揭露若能被提早觸發，(A) 就只是多幾個步驟的擺設。依賴 (A)。
 
-  - [ ] **(F) 難例池 — misjudged samples flow back into `evals.json`.** Prioritise three
-    near-miss classes: 非母語寫作, 翻譯體, 模板填空. All three carry 組裝感 with low 完成度, which
-    is exactly where the 組裝感 criterion will kill real humans. Depends on (C).
+- [ ] **(D) 配對語料 — 同一份內容的人寫版與 AI 版並排。** 把題材與詞彙固定住，判對就只可能是
+  從結構判出來的。這是語料工作不是工具程式，可以與 (A)–(C) 並行收集；但 結構訊號 > 內容訊號
+  這項主張沒有它就測不動，在它落地之前 (B) 的 證據類型 欄位是欠功率的。
 
-  - [ ] **(G) Primary metric is 誤殺率 (human text called AI), not accuracy.** For a de-AI tool a
-    false positive costs more than a miss — it tells an author to rewrite prose that was fine, and
-    at scale it is an accusation. Accuracy hides this: a set with few AI samples scores well while
-    burning every human one. Depends on (C) and (F).
+- [ ] **(E) 人類盲標基線。** 要的是未受輔助的人判同一批語料的基線，不只是現有的 no-skill 模型
+  基線。skill 要回答的是它有沒有贏過一個人的直覺；只跟 no-skill 模型比，它可以贏了還是沒有用。
+  依賴 (A)。**同一則樣本對同一位判讀者互斥**：一旦有人帶著 skill 判過某則樣本，他在那則上就
+  不再是天真基線——兩個 arm 需要不相交的判讀者或不相交的樣本，兩者跑在同一對上正是要設計來
+  避開的失效模式。
 
-  - [ ] **(H) 雙軸評分 (組裝感 × 完成度) — hypothesis, gated on two conditions, both required.**
-    (1) blind data shows the contradiction quadrant actually separates; (2) the separating boundary
-    can be written as SKILL.md criterion prose rather than a score threshold. Meeting (1) alone
-    means the finding is recorded in `design-notes.md` and stops there — it does **not** enter the
-    skill. These two outcomes are mutually exclusive by construction; decide which one the data
-    bought before touching any rule text. Depends on (A)–(C) and (G).
+- [ ] **(F) 難例池 — 判錯的樣本回流成評測案例。** 優先三類近似案：非母語寫作、翻譯體、模板填空。
+  三者都帶著 組裝感 而 完成度 偏低，而那正是 組裝感 這條判準會殺到真人的地方。回流一樣走帳本，
+  再進 `evals.json`。依賴 (C)。
 
-  - [ ] **(I) 最小對照改寫引出器 — debrief-phase only.** Takes a suspect sentence and generates two
-    human-form rewrites (promoted to a full sentence / demoted to a parenthetical note), then diffs
-    all three to locate the defect. **Mutually exclusive with any judging round** — this is the
-    exact contamination that invalidated the 2026-08-01 session, and the tool must refuse to run
-    while a judgment is open rather than merely documenting the rule. Depends on (C).
+- [ ] **(G) 主要指標是 誤殺率（人寫被判成 AI），不是 accuracy。** 對一個去 AI 味的工具而言，
+  false positive 比漏抓貴——它叫作者去重寫本來沒問題的文字，量一大就是一項指控。accuracy 會蓋
+  掉這件事：AI 樣本少的一批可以分數好看，同時把每一則人寫的都燒掉。依賴 (C) 與 (F)。
 
-  Reuse, do not rebuild: `evals.json` read/write and the report rendering already exist under
-  `tools/run-case`, and the 有/沒有 prompt loop is the same one described above — the blind layer
-  is new, the plumbing is not. If this ships, `tools/add-case` in the root
-  [`backlog.md`](../../backlog.md) is redundant and should be closed rather than built.
+- [ ] **(H) 雙軸評分（組裝感 × 完成度）—— 假設，兩個條件都成立才動。** (1) 盲測資料顯示那個
+  矛盾象限真的分得開；(2) 分界能寫成 SKILL.md 的判準散文，而不是一個分數門檻。只滿足 (1) 的
+  意思是這個發現記進 `design-notes.md` 就停在那裡，**不進 skill**。兩種結局在構造上互斥；動任何
+  規則文字之前，先決定資料買到的是哪一種。依賴 (A)–(C) 與 (G)。
+
+- [ ] **(I) 最小對照改寫引出器 —— 只在 debrief 階段。** 吃一句可疑的句子，生成兩個人類形式的
+  改寫（升格成完整句／降格成附註），再把三份互相 diff 來定位缺陷。**與任何判讀輪次互斥**——這正是
+  2026-08-01 那場 session 被汙染的方式，工具必須在判讀未關閉時拒絕執行，而不是只把規則寫在
+  文件裡。帳本已經知道哪些判讀還開著，這道閘有現成的依據。依賴 (C)。
+
+不要重蓋：`evals.json` 的讀寫與報告渲染在 `tools/run-case` 已經有了，問作者的迴圈與落帳在
+`tools/annotate` 自己的 `--card` / `--record` 與帳本也已經有了。新的只有盲的那一層。另外，
+root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落地 ＋ 一輪真實 sweep」
+之後才決定——兩個前置現在都到齊了，而帳本加渲染這條寫入端已經蓋掉它原本想做的事，那一項該下
+結論而不是接著蓋。
 
 ## Behaviour changes, each on its own branch and its own re-run
+
+- [ ] **`模糊歸屬` may be scoped too wide — id 17's adjudication found it catching a defect
+  ordinary human writers also commit, not just an AI tell.** The author ruled a 「業界專家普遍認為」
+  -shaped sentence has no AI 味, in isolation, even after being shown the rule's own 抓／保留 text
+  (`references/zh-rules.md:218-222`) — reasoning 「規則本身抓得太寬」「是一般人類文章也可能犯的錯誤」；
+  full record in [`evals/judged-cases.md`](evals/judged-cases.md). Explicitly scoped to that one
+  case by the author, not a mandate to change the rule now — but the shape is worth naming:
+  `解說導引腔` already has a density carve-out (a single instance doesn't count, only stacking
+  does — `references/zh-rules.md:58-63`); `模糊歸屬` has no isolated-instance equivalent. Whether
+  it needs one — and whether other rules share the gap — is a behaviour change and needs its own
+  branch and re-run, not a fold-in to a key-fix round. `corpus.md`'s A-06 (`:789`) is the
+  distinguishing datapoint already on record: the same 模糊歸屬 pattern there co-occurs with
+  `對比句式` and a 「值得深思的現象」 framing sentence, and stays flagged — so any fix is about
+  isolation, not about weakening the rule wholesale.
 
 - [ ] **Make `detect` the default mode, and ask before rewriting.** Requested 2026-07-30. Today
   `rewrite` is the default and the skill edits text without being asked twice; the wanted

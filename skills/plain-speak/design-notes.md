@@ -91,6 +91,22 @@ banning reader-talk. Cases 13 and 14 are the pair that pins both sides.
 Result: 4/4 vs 1/4 against the unfixed version, regression 4/4, no suppression of the ambiguity flag.
 Log: `evals/results-2026-07-30-context-recall.md` (round 2).
 
+## 這兩個行為，單提示 harness 量不到
+
+`evals.json` 的 8–12 案把逐字稿**嵌在提示裡**測 bare-invocation 的目標解析。這樣測得到
+「有東西可解析時選對了沒有」，測不到解析順序的兩段：
+
+- 跨過純工具工作與狀態訊息、回退到最後一個真正帶推理的 turn；
+- 在有互動提問工具的宿主上，把懸而未決的問題重新提出來。
+
+原因是結構性的：這兩段的輸入是**真實 session 的形狀**（工具呼叫、狀態行、待答問題各自是
+獨立的 turn），而提示裡的逐字稿無論寫得多像，都是一段連續文字。合成材料再多也補不上這個差。
+
+要關掉這個缺口，需要的是真實 session 逐字稿——這兩條路其中之一走錯的那種——收進
+`evals/judged-cases.md`。素材出現前，讀 8–12 案的通過率時記得它涵蓋的範圍到哪裡為止。
+
+---
+
 ## v1.4.0 — 計畫可執行度 (2026-07-28)
 
 **Problem.** The existing `具體優先於抽象` guardrail only had a descriptive face — its
