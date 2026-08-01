@@ -314,9 +314,9 @@ grader 用軟尺。(3) 綁包的 slug 全數拆開（15、16、19、30、32、34
   not merely bundled; the fix rewrote the direction rather than decomposing it. The remaining
   unadjudicated ported cases may hold more of either shape.
 
-### 4e. `語體漂移` 沒過閘 — 三輪停在 NO-SHIP
+### 4e. `語體漂移` 的 ship 過程 — 五輪，收在 r4／r5
 
-- [ ] **`改法` 的括號附註越權到其他 rewrite 案。** 三輪聚合見
+- [x] **`改法` 的括號附註越權到其他 rewrite 案。** 三輪聚合見
   [`evals/results-2026-08-01-drift-aggregate.md`](evals/results-2026-08-01-drift-aggregate.md)。
   命中側是好的：ids 67、68 的四個命中列三輪都是 new pass / base fail，base arm 一次都沒抓到。
   擋住的是保護側——`64/全域:不代筆` 3/3、`64/全域:保真` 2/3，三輪同因：**新版比 2.1.0 更愛在
@@ -325,9 +325,18 @@ grader 用軟尺。(3) 綁包的 slug 全數拆開（15、16、19、30、32、34
   的作用域收進本規則（括號裡只能放原句已有的成分），再重跑。
   `57/preserves-key-figures` 也是 2-of-3，但與括號無關，要再一輪才知道是同源還是獨立。
 
-- [ ] **保護類平均退步 104 → 100.7，不得 ship。** 命中類平均 59 → 61.3 是進步，但依 repo 規約
-  保護側的確認級誤殺是硬條件。規則、eval case 與三份 results 已進 branch，版號已升 2.2.0，
-  **但這是候選、不是已發布**——ship 與否由作者讀報告決定。
+  **處置與結果（r4／r5）**：拿掉 `改法` 行、id 68 的 fix 列改成只要求指向單一語體、id 57 的 key
+  依作者裁決放行「質疑結論依據」。之後連續兩輪 new arm 的保護與命中都勝過 2.1.0（105/104、
+  104/103；62/57、61/59），new-only 保護失分兩輪零重疊，無 2-of-2 確認列，**2.2.0 ship**。
+
+  拿掉 `改法` 這件事值得記住為通則：**一條寫給單一規則的改法手段會外溢成整個 rewrite 模式的
+  習慣**。`64/全域:不代筆` 從 3/3 失分轉為兩輪皆過，只因為刪掉那一行。
+
+- [ ] **三列出現過一到兩輪、機制各不相同，下次動 rewrite 端時回頭看。**
+  `28/no-single-instance-false-positive`（把已放行的導引句改掛他條重標，r2、r4）、
+  `59` 的兩列（r3 反向、r5 正向）、`64/全域:保真`（r1 掉句、r2 插入「原文是」、r4 把
+  「SEO 的死亡」降成「會受到影響」——每輪不同機制而 base 都過）。單看任一輪都像雜訊，
+  合看則指向新版在 rewrite 案上比 2.1.0 更敢動手。
 
 ### 4d. `語體漂移` 缺一側保護：非母語寫作
 
