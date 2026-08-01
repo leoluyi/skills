@@ -2,12 +2,12 @@
 name: humanizer-zh
 description: >-
   Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit a named file in place); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
-version: 2.1.0
+version: 2.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
   author: Lu Yi
-  adaptation: zh-first bilingual design — one canonical rule set (45 rules in 8 classes) instead of two parallel catalogs; most rules carry both a Chinese and an English manifestation, and 12 are Chinese-specific. See design-notes.md.
+  adaptation: zh-first bilingual design — one canonical rule set (46 rules in 8 classes) instead of two parallel catalogs; most rules carry both a Chinese and an English manifestation, and 13 are Chinese-specific. See design-notes.md.
   tags: writing editing voice quality zh-tw traditional-chinese
   agentskills_spec: "1.0"
   openclaw:
@@ -54,7 +54,7 @@ The English in this file is structural labelling for you, not literal output. Ne
 | `detect` | the user says 先標出來就好／不用改／flag only／audit／scan | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. Every flag also carries its **改法方向** — one clause naming what the span should become. The text stays untouched. |
 | `edit` | the user names a file to fix in place | read the file, apply targeted edits to flagged spans only, re-read, and report before → after per span. Passages with no tells stay byte-identical. |
 
-**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 44 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
+**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 45 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
 
 Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
@@ -72,6 +72,7 @@ Six steps, in order. Each one finishes on something you can check.
 *Done when* you can name which of the three you chose and why — and, for 段落改寫, have read the full document first so pronouns and through-line stay consistent.
 
 **4. 逐類改寫.** Walk the eight classes below. Each flag cites its canonical rule name and either a concrete fix or an explicit carve-out ruling. 使用／提及之分 outranks everything: a word being *discussed* rather than used — inside quotation marks, a code block, or an explicit example — stays exactly as written.
+Weigh syntactic evidence ahead of lexical evidence: wording can be inherited from a table, a template or a source document, while the sentence's skeleton is built on the spot.
 
 **Sparing a span is a ruling, and it carries the same burden as flagging one.** Every rule's `保留` clauses are *alternatives*: satisfying any one spares the span, and a span that matches the first clause is spared whether or not the others hold. To spare, quote the span's own evidence for the clause you are invoking, and name the rule that clause belongs to — a carve-out written under one rule never licenses a span under another. Where the evidence cannot be quoted from the text in front of you, the carve-out does not apply. 保護清單⑥ has the strictest form of this: it covers features the user or a sibling skill actually declared, so point at the declaration; a passage that merely sounds like the author is not a declared feature.
 **One span, one flag.** When two rules fire on the same span, the defect is one defect — report it under the rule that names it most precisely and drop the other. Listing it twice reads to the author as two problems to fix and inflates the count; noticing 「與上一條同源」 and filing both rows anyway is the failure mode to avoid. Distinct spans in one sentence still get their own rows.
@@ -96,12 +97,12 @@ Check it by quotation, not by impression: for each clause of the rewrite, point 
 
 ## Shared vocabulary
 
-45 rules in 8 classes. Detail, carve-outs and worked pairs live in the reference files; these names are what your flags cite.
+46 rules in 8 classes. Detail, carve-outs and worked pairs live in the reference files; these names are what your flags cite.
 
 | class | what it catches | rules |
 |---|---|---|
 | 內容類 (7) | words spent without a fact arriving | 意義膨脹 · 空話填充 · 抽象claim缺交付 · 萬用收尾 · 推廣語氣 · 原地踏步與段落失連 · 解說導引腔 |
-| 語言句式 (12) | the sentence's shape doing the work its content should | 對比句式 · 避險堆疊 · 詞彙處理失真 · 節奏均質 · 破碎短句堆疊 · 零資訊警句與口號 · 口語化萬能詞 · 過度簡寫 · 翻譯腔 · 專有名詞過度翻譯 · 繫詞膨脹 · 使用／提及之分 |
+| 語言句式 (13) | the sentence's shape doing the work its content should | 對比句式 · 避險堆疊 · 詞彙處理失真 · 節奏均質 · 破碎短句堆疊 · 零資訊警句與口號 · 口語化萬能詞 · 過度簡寫 · 語體漂移 · 翻譯腔 · 專有名詞過度翻譯 · 繫詞膨脹 · 使用／提及之分 |
 | 風格版面 (6) | typography and layout standing in for structure | 破折號濫用 · 粗體與內聯標題濫用 · 條列膨脹與裸名詞條列 · 列舉代替論述 · 表情符號與標籤堆疊 · 表格誤用 |
 | 溝通殘留 (4) | chat-turn and tooling residue surviving into a document | 對話介面殘留 · 諂媚語氣 · 知識截止免責 · AI 工具殘留標記 |
 | 事實與引用 (3) | authority borrowed instead of earned | 模糊歸屬 · 幻覺引用與未查證主張 · 權威名號堆砌 |

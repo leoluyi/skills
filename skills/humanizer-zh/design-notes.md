@@ -9,7 +9,7 @@ A zh-first bilingual skill with **one** canonical rule set. A rule carries both 
 ```
 SKILL.md                      — 114 lines: routing, the six-step spine, the shared vocabulary, severity, profiles
 references/
-  zh-rules.md                 — all 45 rules under the 8 classes, each with 抓 / 保留 / a before-after pair
+  zh-rules.md                 — all 46 rules under the 8 classes, each with 抓 / 保留 / a before-after pair
   en-rules.md                 — the English manifestations, keyed to the same 8 classes
   hidden-author.md            — the detect-only 作者隱身 aggregate: gate, threshold, 5 sub-signals
   zh-phrase-rules.md          — the seven zh「詞→替換」lookup tables (data, not rules)
@@ -17,6 +17,24 @@ references/
 ```
 
 [`docs/humanizer-zh.md`](../../docs/humanizer-zh.md) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
+
+## 語體漂移 — 一條 provenance 判準被拆成 surface 判準 (2026-08-01)
+
+規則的來源是作者提供的一句真實工作文字：「預期產出與時程：助教人力配置方案與 Lab 支援範圍，訪談後 3 至 4 週內取得。」句法上它同時想當條列標題與完整句子——前半名詞組無謂語，唯一的動詞卡在句末、跨過一個逗號回頭管前面的賓語，中間沒有任何授權前置的標記。
+
+**作者原本要編碼的判準有三項，只有第一項照原形進了 skill。**
+
+第二項是「缺陷與完成度不匹配」：人的失誤是減法（漏字、漏主詞、標點不一致），AI 的失誤是骨架歪掉但零件樣樣俱全，因此組裝感與高完成度同時出現才是決定性訊號。這句話問的是**誰寫的**，而 `SKILL.md` 的〈What this skill is and isn't〉明文只判 surface、不判 provenance。照字面寫成命中門檻，skill 就開始做它拒絕做的主張。處置是把它翻面：**組裝感伴隨完成度下降時放行**，寫進 `語體漂移` 的保留條款。非母語寫作、翻譯體、多來源剪貼因此照樣被保護，而規則一句話都沒說作者是誰。`backlog.md` 的 (H) 雙軸評分閘沒有放行，仍等盲測資料。
+
+第三項是「結構訊號權重高於內容訊號」。它不屬於任何單一規則——內容可以從表格、模板或來源文件繼承，語法是當場生成的——所以落在 `SKILL.md` 步驟 4 的一行，而不是第 47 條規則。
+
+**判準本身沒有證據支撐，這一點要說清楚。** 三項判準全部出自 2026-08-01 一場非盲測的 annotate session：判讀者知道答案，中途又拿到一份人寫的對照改寫。落地的理由是第一項屬 surface、可由既有的 run-case 儀器直接量測，不是那場 session 證明了什麼。
+
+**量測結果：三輪 NO-SHIP。** 數字在 `evals/results-2026-08-01-drift-aggregate.md`。規則抓得到目標——ids 67、68 的命中列三輪都是新版過、2.1.0 落空，vanilla 對照也是 17:8——但保護類平均從 104 掉到 100.7，且 `64/全域:不代筆` 三輪皆失、`64/全域:保真` 兩輪失。兩者同因，而那個因很值得記著：**規則的 `改法` 寫了「降格成條目：時程降級成括號附註」，模型把它讀成了通用許可，在別的 rewrite 案裡也開始加括號編註**。一條寫給單一規則的改法手段，會外溢成整個 rewrite 模式的習慣——這是 `改法` 行第一次被觀察到有這種作用域外洩，下次寫任何 `改法` 都要把手段綁在該規則的形態上。
+
+**保護側的失分每輪換一列，這件事本身是訊號。** r1 掛 id 70 的兩列、r2 掛 id 69 的欄位案、r3 掛 id 69 的另一列，改一次規則文字就換一個位置，沒有一列 2-of-3。單輪不足以定位一條新規則的誤判面，這是 aggregate 規約在這輪的第二個實例。
+
+**邊界。** 與 `過度簡寫` 的分界是缺零件 vs 零件齊全而語體沒選定（該條的保留欄含「公文與法律的標準句架」，會直接放行本規則要抓的形態，所以兩邊互指）；與 backlog 已立案的 `體裁相稱` 候選規則的分界是句內 vs 篇章級語域。
 
 ## 文體類 and the two carve-out lists (2026-07-30)
 
