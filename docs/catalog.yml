@@ -30,3 +30,12 @@ categories:
     blurb:
       en: "Learn a concept by being taught and quizzed, then file your own note into an Obsidian vault on PARA structure."
       zh: "先教後考學懂一個概念，再把親手寫的筆記歸檔進 PARA 結構的 Obsidian 筆記庫。"
+
+  - key: agent-workflow
+    label: { en: "Agent Workflow", zh: "Agent 工作流" }
+    blurb:
+      en: "Bound what an agent runs on its own: turn a rough plan into a goal with machine-checkable done conditions before any autonomous run starts."
+      zh: "把 agent 的自主執行框起來：在自動跑之前，先把粗略的計畫變成有機器可驗完成條件的 goal。"
+    readmeNote:
+      en: "Language-agnostic; runs on any agent that can execute a plan unattended."
+      zh: "跨語言工具，適用任何能無人值守執行計畫的 agent。"
