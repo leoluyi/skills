@@ -1,6 +1,6 @@
 # English layer
 
-The English rules are the same 45 canonical rules, wearing English clothes. Nothing here is a separate taxonomy — cite the same rule name you would cite in Chinese, and reach for the same carve-out. Twelve rules are Chinese-specific (抽象claim缺交付, 破碎短句堆疊, 零資訊警句與口號, 口語化萬能詞, 過度簡寫, 翻譯腔, 專有名詞過度翻譯, 列舉代替論述, 空降斷言開場, 空降主張, 對讀者說教, 罐頭式反應鏡頭); this file covers the 33 that manifest in English too.
+The English rules are the same 47 canonical rules, wearing English clothes. Nothing here is a separate taxonomy — cite the same rule name you would cite in Chinese, and reach for the same carve-out. Thirteen rules are Chinese-specific (抽象claim缺交付, 破碎短句堆疊, 零資訊警句與口號, 口語化萬能詞, 過度簡寫, 語體漂移, 翻譯腔, 專有名詞過度翻譯, 列舉代替論述, 空降斷言開場, 空降主張, 對讀者說教, 罐頭式反應鏡頭); this file covers the 34 that manifest in English too.
 
 What the English tells have in common: a fixed phrase gets reached for at a moment where a fact belongs. So the working question is never "is this phrase banned" but "did a sentence arrive where a fact was due". Delete the phrase and see what is left standing — if a fact is still there, patch the span; if nothing is, that is a 空話 / 立場真空 finding for the author, not something to write your way out of.
 
@@ -121,6 +121,9 @@ Its flatter and commoner English form asserts the feeling *about the topic* with
 
 **文件自述** — "As requested, this report…", "Based on the scenario you described", "Per your prompt", and meta-narration openers ("In this article, we will explore…", "Let's dive in", "Let's break this down"). A deliberate persona sustained through the whole piece is a voice feature, not a commissioning echo, and a decision memo may genuinely call for action.
 > Only vendor C can add a Saturday collection. ← *As requested, this report will explore a comparison of three vendors.*
+
+**自我背書** — the deliverable vouching for its own method instead of carrying it out: "All assessments below derive from the three structural factors identified above", "Each entry is drawn exclusively from the sources cited", "Every conclusion follows the criteria established earlier". The clause adds no fact; it certifies that what is already written is complete and traceable, and *all/every/exclusively* is doing defensive work against a doubt nobody raised. Spare it where it disambiguates rather than defends — if the document applies other criteria elsewhere, saying which ones govern this section stops a real misreading. Methods sections, audit and compliance reports deliver provenance as the product; a source note under a table is labelling, not vouching.
+> Grey-area cases follow, judged against the three structural factors above. ← *The following collects the grey areas; the basis for every judgement derives from the three structural factors in the preceding text.*
 
 **思考過程外洩** — fingerprint form ("Let me think step by step", "Step 1:", "First, let's consider", "Breaking this down") and the unmarked fluent-prose form ("I started with option A, hit a wall on latency, and moved to B"). Reader-facing rationale the argument depends on stays; so does a comparison that *is* the deliverable, as in an ADR options section, and so do real numbered steps a reader is meant to follow.
 > Vendor A's truck is 2.6m; the basement clears 2.3m. Vendor B's compactor fits. ← *I first evaluated A, found the truck wouldn't fit, and moved on to B.*

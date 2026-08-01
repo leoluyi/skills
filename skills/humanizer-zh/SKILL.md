@@ -7,7 +7,7 @@ license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
   author: Lu Yi
-  adaptation: zh-first bilingual design — one canonical rule set (46 rules in 8 classes) instead of two parallel catalogs; most rules carry both a Chinese and an English manifestation, and 13 are Chinese-specific. See design-notes.md.
+  adaptation: zh-first bilingual design — one canonical rule set (47 rules in 8 classes) instead of two parallel catalogs; most rules carry both a Chinese and an English manifestation, and 13 are Chinese-specific. See design-notes.md.
   tags: writing editing voice quality zh-tw traditional-chinese
   agentskills_spec: "1.0"
   openclaw:
@@ -54,7 +54,7 @@ The English in this file is structural labelling for you, not literal output. Ne
 | `detect` | the user says 先標出來就好／不用改／flag only／audit／scan | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. Every flag also carries its **改法方向** — one clause naming what the span should become. The text stays untouched. |
 | `edit` | the user names a file to fix in place | read the file, apply targeted edits to flagged spans only, re-read, and report before → after per span. Passages with no tells stay byte-identical. |
 
-**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 45 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
+**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 46 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
 
 Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
@@ -97,7 +97,7 @@ Check it by quotation, not by impression: for each clause of the rewrite, point 
 
 ## Shared vocabulary
 
-46 rules in 8 classes. Detail, carve-outs and worked pairs live in the reference files; these names are what your flags cite.
+47 rules in 8 classes. Detail, carve-outs and worked pairs live in the reference files; these names are what your flags cite.
 
 | class | what it catches | rules |
 |---|---|---|
@@ -108,7 +108,7 @@ Check it by quotation, not by impression: for each clause of the rewrite, point 
 | 事實與引用 (3) | authority borrowed instead of earned | 模糊歸屬 · 幻覺引用與未查證主張 · 權威名號堆砌 |
 | 立場與開場 (7) | judgement announced, deferred, or absent | 空降斷言開場 · 公式化開場 · 反問句開場與收尾 · 空降主張 · 立場真空 · 作者隱身 · 對讀者說教 |
 | 人工戲劇 (3) | a beat manufactured where nothing happened | 罐頭式反應鏡頭 · 情緒宣告 · 懸念與自我貼標籤 |
-| 打破第四面牆 (3) | the deliverable talking about itself | 文件自述 · 思考過程外洩 · 併稿接縫 |
+| 打破第四面牆 (4) | the deliverable talking about itself | 文件自述 · 自我背書 · 思考過程外洩 · 併稿接縫 |
 
 Two mechanisms cut across all eight: **保護清單** (step 2) decides what survives untouched, and **長文scope** (step 3) decides how large a unit each fix operates on.
 
