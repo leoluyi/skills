@@ -1,6 +1,7 @@
 ---
 name: formal-doc-structure
-description: Draft, revise, or restructure formal internal business documents in Traditional Chinese (Taiwan corporate / financial-institution usage) — 簽呈, 會議紀錄, 評估報告, 專案規劃, 採購與廠商溝通, 對主管簡報, 驗收與交付, 跨單位協調. Picks a reader-driven structure per document type and produces a usable draft, not just advice. Trigger when the user asks to write or fix an internal business document, memo, report, meeting record, plan, or vendor communication. Do NOT invoke for RFP / 招標規格 / 需求規格書 (use rfp-writing), for pure language cleanup with no structural work (use humanizer-zh), or for casual chat, creative writing, marketing copy, or code comments.
+description: Draft, revise, or restructure formal internal business documents in Traditional Chinese (Taiwan corporate / financial-institution usage) — 簽呈, 會議紀錄, 評估報告, 專案規劃, 採購與廠商溝通, 對主管簡報, 驗收與交付, 跨單位協調. Picks a reader-driven structure per document type and produces a usable draft, not just advice. Manual trigger only — invoke by name when writing or fixing an internal business document, memo, report, meeting record, plan, or vendor communication. Do NOT invoke for RFP / 招標規格 / 需求規格書 (use rfp-writing), for pure language cleanup with no structural work (use humanizer-zh), or for casual chat, creative writing, marketing copy, or code comments.
+disable-model-invocation: true
 version: 1.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
