@@ -12,6 +12,7 @@ description: >-
   評估報告等行政文件（用 formal-doc-structure，即使輸入是既有文件也不因此轉入本 skill）、RFP／招標規格
   （用 rfp-writing）、部落格文章（用 blog-writing-zh）、只做語言層去 AI 味不動結構（用 humanizer-zh）、
   只要口頭白話解釋不產文件（用 plain-speak）、learn 的互動學習迴圈本身（用 learn-loop）。
+app-description: 把自學或研究成果整理成 Diátaxis 四區塊知識文件：tutorial、how-to、reference、explanation，素材撐不起的區塊列為缺口，不捏造。觸發：把對話紀錄、官方文件或研究主題消化成可長期參考的技術文件，或重整既有技術文件。
 version: 2.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required; source-verification steps assume web access when available.

@@ -2,6 +2,9 @@
 name: plan-to-goal
 description: >-
   Turn a rough plan into a bounded, verifiable goal spec — objective, machine-checkable done-when conditions, do-not constraints, and a stop limit — that an agent can execute autonomously without drifting. Use this whenever the user has a plan (from plan mode or written by hand) and wants to run it autonomously — phrases like "turn this plan into a goal", "make this a /goal", "run this autonomously", "let it run on its own", 「把這個計畫變成可以自動跑的 goal」, 「讓它自己跑完」, 「這個 plan 還很粗，幫我補完再自動執行」, or when the user has just finished plan mode and asks what's next. Especially use it when the user admits their plan is rough, high-level, or unfinished, because the whole point is to flesh the plan out and surface its gaps BEFORE an autonomous run burns tokens on a vague target. Do NOT invoke for writing a plan from scratch (that is plan mode itself), or for a task small enough that one prompt would do — a goal spec is overhead for a one-line typo.
+app-description: >-
+  把粗略或手寫的計畫轉成可自動執行的 goal spec：目標、可機器驗證的完成條件、禁止事項與停止上限。觸發：「把這個計畫變成可以自動跑的 goal」「讓它自己跑完」「這個 plan
+  還很粗，幫我補完再自動執行」，或 turn this plan into a goal、run this autonomously。
 version: 1.0.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.

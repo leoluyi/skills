@@ -19,6 +19,7 @@ description: >-
   簽呈/會議紀錄/報告 (use formal-doc-structure), or for RFP / 需求規格書 /
   招標規格 (use rfp-writing). This skill lowers the audience, not the voice,
   the structure, or the document type.
+app-description: 把技術術語、程式概念或艱澀工程文字翻譯成非技術主管或同事能懂的白話文。適用於「白話文」「翻成人話」「用白話解釋」「講人話」，或審閱既有白話草稿是否「夠白話」。不去除 AI 寫作腔調。
 version: 1.5.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.

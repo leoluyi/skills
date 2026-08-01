@@ -1,11 +1,13 @@
 ---
 name: recover-deleted-claude-conversation
+app-name: recover-deleted-conversations
 description: >-
   Recover a conversation, message, or generated artifact (docx/pdf) accidentally
   deleted from Claude Desktop or claude.ai, by extracting it from the Chromium
   blockfile cache before it's evicted. Manual trigger only — invoke by name
   when a Claude conversation was just deleted and needs to be pulled back out
   of cache; this is a race against cache eviction, so run it immediately.
+app-description: 當 Claude Desktop 或 claude.ai 上的對話、訊息或產出的檔案（docx/pdf）被誤刪時，從 Chromium 瀏覽器快取中搶救回來，須在快取被覆蓋前立即執行。僅限使用者明確要求時手動呼叫，不自動觸發。
 disable-model-invocation: true
 version: 1.0.0
 license: MIT

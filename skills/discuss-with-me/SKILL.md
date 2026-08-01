@@ -15,6 +15,9 @@ description: >-
   use learn-loop), for factual lookups, or for debugging and code review. The
   test is whether the answer is unknown to both sides, not whether the topic
   feels hard.
+app-description: >-
+  與使用者一起深挖雙方都沒有答案的開放問題——擴大選項、查核論證、攻擊關鍵假設，留下可被推翻的決策紀錄。觸發：「陪我想一下」「幫我挑戰這個想法」「這個假設站得住嗎」「red team 我的計畫」，或
+  stress-test this idea、poke holes in this。
 version: 0.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.

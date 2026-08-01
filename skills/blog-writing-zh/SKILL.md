@@ -23,6 +23,10 @@ description: >-
   PRC usage may have leaked in. Do NOT invoke for 正式公文／簽呈 (use formal-doc-structure), RFP (use
   rfp-writing), 白話翻譯單一術語 (use plain-speak), or pure de-AI editing of an
   existing text with no restructuring (use humanizer-zh directly).
+app-description: >-
+  撰寫或改寫具真實人味的繁體中文部落格文章／電子報，模仿知識倉鼠、保哥、高見龍、Julia Evans、Simon
+  Willison 等風格。適用於「寫部落格文章」「把筆記改寫成文章」「把 Obsidian
+  筆記變成 blog」「翻譯改寫外文文章成中文長文」，並附標題／副標備選。
 version: 0.14.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, etc.). No external tools or APIs required.
