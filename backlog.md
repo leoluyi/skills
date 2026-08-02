@@ -43,6 +43,12 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 範例、它們正確，錯的是保留欄把抓欄已有的回讀測試復述得太鬆。落地為 `zh-rules.md` 保留欄第一
 分句的改寫與 `evals.json` id 85，推導記在 humanizer-zh 的 `design-notes.md`。
 
+**這條線 2026-08-03 收工並併入 main。** 十輪兩臂量測收斂在 `缺連接詞` 抓欄措辭的第三版（列舉自帶
+前提條件），兩臂均值新版全面優於基線。同日接一輪 carve-out 可達性修正：D1 那十輪反覆撞出的九列
+兩臂同紅缺口，八列在這一輪處理掉（`知識截止免責` 收窄 抓，其餘七條放寬 保留），加上 `SKILL.md`
+的 casual context 點名放行 `破碎短句堆疊`——id 86 那三列不是措辭問題，是 P0-only 讓規則根本沒被
+帶到那段文字上。推導記在 humanizer-zh 的 `design-notes.md`。
+
 跑完這條線之後才輪到行為變更，每個各自 branch、各自重跑：`模糊歸屬` 的 isolated-instance 判斷、
 detect 預設、進階補完模式（順序固定，進階補完要等 detect 預設先落地）。細節都在
 [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md)。

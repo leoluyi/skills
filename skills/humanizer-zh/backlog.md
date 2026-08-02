@@ -755,6 +755,11 @@ root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落
   `對比句式` and a 「值得深思的現象」 framing sentence, and stays flagged — so any fix is about
   isolation, not about weakening the rule wholesale.
 
+  **部分處理 2026-08-03，但這一項仍開著。** carve-out 那輪加了兩條具名放行——讓步開場（引的是
+  待反駁的看法）與俚語化共識招呼（不替任何主張供依據），共通判準是「這個第三方有沒有在為某個
+  主張供依據」。那是形態層的收窄，不是這一項要的密度層 isolated-instance 判準：單一實例仍然會
+  被抓，只是多了兩種形態不算。密度分支要不要開，仍待自己的 branch。
+
 - [ ] **Make `detect` the default mode, and ask before rewriting.** Requested 2026-07-30. Today
   `rewrite` is the default and the skill edits text without being asked twice; the wanted
   behaviour is detect-first — run the audit, report findings grouped P0/P1/P2, then ask whether
