@@ -69,6 +69,7 @@
         "flags-zero-info-restatement: 標記「沒過 eval，不上架。」為零資訊重述——前句已說明 eval 通過才上架，此對仗短句未加任何新資訊，建議刪除。",
         "flags-slogan-replacing-explanation: 標記「連網一行指令，或離線的逐一技能 symlink」為口號代替說明——在該講安裝步驟處只給對仗片語，Fix 應攤開成可執行的完整句。",
         "flags-contrast-construction: 標記「範圍是開放的，不是固定的。」為 對比句式——「開放」未界定誰可新增、是否需審核、依據為何，否定框架撐起整句而非標示真實區分；對比句式的 真實的事實邊界 carve-out 不成立（該 carve-out 針對具體名詞的邊界，如「管理粒度是資料集，不是租戶」，不涵蓋抽象性質的對舉）。",
+        "flags-colloquial-catch-all-phrase: 標記「安裝有兩條路」的「兩條路」為 口語化萬能詞——比喻短語站在一般理解的詞該站的位置，此處沒有比喻的必要，換成「兩個方式」不損失任何意思。",
         "no-duplicate-listing-of-one-span: 同一片段不得在兩條規則下各記一筆——重複計列會把一處缺陷讀成兩處。"
       ]
     },
@@ -976,6 +977,77 @@
       "對應規則": "自我背書 carve-out（操作句不是稽核句）",
       "tier": "full",
       "source": "作者本人 2026-08-01 親筆改寫，逐字節錄——真語料，非合成"
+    },
+    {
+      "id": 76,
+      "prompt": "detect 這則工作群組訊息（voice: casual）：「權限那一塊我先擋著，你們先把前端弄完。後端我等等去問一下，卡住的話我再喊。」",
+      "expected_output": "Protection case for 口語化萬能詞's newly widened 名詞與短語 form. 「這一塊」 is listed by name in the rule's 抓 clause and 擋／喊 sit in its 動詞 list, so the surface matches on three counts — the only thing sparing them is the rule's first 保留 clause, 真正的聊天／casual 語域. Widening a catch from verbs to nouns and phrases puts every figurative noun in range; this case is what shows the register carve-out still holds afterwards.",
+      "expectations": [
+        "no-false-positive-on-casual-register: 「那一塊」「擋著」「喊」皆不得標為 口語化萬能詞——該規則保留欄第一項就是 真正的聊天／casual 語域，而本則訊息的宣告語域正是 casual。",
+        "does-not-rewrite-in-detect: detect 模式只報不改，不得回傳改寫後的訊息。",
+        "no-invented-findings-when-clean: 無可標之處時報告直接說明本則乾淨，不得為了產出而改標其他規則（尤其不得把同一批片段改掛 過度簡寫 或 破碎短句堆疊）。"
+      ]
+    },
+    {
+      "id": 77,
+      "prompt": "detect 這段部落格草稿。作者的 voice profile 宣告了正向特徵：「比喻系統：園藝——談程式碼一律用育苗、疏苗、移植、修枝來講。」\n\n「這批規則我先移植到新的 repo，長得太密的那幾條要疏苗，留三條就夠。要接手的人有兩條路：整包搬過去，或是自己重寫一份。」",
+      "expected_output": "The scoping half of 口語化萬能詞's 保護清單⑥ carve-out. A declared metaphor system spares the metaphors it declares — and nothing else. 移植／疏苗 are inside the declaration; 兩條路 is a catch-all phrase that has nothing to do with gardening, so a runner that reads the declaration as blanket amnesty fails this case. Both directions live in one case on purpose: the carve-out is only verified when a nearby span that it does not cover still gets flagged.",
+      "expectations": [
+        "preserves-declared-metaphor-system: 「移植」「疏苗」不得標為 口語化萬能詞——它們屬使用者宣告的比喻系統，保護清單⑥。",
+        "does-not-spare-without-citing-declaration: 放行時報告須指向宣告本身（voice profile 的「比喻系統：園藝」那一句）作為依據，不得只說「這是作者風格」。",
+        "flags-undeclared-catch-all-phrase: 「兩條路」仍須標為 口語化萬能詞——它不在宣告的比喻系統之內，宣告涵蓋的是它點名的比喻，不是整段的比喻豁免。"
+      ]
+    },
+    {
+      "id": 78,
+      "prompt": "rewrite 這則公告（社群貼文）：「這次的報名將於 3/31 晚上 11:59 截止，還沒填的朋友請把握時間。值得注意的是，本次名額有限，我們將採取先到先得的方式進行分配，以確保流程的公平性。」",
+      "expected_output": "Guards a 保真 hole opened by the 2026-07-30 run: id 40's runner normalised 「3/31 晚上 11:59」 to 「3/31 23:59」 inside its own report. Harmless there — that case is detect mode, the text was untouched and the verdict stood — but the same reflex in rewrite mode edits a span the skill has no mandate over. Colloquial time is how the author writes time; tidying it is a silent rewrite of voice, not an AI-ism removal. The case pairs it with real AI-isms so the runner has genuine work to do and the 保真 row is not passed by simply doing nothing.",
+      "expectations": [
+        "preserves-colloquial-time-expression: 「3/31 晚上 11:59」逐字保留——不得正規化為「3/31 23:59」「23:59」或「3 月 31 日 23:59」。",
+        "fix-hedging-opener: 「值得注意的是」刪除或改寫成承載事實的句子。",
+        "fix-empty-process-phrasing: 「採取先到先得的方式進行分配，以確保流程的公平性」改寫成直述——「依報名時間先後分配名額」這種，不留「進行…以確保…」的空架子。",
+        "no-fabricated-details: 不得補進原文沒有的名額數字、時區或報名連結。"
+      ]
+    },
+    {
+      "id": 79,
+      "prompt": "detect 這段技術文件（docs 語境）：「快取層上線之後回應時間就會下降。資料庫的壓力也會跟著減少。所以擴充節點這件事可以往後延。目前的架構撐得住。」",
+      "expected_output": "破碎短句堆疊 form 1 — 推論鏈斷成連續斷言. 就會／所以 announce conclusions whose premises are never written: nothing says what the cache is in front of, what the current response time is, or what 撐得住 is measured against. The rule had zero eval coverage before this case; 語體漂移 shipped with 13.",
+      "expectations": [
+        "flags-broken-inference-chain: 標記「快取層上線之後回應時間就會下降」與「所以擴充節點這件事可以往後延」——出現結論詞而前提沒寫，讀者得自己補上命中率、目前延遲、節點餘裕這些沒說出口的東西。",
+        "fix-names-the-missing-premise: 建議的補法要指名缺的是哪個前提（命中率、目前的回應時間、節點餘裕），不得只說「補充說明」。",
+        "no-flag-on-final-short-sentence-alone: 「目前的架構撐得住」單獨一句不構成本條證據——本條抓的是句架與子句關係被壓掉，短句本身不是缺陷。"
+      ]
+    },
+    {
+      "id": 80,
+      "prompt": "detect 這段產品說明（docs 語境）：「延長保固，要在購買日起三十天內上網登錄。登錄後憑證會寄到信箱，遺失恕不補發。」",
+      "expected_output": "破碎短句堆疊 form 2 — 缺連接詞, in the shape the rule names first: a purpose clause stripped to a bare verb phrase (如果要延長保固 → 延長保固). The second sentence is deliberately fine, so a runner that flags the whole paragraph fails the protection row.",
+      "expectations": [
+        "flags-missing-connective: 標記「延長保固，要在購買日起三十天內上網登錄」——目的子句被抽成裸動詞片語，關係要退回句首重讀一次才拼得出來。",
+        "fix-restores-the-connective: 修法補回條件標記（「如果要延長保固，…」），而不是把句子拆得更短或改寫成條列。",
+        "no-flag-on-sequential-clause: 「登錄後憑證會寄到信箱，遺失恕不補發」不得標記——關係從語序一次就讀得出來，補連接詞反而囉嗦。"
+      ]
+    },
+    {
+      "id": 81,
+      "prompt": "detect 這段開發筆記（docs 語境）：「這份設定檔照部署環境實際的差異寫。測試機與正式機各一份，共用的欄位抽出來放在最上面。」",
+      "expected_output": "破碎短句堆疊 form 3 — 繫詞架構被抽掉. 「照…實際的差異寫」 leaves the frame dangling: it needs 是…寫成的 to close. This is the shape that moved into 破碎短句堆疊 from 過度簡寫 in the 2026-08-01 boundary recut, so the case doubles as the regression guard for that move — a runner still labelling it 過度簡寫 fails the second row.",
+      "expectations": [
+        "flags-dangling-copular-frame: 標記「這份設定檔照部署環境實際的差異寫」——句尾懸空，句架要補回（「…是照部署環境實際的差異寫成的」）才拼得起來。",
+        "flags-under-fragmented-clause-rule: 該片段掛在 破碎短句堆疊，不得掛 過度簡寫——句架與子句關係被壓掉屬本條，過度簡寫 抓的是零件缺席。",
+        "no-flag-on-second-sentence: 「測試機與正式機各一份，共用的欄位抽出來放在最上面」不得標記——並列關係從語序讀得出來。"
+      ]
+    },
+    {
+      "id": 82,
+      "prompt": "detect 這份週報摘要（docs 語境）：\n\n「本週進度\n- 索引調校完成，掃描列數 120 萬降到 3 萬\n- 快取層灰度 10%，尚未觀察到命中率變化\n- 匯出功能延後，等排程改版一起上\n\n下週把灰度拉到 50%，同時把匯出的排程改版接上。」",
+      "expected_output": "The protection side of 破碎短句堆疊, taken from the carve-out that is not in dispute: 摘要、表格儲存格、條列重點、一頁總結 — 壓縮是這些區塊的職責. Every bullet here matches the catch on its surface (no connectives, clauses stripped to phrases), and flagging them would make the rule unusable on the single most common shape in technical writing. The 意合 clause of the same 保留 list is deliberately not tested here — see the open question in backlog item 7.",
+      "expectations": [
+        "no-false-positive-on-bullet-compression: 三個條列項不得標為 破碎短句堆疊——摘要與條列重點的壓縮是這些區塊的職責，這是本條保留欄明列的第二項。",
+        "no-false-positive-on-closing-plan-sentence: 「下週把灰度拉到 50%，同時把匯出的排程改版接上」不得標記——「同時」在場，關係詞沒有被刪掉。",
+        "does-not-rewrite-in-detect: detect 模式只報不改，不得把條列展開成完整句。"
+      ]
     }
   ]
 }
