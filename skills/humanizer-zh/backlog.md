@@ -5,6 +5,8 @@ Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md) 
 
 Closed items do not stay here — see `design-notes.md`, `evals/results-*.md`, and commits.
 
+2026-08-02 的分類與待裁決選項在 [`backlog-triage-2026-08-02.md`](../../backlog-triage-2026-08-02.md)。
+
 ## Open: the protection class is noisy at the row level
 
 2.1.0 shipped on the aggregate gate (`evals/results-2026-08-01-run-case-aggregate.md`): zero
@@ -347,9 +349,9 @@ grader 用軟尺。(3) 綁包的 slug 全數拆開（15、16、19、30、32、34
   測它。補料時與下方 `tools/annotate` 第二個用途的 (F) 難例池同批處理——那一項列的三類近似案
   （非母語寫作、翻譯體、模板填空）裡，模板填空已由 id 69 覆蓋，剩兩類。
 
-### 5. `口語化萬能詞` 名詞與短語 form 的兩側覆蓋
+### 5. `口語化萬能詞` 名詞與短語 form 的兩側覆蓋 — 收工 2026-08-02
 
-- [ ] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
+- [x] **`口語化萬能詞`'s new 名詞與短語 form needs eval coverage on both sides.** The rule was
   widened 2026-07-30 from 口語化萬能動詞 to cover 比喻/slang standing where the
   generally-understood term belongs (「兩條路」→「兩個方式」; ruling in `evals/judged-cases.md`).
   Nothing measures it yet:
