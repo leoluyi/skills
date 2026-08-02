@@ -4,7 +4,7 @@
 
 **Agent skills that write Traditional Chinese like a real person — straight from my `~/.skills`.**
 
-[![Skills](https://img.shields.io/badge/skills-14-6d4aff?style=flat-square)](#skill-catalog)
+[![Skills](https://img.shields.io/badge/skills-19-6d4aff?style=flat-square)](#skill-catalog)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-second-setup)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -73,7 +73,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-14 skills across 6 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+19 skills across 6 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
@@ -123,7 +123,12 @@ Language-agnostic; runs on any agent that can execute a plan unattended.
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| **Plan → Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | `model-invoked` | Turn a rough plan into a bounded goal with machine-checkable done conditions, before an autonomous run burns tokens on a vague target |
+| **Plan → Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | `user-invoked` | Turn a rough plan into a bounded goal with machine-checkable done conditions, before an autonomous run burns tokens on a vague target |
+| **Goal Definer**<br>[`goal-definer`](skills/goal-definer/SKILL.md) | `model-invoked` | Interview a fuzzy task into a six-element goal prompt an agent can run for hours without drifting or wrapping up early |
+| **Autopilot**<br>[`autopilot`](skills/autopilot/SKILL.md) | `user-invoked` | Hand over the whole job: orchestrate subagents, self-repair on a budget, pass a verification gate, then commit, push and open a PR without checking back |
+| **Breakdown**<br>[`breakdown`](skills/breakdown/SKILL.md) | `model-invoked` | Lay every case out in full before evaluating any of them, split the problem into decisions only you can make, then wait — recommendation comes last |
+| **Options**<br>[`options`](skills/options/SKILL.md) | `user-invoked` | Re-ask whatever is pending as tappable choices, then keep every direction decision clickable for the rest of the session |
+| **Taste Distiller**<br>[`taste-distiller`](skills/taste-distiller/SKILL.md) | `model-invoked` | Mine your rejections of AI output and distil the standard behind them into a reusable 1-5 rubric, in Markdown and in JSON for an evaluator agent |
 <!-- CATALOG:END -->
 
 ---
