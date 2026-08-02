@@ -125,6 +125,16 @@ Three files, none replacing another:
 
 `tools/check-labels` validates both instruments against the rule names the skill actually declares (derived from `zh-rules.md` headings and `hidden-author.md`, so there is no separate manifest to drift), plus the corpus 解析契約 — every 引文片段 must be an exact substring of its clean quote, `全文` excepted. Since 2026-07-30 the extraction is declared in `evals/label-check.json` rather than hardcoded in the tool, which is also what makes the gate opt-in for other skills; that file names the *files and regexes*, never the rule names, so the no-drift property is unchanged.
 
+### 兩個 namespace，一個白名單（2026-08-02）
+
+閘從 `1ec104a` 起連紅三個 commit，8 個 FAIL，兩個成因的共通點是**名字都合法，只是沒有宣告的地方**。修法各自長一層，而不是把名字塞進 `names` 常數：
+
+`改寫保真` 是**跨規則的期望類別**——它要求的是輸出不得漂移，與哪一條規則命中無關，所以沒有 `###` header 可derive。塞進 `names` 等於宣稱它是一條規則。改成 config 的 `expectation_classes` 獨立宣告，`resolve()` 兩個 namespace 都查，但查不到時報得出它該從哪裡來。另加一道 overlap 檢查：同一個名字不得同時宣告為規則與期望類別。
+
+`四字評語` 在 `zh-phrase-rules.md`，而那個檔的 9 個 header 只有這一個當規則名用。整檔納入 `sources` 會把「台灣用語偏好」「AI 慣用詞替換」一起收進 canonical——`resolve()` 是精確比對、刻意不做寬鬆匹配，混進去的名字會讓別處的錯字變成合法標籤。改用**白名單 regex**（`^## (四字評語)`）：之後要加名字就得改 alternation，那個顯式編輯正是白名單的重點，不是它的麻煩。
+
+規約沒有變寬：canonical 65 個名字，`zh-phrase-rules.md` 的另外 8 個 header 逐一驗過皆被拒，`改寫保真x` 這類錯字端到端仍然 FAIL。
+
 ## Adversarial iteration log (rule-tuning rounds)
 
 The method lives in `evals/adversarial-eval-protocol.md`. Each row = one GAN-style round; the `eval #N` in the Patch column maps to `id: N` in `evals/evals.json`.

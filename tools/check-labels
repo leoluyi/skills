@@ -19,11 +19,25 @@ there is still no taxonomy manifest to drift out of sync with the rules:
     {
       "corpus": "evals/corpus.md",          // optional, relative to skill dir
       "names": ["保護清單"],                 // optional literal additions
+      "expectation_classes": ["改寫保真"],   // optional, see below
       "sources": [                           // required, at least one
         {"file": "references/zh-rules.md", "regex": "(?m)^### (.+)$",
          "capture": 1, "prefix": ""}
       ]
     }
+
+``expectation_classes`` is declared apart from the rules on purpose. A label
+like 改寫保真 is a *cross-rule* expectation — it names what the output must
+preserve regardless of which rule fired — so it has no ``###`` header to be
+derived from, and folding it into ``names`` would say it is a rule. Both sets
+satisfy a label, but they are declared separately so a missing name reports
+against the namespace it should have come from.
+
+A ``sources`` entry may whitelist rather than sweep. Where a file mixes rule
+headers with headers that are not rules, name the ones that count in the
+regex (``^## (四字評語)``) instead of capturing every header: ``resolve`` is
+exact by design, and a non-rule name admitted to the canonical set turns a
+typo elsewhere into a legal label.
 
 A declared file that is missing is a hard error, not a skip: the skill opted
 in, so a vanished rule file is a defect rather than an absent feature.
@@ -143,7 +157,7 @@ def parse_corpus(path: Path) -> list[dict]:
 
 CONFIG_PATH = Path("evals") / "label-check.json"
 SOURCE_KEYS = {"file", "regex", "capture", "prefix"}
-CONFIG_KEYS = {"corpus", "names", "sources"}
+CONFIG_KEYS = {"corpus", "names", "expectation_classes", "sources"}
 
 
 class ConfigError(Exception):
@@ -176,11 +190,22 @@ def load_config(skill_dir: Path) -> dict | None:
     if not isinstance(names, list) or any(not isinstance(n, str) for n in names):
         raise ConfigError(f"{path}: 'names' must be a list of strings")
 
+    classes = raw.get("expectation_classes", [])
+    if not isinstance(classes, list) or any(not isinstance(n, str) for n in classes):
+        raise ConfigError(
+            f"{path}: 'expectation_classes' must be a list of strings"
+        )
+
     corpus = raw.get("corpus")
     if corpus is not None and not isinstance(corpus, str):
         raise ConfigError(f"{path}: 'corpus' must be a string path")
 
-    return {"corpus": corpus, "names": names, "sources": sources}
+    return {
+        "corpus": corpus,
+        "names": names,
+        "expectation_classes": classes,
+        "sources": sources,
+    }
 
 
 def _validate_source(path: Path, index: int, source: object) -> None:
@@ -239,13 +264,16 @@ def base_name(label: str) -> str:
     return name
 
 
-def resolve(name: str, canonical: set[str]) -> bool:
-    """Membership is exact. Sub-signals and protection items are declared too,
-    so a plausible-looking child of a real parent is still a failure."""
-    return name in canonical
+def resolve(name: str, canonical: set[str], expectations: set[str]) -> bool:
+    """Membership is exact, across both declared namespaces. Sub-signals and
+    protection items are declared too, so a plausible-looking child of a real
+    parent is still a failure."""
+    return name in canonical or name in expectations
 
 
-def check_corpus(corpus_path: Path, canonical: set[str]) -> list[str]:
+def check_corpus(
+    corpus_path: Path, canonical: set[str], expectations: set[str]
+) -> list[str]:
     """Validate the 解析契約 and every 規則 label in a corpus's tables."""
     if not corpus_path.exists():
         return [f"missing declared corpus {corpus_path}"]
@@ -286,9 +314,10 @@ def check_corpus(corpus_path: Path, canonical: set[str]) -> list[str]:
                     f"{case['id']}: 規則 names no rule "
                     f"(got {row['rule'][:40]!r})"
                 )
-            elif not resolve(name, canonical):
+            elif not resolve(name, canonical, expectations):
                 failures.append(
-                    f"{case['id']}: 規則 {name!r} is not in the canonical list"
+                    f"{case['id']}: 規則 {name!r} is not a declared rule "
+                    "or expectation class"
                 )
     return failures
 
@@ -298,9 +327,18 @@ def check_skill(skill_dir: Path, config: dict) -> list[str]:
     canonical = load_canonical(skill_dir, config)
     if not canonical:
         return [f"{skill_dir}: no rule names declared"]
+    expectations = set(config["expectation_classes"])
+    overlap = canonical & expectations
+    if overlap:
+        return [
+            f"{skill_dir}: {sorted(overlap)} declared both as a rule and as "
+            "an expectation class — one name, one namespace"
+        ]
 
     if config["corpus"]:
-        failures.extend(check_corpus(skill_dir / config["corpus"], canonical))
+        failures.extend(
+            check_corpus(skill_dir / config["corpus"], canonical, expectations)
+        )
 
     evals_path = skill_dir / "evals" / "evals.json"
     if not evals_path.exists():
@@ -318,10 +356,10 @@ def check_skill(skill_dir: Path, config: dict) -> list[str]:
                 f"evals id {case.get('id')}: 對應規則 names no rule "
                 f"(got {case['對應規則'][:40]!r})"
             )
-        elif not resolve(name, canonical):
+        elif not resolve(name, canonical, expectations):
             failures.append(
                 f"evals id {case.get('id')}: 對應規則 {name!r} "
-                "is not in the canonical list"
+                "is not a declared rule or expectation class"
             )
     return failures
 
