@@ -46,8 +46,11 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 **這條線 2026-08-03 收工並併入 main。** 十輪兩臂量測收斂在 `缺連接詞` 抓欄措辭的第三版（列舉自帶
 前提條件），兩臂均值新版全面優於基線。同日接一輪 carve-out 可達性修正：D1 那十輪反覆撞出的九列
 兩臂同紅缺口，八列在這一輪處理掉（`知識截止免責` 收窄 抓，其餘七條放寬 保留），加上 `SKILL.md`
-的 casual context 點名放行 `破碎短句堆疊`——id 86 那三列不是措辭問題，是 P0-only 讓規則根本沒被
-帶到那段文字上。推導記在 humanizer-zh 的 `design-notes.md`。
+的 casual context 點名放行 `破碎短句堆疊`。九列缺口全清，但第一批三輪開出三列新臂獨有的紅，病因
+是 D1 那條教訓的重演——carve-out 裡的列舉被讀成窮盡；補上前提句之後第二批三輪全數翻綠，保護 mean
+5.00 對基線 16.33、命中 10.00 對 13.00。收工時 47 與 86 仍兩臂同紅：86 的 casual 例外補錯了軸
+（eval 宣告的是 Voice: casual，例外寫在 Context 那行），47 則三處 carve-out 都沒構到。兩件都是
+main 自己也有的既有缺口，各自留在 humanizer-zh 的 backlog，推導記在它的 `design-notes.md`。
 
 跑完這條線之後才輪到行為變更，每個各自 branch、各自重跑：`模糊歸屬` 的 isolated-instance 判斷、
 detect 預設、進階補完模式（順序固定，進階補完要等 detect 預設先落地）。細節都在

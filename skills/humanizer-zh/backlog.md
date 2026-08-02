@@ -760,6 +760,20 @@ root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落
   主張供依據」。那是形態層的收窄，不是這一項要的密度層 isolated-instance 判準：單一實例仍然會
   被抓，只是多了兩種形態不算。密度分支要不要開，仍待自己的 branch。
 
+- [ ] **Voice 與 Context 同名同值，而沒有一句話說 Voice 不授予規則豁免（id 86）。** `SKILL.md:126`
+  的 Context 與 `:128` 的 Voice 是兩條獨立的軸，`casual` 在兩邊都是合法值。Voice 的 `casual` 描述
+  裡寫著「short sentences」，而 eval id 86 的 prompt 宣告的正是 `voice: casual`——模型拿那一句放行
+  整段，2026-08-03 補在 Context 那行的 `破碎短句堆疊` 例外條款構不到。修法方向是在 Voice 段落點明
+  它只決定文字聽起來怎樣、不豁免任何規則，壓力一律由 Context 設定；那是軸的語意宣告，會影響每一個
+  帶 voice 宣告的案子，需要自己的 branch 與重跑。id 86 三列在 2026-08-03 收工時仍兩臂同紅
+  （新臂 2/3、基線 3/3）。
+
+- [ ] **id 47 的 expected-behavior 三輪兩臂皆紅，carve-out 那一輪沒構到它。** 2026-08-03 針對它
+  改了三處保留欄（`模糊歸屬` 的讓步開場、`空降主張` 的依據可在後文、`情緒宣告` 的強度標記撐得
+  起來），六輪量測下來新臂與基線同樣 3/3 紅。表示開火的不是這三條，或是 fixture 那一列的
+  all-or-nothing 期望被別的規則打掉。下一次動它之前要先照 61／62 的做法把開火規則撈出來定位，
+  不要再憑 grader 理由猜。
+
 - [ ] **Make `detect` the default mode, and ask before rewriting.** Requested 2026-07-30. Today
   `rewrite` is the default and the skill edits text without being asked twice; the wanted
   behaviour is detect-first — run the audit, report findings grouped P0/P1/P2, then ask whether
