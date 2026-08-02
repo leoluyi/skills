@@ -85,8 +85,9 @@ scratch dir); for a brand-new skill it is vanilla (no skill loaded).
    version, agent B the baseline, launched together, unaware of each other.
    Repeat each configuration 2–3× — a single run can't separate real difference
    from sampling noise.
-2. **Judge from another model family** (rewrite on claude → judge on codex, or
-   vice versa). The judge does not load the skill; it gets only the case prompt,
+2. **Judge from another model family** — rewrite runs on claude, so the judge is
+   `agy -p` (Gemini family) or `codex exec` (OpenAI family); never `claude -p`,
+   which is same-family. The judge does not load the skill; it gets only the case prompt,
    the expectations, and both outputs with version labels washed (blind).
    Per-expectation pass/fail with a one-line reason. Tell the judge explicitly:
    protection-class text that got rewritten is a fail even if the rewrite
@@ -94,8 +95,10 @@ scratch dir); for a brand-new skill it is vanilla (no skill loaded).
 3. **Disputes go to a human.** When a person says it got worse while the rubric
    is green, suspect the rubric first.
 
-Always drive runs through a coding-agent CLI (`claude -p`, `codex exec`) —
-never a direct vendor API call; the harness stays cross-family portable.
+Always drive runs through a coding-agent CLI (`claude -p` for the rewrite side,
+`agy -p` or `codex exec` for the judge) — never a direct vendor API call; the
+harness stays cross-family portable. `agy` is read-only here: judging only, no
+file writes.
 
 ## Archiving
 

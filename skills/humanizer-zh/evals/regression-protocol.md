@@ -91,7 +91,8 @@ repo 鐵律：新版要贏 baseline。既有 skill 的 baseline 是**前一版**
 
 1. **改寫端 ×2，獨立平行**：agent A 載新版、agent B 載前版，同時啟動、
    互不知情，各自跑完全部案例。每組重複 2–3 次——單次跑分不出真差異與抽樣噪音。
-2. **判分端（另一家族）**：改寫端用 claude 就用 codex 判、反之亦然。判分端
+2. **判分端（另一家族）**：改寫端跑 claude，判分端就用 `agy -p`（Gemini 家族）
+   或 `codex exec`（OpenAI 家族）；不可用 `claude -p`，同家族不算跨家族。判分端
    **不載 skill**，只給原 prompt ＋ expectations ＋ 兩版輸出（版本標籤洗掉，
    盲判），逐條 ✅／❌ 附一句理由。明確告知不換湯與保護類規則：保護類被改寫
    一律 ❌，即使結果「看起來更好」。
@@ -100,11 +101,14 @@ repo 鐵律：新版要贏 baseline。既有 skill 的 baseline 是**前一版**
 CLI 範例（一律走 coding-agent CLI，不直呼任何家的 API）：
 
 ```bash
-# 改寫端（codex）
-codex exec -s read-only "讀取 <新版或前版路徑>/SKILL.md 與 references/，逐案處理 evals/evals.json 的 prompt 欄，輸出 案例id｜模式｜完整輸出。"
+# 改寫端（claude）
+claude -p "讀取 <新版或前版路徑>/SKILL.md 與 references/，逐案處理 evals/evals.json 的 prompt 欄，輸出 案例id｜模式｜完整輸出。"
 
-# 判分端（claude，不載 skill）
-claude -p "以下是同一組案例的兩份匿名輸出與每案的 expectations。逐條判 ✅/❌ 附一句理由，輸出表格：案例｜expectation｜A判定｜B判定｜理由。保護類被改寫一律 ❌；換成同族空話記 ❌。"
+# 判分端（agy，不載 skill；agy 唯讀，禁止改檔）
+agy -p "以下是同一組案例的兩份匿名輸出與每案的 expectations。逐條判 ✅/❌ 附一句理由，輸出表格：案例｜expectation｜A判定｜B判定｜理由。保護類被改寫一律 ❌；換成同族空話記 ❌。"
+
+# 判分端備援（codex，不載 skill）
+codex exec -s read-only "以下是同一組案例的兩份匿名輸出與每案的 expectations。逐條判 ✅/❌ 附一句理由，輸出表格：案例｜expectation｜A判定｜B判定｜理由。保護類被改寫一律 ❌；換成同族空話記 ❌。"
 ```
 
 ## 歸檔
