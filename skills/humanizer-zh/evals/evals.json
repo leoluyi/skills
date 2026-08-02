@@ -1048,6 +1048,26 @@
         "no-false-positive-on-closing-plan-sentence: 「下週把灰度拉到 50%，同時把匯出的排程改版接上」不得標記——「同時」在場，關係詞沒有被刪掉。",
         "does-not-rewrite-in-detect: detect 模式只報不改，不得把條列展開成完整句。"
       ]
+    },
+    {
+      "id": 83,
+      "prompt": "rewrite 這段操作說明（docs 語境）：「匯出前你要先確認欄位對照表，不然你匯出來的東西根本沒辦法用。設定頁往下捲你會看到一個紅色警告，那是提醒你對照表還沒存。存好之後你再回來按匯出就可以了。」",
+      "expected_output": "The first rewrite-mode case for 對讀者說教, added 2026-08-02 because the rule's 改法 line only manifests in rewrite mode and the rule had zero rewrite coverage — its 手段 (subject swap to third person) had no surface on which it could be observed, spilling over or not. The passage mixes both sides on purpose: 你根本沒辦法用 judges the reader, while 你會看到一個紅色警告 is the procedural second person the rule's 保留 clause names by example. A runner applying the subject swap uniformly fails the protection row.",
+      "expectations": [
+        "fix-second-person-judgement: 「不然你匯出來的東西根本沒辦法用」改寫為第三人稱陳述——主詞換回被說明的主題（匯出檔／對照表），不得留「你」當判斷的受詞。",
+        "preserves-procedural-second-person: 「設定頁往下捲你會看到一個紅色警告」原樣保留——教學裡的程序性第二人稱，主詞仍是流程，屬本規則保留欄明列的形態。",
+        "no-fabricated-steps: 不得補進原文沒有的欄位名稱、按鈕名稱或步驟。"
+      ]
+    },
+    {
+      "id": 84,
+      "prompt": "rewrite 這段產品公告（社群貼文）：「這次改版不是換個介面，而是把整條報帳流程重做。我們不僅縮短了送出時間，更把三道簽核併成一道。與其說這是優化，不如說是重寫。細節下週的說明會再談。」",
+      "expected_output": "The first rewrite-mode case for 對比句式, added 2026-08-02 for the same reason as id 83. Three contrast frames stack in four sentences, which is the density condition the rule's 改法 is written for: keep the one where the argument actually turns, convert the rest. Whether that instruction stays inside its own rule or leaks into unrelated rewrites is what this case makes observable.",
+      "expectations": [
+        "fix-contrast-density: 三個對比框架（不是…而是／不僅…更／與其…不如）不得全數保留——留下論證真正轉折的那一句，其餘改成直述。",
+        "no-stacked-contrast-frames: 改寫後全段對比句式至多一句，且該句是論證確實轉折之處。",
+        "preserves-concrete-facts: 「三道簽核併成一道」「下週的說明會」逐字保留——改寫對比框架不得順手把具體事實抹成籠統說法。"
+      ]
     }
   ]
 }
