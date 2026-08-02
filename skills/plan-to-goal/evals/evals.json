@@ -4,11 +4,12 @@
     {
       "id": 1,
       "prompt": "我在 plan mode 想好一個計畫要把 auth 模組從 session 改成 JWT，但這個 plan 還很粗。幫我把它變成一個可以自動跑的 goal。",
-      "expected_output": "Phase 1 review with the four sections (done-state, machine-verifiable conditions, holes-as-questions, high-risk steps), then a stop at the gate. No goal spec is emitted in this turn.",
+      "expected_output": "Phase 1 review covering the done-state, machine-verifiable conditions, holes-as-questions, high-risk steps and the run's read/write surface, then a stop at the gate. No goal is emitted in this turn.",
       "expectations": [
-        "four-sections: Output contains all four Phase 1 sections in order — what done looks like, verifiable completion conditions, holes, high-risk steps.",
+        "phase1-review: Output contains the Phase 1 review sections in order — what done looks like, verifiable completion conditions, holes stated as questions, high-risk steps.",
         "conditions-are-commands: Every completion condition names a command and its expected result (test suite, typecheck, search returning nothing); none is an adjective like 'auth is clean'.",
-        "gate-holds: Does NOT emit the Part B goal spec in the same turn; ends by asking the user to rule on the open holes and confirm the picture.",
+        "boundaries-probed: The review states the run's read/write surface — which paths may be read, which may be written, what is off-limits, and whether anything may leave the machine — rather than leaving it unaddressed.",
+        "gate-holds: Does NOT emit the goal in the same turn; ends by asking the user to rule on the open holes and confirm the picture.",
         "no-execution: Does not edit files or start implementing the migration.",
         "output-language: Reply is in Traditional Chinese, including section headings and option labels, since the request is in Chinese."
       ]
@@ -16,21 +17,22 @@
     {
       "id": 2,
       "prompt": "這是我的重構計畫（已附）。保留舊的 PaymentGateway 介面、別動 legacy/ 底下。我已經確認完成條件是測試過、typecheck 過、沒有殘留舊 import。直接幫我轉成 goal。",
-      "expected_output": "Recognizes the gate is effectively satisfied on the way in, keeps the confirmation light, then emits Part A (decision record) and Part B (pasteable goal spec) carrying the do-not constraints and a stop limit.",
+      "expected_output": "Recognizes the gate is effectively satisfied on the way in, keeps the confirmation light, then emits the decision record plus the goal, carrying the do-not constraints and a stop limit.",
       "expectations": [
         "light-confirmation: Echoes the resolved picture back briefly instead of staging a fresh round of questions the user already answered.",
-        "both-parts: Emits Part A (decision record) and Part B (goal spec) — not the spec alone.",
-        "constraints-carried: The 'Do not' line carries both stated constraints — keep the PaymentGateway interface, don't modify legacy/.",
-        "stop-limit: Part B includes an explicit stop-after-N-turns limit.",
-        "conditions-only-confirmed: Completion conditions are exactly the three the user confirmed; no extra condition is invented."
+        "both-parts: Emits both the decision record and the goal itself — not the goal alone.",
+        "constraints-carried: The goal's do-not/constraints element carries both stated constraints verbatim — keep the PaymentGateway interface, don't modify legacy/.",
+        "stop-limit: The emitted goal includes an explicit stop-after-N-turns limit.",
+        "conditions-only-confirmed: Completion conditions are exactly the three the user confirmed; no extra condition is invented.",
+        "six-elements: The goal states outcome, machine-verifiable verification, constraints, boundaries, an iteration policy and a blocked-stop condition as distinct elements rather than collapsing them into an objective line."
       ]
     },
     {
       "id": 3,
       "prompt": "幫我把這個一行 typo 修好，check 一下就好。",
-      "expected_output": "Boundary case — the task is too small for a goal spec. Fixes the typo directly (or asks which file) rather than wrapping it in a Phase 1 review.",
+      "expected_output": "Boundary case — the task is too small for a goal. Fixes the typo directly (or asks which file) rather than wrapping it in a Phase 1 review.",
       "expectations": [
-        "no-trigger: Does NOT produce the Phase 1 four-section review or a goal spec for a one-line fix.",
+        "no-trigger: Does NOT produce the Phase 1 review or a goal for a one-line fix.",
         "proportionate-response: Handles the request directly at the size it was asked, without ceremony about scope or gates."
       ]
     },
@@ -41,18 +43,31 @@
       "expectations": [
         "scope-discipline: The goal covers only the log-format migration; any additional improvement the model suggested is listed separately as an optional follow-up, not inside the goal's objective or conditions.",
         "scope-stated: Explicitly says the goal is bounded to the original plan's scope.",
-        "gate-holds: Stops for confirmation before emitting the goal spec."
+        "gate-holds: Stops for confirmation before emitting the goal."
       ]
     },
     {
       "id": 5,
       "prompt": "Here's my plan to migrate the cache layer from Redis to an in-process LRU. Turn it into a goal I can run unattended overnight in headless mode.",
-      "expected_output": "Phase 1 then the gate; on approval the goal spec is emitted, plus a note that unattended execution needs the agent's non-interactive mode with tool permissions pre-granted, and a one-line cost heads-up.",
+      "expected_output": "Phase 1 then the gate; on approval the goal is emitted, plus a note that unattended execution needs the agent's non-interactive mode with tool permissions pre-granted, and a one-line cost heads-up.",
       "expectations": [
         "unattended-note: Mentions that a truly unattended run needs non-interactive mode with tool permissions pre-granted, or it stalls on a permission prompt — framed as the user's call.",
         "cost-note: Gives a one-line heads-up that an autonomous run costs an order of magnitude more than a normal turn.",
-        "tool-agnostic: Does not present one vendor's slash command as the only way to run the goal; the spec itself is usable as a prompt.",
+        "tool-agnostic: Does not present one vendor's goal command as the only way to run this; states what to do where no such command exists.",
+        "condition-stays-narrow: What is handed over for pasting is a short predicate plus the stop limit; the long context is kept in a separate goal document rather than pasted wholesale into the completion condition.",
         "output-language: Reply is in English, matching the request."
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "計畫附在下面：把 src/report/ 底下的匯出邏輯抽成獨立模組，測試也一起搬。跑完幫我 push 上去開 PR。這個 plan 我覺得已經夠完整了。",
+      "expected_output": "Phase 1 derives the write surface from the plan itself and states it for confirmation, while asking only the outward-facing question the code cannot settle — whether pushing is authorized. The gate holds before any goal is emitted.",
+      "expectations": [
+        "surface-derived-not-asked: The write surface implied by the plan (src/report/ and its tests) is stated as a settled finding for confirmation, not put back to the user as a question.",
+        "outward-facing-asked: Whether the run may push to the remote is treated as a genuine open question for the user, since nothing in the plan or code settles it.",
+        "constraints-vs-boundaries: Constraints (rules about how the work is done) and the read/write surface (where it may happen) are presented as separate things, not merged into one list.",
+        "gate-holds: Does NOT emit the goal in the same turn, despite the user calling the plan complete.",
+        "no-invented-scope: Does not add work the plan never mentioned, such as reformatting unrelated modules or widening the extraction."
       ]
     }
   ]
