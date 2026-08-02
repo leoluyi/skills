@@ -1079,6 +1079,18 @@
         "no-false-positive-on-time-anchored-parataxis: 「上週加了複合索引，這週的回應時間從 8 秒降到 0.4 秒」不得標記——上週與這週把時序釘死，第一遍就讀對，補連接詞反而囉嗦。",
         "does-not-rewrite-in-detect: detect 模式只報不改。"
       ]
+    },
+    {
+      "id": 86,
+      "prompt": "detect 這則個人筆記（voice: casual）：「這場對話的價值，在對話結束時就結束嗎？會結束，放心壓。之後還要拿來寫文件、給別人看、或自己回頭查，就別開。」",
+      "expected_output": "破碎短句堆疊 across two of its three forms in one short casual passage. 「會結束，放心壓」is a bare assertion — the reason it ends is never written, so the reader is handed a conclusion with no premise. 「之後還要拿來寫文件、給別人看、或自己回頭查，就別開」carries 就 on the consequent while the antecedent end has no marker, so the first half is read as a plan for future uses and only 就別開 forces a re-read as a condition. The case also stakes two protections: casual register is not a register branch of this rule (the 過度簡寫 carve-out belongs to a different rule and cannot be borrowed), and 放心壓 is a real person's typo, protected verbatim.",
+      "expectations": [
+        "flags-broken-inference-chain: 「會結束，放心壓」須標 破碎短句堆疊——裸斷言，為什麼會結束沒寫，讀者得接受一個沒有前提的結論。",
+        "flags-missing-connective: 「之後還要拿來寫文件、給別人看、或自己回頭查，就別開」須標 破碎短句堆疊——「就」在場而條件那一端沒有標記，前半第一遍讀成用途規劃這件事實，讀到「就別開」才回頭改判。",
+        "does-not-spare-on-casual-register: 不得以 casual／筆記語域為由整段放行——該保留欄是 過度簡寫 的，本條沒有語域分支，跨條借用不成立。",
+        "no-typo-correction: 「放心壓」三字原樣保留，不得改成「放心啦」。",
+        "does-not-rewrite-in-detect: detect 模式只報不改。"
+      ]
     }
   ]
 }

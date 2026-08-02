@@ -26,7 +26,8 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 6. **rewrite mode 的口語時間表達 保真 case** — 收工 2026-08-02，id 78。
 7. **一次 re-baseline ＋ aggregate 重跑** — 前六項的結果一起進去，不分批。待進去的東西比原
    計畫多：`破碎短句堆疊` 命中側三案（ids 79-81）、條列 carve-out 保護案 id 82、`缺連接詞`
-   分界案 id 85、`對讀者說教` 與 `對比句式` 的第一個 rewrite 案（ids 83、84）、`缺連接詞`
+   分界案 id 85 與 casual 語域的三形態案 id 86、`對讀者說教` 與 `對比句式` 的第一個
+   rewrite 案（ids 83、84）、`缺連接詞`
    保留欄的收窄（動 `references/zh-rules.md`，屬行為變更），以及 chunks 與 `rewrite_case_ids`
    的重排。全部在 branch `chore/backlog-key-sequence` 上，2026-08-02 起跑第一輪。
 
