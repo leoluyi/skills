@@ -43,8 +43,8 @@ categories:
   - key: agent-workflow
     label: { en: "Agent Workflow", zh: "Agent 工作流" }
     blurb:
-      en: "Bound what an agent runs on its own: turn a rough plan into a goal with machine-checkable done conditions before any autonomous run starts."
-      zh: "把 agent 的自主執行框起來：在自動跑之前，先把粗略的計畫變成有機器可驗完成條件的 goal。"
+      en: "Decide before you run, then bound the run: lay out every case, get decisions surfaced as choices, turn a plan or a fuzzy task into a goal with machine-checkable done conditions, hand the whole job over, and distil the taste rubric that says what good looks like."
+      zh: "先想清楚再跑，跑起來也框得住：把每個案攤開、決策以選項浮上來、把計畫或模糊任務變成有機器可驗完成條件的 goal、整份工作交出去自動跑完，以及蒸餾出定義「好」長什麼樣的品味 rubric。"
     readmeNote:
       en: "Language-agnostic; runs on any agent that can execute a plan unattended."
       zh: "跨語言工具，適用任何能無人值守執行計畫的 agent。"

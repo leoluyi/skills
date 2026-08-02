@@ -4,7 +4,7 @@
 
 **寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
-[![Skills](https://img.shields.io/badge/skills-14-6d4aff?style=flat-square)](#技能目錄)
+[![Skills](https://img.shields.io/badge/skills-19-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-14 個技能、6 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+19 個技能、6 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -118,7 +118,12 @@ tools/sync-skills
 
 | Skill | 叫用方式 | 做什麼 |
 |---|---|---|
-| **計畫轉 Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | `model-invoked` | 在 agent 自己跑起來之前，把粗略的計畫變成有邊界、完成條件機器可驗的 goal，別讓它對著模糊目標燒 token |
+| **計畫轉 Goal**<br>[`plan-to-goal`](skills/plan-to-goal/SKILL.md) | `user-invoked` | 在 agent 自己跑起來之前，把粗略的計畫變成有邊界、完成條件機器可驗的 goal，別讓它對著模糊目標燒 token |
+| **任務目標訪談**<br>[`goal-definer`](skills/goal-definer/SKILL.md) | `model-invoked` | 把講不清楚的任務訪談成六元素 goal prompt，讓 agent 自己跑好幾個小時也不偏離、不提早收工 |
+| **自動駕駛**<br>[`autopilot`](skills/autopilot/SKILL.md) | `user-invoked` | 整份工作交出去：以 subagent 為主力執行、故障自修有次數上限、過驗證閘門後 commit、push、開 PR，全程不回頭問 |
+| **全案攤開**<br>[`breakdown`](skills/breakdown/SKILL.md) | `model-invoked` | 先把每個情況完整攤開再評估，把問題拆成只有你能拍板的決策，然後停住等你回答，建議放到最後 |
+| **給我選項**<br>[`options`](skills/options/SKILL.md) | `user-invoked` | 把懸而未決的問題改成可點選的選項重問一次，之後整段對話遇到方向決策都給你點 |
+| **品味蒸餾**<br>[`taste-distiller`](skills/taste-distiller/SKILL.md) | `model-invoked` | 從你退掉、重寫 AI 產出的實例裡挖出背後的標準，蒸餾成可重複使用的 1-5 分 rubric，同時給 Markdown 和 evaluator 用的 JSON |
 <!-- CATALOG:END -->
 
 ---
