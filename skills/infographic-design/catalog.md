@@ -14,8 +14,8 @@ whenUse:
   en: "Reach for it when you need an infographic, one-pager, timeline, comparison, or how-it-works diagram, or a visual recap of something just taught."
   zh: "需要資訊圖表、懶人包、one-pager、時間軸、比較圖或流程圖解，或把剛教完的內容總結成一張圖時使用。"
 whenNot:
-  en: "Skip it for standalone data charts, dashboards, BI tooling, slide decks, or plain-language term explanations; route those to a dataviz, pptx, or plain-speak flow instead."
-  zh: "純資料圖表、儀表板、BI 工具、投影片，或只想用白話解釋一個名詞時不要用它，改用 dataviz、pptx 或 plain-speak。"
+  en: "Skip it for standalone data charts, dashboards, BI tooling, slide decks, or plain-language term explanations; route those to a dataviz, pptx, or plain-speak flow instead. Also skip it for cheatsheets and quick-reference tables, and for authoring a knowledge document itself (use knowledge-doc-writing)."
+  zh: "純資料圖表、儀表板、BI 工具、投影片，或只想用白話解釋一個名詞時不要用它，改用 dataviz、pptx 或 plain-speak。速查表、快速查詢表，以及撰寫知識文件本體（用 knowledge-doc-writing）也不要用它。"
 highlights:
   en:
     - "Plans the graphic and critiques that plan before building, so it isn't a templated default"

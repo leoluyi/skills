@@ -12,13 +12,21 @@ description: >-
   designed for a document it is producing. Do NOT invoke for a single
   standalone chart embedded in analysis output, for dashboards / BI tooling,
   for slide decks (use a pptx workflow), for explaining a term in plain
-  language (use plain-speak), or for data-dense charts where the numbers are
+  language (use plain-speak), for a dense quick-reference sheet — a
+  cheatsheet / 速查表 of commands, syntax, parameters, or rules that a
+  reader scans to look something up rather than reads once to understand,
+  for authoring a knowledge or technical document itself (use
+  knowledge-doc-writing; that skill may still call here for a figure inside
+  its document), or for data-dense charts where the numbers are
   themselves the subject or precise scales matter (annual-results decks,
   survey findings, statistical graphics) — hand those to a
   data-visualization workflow. An explicit ask for an infographic /
   資訊圖表 / 懶人包 / one-pager always qualifies even when the underlying
   data is precise; the data-density exclusion applies only when the user
-  names a chart, plot, or dashboard instead. Quantities that serve as
+  names a chart, plot, or dashboard instead. 懶人包 names the form, not the
+  content — it qualifies when the ask is an explanation read once, and does
+  not when what is wanted is a lookup table wearing that label.
+  Quantities that serve as
   evidence inside an explanation (a funnel's drop-off, a cache hit-rate)
   stay in scope.
 app-description: >-
@@ -72,6 +80,17 @@ visual relations, and the warm-cream-plus-terracotta palette (near #D97757 —
 Anthropic's own Claude accent, so it reads as a tell). These are defaults
 rather than choices. Where the brief pins a direction, follow it exactly;
 where it leaves an axis free, spend that freedom on a real choice.
+
+**Not this skill's job.** The deliverable is one explanatory graphic — a
+single message someone reads once and understands. A cheatsheet is the
+opposite artifact: a dense lookup surface (commands, syntax, parameter
+tables, rule checklists) that is scanned, not read, and it wants exhaustive
+rows where this skill wants one point. Asked for one, say what the
+difference is and offer the graphic. Authoring a knowledge or technical
+document is likewise not this skill's work — that is `knowledge-doc-writing`,
+and this skill is not a shortcut around it. What stays open is the reverse
+direction: that skill calling here to design a figure inside its document,
+which is the embedded branch in step 2.
 
 ## Process: plan, critique the plan, then build
 

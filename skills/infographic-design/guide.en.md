@@ -34,13 +34,15 @@ Every build follows the same internal discipline regardless of form: a three-lev
 
 Reach for it when you need an infographic, one-pager, timeline, comparison, or how-it-works diagram — or a visual recap of something just taught, which needs no further prompting to trigger. It also applies when another skill needs a figure designed for a document it is producing, and to reviewing an existing graphic for what could be improved.
 
-An explicit ask for an infographic, 資訊圖表, 懶人包, or one-pager always qualifies, even when the underlying data is precise — precision and infographic form are not in tension. Numbers that serve as evidence inside an explanation (a funnel's drop-off, a cache hit-rate) stay in scope too.
+An explicit ask for an infographic, 資訊圖表, 懶人包, or one-pager always qualifies, even when the underlying data is precise — precision and infographic form are not in tension. 懶人包 names the form rather than the content, though: a lookup table wearing that label is still a cheatsheet. Numbers that serve as evidence inside an explanation (a funnel's drop-off, a cache hit-rate) stay in scope too.
 
 ## When not to
 
 Skip it for a single standalone chart embedded in analysis output, for dashboards or BI tooling, for slide decks (use a pptx workflow instead), and for explaining a single term in plain language (use plain-speak).
 
 It also steps aside for data-dense graphics where the numbers themselves are the subject or where precise scales matter — annual-results decks, survey findings, statistical graphics. The distinction is what the user names: the exclusion applies only when they ask for a chart, plot, or dashboard. Asking for an infographic that happens to contain precise numbers is still an infographic request.
+
+Two more it declines. A cheatsheet — a dense quick-reference sheet of commands, syntax, parameters, or rules that a reader scans to look something up — is the opposite artifact from an infographic: lookup wants exhaustive rows, this wants one message that lands in a single read. And authoring a knowledge or technical document is knowledge-doc-writing's job, not something to route through this skill. The reverse direction stays open: that skill may call here to design a figure inside its document.
 
 ## How it works
 
