@@ -389,7 +389,13 @@ grader 用軟尺。(3) 綁包的 slug 全數拆開（15、16、19、30、32、34
 
 ### 8. `check-labels` 在 main 上連紅三個 commit
 
-- [ ] **閘紅了，而且不是因為有人寫錯 label。** `1ec104a` 起紅（此前一路綠），`661e402`、
+- [x] **已解（2026-08-02）**：兩個名字都進 `label-check.json` 的 `names`。決定理由——
+  `改寫保真` 是期望類別不是規則，`names` 本來就是「宣告而非衍生」名字的位置（`保護清單`、
+  `長文scope` 是先例）；`四字評語` 若改納 `zh-phrase-rules.md` 為 source，會把「台灣用語
+  偏好」等非規則 header 一起收進 canonical，污染成本高於 `names` 與檔案 header 重複的
+  drift 風險。若日後改名 `zh-phrase-rules.md` 的 `四字評語` header，記得同步 `names`。
+
+  **原始分析**：閘紅了，而且不是因為有人寫錯 label。`1ec104a` 起紅（此前一路綠），`661e402`、
   `a4536c7` 續紅，8 個 FAIL，兩個各自獨立的成因，共通點是**兩個名字都是合法的，只是
   `load_canonical()` 讀不到它們宣告的地方**：
 

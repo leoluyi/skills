@@ -1,6 +1,6 @@
 {
   "corpus": "evals/corpus.md",
-  "names": ["保護清單", "長文scope"],
+  "names": ["保護清單", "長文scope", "改寫保真", "四字評語"],
   "sources": [
     {
       "file": "references/zh-rules.md",
