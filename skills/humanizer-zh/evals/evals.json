@@ -924,7 +924,7 @@
       "expected_output": "Should-fix: 「判斷依據皆來自前文的三個結構性因素」是交付物替自己的方法背書。該子句不帶新事實，只宣告已經寫出來的東西完整、有出處；「皆」在防守一個沒人問過的質疑。把「怎麼讀下文」的操作句寫成了「我的依據很完整」的稽核句。",
       "expectations": [
         "flags-self-vouching: 標記 自我背書，並指出證據——子句不帶新事實，「皆來自」宣告的是已寫出內容的完整性與出處，不是下文的讀法。",
-        "direction-restores-operative-clause: 方向要指到操作句這一步——主詞從「判斷依據」回到判斷這個動作本身（依前述三個結構性因素判斷如下），只說「刪掉」而沒說換成什麼不算。",
+        "fix-restores-operative-clause: 方向要指到操作句這一步——主詞從「判斷依據」回到判斷這個動作本身（依前述三個結構性因素判斷如下），只說「刪掉」而沒說換成什麼不算。",
         "no-disambiguation-confusion: 不得以「這句在消歧義」放行——本段沒有別的判準與之競爭，拿掉之後讀者不會套錯判準。"
       ],
       "bucket": "SF",
@@ -939,7 +939,7 @@
       "expected_output": "Should-not-fix (protection boundary): 文件別處（第二節）確實用了另一組判準，指明本節只依這三項是在防讀者套錯權重，不是替自己背書。拿掉這句，讀者會誤以為法遵權重仍然適用。",
       "expectations": [
         "no-self-vouching-false-positive: 不得標記 自我背書。「均只依這三項判斷」在此消歧義——同一份文件的第二節有另一組判準，此句排除的是它。",
-        "applies-removal-test: 若給出理由，須引到消歧義這一步（拿掉會讓讀者套用第二節的法遵權重），不得只說「這是必要說明」。",
+        "does-not-spare-without-citing-disambiguation: 若給出理由，須引到消歧義這一步（拿掉會讓讀者套用第二節的法遵權重），不得只說「這是必要說明」。",
         "does-not-rewrite-in-detect: detect 模式不得改寫或刪除該子句。"
       ],
       "bucket": "SNF",
@@ -1042,7 +1042,7 @@
     {
       "id": 82,
       "prompt": "detect 這份週報摘要（docs 語境）：\n\n「本週進度\n- 索引調校完成，掃描列數 120 萬降到 3 萬\n- 快取層灰度 10%，尚未觀察到命中率變化\n- 匯出功能延後，等排程改版一起上\n\n下週把灰度拉到 50%，同時把匯出的排程改版接上。」",
-      "expected_output": "The protection side of 破碎短句堆疊, taken from the carve-out that is not in dispute: 摘要、表格儲存格、條列重點、一頁總結 — 壓縮是這些區塊的職責. Every bullet here matches the catch on its surface (no connectives, clauses stripped to phrases), and flagging them would make the rule unusable on the single most common shape in technical writing. The 意合 clause of the same 保留 list is deliberately not tested here — see the open question in backlog item 7.",
+      "expected_output": "The protection side of 破碎短句堆疊, taken from the carve-out that is not in dispute: 摘要、表格儲存格、條列重點、一頁總結 — 壓縮是這些區塊的職責. Every bullet here matches the catch on its surface (no connectives, clauses stripped to phrases), and flagging them would make the rule unusable on the single most common shape in technical writing. The 意合 clause of the same 保留 list is exercised by id 85, not here.",
       "expectations": [
         "no-false-positive-on-bullet-compression: 三個條列項不得標為 破碎短句堆疊——摘要與條列重點的壓縮是這些區塊的職責，這是本條保留欄明列的第二項。",
         "no-false-positive-on-closing-plan-sentence: 「下週把灰度拉到 50%，同時把匯出的排程改版接上」不得標記——「同時」在場，關係詞沒有被刪掉。",
@@ -1067,6 +1067,17 @@
         "fix-contrast-density: 三個對比框架（不是…而是／不僅…更／與其…不如）不得全數保留——留下論證真正轉折的那一句，其餘改成直述。",
         "no-stacked-contrast-frames: 改寫後全段對比句式至多一句，且該句是論證確實轉折之處。",
         "preserves-concrete-facts: 「三道簽核併成一道」「下週的說明會」逐字保留——改寫對比框架不得順手把具體事實抹成籠統說法。"
+      ]
+    },
+    {
+      "id": 85,
+      "prompt": "detect 這段效能筆記（docs 語境）：「資料量超過一百萬列，這個查詢會退回全表掃描。上週加了複合索引，這週的回應時間從 8 秒降到 0.4 秒。」",
+      "expected_output": "The boundary case for 缺連接詞. Both sentences are 意合 — neither carries a connective — so a runner that reads the 保留 clause as blanket amnesty for parataxis spares both, and one that reads the catch off the surface flags both. The discriminator is the 回讀測試 the 保留 clause now names: sentence 1 is first read as a fact that has already happened and has to be re-read as a condition, sentence 2 is anchored by 上週／這週 and is read correctly on the first pass. Sentence 1 is the third row of the 缺連接詞 table in zh-phrase-rules.md; this case is what keeps the two files from contradicting each other.",
+      "expectations": [
+        "flags-conditional-read-as-fact: 標記「資料量超過一百萬列，這個查詢會退回全表掃描」——前半先被讀成已發生的事實，到後半才回頭改判成條件，關係沒有在第一遍讀出來。",
+        "fix-restores-conditional-marker: 修法補回條件標記（「資料量一旦超過一百萬列，這個查詢就會退回全表掃描」這種），而不是把句子拆短或改寫成條列。",
+        "no-false-positive-on-time-anchored-parataxis: 「上週加了複合索引，這週的回應時間從 8 秒降到 0.4 秒」不得標記——上週與這週把時序釘死，第一遍就讀對，補連接詞反而囉嗦。",
+        "does-not-rewrite-in-detect: detect 模式只報不改。"
       ]
     }
   ]
