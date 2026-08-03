@@ -54,7 +54,7 @@
         "unattended-note: Mentions that a truly unattended run needs non-interactive mode with tool permissions pre-granted, or it stalls on a permission prompt — framed as the user's call.",
         "cost-note: Gives a one-line heads-up that an autonomous run costs an order of magnitude more than a normal turn.",
         "tool-agnostic: Does not present one vendor's goal command as the only way to run this; states what to do where no such command exists.",
-        "condition-stays-narrow: What is handed over for pasting is a short predicate plus the stop limit; the long context is kept in a separate goal document rather than pasted wholesale into the completion condition.",
+        "condition-stays-narrow: Whichever output route is used, what's handed over for pasting stays short — file route: a narrow predicate plus stop limit, with the decision record and full six elements kept in a separate document; skeleton route: the six-element block itself with no plan narrative or decision-record prose folded in. Either way, the paste is never the whole exploration write-up.",
         "output-language: Reply is in English, matching the request."
       ]
     },
@@ -68,6 +68,18 @@
         "constraints-vs-boundaries: Constraints (rules about how the work is done) and the read/write surface (where it may happen) are presented as separate things, not merged into one list.",
         "gate-holds: Does NOT emit the goal in the same turn, despite the user calling the plan complete.",
         "no-invented-scope: Does not add work the plan never mentioned, such as reformatting unrelated modules or widening the extraction."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "計畫是把設定檔從 YAML 改成 TOML，大概 5 個檔案，已經想清楚了：不能動 schema 版本號、完成條件是 config loader 的測試全過、grep 找不到殘留 .yaml 副檔名引用。全部本機處理，不用 push。不用存檔，直接給我可以貼的 prompt 就好，這只是我自己臨時要跑的。",
+      "expected_output": "Recognizes the gate is effectively satisfied on the way in and that the user has already picked the skeleton output route. Emits a self-contained six-element block only — no decision record, no file written, no @file mention — with the stop limit appended, and does not re-ask which output route to use.",
+      "expectations": [
+        "skeleton-route-honored: No file is written and no decision record (Part A) is produced; only the six-element block is emitted, since the user explicitly said not to save a file.",
+        "no-redundant-route-question: Does NOT ask again which output route to use — the user already settled it inline ('不用存檔'), so the gate confirmation doesn't re-litigate it.",
+        "six-elements-self-contained: The six-element block is self-contained enough to paste directly into /goal with no external file reference — no @file mention appears anywhere in the hand-off.",
+        "stop-limit-present: A stop-after-N-turns limit is present, appended to the block since there's no file to carry it separately.",
+        "conditions-only-confirmed: Completion conditions are exactly the two the user stated (config loader tests pass, no stale .yaml references); no extra condition is invented."
       ]
     }
   ]

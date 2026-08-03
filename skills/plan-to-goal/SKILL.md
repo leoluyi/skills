@@ -5,7 +5,7 @@ description: >-
 app-description: >-
   把粗略或手寫的計畫轉成可自動執行的 goal spec：目標、可機器驗證的完成條件、禁止事項與停止上限。觸發：「把這個計畫變成可以自動跑的 goal」「讓它自己跑完」「這個 plan
   還很粗，幫我補完再自動執行」，或 turn this plan into a goal、run this autonomously。
-version: 2.0.0
+version: 2.1.0
 license: MIT
 disable-model-invocation: true
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -72,17 +72,20 @@ So sort the section-3 holes into two piles first:
 
 Write the confirmation the way the goal itself has to read: no adjective stands in for a criterion. "The refactor will be clean", "docs will be improved", "coverage gets better" are the same failure the completion conditions exist to prevent, and letting one through here means the user signs off on a picture the goal can't express. Every line either names something observable or is cut.
 
-**When the user satisfied the gate on the way in** — the handed-over plan already resolves the holes and states the conditions ("keep the old interface, don't touch `legacy/`, done when tests and typecheck pass with no stale imports") — keep the confirmation light: echo the resolved picture back in a sentence or two and move on. Staging a formal sign-off for something already spelled out is theatre.
+**The same confirmation also carries the output route** — how the goal leaves this turn. This isn't a hole the plan or the code can resolve, so it's not conditional the way section-3 holes are: it's a standing preference, asked the same way every time, folded into the one confirmation rather than a separate round.
+
+- **File** — a decision record plus the six elements, written to `goal-<slug>-<date>.md`, with one line handed over that points at it. Buys version history, a PR-reviewable record, and a pasted line that stays narrow because the long context lives in the file.
+- **Skeleton prompt** — no file, no decision record. Just the six elements, self-contained enough to paste straight into `/goal` on their own. Cheapest, but the "why" behind each ruling doesn't survive past this turn, and there's nothing to point a later run at.
+
+State a lean and why, then let the confirmation's yes/no cover it too — a separate question round is not needed. Default to file for anything that reads like durable engineering work (a refactor, a migration, something worth a PR); lean skeleton for a one-off or throwaway goal. If the user already said which they want on the way in, don't ask — state which route, then run Phase 2 in the same turn.
+
+**When the user satisfied the gate on the way in** — the handed-over plan already resolves the holes and states the conditions ("keep the old interface, don't touch `legacy/`, done when tests and typecheck pass with no stale imports") — keep the confirmation light: echo the resolved picture back in a sentence or two, then run Phase 2 in the same turn. Staging a formal sign-off for something already spelled out is theatre.
 
 **Scope discipline:** Phase 1 may have surfaced extra work worth doing ("while we're here, add a cache"). Keep it out of the goal. Say plainly that the goal covers the original plan's scope only, and list the extras separately as things to pick up later. A bounded refactor turning into an unbounded project is the failure mode an autonomous run is least able to notice.
 
 ### Phase 2 — Emit the goal
 
-Only after the user confirms, produce two parts.
-
-**Part A — the decision record.** A short recap: the confirmed "done" definition, each resolved hole with its ruling, the carried-forward constraints, the read/write surface, and the stop limit. This is what the user signed off on, and the reason a saved goal is still legible months later.
-
-**Part B — the goal file,** written to disk, holding six elements assembled from Part A:
+Only after the user confirms, assemble the six elements — this part is identical regardless of which output route was picked at the gate:
 
 ```
 Outcome: <the confirmed finished state, scoped to the original plan>
@@ -98,26 +101,42 @@ Blocked Stop Condition: <what counts as stuck, and the report to leave — what 
 - Constraints carry the Phase 1 rules verbatim; Boundaries carry the Phase 1 read/write surface.
 - Iteration Policy and Blocked Stop Condition are honoured by the agent, not enforced by the harness — no goal mechanism checks that a round was logged. They are worth writing anyway: an autonomous run that leaves no trail is unauditable afterwards, and one with no stated surrender condition grinds against an impossible step until the turn limit cuts it off. Say plainly that these two are conventions the run follows, not gates it trips.
 
-Then give the user **one line to paste**, not the whole file:
+Always set a stop limit, on both routes. A goal loops until its condition is met; an unreachable condition (a pre-existing broken test, a flaky suite) spins and burns tokens until something stops it. The limit is the stop-loss.
+
+Then hand it over by the route chosen at the gate.
+
+**File route.** Produce two parts. Part A, the decision record: a short recap of the confirmed "done" definition, each resolved hole with its ruling, the carried-forward constraints, the read/write surface, and the stop limit — what the user signed off on, and the reason a saved goal is still legible months later. Part B is the six elements above. Write both into `goal-<slug>-<YYYY-MM-DD>.md` (naming below), then give the user **one line to paste**, not the whole file:
 
 ```
 /goal 依 @<path-to-goal-file> 執行。Done when: <the machine-verifiable conditions>. Stop after <N> turns.
 ```
 
-- The one-line form exists because a goal condition is a predicate, not a context container: the goal mechanism re-reads that text every round to judge whether the work is finished. A page of prose in that slot makes the judgement mushier every round, and it is miserable to paste into a terminal. The long context belongs in the file, pulled in by a file mention; the condition stays narrow.
-- Always set a stop limit. A goal loops until its condition is met; an unreachable condition (a pre-existing broken test, a flaky suite) spins and burns tokens until something stops it. The limit is the stop-loss.
-- Where the agent has no goal command, or no file-mention syntax, the goal file's full text is the prompt instead. Say which form applies rather than assuming the user's tool.
-- If the user wants it truly unattended (CI, cron, headless), point out that it needs the agent's non-interactive mode with tool permissions pre-granted, or it stalls on the first permission prompt. Their call to make, not something to add silently.
+The one-line form exists because a goal condition is a predicate, not a context container: the goal mechanism re-reads that text every round to judge whether the work is finished. A page of prose in that slot makes the judgement mushier every round, and it is miserable to paste into a terminal. The long context — the decision record, the full six elements — belongs in the file, pulled in by a file mention; the pasted line stays narrow. Where the agent has no goal command, or no file-mention syntax, the goal file's full text is the prompt instead. Say which form applies rather than assuming the user's tool.
+
+**Skeleton route.** No decision record, no file — the plan's narrative is cut and only the six elements survive, self-contained enough that another agent could run them without anything else in context. (This is the same shape `goal-definer`'s own goal-prompt block ships, for the same reason: it's what a `/goal` paste looks like when there is no file to point a mention at.) Hand the block as-is, with the stop limit appended as a trailing line, since there's no file to carry it instead:
+
+```
+Outcome: ...
+Verification: ...
+Constraints: ...
+Boundaries: ...
+Iteration Policy: ...
+Blocked Stop Condition: ...
+
+Stop after <N> turns.
+```
+
+If the route was picked at the gate, its cost was already stated there in the option line — don't say it again here. Only if the route was pre-declared on the way in and never put to the user as a choice, state it once now: no version history, nothing to review in a PR, and — unlike the file route — no decision record either, so the "why" behind each ruling doesn't survive past this turn.
+
+If the user wants it truly unattended (CI, cron, headless), point out that it needs the agent's non-interactive mode with tool permissions pre-granted, or it stalls on the first permission prompt. Their call to make, not something to add silently.
 
 **Cost:** an autonomous run is a different order of magnitude from a normal turn — tens of thousands of tokens for a single-file goal, hundreds of thousands for a multi-file one. One line of heads-up before they kick it off, so the bill isn't a surprise.
 
 ### Where the goal file goes
 
-Name it `goal-<slug>-<YYYY-MM-DD>.md`, where `<slug>` is a short kebab-case tag from the objective (`payment-refactor`, `auth-jwt-migration`). The date keeps successive goals on the same target in order and stops a re-run from clobbering the earlier record. Suggest a location that fits the repo's layout, and let the user rename or redirect it rather than scattering files.
+Applies to the file route only. Name it `goal-<slug>-<YYYY-MM-DD>.md`, where `<slug>` is a short kebab-case tag from the objective (`payment-refactor`, `auth-jwt-migration`). The date keeps successive goals on the same target in order and stops a re-run from clobbering the earlier record. Suggest a location that fits the repo's layout, and let the user rename or redirect it rather than scattering files.
 
 Write **both** parts into it: Part A as prose, then Part B's six elements. The record is what makes the file worth keeping — the elements alone lose the "why", and months later that is the only thing that makes an old goal legible.
-
-If the user would rather not have a file at all, hand them Part B inline and say the tradeoff out loud: no version history, nothing to review in a PR, and the whole thing has to be pasted by hand.
 
 ## What good looks like
 
@@ -133,9 +152,9 @@ If the user would rather not have a file at all, hand them Part B inline and say
 >
 > The write surface isn't asked either — the plan names the files, so it's stated. Whether the run may push is asked, because nothing in the code implies an answer.
 >
-> Then the whole picture in one place: done-definition, the flag decision, the `refundLegacy` removal, the constraints, the surface, the three conditions. "Confirm and I'll write the goal?"
+> Then the whole picture in one place: done-definition, the flag decision, the `refundLegacy` removal, the constraints, the surface, the three conditions, plus the output route — "file, by default, since this is a ~14-file refactor worth a PR; say 'skip the file' for the skeleton prompt instead. Confirm and I'll write the goal?"
 
-User picks **(a)**, says commits are fine but no pushing, and confirms.
+User picks **keep** the flag, says commits are fine but no pushing, doesn't object to the file default, and confirms.
 
 **Part B, written to `plans/goal-payment-refactor-2026-08-02.md`:**
 
@@ -152,4 +171,17 @@ Blocked Stop Condition: stop after three distinct failed hypotheses on one block
 
 ```
 /goal 依 @plans/goal-payment-refactor-2026-08-02.md 執行。Done when: npm test passes, npm run typecheck is clean, and grep -r "legacy/payment" src/ returns nothing. Stop after 25 turns.
+```
+
+**If they'd said "skip the file" instead**, Phase 2 skips Part A and the file entirely — the block below is the whole hand-off, no `@` mention involved:
+
+```
+Outcome: Every payment call site runs on the new module and the old one is gone from src/.
+Verification: npm test passes; npm run typecheck is clean; grep -r "legacy/payment" src/ returns nothing.
+Constraints: do not modify anything under legacy/; keep the deprecated flag on the three flagged call sites.
+Boundaries: read anything in the repo; write only under src/payments/ and its tests; legacy/ is read-only; commit locally, never push.
+Iteration Policy: per round, record which call sites moved, what the three commands returned, and the next call site to take.
+Blocked Stop Condition: stop after three distinct failed hypotheses on one blocker, or if a condition turns out to be unreachable. Report what was tried, where it jammed, what is missing, and what decision would unblock it.
+
+Stop after 25 turns.
 ```
