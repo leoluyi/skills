@@ -204,3 +204,65 @@ The method lives in `evals/adversarial-eval-protocol.md`. Each row = one GAN-sty
 `backlog.md` 記錄的「id 3、id 10 兩個未分診的 fail」**指的是 `evals/trigger-queries.json` 的 query id**（router 觸發判斷），不是 `evals.json` 的內容品質 case——兩份檔案剛好都有 id 3 與 id 10。兩條在 1.5.0 的 description 下即已判 TRIGGER，2026-07-28 用修好的 `tools/run-eval` 實測 10/10 確認。
 
 **殘留風險。** id 3 的 query 含「blog intro」，與 description 結尾排除句的「blog」字面相鄰，router 可能被字面誤導去分流到 `blog-writing-zh`。2.0.0 改寫 description 時保留了該排除句（它是必要的邊界宣告），並把開頭改成「language-layer cleanup pass」，讓職責分界不只靠結尾那一句承擔。改寫後 10/10 仍全過，含 id 3 與 id 9（RFP structural authoring 的負例）。
+
+## Step 0 定位：id 86 與 id 47 的開火來源（2026-08-03）
+
+兩案長期兩臂同紅，先前三輪針對 carve-out 的修改都沒有動搖它們。這一輪不改任何文字，
+只做定位。
+
+**儀器。** `run-case` 的 scratch workspace 持有 runner 與 grader 的全部輸出，但
+`cli.py:134` 的 `discard_workspace()` 在收工時無條件刪除它，也沒有保留旗標；歷史輸出
+同樣不在 repo（`.gitignore:1` 排除 `evals/*/runs/`）。因此改為匯入 `run_case.arms` 與
+`run_case.dispatch` 的真函式重現單案 runner 呼叫，模型、reasoning effort、環境變數剝除
+與 prompt 組法全部沿用正式跑分的路徑，只是把 stdout 留下來。兩案各一次抽樣。
+
+### id 86：放行來自 `SKILL.md:130` 的保護清單⑥升格
+
+runner 原文把兩個該被 `破碎短句堆疊` 抓的 span 直接掛進保護清單：
+
+```
+⑥「放心壓」：符合使用者宣告的 casual 口語措辭，原樣保留。
+⑥「就別開」：符合 casual 的短句與口語提醒，原樣保留。
+```
+
+機制是 `:130`——「Where a voice profile … declares positive features, those features are
+保護清單 item ⑥」。Voice `casual` 在 `:128` 宣告的正向特徵字面就含 short sentences，於是
+「短句」被升格成保護條目，在規則評估**之前**就把 span 收走。「會結束，放心壓」全篇未曾
+被當作 `破碎短句堆疊` 討論過，不是判它不成立，是它沒有進入判定。
+
+**backlog 與 eval 各自寫的病因都不成立。** eval id 86 的 `does-not-spare-on-casual-register`
+說病因是跨條借用 `過度簡寫` 的語域分支——runner 輸出零次提及 `過度簡寫`。backlog 說是
+`:128` 的描述性文字——`:128` 本身只是描述，真正把它變成豁免的是 `:130` 的升格條款。
+
+另一條路徑在 grader reason 裡有據但本輪未現形：r4 記「B states 依 casual profile 本次只
+執行 P0 and drops all P1」、r6 記「A releases the whole paragraph because casual profile
+'only runs P0'」。那是 `:126` Context `casual` 的「P0, plus `破碎短句堆疊`」被讀成「只跑
+P0」，連 2026-08-03 才補上的 `plus` 例外一起丟掉。本輪 runner 有推定 `context: casual`
+但仍逐層跑完 P1／P2，沒有走這條。
+
+**兩處都要動的話是兩個變因,不在單一 branch 的範圍內。**
+
+順帶一筆：模型自行推定 `context: casual` 並非軸混淆。`:126` 明文要求 unstated 時 auto-detect,
+而 casual 的定義字面含 notes,prompt 給的是「個人筆記」——推定是照規則做的。
+
+### id 47：三條規則開火，其中一條從未被處理
+
+runner 本輪標了三項，全部在 P1：
+
+| 規則 | span | 2026-08-03 有無處理 |
+|---|---|---|
+| `空降主張` | 每個人都因為 AI 而拉高成品的中位數 | 有；runner 判「沒有前文依據或後文展開」，條件未滿足 |
+| `意義膨脹` | 自然整體的標準就變的更高了 | **無** |
+| `情緒宣告` | 有些人在用 AI 的方式令人錯愕 | 有；runner 判「沒交代造成什麼結果」，條件未滿足 |
+
+**carve-out 是構得到的,這點與先前的推測相反。** runner 明文引用 2026-08-03 新增的讓步開場
+carve-out 放行 `模糊歸屬`,另外主動放行 `對比句式`、`對讀者說教`（「不曉得你們有沒有同樣的
+感受」）與 `推廣語氣／四字評語`。那一輪的修改有效,只是不足以清空。
+
+`意義膨脹` 不在 2026-08-03 動的三條之內,也不在任何既有假設裡。而 id 47 的
+`expected-behavior` 要求「放行,一個字都不用動」——零 flag 的 all-or-nothing 期望,任何一條
+規則開火它就紅。
+
+**單一抽樣的限度。** 六輪 grader reason 顯示 flag 數在 2 到 6 之間浮動、開火規則逐輪不同
+（r2 是 A 六 B 二,r3 是 A 三 B 六,r6 的 A 標 `空降主張`/`對讀者說教`）。本輪的三條是一次
+抽樣,不是穩定集合;可確定的是 `意義膨脹` 從未被納入考慮,以及 carve-out 可達性已不是瓶頸。
