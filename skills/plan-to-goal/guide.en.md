@@ -24,7 +24,9 @@ The skill runs in two phases with a gate between them.
 
 **The gate** sorts those holes into two piles: the ones only you can decide (asked as 2-4 labelled options plus an "other" escape hatch) and the ones exploration already settled (stated as an answer for you to confirm, not re-asked). Either way, you see the whole resolved picture — done-definition, every fork's answer, the constraints, the surface, the conditions — for one yes/no before anything is finalized. Extra work the model notices along the way stays out of the goal and gets listed separately.
 
-**Phase 2**, only after you confirm, writes a goal file holding a short decision record (what got decided and why) plus six elements:
+The same confirmation also carries one more choice, always: how the goal leaves this turn. **File** writes a decision record plus the six elements to a goal file, with one line handed back that points at it — version history, a PR-reviewable record, a pasted line that stays narrow. **Skeleton prompt** skips the file and the record entirely and hands you just the six elements, self-contained enough to paste straight into `/goal` on their own — cheaper, but the "why" behind each ruling doesn't survive past the turn. The skill leans file for anything that reads like durable engineering work and skeleton for a one-off, states which way it's leaning, and folds the answer into the same yes/no rather than opening a separate round. If you already said which you want on the way in, it won't ask again.
+
+**Phase 2**, only after you confirm, assembles six elements — identical either way:
 
 ```
 Outcome: <the confirmed finished state, scoped to the original plan>
@@ -35,13 +37,17 @@ Iteration Policy: <what to record per round: what it did, what came of it, what 
 Blocked Stop Condition: <what counts as stuck, and the report to leave behind>
 ```
 
-Then it hands you one line to paste, not the whole file:
+On the **file route**, it writes a decision record (what got decided and why) plus those six elements to a goal file, then hands you one line to paste, not the whole file:
 
 ```
 /goal 依 @plans/goal-<slug>-<date>.md 執行。Done when: <conditions>. Stop after <N> turns.
 ```
 
-That split is deliberate. A goal condition is a predicate, not a context container — the goal mechanism re-reads it every round to judge whether the work is done, so a page of prose in that slot makes the judgement mushier each time (and is miserable to paste into a terminal). The long context lives in the file and gets pulled in by a file mention. The stop limit is mandatory: a goal loops until its condition is met, and an unreachable condition (a flaky test, a pre-existing failure) would otherwise spin until something else stops it. Where your agent has no goal command or no file-mention syntax, the file's full text is the prompt instead.
+That split is deliberate. A goal condition is a predicate, not a context container — the goal mechanism re-reads it every round to judge whether the work is done, so a page of prose in that slot makes the judgement mushier each time (and is miserable to paste into a terminal). The long context — the decision record, the full six elements — lives in the file and gets pulled in by a file mention. Where your agent has no goal command or no file-mention syntax, the file's full text is the prompt instead.
+
+On the **skeleton route**, there is no file and no decision record — just the six-element block above, with the stop limit appended as a trailing line since there's no file to carry it separately. It's the same shape as `goal-definer`'s own goal-prompt block, for the same reason: no plan (and so no file) to point at.
+
+Either route, the stop limit is mandatory: a goal loops until its condition is met, and an unreachable condition (a flaky test, a pre-existing failure) would otherwise spin until something else stops it.
 
 ## When to use
 
@@ -73,6 +79,8 @@ And the line you paste:
 ```
 /goal 依 @plans/goal-payment-refactor-2026-08-02.md 執行。Done when: npm test passes, npm run typecheck is clean, and grep -r "legacy/payment" src/ returns nothing. Stop after 25 turns.
 ```
+
+Had they picked the skeleton route instead, there'd be no file and no decision record — just the six-element block itself, with the stop limit appended as its last line, ready to paste as-is.
 
 ## Related skills
 

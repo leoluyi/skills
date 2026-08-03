@@ -23,10 +23,12 @@ highlights:
     - "Asks only about holes the code can't settle; forks resolved during exploration are stated for confirmation, not re-asked"
     - "Carries do-not constraints forward verbatim and always sets a stop limit, the stop-loss against an unreachable condition"
     - "Scope discipline at the gate: extras the model proposed stay outside the goal as separate follow-ups"
+    - "Two output routes offered at the same gate: a file with a decision record and a one-line `/goal @file` pointer, or a self-contained skeleton prompt with nothing written to disk"
   zh:
     - "兩階段閘門：先產出審視、使用者確認後才有 goal，猜錯的代價是一句話而不是一整輪自動執行"
     - "完成條件必須是可執行的指令（測試、typecheck、搜尋無結果），形容詞不准進 goal"
     - "只問程式碼問不出答案的分歧；探索過程已解決的部分改成「說明後請你確認」，不重複打擾"
     - "把「不要動」的限制原樣帶進 goal，並一定設停損的回合上限，避免條件不可達時空轉"
     - "閘門處守住範圍：模型自己想到的加碼另列為後續事項，不偷偷塞進 goal"
+    - "同一道閘門給兩條輸出路：落檔留決策記錄、一行 `/goal @檔案` 去貼，或不落檔的骨幹 prompt 直接貼"
 ---
