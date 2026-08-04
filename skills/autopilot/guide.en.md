@@ -18,7 +18,7 @@ npx skills update autopilot
 
 ## What it does
 
-Seven steps, in order: scope the job, spawn a recon agent to map the code it touches, write the full task breakdown with each item's file scope, decide isolation, build the list top to bottom, review and verify, then ship.
+Seven steps, in order: scope the job, decide isolation, spawn a recon agent to map the code it touches, write the full task breakdown with each item's file scope, build the list top to bottom, review and verify, then ship.
 
 Delegation is the default, not the exception. Recon, scoped implementation, fixing a broken build, irreversible decisions and pre-ship review all go to subagents; task breakdown, cross-cutting edits, integration, the verification gate and every git operation stay in the main loop. Todos with disjoint file scopes go out concurrently; overlapping ones run one at a time. If a todo's file scope can't be stated, it isn't decomposed enough to delegate.
 
@@ -26,7 +26,7 @@ For the duration of the run it suspends the standing "discuss the approach first
 
 ## When to use
 
-When the approach is already settled and you want the job finished end to end without being interrupted. Hand it a plan, walk away, read one report.
+When the approach is already settled and you want the job finished end to end without being interrupted. Hand it a plan, answer one pre-flight question, walk away, read one report.
 
 ## When not to
 
@@ -40,7 +40,9 @@ Three mechanisms carry most of the weight.
 
 **The verification gate.** Before any commit: parallel review agents over the full diff (plus a security pass whenever the change touches input handling, auth, credentials, network calls or persisted data), and the repo's own checks, discovered rather than assumed and run in the main loop. A subagent's report that a failure is fixed is not the gate — the green output has to be seen directly, because a hard stop nobody can audit isn't a hard stop.
 
-**The isolation ladder.** Six rules, checked in order, deciding once at step 4 whether to enter a worktree or branch in place. The default is a worktree because the risk is asymmetric: two sessions checked out in one directory silently overwrite one HEAD and one index, undetectable from either side, while an unnecessary worktree costs one dependency install. The exceptions exist because a worktree carries no uncommitted changes across and branches from the remote default — so a dirty tree, or work that builds on pushed-but-unmerged commits, branches in place instead.
+**The isolation ladder.** Six rules, checked in order at step 2, before anything else touches the repo. Five of them are already forced — four off git state alone (already on a non-default branch, already inside a worktree, a dirty tree, work that builds on pushed-but-unmerged commits), plus the case where you told it the run is solo. Those exceptions exist because a worktree carries no uncommitted changes across and branches from the remote default, so each of them branches in place instead.
+
+The sixth rung — clean tree, on the default branch — is the only one where both paths are legal, and there it asks rather than picks: worktree or branch in place, with the worktree recommended because the risk is asymmetric. Two sessions checked out in one directory silently overwrite one HEAD and one index, undetectable from either side, while an unnecessary worktree costs one dependency install. The question lands at invocation, while you are still there to answer it, so the autonomous stretch that follows really is uninterrupted; state a preference when you invoke and it skips the question, and a scheduled or headless run with nobody to ask falls back to the worktree and says so in the report.
 
 Four hard stops are the only reasons it breaks the no-interruption rule: a blocker surviving three distinct attempts, a verification gate that stays red, a destructive or irreversible operation, or a security problem. On any of those it stops, leaves the tree coherent, and reports — no push, no PR.
 

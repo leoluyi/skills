@@ -22,11 +22,11 @@ highlights:
     - "Orchestrator by default — subagents do the reading and the scoped edits, so a long run doesn't die of context exhaustion"
     - "Three attempts per blocker, each on a different hypothesis, and never routing around a failure by weakening the check that caught it"
     - "Verification gate before any commit: parallel review agents plus the repo's own checks, run in the main loop where you can audit them"
-    - "Six-rule isolation ladder decides worktree versus branch-in-place once, before the tree stops being clean"
+    - "Isolation settled up front: the ladder decides the cases already forced by git state or your own say-so, and hands the one free choice back as a pre-flight question — worktree or branch in place"
   zh:
     - "只能手動呼叫：它不會自己觸發，因為這一輪會不問就 commit 和 push"
     - "預設當協調者——讀檔和有界的修改交給 subagent，長時間執行才不會被 context 耗盡拖垮"
     - "每個卡點三次修復上限，每次必須換一個假設；絕不靠削弱抓到問題的檢查來繞過去"
     - "commit 前一定過驗證閘門：平行的 review agent 加上 repo 自己的檢查，而且在主迴圈跑給你稽核"
-    - "六條規則的隔離階梯，在工作目錄還乾淨時就一次決定要用 worktree 還是原地開分支"
+    - "隔離方式一開始就定案：git 狀態或你自己講明的情況階梯自己判掉，唯一真的有得選的那一種以起飛前提問交還給你——worktree 或原地開分支"
 ---

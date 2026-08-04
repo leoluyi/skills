@@ -4,11 +4,11 @@ description: >-
   Run an entire established plan to completion autonomously — orchestrate subagents, self-repair within a bounded attempt budget, pass a verification gate, then commit, push and open a ready PR without checking back in between steps. Invoke it explicitly when handing over a whole job: "run the whole plan", "take it from here and open a PR", 「照計畫跑完，不用問我」, 「全部做完再回報」. It suspends the ask-first / confirm-alignment rules for the duration of the run and batches every decision into a final report. Never fires on its own — the user must ask for it by name, because it commits and pushes without confirmation.
 app-description: >-
   把整份既定計畫自動跑完：以 subagent 為主力執行、故障自修有次數上限、過驗證閘門後 commit、push、開 PR，全程不回頭問。 明確呼叫才啟動：「照計畫跑完，不用問我」「全部做完再回報」。執行期間暫停「先討論再實作」等規則，所有決策集中在最後回報。
-version: 1.0.0
+version: 1.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. Subagent delegation and worktree isolation degrade gracefully where unsupported — the run stays in the main loop and branches in place.
 disable-model-invocation: true
-allowed-tools: Read, Edit, Write, Glob, Grep, Agent, TodoWrite, EnterWorktree, Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git add:*), Bash(git commit:*), Bash(git switch:*), Bash(git checkout:*), Bash(git branch:*), Bash(git push:*), Bash(gh pr create:*), Bash(gh pr view:*)
+allowed-tools: Read, Edit, Write, Glob, Grep, Agent, TodoWrite, AskUserQuestion, EnterWorktree, Bash(git status:*), Bash(git diff:*), Bash(git log:*), Bash(git rev-parse:*), Bash(git rev-list:*), Bash(git worktree list:*), Bash(git add:*), Bash(git commit:*), Bash(git switch:*), Bash(git checkout:*), Bash(git branch:*), Bash(git push:*), Bash(gh pr create:*), Bash(gh pr view:*)
 metadata:
   author: Lu Yi
   tags: agent-workflow autonomous-execution delegation verification shipping
@@ -21,12 +21,17 @@ This is **autonomous mode**. Run to completion. Do not come back to me between
 steps, do not ask which option I prefer, do not stop to confirm before
 committing. I am handing you the whole job, not the first step of it.
 
+One question comes before the run rather than during it: the **pre-flight** in
+step 2, where isolation is genuinely mine to call. Ask it while I am still here,
+then go — from step 3 onward nothing comes back.
+
 ## Tool surface
 
 Restrict yourself to these tools for the whole run, whether or not the harness
-enforces it: read and edit files, search, spawn subagents, track todos, enter a
-worktree, and the git and `gh` subcommands named in *Isolation* and *Shipping*.
-Every other shell command — including `date`, package installs, and anything
+enforces it: read and edit files, search, spawn subagents, track todos, ask the
+one pre-flight question *Isolation* rule 6 defines, enter a worktree, and the
+git and `gh` subcommands named in *Isolation* and *Shipping*. Every other shell
+command — including `date`, package installs, and anything
 that reaches outside this repo — is out of bounds. Where the harness does
 enforce a tool allowlist it is already set to this same surface; its absence
 elsewhere is not permission to widen.
@@ -40,7 +45,8 @@ For the duration of this run, these standing rules are suspended:
 - "Ask about preferences", "surface assumptions and get confirmation", "when
   facing implementation complexity ASK for guidance", "when discovering
   architectural flaws STOP and discuss". You decide. See *Escalation* below for
-  how.
+  how. The one carve-out is the pre-flight isolation question in *Isolation*
+  rule 6; this suspension does not swallow it.
 - The rule about surfacing 2-4 choices before every direction decision. Batch
   every decision you made into the final summary instead.
 - Git History Protection's ask-before-commit requirement. Its autonomous-mode
@@ -104,17 +110,20 @@ report — the sequence, the gate and the shipping rules are unchanged.
 1. **Scope it.** If the user named the job when invoking this skill, that is the
    job. If they named nothing, the job is the plan already established in this
    conversation — continue it from wherever it stands.
-2. **Recon.** Spawn a search agent to map the code the job touches: which files,
+2. **Isolate.** Never work on the default branch. Enter a worktree, branch in
+   place, or stay on the non-default branch you are already on — see *Isolation*
+   below for which, and *Naming* for what to call it when you create one. This
+   runs before anything else touches the repo, off the invocation and git state
+   alone, so the answer is settled while I am still at the keyboard to answer the
+   pre-flight question rule 6 puts to me. Create the worktree or branch here,
+   then work inside it.
+3. **Recon.** Spawn a search agent to map the code the job touches: which files,
    which existing patterns and conventions, what already solves part of this.
    Skip only when the job is a file you are already holding.
-3. **Plan it.** Write the full task breakdown to the todo list before touching
+4. **Plan it.** Write the full task breakdown to the todo list before touching
    code, with real granularity, each item carrying its file scope. This list is
    your contract; you are done when every item is checked, not when the first
    thing works.
-4. **Isolate.** Never work on the default branch. Enter a worktree, branch in
-   place, or stay on the non-default branch you are already on — see *Isolation*
-   below for which, and *Naming* for what to call it when you create one. This
-   is the last moment the tree is clean, so decide here and not later.
 5. **Build it.** Work the list top to bottom, dispatching per the delegation
    model. Read each returned diff before marking the item done. Fix what breaks.
    Keep going.
@@ -123,7 +132,7 @@ report — the sequence, the gate and the shipping rules are unchanged.
 
 ## Isolation
 
-Decide this once, at step 4, and stop at the first rule that matches:
+Decide this once, at step 2, and stop at the first rule that matches:
 
 1. **HEAD is on a non-default branch and the user named no job.** Stay on it and
    keep committing there — an empty invocation continues the plan already under
@@ -137,10 +146,26 @@ Decide this once, at step 4, and stop at the first rule that matches:
 5. **The job builds on commits absent from `origin/<default-branch>`** —
    `git rev-list --count origin/<default-branch>..HEAD` is non-zero and the plan
    depends on those commits. Branch in place.
-6. **Otherwise.** Enter a worktree.
+6. **Otherwise.** Both paths are legal here and nothing in the repo picks
+   between them, so this rung is mine to call. Put it to me as the **pre-flight**
+   question: worktree — recommended — or branch in place. Give me the one line of
+   context I need to answer (the tree is clean, HEAD is on the default branch)
+   and the reason for the recommendation (the asymmetric risk below). Then do
+   what I say and go.
 
-Rule 6 is the default because the risk is asymmetric: two sessions checked out
-in one directory is not a merge conflict but one HEAD and one index silently
+Three clauses govern that question, and nothing else does. A preference I
+already stated wins outright: if I named one when invoking — "use a worktree",
+"just branch", or the solo phrasing rule 3 covers — that is the answer, so do
+not ask it again. Present the question as a single-select where the harness has a
+structured question tool, and as a two-item numbered list in plain text where it
+does not; either way, wait for the answer. And where there is no way to reach me
+at all — a scheduled or headless run — the pre-flight falls back to a worktree,
+the standing default, and the final report says that the choice was never put to
+me.
+
+The worktree is the recommendation because the risk is asymmetric: two sessions
+checked out in one directory is not a merge conflict but one HEAD and one index
+silently
 overwritten, undetectable from either side, whereas a worktree that turns out
 not to have been needed costs one dependency install. Rules 4 and 5 exist
 because entering a worktree carries no uncommitted changes across, and its
@@ -152,11 +177,12 @@ out at merge. Rule 2 exists because nesting is refused outright within a
 session, and from a session launched inside the worktree `--show-toplevel`
 resolves to the worktree rather than the main checkout, so it would grow a
 second `.claude/worktrees/` under the first — and it buys nothing, since being
-in a worktree already keeps this run out of my main tree. Rule 3 is mine to make
-and not yours: you cannot observe from inside a run whether I will open another
-session against this repo, so never infer it from job size or file count. Where
-the harness has no worktree mechanism, rule 6 degrades to branching in place;
-every other rule is unchanged.
+in a worktree already keeps this run out of my main tree. Rule 3 is mine to
+declare and not yours to infer: you cannot observe from inside a run whether I
+will open another session against this repo, so never read it off job size or
+file count. Where the harness has no worktree mechanism, rule 6 has only one
+legal path left, so skip the question and branch in place; every other rule is
+unchanged.
 
 Never manufacture a passing condition — do not stash, do not commit unrelated
 work to clear the tree, do not push local commits so the base ref will see them.
@@ -346,7 +372,9 @@ Never merge the PR, and never enable auto-merge. Review and merge are mine.
 
 ## Hard stops
 
-These four are the only reasons to break the no-interruption rule. When you hit
+These four are the only reasons to break the no-interruption rule — the
+pre-flight question is not one of them, because it is asked before the
+autonomous stretch begins rather than in the middle of it. When you hit
 one, stop immediately, leave the tree in a coherent state, and report what you
 found and what you need. Do not push, do not open a PR.
 
@@ -371,7 +399,9 @@ that comes back empty — you handle yourself and report at the end.
 One summary at the end covering: what shipped, the PR link, the decisions the
 high-tier model made, the assumptions you made unilaterally, the review findings
 and which you rejected, the verification results, and anything you deliberately
-left out of scope, and the worktree path if you used one. Include the delegation
+left out of scope, and the worktree path if you used one — noting there whether
+the pre-flight question reached me or fell back to the default unanswered.
+Include the delegation
 trace — which agents ran, on what, and what came back — so the run is auditable
 after the fact. End with what I should look at first in the PR: the unilateral
 assumptions and any review finding you rejected.
