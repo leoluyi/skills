@@ -1,24 +1,37 @@
 """Multi-round aggregation of run-case results.
 
-A single round's protection number is not a verdict. Measured over seven
-rounds on one skill state, the new arm's protection-class failures ranged 0–3
-and the *failing rows differed almost entirely between rounds* — eight distinct
-rows failed at least once, none failed consistently. Against that variance an
-absolute per-round "zero protection false kills" gate is a coin flip: it clears
-whenever a round happens to draw zero, and blocks a version no worse than the
-one that cleared.
+A single round's protection number is not a verdict. Measured over seven rounds
+on one skill state, the new arm's protection-class failures ranged 0–3 and the
+*failing rows differed almost entirely between rounds* — eight distinct rows
+failed at least once, none failed consistently. Against that variance an
+absolute per-round "zero protection false kills" gate is a coin flip.
 
-So the gate moves off the single round and onto what repetition can actually
-distinguish. A real defect recurs; sampling noise does not. A protection row is
-**confirmed** only when the new arm fails it in at least two rounds, and it is
-confirmed rows — not any round's raw count — that block shipping.
+So the gate moves off the single round and onto what repetition can distinguish.
+A real defect recurs; sampling noise does not. Three things decide what counts
+as recurrence, and each of them is measured rather than assumed — see
+`calibration.py` for the null they come from.
 
-Two guards keep that from becoming a loophole. A version that fails three
-*different* protection rows every round has no repeats yet is plainly worse, so
-the new arm's mean protection failures must also not exceed the baseline's. And
-every round must have measured the same thing: same skill text, same baseline,
-same rubric, same models. Rounds that do not agree on all of those are not a
-sample, and aggregating them is an error rather than a warning.
+**Only the new arm's own damage counts.** A row red in both arms is the
+baseline's debt. Charging it to a branch that merely failed to fix it is what
+made this gate red on changes that touched nothing near it: of eight rows it
+once called confirmed false kills, seven were already red on main.
+
+**Confirmation scales with the sample.** At a fixed two rounds, more rounds meant
+more chances for an unstable row to land on two, so the null's 95th percentile
+climbed from 3 confirmed rows at three rounds to 11 at eight — the gate
+dissolved as evidence accumulated. A majority reverses that.
+
+**A count of rows, compared against its own mirror, replaces the class mean.**
+The old mean guardrail asked whether the new arm killed more protected spans per
+round than the baseline, and fired whenever the difference was above zero; that
+difference's own round-to-round spread was four to eight times the threshold, so
+it fired on 47% of comparisons between a text and itself. The row margin —
+rows that regressed on net, minus rows that improved — answers the same question
+about broad shallow damage, but a single flaky row can move it by at most one,
+and the improving side subtracts the corpus's own flakiness back out.
+
+Class means are still reported. They are the fastest read on what happened; they
+are simply no longer allowed to decide.
 """
 
 from __future__ import annotations
@@ -26,17 +39,21 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from run_case.calibration import confirm_at, load_calibration, thresholds
 from run_case.errors import RunCaseError
 from run_case.report import HIT, PROTECTION
 
 # Two rounds can only ever say "these two agreed" or "these two differed"; the
 # first is indistinguishable from two identical draws of the same noise. Three
-# is the smallest sample where a row failing twice is more likely a defect than
-# a coincidence.
+# is the smallest sample that can pool at all.
 MIN_ROUNDS = 3
 
-# A row the new arm failed in this many rounds or more is a defect, not a draw.
-CONFIRM_AT = 2
+# Three rounds can clear a change but cannot condemn one. Splitting the archive
+# against itself, three rounds produce up to 3 confirmed protection rows and up
+# to 4 hit rows from nothing at all, so a block at that sample size needs an
+# effect too large to be the kind of regression worth catching. Six rounds bring
+# the same ceilings down to 1.
+BLOCK_MIN_ROUNDS = 6
 
 # Every field that must match across rounds for them to be one sample. Each
 # names something that changes what was measured rather than how it came out.
@@ -83,13 +100,10 @@ def load_round(path: Path) -> dict:
 def identity_errors(rounds: tuple[dict, ...]) -> list[str]:
     """Name every field on which the rounds disagree about what they measured."""
     errors = []
-    first = rounds[0]
     for name in IDENTITY_FIELDS:
         seen = {r[name] for r in rounds}
         if len(seen) > 1:
-            values = ", ".join(
-                f"{Path(r['source']).name}={r[name]!r}" for r in rounds
-            )
+            values = ", ".join(f"{Path(r['source']).name}={r[name]!r}" for r in rounds)
             errors.append(f"{name} differs across rounds: {values}")
     run_ids = [r.get("run_id") for r in rounds]
     if len(set(run_ids)) != len(run_ids):
@@ -102,39 +116,7 @@ def identity_errors(rounds: tuple[dict, ...]) -> list[str]:
             f"{len(rounds)} round(s) given, {MIN_ROUNDS} is the minimum: below "
             "that, a row failing twice cannot be told from noise agreeing twice"
         )
-    del first
     return errors
-
-
-def row_key(result: dict) -> tuple[int, str]:
-    return (result["case_id"], result["expectation"])
-
-
-def failure_counts(rounds: tuple[dict, ...], klass: str, arm: str,
-                   incompatible: frozenset[int]) -> dict[tuple[int, str], int]:
-    """How many rounds each row failed in, for one class and one arm."""
-    counts: dict[tuple[int, str], int] = {}
-    for data in rounds:
-        for result in data["results"]:
-            if result["class"] != klass or result[arm] != "fail":
-                continue
-            if klass == HIT and result["case_id"] in incompatible:
-                continue
-            key = row_key(result)
-            counts[key] = counts.get(key, 0) + 1
-    return counts
-
-
-def per_round_totals(rounds: tuple[dict, ...], klass: str, arm: str,
-                     incompatible: frozenset[int]) -> tuple[int, ...]:
-    totals = []
-    for data in rounds:
-        totals.append(sum(
-            1 for result in data["results"]
-            if result["class"] == klass and result[arm] == "fail"
-            and not (klass == HIT and result["case_id"] in incompatible)
-        ))
-    return tuple(totals)
 
 
 def incompatible_ids(rounds: tuple[dict, ...]) -> frozenset[int]:
@@ -145,63 +127,150 @@ def incompatible_ids(rounds: tuple[dict, ...]) -> frozenset[int]:
     return frozenset(ids)
 
 
+def paired_rows(rounds: tuple[dict, ...], klass: str,
+                incompatible: frozenset[int]) -> list[dict]:
+    """One entry per row, holding how the two arms differed across the rounds."""
+    runs: dict[tuple[int, str], dict[str, list[bool]]] = {}
+    for data in rounds:
+        for result in data["results"]:
+            if result["class"] != klass:
+                continue
+            if klass == HIT and result["case_id"] in incompatible:
+                continue
+            key = (result["case_id"], result["expectation"])
+            entry = runs.setdefault(key, {"new": [], "base": []})
+            entry["new"].append(result["new"] == "fail")
+            entry["base"].append(result["base"] == "fail")
+
+    rows = []
+    for (case_id, expectation), arms in runs.items():
+        pairs = list(zip(arms["new"], arms["base"]))
+        rows.append({
+            "case_id": case_id,
+            "expectation": expectation,
+            "new_failed": sum(arms["new"]),
+            "base_failed": sum(arms["base"]),
+            "regressed": sum(1 for n, b in pairs if n and not b),
+            "improved": sum(1 for n, b in pairs if b and not n),
+            "both_failed": sum(1 for n, b in pairs if n and b),
+        })
+    rows.sort(key=lambda row: (-row["regressed"], -row["new_failed"],
+                               row["case_id"], row["expectation"]))
+    return rows
+
+
+def per_round_totals(rounds: tuple[dict, ...], klass: str, arm: str,
+                     incompatible: frozenset[int]) -> tuple[int, ...]:
+    return tuple(
+        sum(
+            1 for result in data["results"]
+            if result["class"] == klass and result[arm] == "fail"
+            and not (klass == HIT and result["case_id"] in incompatible)
+        )
+        for data in rounds
+    )
+
+
 def mean(values: tuple[int, ...]) -> float:
     return sum(values) / len(values) if values else 0.0
 
 
-def aggregate(rounds: tuple[dict, ...]) -> dict:
+def score_class(rows: list[dict], n: int, klass: str, table: dict) -> dict:
+    """Apply the calibrated thresholds to one class's paired rows."""
+    # Each row lands in exactly one bucket, most-actionable first. A row that
+    # both carries a pre-existing gap and had one extra bad round reads as the
+    # gap: the branch did not create it, and a single extra round is what a
+    # draw looks like.
+    at = confirm_at(n)
+    confirmed = [row for row in rows if row["regressed"] >= at]
+    pre_existing = [
+        row for row in rows
+        if row["regressed"] < at and row["both_failed"] >= at
+    ]
+    unconfirmed = [
+        row for row in rows
+        if row["regressed"] < at and row["both_failed"] < at and row["regressed"] > 0
+    ]
+    margin = sum(
+        (row["regressed"] > row["improved"]) - (row["improved"] > row["regressed"])
+        for row in rows
+    )
+    limits = thresholds(n, klass, table)
+    breaches = []
+    if limits is None:
+        breaches.append(
+            f"{klass}: no calibration for {n} rounds — thresholds unknown, so "
+            "nothing here can be called a regression or cleared as noise"
+        )
+    else:
+        if len(confirmed) > limits["confirmed_max"]:
+            named = ", ".join(
+                f"{row['case_id']}/{row['expectation']} ({row['regressed']}/{n})"
+                for row in confirmed[:8]
+            )
+            rest = len(confirmed) - min(len(confirmed), 8)
+            breaches.append(
+                f"{klass}: {len(confirmed)} row(s) the new arm broke on its own in "
+                f"{at}+ of {n} rounds, above the {limits['confirmed_max']} that "
+                f"identical text produces — {named}"
+                + (f", and {rest} more" if rest else "")
+            )
+        if margin > limits["row_margin_max"]:
+            breaches.append(
+                f"{klass}: row margin {margin:+d}, above the "
+                f"{limits['row_margin_max']:+d} identical text produces — more "
+                "rows got worse than got better, spread too thin to repeat on "
+                "any single row"
+            )
+    return {
+        "class": klass,
+        "confirm_at": at,
+        "confirmed": confirmed,
+        "unconfirmed": unconfirmed,
+        "pre_existing": pre_existing,
+        "row_margin": margin,
+        "thresholds": limits,
+        "breaches": breaches,
+    }
+
+
+def steering_ids(scored: tuple[dict, ...]) -> tuple[int, ...]:
+    """Case ids worth re-running with --ids while iterating on a fix.
+
+    A partial run rechunks the fixture, so it cannot stand in for a round and
+    cannot confirm a fix — a green there has been observed not to survive a full
+    round. What it does cheaply is disconfirm: a row still red on three cases is
+    red on eighteen.
+    """
+    ids = set()
+    for entry in scored:
+        for row in entry["confirmed"]:
+            ids.add(row["case_id"])
+    return tuple(sorted(ids))
+
+
+def aggregate(rounds: tuple[dict, ...], table: dict | None = None) -> dict:
     """Score the pooled rounds and return the ship decision with its evidence."""
     errors = identity_errors(rounds)
     if errors:
         raise RunCaseError("rounds are not one sample:\n  " + "\n  ".join(errors))
 
+    table = table if table is not None else load_calibration()
     incompatible = incompatible_ids(rounds)
     n = len(rounds)
 
-    prot_new = failure_counts(rounds, PROTECTION, "new", incompatible)
-    prot_base = failure_counts(rounds, PROTECTION, "base", incompatible)
-    hit_new = failure_counts(rounds, HIT, "new", incompatible)
-    hit_base = failure_counts(rounds, HIT, "base", incompatible)
-
-    confirmed = sorted(
-        (key for key, count in prot_new.items() if count >= CONFIRM_AT),
-        key=lambda key: (-prot_new[key], key[0], key[1]),
+    scored = tuple(
+        score_class(paired_rows(rounds, klass, incompatible), n, klass, table)
+        for klass in (PROTECTION, HIT)
     )
-    # Rows that failed exactly once are the ones a further round would settle.
-    unconfirmed = sorted(
-        (key for key, count in prot_new.items() if count < CONFIRM_AT),
-        key=lambda key: (key[0], key[1]),
-    )
+    breaches = [reason for entry in scored for reason in entry["breaches"]]
 
-    prot_new_totals = per_round_totals(rounds, PROTECTION, "new", incompatible)
-    prot_base_totals = per_round_totals(rounds, PROTECTION, "base", incompatible)
-    hit_new_totals = per_round_totals(rounds, HIT, "new", incompatible)
-    hit_base_totals = per_round_totals(rounds, HIT, "base", incompatible)
-
-    reasons = []
-    if confirmed:
-        named = ", ".join(
-            f"{case_id}/{slug} ({prot_new[(case_id, slug)]}/{n})"
-            for case_id, slug in confirmed[:8]
-        )
-        rest = len(confirmed) - min(len(confirmed), 8)
-        reasons.append(
-            f"{len(confirmed)} confirmed protection-class false kill(s) — failed "
-            f"in {CONFIRM_AT}+ of {n} rounds: {named}"
-            + (f", and {rest} more" if rest else "")
-        )
-    if mean(prot_new_totals) > mean(prot_base_totals):
-        reasons.append(
-            f"protection-class mean regressed: new arm {mean(prot_new_totals):.2f} "
-            f"per round vs baseline {mean(prot_base_totals):.2f} — no single row "
-            "repeats, but the arm kills more protected spans than the baseline does"
-        )
-    if mean(hit_new_totals) > mean(hit_base_totals):
-        reasons.append(
-            f"hit-class mean regressed: new arm {mean(hit_new_totals):.2f} "
-            f"failure(s) per round vs baseline {mean(hit_base_totals):.2f} "
-            "(comparative denominator)"
-        )
+    if not breaches:
+        verdict = "SHIP"
+    elif n < BLOCK_MIN_ROUNDS:
+        verdict = "INCONCLUSIVE"
+    else:
+        verdict = "NO-SHIP"
 
     return {
         "rounds": n,
@@ -213,51 +282,51 @@ def aggregate(rounds: tuple[dict, ...]) -> dict:
         "baseline_ref": rounds[0]["baseline_ref"],
         "new_blob_sha256": rounds[0]["new_blob_sha256"],
         "base_blob_sha256": rounds[0]["base_blob_sha256"],
-        "confirm_at": CONFIRM_AT,
-        "confirmed_protection": [
-            {"case_id": c, "expectation": s, "rounds_failed": prot_new[(c, s)]}
-            for c, s in confirmed
-        ],
-        "unconfirmed_protection": [
-            {"case_id": c, "expectation": s, "rounds_failed": prot_new[(c, s)]}
-            for c, s in unconfirmed
-        ],
-        "protection_per_round_new": prot_new_totals,
-        "protection_per_round_base": prot_base_totals,
-        "hit_per_round_new": hit_new_totals,
-        "hit_per_round_base": hit_base_totals,
-        "protection_mean_new": mean(prot_new_totals),
-        "protection_mean_base": mean(prot_base_totals),
-        "hit_mean_new": mean(hit_new_totals),
-        "hit_mean_base": mean(hit_base_totals),
-        "repeated_base_protection": sorted(
-            (f"{c}/{s}" for (c, s), count in prot_base.items() if count >= CONFIRM_AT)
-        ),
-        "repeated_base_hit": sorted(
-            (f"{c}/{s}" for (c, s), count in hit_base.items() if count >= CONFIRM_AT)
-        ),
-        "repeated_new_hit": sorted(
-            (f"{c}/{s}" for (c, s), count in hit_new.items() if count >= CONFIRM_AT)
-        ),
-        "ship": not reasons,
-        "reasons": reasons,
+        "calibration": {
+            "base_blob_sha256": table.get("base_blob_sha256"),
+            "criteria_sha256": table.get("criteria_sha256"),
+            "pool_rounds": table.get("pool_rounds"),
+            "percentile": table.get("percentile"),
+            "stale_criteria": (
+                table.get("criteria_sha256") is not None
+                and table["criteria_sha256"] != rounds[0]["criteria_sha256"]
+            ),
+        },
+        "classes": scored,
+        "protection_per_round_new": per_round_totals(rounds, PROTECTION, "new", incompatible),
+        "protection_per_round_base": per_round_totals(rounds, PROTECTION, "base", incompatible),
+        "hit_per_round_new": per_round_totals(rounds, HIT, "new", incompatible),
+        "hit_per_round_base": per_round_totals(rounds, HIT, "base", incompatible),
+        "steering_ids": steering_ids(scored),
+        "verdict": verdict,
+        "reasons": breaches,
     }
 
 
-def _round_row(label: str, totals: tuple[int, ...], average: float) -> str:
-    return f"| {label} | " + " | ".join(str(t) for t in totals) + f" | {average:.2f} |"
+def _round_row(label: str, totals: tuple[int, ...]) -> str:
+    return (f"| {label} | " + " | ".join(str(t) for t in totals)
+            + f" | {mean(totals):.2f} |")
+
+
+def _row_lines(rows: list[dict], n: int, status: str) -> list[str]:
+    return [
+        f"| {row['case_id']} | {row['expectation']} | {row['regressed']}/{n} "
+        f"| {row['improved']}/{n} | {row['both_failed']}/{n} | {status} |"
+        for row in rows
+    ]
 
 
 def aggregate_markdown(agg: dict) -> str:
     n = agg["rounds"]
+    cal = agg["calibration"]
     lines = [
         f"# run-case aggregate — {agg['skill']} — {n} rounds",
         "",
-        f"- new arm: version {agg['new_version']}, "
-        f"blob sha256 `{agg['new_blob_sha256']}`",
+        f"- new arm: version {agg['new_version']}, blob sha256 `{agg['new_blob_sha256']}`",
         f"- base arm: `{agg['baseline_ref']}`, version {agg['base_version']}, "
         f"blob sha256 `{agg['base_blob_sha256']}`",
-        f"- a protection row counts as confirmed at {agg['confirm_at']} of {n} rounds",
+        f"- thresholds: {cal['percentile']:.0%} of a null built by splitting "
+        f"{cal['pool_rounds']} same-baseline rounds against themselves",
         "",
         "## Rounds pooled",
         "",
@@ -266,6 +335,15 @@ def aggregate_markdown(agg: dict) -> str:
     ]
     for index, (source, run_id) in enumerate(zip(agg["sources"], agg["run_ids"]), 1):
         lines.append(f"| {index} | `{Path(source).name}` | `{run_id}` |")
+
+    if cal["stale_criteria"]:
+        lines += [
+            "",
+            "The calibration was measured under a different rubric than these "
+            "rounds ran under. Its ceilings still describe the old setup; "
+            "regenerate with `--calibrate` once six rounds exist under this one.",
+        ]
+
     header = "| class / arm | " + " | ".join(f"r{i}" for i in range(1, n + 1)) + " | mean |"
     lines += [
         "",
@@ -273,38 +351,76 @@ def aggregate_markdown(agg: dict) -> str:
         "",
         header,
         "|---" * (n + 2) + "|",
-        _round_row("保護 new", agg["protection_per_round_new"], agg["protection_mean_new"]),
-        _round_row("保護 base", agg["protection_per_round_base"], agg["protection_mean_base"]),
-        _round_row("命中 new", agg["hit_per_round_new"], agg["hit_mean_new"]),
-        _round_row("命中 base", agg["hit_per_round_base"], agg["hit_mean_base"]),
+        _round_row("保護 new", agg["protection_per_round_new"]),
+        _round_row("保護 base", agg["protection_per_round_base"]),
+        _round_row("命中 new", agg["hit_per_round_new"]),
+        _round_row("命中 base", agg["hit_per_round_base"]),
         "",
-        "## Protection rows the new arm failed",
-        "",
+        "Reported, not judged: the round-to-round spread of these means is "
+        "several times the difference any threshold on them would act on.",
     ]
-    if agg["confirmed_protection"] or agg["unconfirmed_protection"]:
-        lines += ["| case | expectation | rounds failed | status |", "|---|---|---|---|"]
-        for entry in agg["confirmed_protection"]:
-            lines.append(
-                f"| {entry['case_id']} | {entry['expectation']} | "
-                f"{entry['rounds_failed']}/{n} | **confirmed** |"
+
+    for entry in agg["classes"]:
+        limits = entry["thresholds"]
+        if limits is None:
+            ceiling = "uncalibrated at this round count"
+        else:
+            ceiling = (
+                f"blocks above {limits['confirmed_max']} confirmed row(s) or a "
+                f"row margin above {limits['row_margin_max']:+d}"
             )
-        for entry in agg["unconfirmed_protection"]:
-            lines.append(
-                f"| {entry['case_id']} | {entry['expectation']} | "
-                f"{entry['rounds_failed']}/{n} | unconfirmed |"
-            )
+            if limits["calibrated_at"] != n:
+                ceiling += (
+                    f", borrowed from the {limits['calibrated_at']}-round "
+                    "calibration, whose null is noisier and whose ceiling is "
+                    "therefore the looser one"
+                )
         lines += [
             "",
-            "Unconfirmed rows are the ones another round would settle: they failed "
-            "once, which is what a defect and a bad draw look like alike.",
+            f"## {entry['class']} — rows",
+            "",
+            f"Confirmed at {entry['confirm_at']}+ of {n} rounds. "
+            f"Row margin {entry['row_margin']:+d}. {ceiling}.",
+            "",
         ]
-    else:
-        lines.append("None — the new arm passed every protection row in every round.")
+        body = (
+            _row_lines(entry["confirmed"], n, "**新臂造成**")
+            + _row_lines(entry["pre_existing"], n, "既有缺口")
+            + _row_lines(entry["unconfirmed"], n, "未確認")
+        )
+        if body:
+            lines += [
+                "| case | expectation | 新臂獨有紅 | 新臂獨有綠 | 兩臂同紅 | status |",
+                "|---|---|---|---|---|---|",
+                *body,
+            ]
+        else:
+            lines.append("None — the new arm broke nothing the baseline held.")
+
+    if agg["steering_ids"]:
+        ids = ",".join(str(i) for i in agg["steering_ids"])
+        lines += [
+            "",
+            "## Steering",
+            "",
+            f"    tools/run-case {agg['skill']} --baseline {agg['baseline_ref']} --ids {ids}",
+            "",
+            "A partial run rechunks the fixture, so it can only disconfirm: a row "
+            "still red on a handful of cases is red on the whole set, but a row "
+            "that turns green there has been seen to stay red in a full round.",
+        ]
+
     lines += ["", "## Gate", ""]
-    if agg["ship"]:
+    if agg["verdict"] == "SHIP":
         lines.append(
-            "SHIP — no confirmed protection false kill; neither class's mean "
-            "regressed against the baseline."
+            "SHIP — no class exceeded what identical text produces on the same "
+            "statistics."
+        )
+    elif agg["verdict"] == "INCONCLUSIVE":
+        lines.append(
+            f"INCONCLUSIVE — {'; '.join(agg['reasons'])}. At {n} rounds this "
+            f"cannot be called a regression; take it to {BLOCK_MIN_ROUNDS} rounds "
+            "to settle it."
         )
     else:
         lines.append("NO-SHIP — " + "; ".join(agg["reasons"]))

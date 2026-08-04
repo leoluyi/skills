@@ -67,8 +67,12 @@ scratch dir); for a brand-new skill it is vanilla (no skill loaded).
 
 1. **Two rewrite agents, parallel and independent**: agent A loads the new
    version, agent B the baseline, launched together, unaware of each other.
-   Repeat each configuration 2–3× — a single run can't separate real difference
-   from sampling noise.
+   Repeat each configuration — a single run can't separate real difference from
+   sampling noise, and three rounds turns out to clear a change but not condemn
+   one. On `humanizer-zh`, splitting an archive of same-baseline rounds against
+   itself produced up to three "confirmed" protection regressions from identical
+   text at three rounds, against one at six. Budget three rounds to ship and six
+   to block.
 2. **Judge from another model family** (rewrite on claude → judge on codex, or
    vice versa). The judge does not load the skill; it gets only the case prompt,
    the expectations, and both outputs with version labels washed (blind).

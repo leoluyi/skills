@@ -1,0 +1,117 @@
+{
+  "note": "False-alarm ceilings measured by splitting a shared-baseline round pool against itself. A statistic blocks only when it exceeds the ceiling. Regenerate with tools/run-case --calibrate after any change to the corpus, the rubric or the grader model.",
+  "percentile": 0.95,
+  "splits": 4000,
+  "pool_rounds": 21,
+  "base_blob_sha256": "b342aef9a0599ae7c70eebe914d82b5d3e27c95c4f753d4e29d91dc60ac59f41",
+  "criteria_sha256": "7b66a1674116c592e91069fab12898804fb30ebe94e9cabface1804d7378e211",
+  "grader": "claude",
+  "grader_model": "claude-opus-5",
+  "runner": "codex",
+  "runner_model": "gpt-5.6-luna",
+  "sources": [
+    "results-2026-08-03-detectdefault-r1.json",
+    "results-2026-08-04-detectdefault-r10.json",
+    "results-2026-08-04-detectdefault-r11.json",
+    "results-2026-08-04-detectdefault-r12.json",
+    "results-2026-08-04-detectdefault-r13.json",
+    "results-2026-08-04-detectdefault-r14.json",
+    "results-2026-08-04-detectdefault-r15.json",
+    "results-2026-08-04-detectdefault-r16.json",
+    "results-2026-08-04-detectdefault-r17.json",
+    "results-2026-08-04-detectdefault-r18.json",
+    "results-2026-08-04-detectdefault-r2.json",
+    "results-2026-08-04-detectdefault-r3.json",
+    "results-2026-08-04-detectdefault-r4.json",
+    "results-2026-08-04-detectdefault-r5.json",
+    "results-2026-08-04-detectdefault-r6.json",
+    "results-2026-08-04-detectdefault-r7.json",
+    "results-2026-08-04-detectdefault-r8.json",
+    "results-2026-08-04-detectdefault-r9.json",
+    "results-2026-08-04-voiceaxis-r1.json",
+    "results-2026-08-04-voiceaxis-r2.json",
+    "results-2026-08-04-voiceaxis-r3.json"
+  ],
+  "thresholds": {
+    "3/保護": {
+      "confirm_at": 2,
+      "confirmed_max": 3,
+      "row_margin_max": 7
+    },
+    "3/命中": {
+      "confirm_at": 2,
+      "confirmed_max": 4,
+      "row_margin_max": 8
+    },
+    "4/保護": {
+      "confirm_at": 3,
+      "confirmed_max": 1,
+      "row_margin_max": 8
+    },
+    "4/命中": {
+      "confirm_at": 3,
+      "confirmed_max": 2,
+      "row_margin_max": 8
+    },
+    "5/保護": {
+      "confirm_at": 3,
+      "confirmed_max": 2,
+      "row_margin_max": 8
+    },
+    "5/命中": {
+      "confirm_at": 3,
+      "confirmed_max": 2,
+      "row_margin_max": 9
+    },
+    "6/保護": {
+      "confirm_at": 4,
+      "confirmed_max": 1,
+      "row_margin_max": 8
+    },
+    "6/命中": {
+      "confirm_at": 4,
+      "confirmed_max": 1,
+      "row_margin_max": 9
+    },
+    "7/保護": {
+      "confirm_at": 4,
+      "confirmed_max": 2,
+      "row_margin_max": 8
+    },
+    "7/命中": {
+      "confirm_at": 4,
+      "confirmed_max": 2,
+      "row_margin_max": 10
+    },
+    "8/保護": {
+      "confirm_at": 5,
+      "confirmed_max": 1,
+      "row_margin_max": 9
+    },
+    "8/命中": {
+      "confirm_at": 5,
+      "confirmed_max": 1,
+      "row_margin_max": 10
+    },
+    "9/保護": {
+      "confirm_at": 5,
+      "confirmed_max": 1,
+      "row_margin_max": 9
+    },
+    "9/命中": {
+      "confirm_at": 5,
+      "confirmed_max": 1,
+      "row_margin_max": 10
+    },
+    "10/保護": {
+      "confirm_at": 6,
+      "confirmed_max": 1,
+      "row_margin_max": 9
+    },
+    "10/命中": {
+      "confirm_at": 6,
+      "confirmed_max": 1,
+      "row_margin_max": 11
+    }
+  }
+}

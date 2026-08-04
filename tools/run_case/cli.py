@@ -39,6 +39,7 @@ from run_case.config import (
     validate_declared_ids,
 )
 from run_case.aggregate import aggregate, aggregate_markdown, load_round
+from run_case.calibration import CALIBRATION_PATH, calibrate
 from run_case.dispatch import (
     CLAUDE_MODEL,
     CODEX_MODEL,
@@ -312,6 +313,11 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--aggregate", nargs="+", metavar="RESULTS.json",
         help="score N completed rounds together instead of dispatching a new one",
     )
+    parser.add_argument(
+        "--calibrate", nargs="+", metavar="RESULTS.json",
+        help="rewrite calibration.json from rounds that share one base blob, "
+             "by splitting their baseline arm against itself",
+    )
     parser.add_argument("--ids", help="run a subset, e.g. 1-9,20; marks the run partial")
     parser.add_argument("--jobs", type=int, default=12, help="concurrency cap (default 12)")
     parser.add_argument("--runner", choices=FAMILIES, default="codex")
@@ -320,7 +326,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--out", help="report path (default skills/<skill>/evals/results-<date>-run-case.md)")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
-    if args.aggregate:
+    if args.aggregate and args.calibrate:
+        parser.error("--aggregate scores a change; --calibrate measures the noise floor")
+    if args.aggregate or args.calibrate:
+        mode = "--aggregate" if args.aggregate else "--calibrate"
         conflicting = [
             name for name, value in (
                 ("skill", args.skill), ("--baseline", args.baseline),
@@ -329,7 +338,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         ]
         if conflicting:
             parser.error(
-                f"--aggregate scores rounds that already exist; it dispatches "
+                f"{mode} scores rounds that already exist; it dispatches "
                 f"nothing, so {', '.join(conflicting)} has no meaning here"
             )
         return args
@@ -351,7 +360,24 @@ def run_aggregate(args: argparse.Namespace) -> int:
     rounds = tuple(load_round(Path(p)) for p in args.aggregate)
     agg = aggregate(rounds)
     print(aggregate_markdown(agg))
-    return 0 if agg["ship"] else 1
+    return 0 if agg["verdict"] == "SHIP" else 1
+
+
+def run_calibrate(args: argparse.Namespace) -> int:
+    pool = tuple(load_round(Path(p)) for p in args.calibrate)
+    table = calibrate(pool)
+    CALIBRATION_PATH.write_text(
+        json.dumps(table, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(f"wrote {CALIBRATION_PATH} from {len(pool)} rounds")
+    print(f"  base blob {table['base_blob_sha256'][:12]}, "
+          f"criteria {(table['criteria_sha256'] or '')[:12]}")
+    for key, entry in table["thresholds"].items():
+        rounds_at, klass = key.split("/")
+        print(f"  {rounds_at} rounds / {klass}: confirmed at {entry['confirm_at']}+, "
+              f"blocks above {entry['confirmed_max']} confirmed row(s) "
+              f"or a row margin above {entry['row_margin_max']:+d}")
+    return 0
 
 
 def run(args: argparse.Namespace, repo_root: Path) -> int:
@@ -395,6 +421,8 @@ def main(argv: list[str]) -> int:
     try:
         if args.aggregate:
             return run_aggregate(args)
+        if args.calibrate:
+            return run_calibrate(args)
         return run(args, repo_root)
     except RunCaseError as exc:
         print(f"error: {exc}", file=sys.stderr)
