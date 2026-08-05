@@ -52,11 +52,22 @@ tools/run-case --aggregate skills/<skill>/evals/results-*.json
 需約 125 輪。**換統計量救不了它**——每輪平均差乘輪數恰好等於逐格淨退步數，同一個量，
 差別只在把 ~50 個配對格先壓成 3 到 6 個輪總數。
 
-改用**空實驗數出來**：共用同一份 baseline 文字的歸檔輪次，切成兩堆互不重疊的半邊，
-一半當「新臂」。那份比較的正確答案已知是「沒有差異」，所以它報出的每一列退步都是
-假警報。跑幾千次隨機切分，每個統計量的 95 百分位就是它的假警報上限。表存在
-`tools/run_case/calibration.json`，`tools/run-case --calibrate` 重新產生——語料、
-判分準則或判分模型換掉之後都要重跑，那些數字描述的是一組量測設定，不是統計量的性質。
+改用**空實驗數出來**。首選構法是 **same-call**：`tools/run-case --build-bank` 先跑
+N 輪獨立的 baseline 生成，存進 `evals/baseline-bank/`；`--null-run A,B` 把其中兩輪
+在同一次 grader call 裡盲判，兩邊都是 baseline 文字，正確答案已知是「沒有差異」，
+每一列退步都是假警報。用這種 null-run 結果的池子跑 `--calibrate`（自動偵測
+`--null-run` 輸出並走 same-call 路徑），對池子做**有放回**重抽，每個統計量的 95 百分位
+就是它的假警報上限——這個構法跟真實出貨判定共用同一個「兩臂在一次 grader call 裡同判」
+的結構，不是模擬它。
+
+沒有 same-call 池子時退回**cross-round**：共用同一份 baseline 文字的歸檔輪次，切成兩堆
+互不重疊的半邊，一半當「新臂」。這個構法的比較是跨輪配對，比真實比較多一層雜訊
+（見下方「已知的鬆度」），門檻因此偏鬆，是退路而非目標狀態。
+
+表存在 `tools/run_case/calibration.json`（記 `method: "same-call"` 或
+`"cross-round"`），`tools/run-case --calibrate` 重新產生——語料、判分準則、判分模型、
+runner 的 reasoning effort，或 baseline bank 換掉之後都要重跑，那些數字描述的是一組
+量測設定，不是統計量的性質。
 
 ### 三道判準
 
@@ -73,7 +84,9 @@ tools/run-case --aggregate skills/<skill>/evals/results-*.json
 
 ### 這個閘抓得到什麼
 
-拿空實驗刻意打壞 k 列保護，數它擋下來的比例：
+拿空實驗刻意打壞 k 列保護，數它擋下來的比例。**下表數字量在舊設定下**（6 chunk、
+codex effort xhigh、cross-round 空實驗）——3-chunk／effort high／same-call 上線後
+待重量測，數字先留著當方向參考，不當結論用：
 
 | 破壞形狀 | 3 輪 | 6 輪 |
 |---|---|---|
@@ -87,9 +100,11 @@ tools/run-case --aggregate skills/<skill>/evals/results-*.json
 要擋得動需要的效果量已經大到不像是值得攔的那種退步。所以三輪只出 SHIP 或
 INCONCLUSIVE；要出 NO-SHIP 必須補到六輪。便宜的案子三輪就過，只有被擋的才付雙倍。
 
-**已知的鬆度**：校準用的空實驗跨輪配對，真實比較是兩臂在同一次 grader call 裡同時判、
-共用那一次的抽樣。空實驗因此更吵，門檻偏鬆——這個閘的偏誤方向是漏擋而非誤擋。要收緊，
-需要一輪兩臂載入同一份文字的量測。
+**已知的鬆度——same-call 已關掉這個缺口。** 舊版校準用的空實驗跨輪配對，真實比較是
+兩臂在同一次 grader call 裡同時判、共用那一次的抽樣；空實驗因此更吵，門檻偏鬆，偏誤
+方向是漏擋而非誤擋。`--null-run` 直接構造「一輪兩臂載入獨立生成的 baseline 文字」的
+量測，不再是模型近似。用 `calibrate_same_call` 重新校準之後，這條不再是待辦，是已解決
+——cross-round 路徑仍留著當沒有 same-call 池子時的退路。
 
 **閘只回答「有沒有弄壞東西」，不回答「有沒有修好」。** 為了修某列而開的 branch 即使
 SHIP，也要另外確認那一列真的轉綠；`fix/voice-axis-no-waiver` 就是 SHIP 但目標列三輪
@@ -98,13 +113,28 @@ SHIP，也要另外確認那一列真的轉綠；`fix/voice-axis-no-waiver` 就�
 ### 各輪必須是同一個樣本
 
 同一份 skill 文字（比對 `new_blob_sha256`，不是 version 字串——沒 bump 的編輯不會改
-version）、同一個 baseline、同一份判分準則、同一組 runner／grader 模型。任一項不同即
-硬錯，不是警告。partial（`--ids`）產出不能當一輪：沒跑到的列在聚合時讀起來像通過。
+version）、同一個 baseline、同一份判分準則、同一組 runner／grader 模型與 reasoning
+effort。任一項不同即硬錯，不是警告。partial（`--ids`）產出不能當一輪：沒跑到的列在
+聚合時讀起來像通過。`baseline_source`（`"bank"` 或 `"live"`）也是身份欄位之一：一輪讀
+bank、一輪現場派工，即使碰巧文字一樣也不是同一組量測設定，硬錯不放行。
+
+### baseline bank：省掉重複跑 baseline 的成本
+
+baseline 臂每輪答的是同一個 prompt——被判的是新臂，baseline 只是陪判的錨——重新生成
+它是白花錢。`--build-bank` 一次性派工 N 輪獨立 baseline 生成，存進
+`evals/baseline-bank/<base_blob_sha256前12碼>/`；之後任何一輪只要 `--baseline` 指到
+同一份文字，預設就直接讀 bank，只派新臂——不管是哪個 branch，共用同一份 baseline 都
+免費搭車。bank 沒建過、或 chunk 佈局／規則文字／runner 設定跟 bank 建立時不一致，
+一律硬錯並提示 `--build-bank`，不會悄悄退回現場派工；要現場派工得自己明講
+`--no-bank`。`--bank-round` 可以指定用第幾輪，預設挑這份 baseline 底下還沒被用過的
+最小輪次，讓同一個 branch 自己的多輪各自讀到不同的獨立生成。
 
 ### 兩相工作法：partial 導航，完整出貨
 
-完整一輪十八個 job，改一次措辭就跑滿太慢。`--ids` 縮到相關的幾案，三個 job 就有回音，
-適合在措辭之間快速排除方向。但它會**重切 chunk**，每案的模型負載與滿場完全不同，所以：
+完整一輪走 bank 是 3 個新臂 runner 加 3 個 grader（`--no-bank` 才會多派 3 個 baseline
+runner），改一次措辭就跑滿還是慢。`--ids` 縮到相關的幾案，落在單一 chunk 時一兩個
+job 就有回音，適合在措辭之間快速排除方向。但它會**重切 chunk**，每案的模型負載與滿場
+完全不同，所以：
 
 - **partial 只能證偽，不能證實。** 一列在三案的 chunk 裡還是紅，滿場只會更紅；但它在
   那裡轉綠，已經觀測到不會在完整輪複現。

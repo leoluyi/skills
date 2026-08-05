@@ -69,6 +69,9 @@ IDENTITY_FIELDS = (
     "grader",
     "runner_model",
     "grader_model",
+    "runner_effort",
+    "grader_effort",
+    "baseline_source",
 )
 
 
@@ -283,6 +286,7 @@ def aggregate(rounds: tuple[dict, ...], table: dict | None = None) -> dict:
         "new_blob_sha256": rounds[0]["new_blob_sha256"],
         "base_blob_sha256": rounds[0]["base_blob_sha256"],
         "calibration": {
+            "method": table.get("method", "cross-round"),
             "base_blob_sha256": table.get("base_blob_sha256"),
             "criteria_sha256": table.get("criteria_sha256"),
             "pool_rounds": table.get("pool_rounds"),
@@ -325,8 +329,15 @@ def aggregate_markdown(agg: dict) -> str:
         f"- new arm: version {agg['new_version']}, blob sha256 `{agg['new_blob_sha256']}`",
         f"- base arm: `{agg['baseline_ref']}`, version {agg['base_version']}, "
         f"blob sha256 `{agg['base_blob_sha256']}`",
-        f"- thresholds: {cal['percentile']:.0%} of a null built by splitting "
-        f"{cal['pool_rounds']} same-baseline rounds against themselves",
+        f"- thresholds: {cal['percentile']:.0%} of a "
+        + (
+            f"same-call null resampled from {cal['pool_rounds']} --null-run "
+            "round(s) (two independent baseline generations judged in one "
+            "grader call)"
+            if cal.get("method") == "same-call" else
+            f"cross-round null built by splitting {cal['pool_rounds']} "
+            "same-baseline rounds against themselves"
+        ),
         "",
         "## Rounds pooled",
         "",

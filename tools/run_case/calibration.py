@@ -17,12 +17,19 @@ rounds sharing a base blob. Re-run it whenever the corpus, the rubric or the
 grader model changes: those numbers describe one measurement setup, not a
 property of the statistics.
 
-One limit is baked into the method. The null splits *across* rounds, while a
-real gate compares the two arms inside a single grader call, which shares that
-call's draw. The null therefore carries more noise than the comparison it
-calibrates, and its thresholds run loose — a gate built on them under-blocks
-rather than over-blocks. Closing that gap needs a round dispatched with the two
-arms on identical text.
+A same-call null closes that gap directly rather than working around it: two
+independent baseline generations, drawn from the baseline bank
+(``tools/run_case/bank.py``, ``--build-bank``) and judged inside one grader
+call (``--null-run A,B``), give a comparison with the real gate's own pairing
+structure — the same single-call draw — with a known answer, since both
+labelled arms are baseline text. ``calibrate_same_call`` pools those null-run
+results directly: no cross-round splitting, no shared-noise correction,
+because the noise it needs is already the one the real gate has.
+
+``calibrate`` (the cross-round split, below) remains for a skill with no
+same-call null pool yet — regenerate the real calibration with
+``calibrate_same_call`` once ``--null-run`` results exist for that baseline;
+the cross-round path is a fallback, not the target state.
 """
 
 from __future__ import annotations
@@ -179,11 +186,16 @@ def calibrate(pool: tuple[dict, ...], splits: int = SPLITS, seed: int = 0) -> di
 
     first = pool[0]
     return {
+        "method": "cross-round",
         "note": (
             "False-alarm ceilings measured by splitting a shared-baseline round "
             "pool against itself. A statistic blocks only when it exceeds the "
-            "ceiling. Regenerate with tools/run-case --calibrate after any "
-            "change to the corpus, the rubric or the grader model."
+            "ceiling. This null pairs across separate grader calls, so its "
+            "ceilings run loose relative to the real gate's single-call "
+            "comparison — prefer calibrate_same_call once a --null-run pool "
+            "exists for this baseline. Regenerate with tools/run-case "
+            "--calibrate after any change to the corpus, the rubric or the "
+            "grader model."
         ),
         "percentile": NULL_PERCENTILE,
         "splits": splits,
@@ -192,8 +204,122 @@ def calibrate(pool: tuple[dict, ...], splits: int = SPLITS, seed: int = 0) -> di
         "criteria_sha256": first.get("criteria_sha256"),
         "grader": first.get("grader"),
         "grader_model": first.get("grader_model"),
+        "grader_effort": first.get("grader_effort"),
         "runner": first.get("runner"),
         "runner_model": first.get("runner_model"),
+        "runner_effort": first.get("runner_effort"),
         "sources": sorted(Path(r["source"]).name for r in pool if "source" in r),
+        "thresholds": entries,
+    }
+
+
+# Round counts the gate ever asks calibration for: MIN_ROUNDS through
+# BLOCK_MIN_ROUNDS, from aggregate.py. Kept as a local constant rather than an
+# import — aggregate.py imports this module, so importing back would cycle.
+SAME_CALL_TARGET_ROUNDS = (3, 4, 5, 6)
+
+# Below this, sampling with replacement cannot produce variance: a pool of 1
+# draws the same round every time, and every threshold comes out identical to
+# that round's own noise rather than a percentile over many. A 6-round bank
+# gives C(6,2) = 15 null-run pairs, which is the pool this was designed for.
+MIN_SAME_CALL_POOL = 3
+
+
+def _same_call_identity_errors(null_pool: tuple[dict, ...]) -> list[str]:
+    if len(null_pool) < MIN_SAME_CALL_POOL:
+        return [
+            f"{len(null_pool)} --null-run result(s) given, "
+            f"{MIN_SAME_CALL_POOL} is the minimum — below that, sampling with "
+            "replacement cannot produce real variance (a 6-round bank gives "
+            "15 null-run pairs; that is the intended pool size)"
+        ]
+    not_null = [r.get("source", "?") for r in null_pool if not r.get("null")]
+    if not_null:
+        return [
+            f"not a --null-run result: {', '.join(str(s) for s in not_null)} — "
+            "same-call calibration only pools --null-run outputs"
+        ]
+    blobs = {r["base_blob_sha256"] for r in null_pool}
+    if len(blobs) != 1:
+        return [
+            "same-call calibration needs null-runs that all compared the same "
+            f"baseline blob: {len(blobs)} distinct base blobs given"
+        ]
+    return []
+
+
+def calibrate_same_call(null_pool: tuple[dict, ...], splits: int = SPLITS, seed: int = 0,
+                        target_rounds: tuple[int, ...] = SAME_CALL_TARGET_ROUNDS) -> dict:
+    """Measure false-alarm ceilings by resampling a pool of same-call null runs.
+
+    Each element of ``null_pool`` is one ``--null-run`` result: two independent
+    baseline generations, judged inside a single grader call, labelled the way
+    a real gate's new/base arms would be. Its ``new``/``base`` columns already
+    are the comparison a real N-round gate would see if the new arm were no
+    different from the baseline — no cross-round splitting is needed to
+    construct that, because every null-run result already is one.
+
+    To simulate an N-round gate, draw N null-run rounds *with replacement*
+    (the pool is typically much smaller than a cross-round pool — 15 pairs
+    from a 6-round bank — so without replacement would cap N at the pool size)
+    and score them exactly as a real N-round aggregate would: pair each row's
+    per-round (A-failed, B-failed) columns and count regressions the same way
+    ``aggregate.paired_rows``/``score_class`` do.
+    """
+    errors = _same_call_identity_errors(null_pool)
+    if errors:
+        raise RunCaseError("same-call calibration pool is invalid:\n  " + "\n  ".join(errors))
+
+    incompatible: set[int] = set()
+    for data in null_pool:
+        for entry in data.get("incompatible_entries", ()):
+            incompatible.update(entry.get("ids", ()))
+    frozen = frozenset(incompatible)
+
+    rng = random.Random(seed)
+    entries: dict[str, dict] = {}
+    for n in target_rounds:
+        for klass in (PROTECTION, HIT):
+            confirmed, margins = [], []
+            at = confirm_at(n)
+            for _ in range(splits):
+                sample = tuple(rng.choice(null_pool) for _ in range(n))
+                c, m = paired_stats(
+                    _row_table(sample, "new", klass, frozen),
+                    _row_table(sample, "base", klass, frozen),
+                    at,
+                )
+                confirmed.append(c)
+                margins.append(m)
+            index = int(NULL_PERCENTILE * splits)
+            entries[f"{n}/{klass}"] = {
+                "confirm_at": at,
+                "confirmed_max": sorted(confirmed)[index],
+                "row_margin_max": sorted(margins)[index],
+            }
+
+    first = null_pool[0]
+    return {
+        "method": "same-call",
+        "note": (
+            "False-alarm ceilings measured by resampling, with replacement, a "
+            "pool of --null-run results — each already a single blind grader "
+            "call comparing two independent baseline generations. A statistic "
+            "blocks only when it exceeds the ceiling. Regenerate with "
+            "tools/run-case --calibrate after any change to the corpus, the "
+            "rubric, the grader model, or the baseline bank."
+        ),
+        "percentile": NULL_PERCENTILE,
+        "splits": splits,
+        "pool_rounds": len(null_pool),
+        "base_blob_sha256": first["base_blob_sha256"],
+        "criteria_sha256": first.get("criteria_sha256"),
+        "grader": first.get("grader"),
+        "grader_model": first.get("grader_model"),
+        "grader_effort": first.get("grader_effort"),
+        "runner": first.get("runner"),
+        "runner_model": first.get("runner_model"),
+        "runner_effort": first.get("runner_effort"),
+        "sources": sorted(Path(r["source"]).name for r in null_pool if "source" in r),
         "thresholds": entries,
     }

@@ -183,6 +183,30 @@ H-26 帶進兩組本檔原本沒有的保護：宣告過的比喻系統（醫學
 
 判定欄是待作者複核的：語料合不合用、每一列判得對不對是品味判斷，agent 只負責逐字節錄與標出處。
 
+## run-case 量測設定 v2：baseline bank、3-chunk、same-call 空實驗（2026-08-05）
+
+`tools/run_case`（跨 skill 共用的閘工具，不是 evals 內容本身）換了一輪量測設定，記在
+`evals/regression-protocol.md`。三個變更同時落地，且互相影響出貨判定的門檻，所以是
+一個量測設定，不是三個獨立補丁：
+
+- `evals/run-case.json` 的 chunk 從 6 併成 3，規則 blob 每輪重送的次數減半。
+- `tools/run_case/dispatch.py` 的 codex runner reasoning effort 從 `xhigh` 降到
+  `high`。
+- 新模組 `tools/run_case/bank.py`：baseline 臂改成一次性建池（`--build-bank`）、之後
+  每輪從 `evals/baseline-bank/` 讀，不再每輪重新生成；`--null-run` 讓校準改用
+  same-call（兩份獨立 baseline 生成在同一次 grader call 裡盲判），取代原本跨輪配對
+  的空實驗，關掉 `regression-protocol.md` 記載過的「校準比真實比較多一層雜訊」缺口。
+
+**連帶作廢**：舊設定（6-chunk、xhigh、cross-round 空實驗）下量的所有數字——
+`calibration.json`、「這個閘抓得到什麼」功效表、`fix/gate-null-calibrated` 之前跑的
+`results-2026-08-04-null-r1~r3`——描述的是另一組量測設定，不能跟新設定的輪次混
+aggregate 或混 calibrate。`tools/run_case/aggregate.py` 的 `IDENTITY_FIELDS` 新增
+`runner_effort`／`grader_effort`／`baseline_source` 三個欄位，讓這件事在程式層面是
+硬錯，不必單靠這則筆記提醒。
+
+`skills/humanizer-zh/evals/null-r-series-SUPERSEDED.md` 是留給另一個仍在執行舊策略
+（跨輪 `--baseline HEAD` 探針）的 session 的即時指標，事件過去、新校準跑完之後可以刪。
+
 ## Adversarial iteration log (rule-tuning rounds)
 
 The method lives in `evals/adversarial-eval-protocol.md`. Each row = one GAN-style round; the `eval #N` in the Patch column maps to `id: N` in `evals/evals.json`.
