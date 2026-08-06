@@ -16,7 +16,7 @@ from pathlib import Path
 from run_case.errors import DispatchError, Row
 
 CODEX_MODEL = "gpt-5.6-luna"
-CODEX_EFFORT = "xhigh"
+CODEX_EFFORT = "high"
 CLAUDE_MODEL = "claude-opus-5"
 
 RUNNER_TIMEOUT = 3600
@@ -238,7 +238,8 @@ def progress(done: int, total: int, tag: str, outcome: str) -> None:
     print(f"[{done}/{total}] {tag} {outcome}", file=sys.stderr, flush=True)
 
 
-def run_pipeline(runner_plan: list[dict], grader_item, jobs: int
+def run_pipeline(runner_plan: list[dict], grader_item, jobs: int,
+                 preseeded: dict[tuple[int, str], tuple[str, Path]] | None = None
                  ) -> tuple[dict[tuple[int, str], tuple[str, Path]], dict[int, tuple[dict, ...]]]:
     """Run every runner and grader in one pool, grading each chunk the moment
     both of its arms land.
@@ -251,8 +252,14 @@ def run_pipeline(runner_plan: list[dict], grader_item, jobs: int
     ``grader_item`` is called with the chunk index and that chunk's two runner
     texts, and returns the grader job dict — the A/B mapping and prompt cannot
     be built before the pair exists.
+
+    ``preseeded`` supplies arm output that was never dispatched this run — a
+    baseline read from the bank — keyed the same way a dispatched arm's result
+    would be. It seeds ``runner_out`` before the pool starts, so the pairing
+    check below sees a preseeded base as already landed the moment the new
+    arm's own runner finishes, and no job is ever submitted to produce it.
     """
-    runner_out: dict[tuple[int, str], tuple[str, Path]] = {}
+    runner_out: dict[tuple[int, str], tuple[str, Path]] = dict(preseeded or {})
     graded: dict[int, tuple[dict, ...]] = {}
     runner_errors: list[str] = []
     grader_errors: list[str] = []

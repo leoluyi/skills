@@ -110,8 +110,12 @@ def _header_lines(ctx: dict) -> list[str]:
         f"{ctx['new_files']} file(s)",
         f"- base arm: `{ctx['baseline_ref']}:{ctx['baseline_dir']}`, version "
         f"{ctx['base_version']}, {ctx['base_files']} file(s)",
-        f"- runner: {ctx['runner']} ({ctx['runner_model']})",
-        f"- grader: {ctx['grader']} ({ctx['grader_model']})",
+        f"- base arm source: {ctx['baseline_source']}"
+        + (f" (bank round {ctx['bank_round']})" if ctx.get("bank_round") is not None else ""),
+        f"- runner: {ctx['runner']} ({ctx['runner_model']})"
+        + (f" effort {ctx['runner_effort']}" if ctx.get("runner_effort") else ""),
+        f"- grader: {ctx['grader']} ({ctx['grader_model']})"
+        + (f" effort {ctx['grader_effort']}" if ctx.get("grader_effort") else ""),
         f"- grader brief sha256: `{ctx['grader_brief_sha256']}`",
         f"- grading criteria sha256: `{ctx['criteria_sha256']}`",
         f"- scratch workspace (removed after the run): `{ctx['workspace']}`",
