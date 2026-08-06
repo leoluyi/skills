@@ -26,6 +26,7 @@ CONFIG_KEYS = {
     "skill_paths",
     "protocol",
     "rewrite_case_ids",
+    "smoke_ids",
     "global_rewrite_checks",
     "unscored_slug_prefixes",
     "chunks",
@@ -53,6 +54,7 @@ def load_config(skill_dir: Path) -> dict | None:
         "skill_paths": _str_list(path, raw, "skill_paths", required=True),
         "protocol": _protocol(path, raw.get("protocol")),
         "rewrite_case_ids": _unique_int_list(path, raw, "rewrite_case_ids"),
+        "smoke_ids": _unique_int_list(path, raw, "smoke_ids"),
         "global_rewrite_checks": _global_checks(path, raw.get("global_rewrite_checks")),
         "unscored_slug_prefixes": _str_list(path, raw, "unscored_slug_prefixes"),
         "chunks": _chunk_pairs(path, raw.get("chunks")),
@@ -393,6 +395,11 @@ def validate_declared_ids(cases: tuple[dict, ...], config: dict) -> None:
     if missing:
         raise ConfigError(
             f"rewrite_case_ids names id(s) absent from evals.json: {sorted(missing)}"
+        )
+    missing = [i for i in config["smoke_ids"] if i not in known]
+    if missing:
+        raise ConfigError(
+            f"smoke_ids names id(s) absent from evals.json: {sorted(missing)}"
         )
     for index, entry in enumerate(config["baseline_incompatible"]):
         absent = [i for i in entry["ids"] if i not in known]

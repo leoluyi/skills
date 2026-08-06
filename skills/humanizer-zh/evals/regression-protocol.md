@@ -155,6 +155,16 @@ detect / rewrite / --expect-author 模式）。
 人工逐條對 expectations 打 ✅／❌。單模型自查是同一個 agent 讀過規則再自評，依 repo
 守則屬 **contaminated**——只能擋明顯退步，不能當出貨證據。
 
+### 自動化版：`--smoke`
+
+上面手工流程的自動版本，跑 `tools/run-case <skill> --smoke`：worktree 單臂
+（改到一半的稿子，不比對 baseline）＋ codex 絕對判分（單一輸出直接對 key 判
+✅／❌，不做 A/B 盲比），對象是 `run-case.json` 的 `smoke_ids`（一組覆蓋各規則區的
+精選案例，`--ids` 可換成別的子集）。同樣 contaminated、同樣**只能證偽不能證實**，
+且**結果永不寫進 `evals/`**——不會被 `--aggregate`／`--calibrate` 誤吃，也絕不是出貨
+判定的輸入。出貨仍照上面「三道判準」走完整輪。用途：改一版規則後幾分鐘內確認沒有
+明顯打壞什麼，再決定值不值得跑滿場。
+
 ### 注入自查
 
 改到安全邊界或工具使用規則時，加跑這條無害測試稿：
