@@ -61,6 +61,9 @@ from run_case.report import (
     report_markdown,
     verdict,
 )
+from run_case.smoke import format_report, run_smoke, select_cases as smoke_select_cases
+
+SMOKE_EFFORTS = ("low", "medium", "high", "xhigh")
 
 FAMILIES = ("codex", "claude")
 
@@ -421,6 +424,18 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--no-bank", action="store_true",
         help="dispatch a live base arm instead of reading evals/baseline-bank/",
     )
+    parser.add_argument(
+        "--smoke", action="store_true",
+        help="fast single-arm, absolute-judged inner loop over config's "
+             "smoke_ids (or --ids): no baseline, no bank, no gate verdict, "
+             "and nothing is ever written to evals/ — advisory only",
+    )
+    parser.add_argument(
+        "--effort", choices=SMOKE_EFFORTS, default=None,
+        help="codex reasoning effort for --smoke's runner and grader calls "
+             "(default xhigh); has no meaning outside --smoke — the gate's "
+             "effort is fixed by calibration, not a flag",
+    )
     parser.add_argument("--ids", help="run a subset, e.g. 1-9,20; marks the run partial")
     parser.add_argument("--jobs", type=int, default=12, help="concurrency cap (default 12)")
     parser.add_argument("--runner", choices=FAMILIES, default="codex")
@@ -430,11 +445,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
 
-    modes = (bool(args.aggregate), bool(args.calibrate), args.build_bank, bool(args.null_run))
+    modes = (
+        bool(args.aggregate), bool(args.calibrate), args.build_bank,
+        bool(args.null_run), args.smoke,
+    )
     if sum(modes) > 1:
         parser.error(
-            "--aggregate, --calibrate, --build-bank and --null-run each "
-            "dispatch (or score) a different thing; pick one"
+            "--aggregate, --calibrate, --build-bank, --null-run and --smoke "
+            "each dispatch (or score) a different thing; pick one"
         )
 
     if args.aggregate or args.calibrate:
@@ -444,7 +462,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                 ("skill", args.skill), ("--baseline", args.baseline),
                 ("--ids", args.ids), ("--out", args.out),
                 ("--rounds", args.rounds != 6), ("--bank-round", args.bank_round),
-                ("--no-bank", args.no_bank),
+                ("--no-bank", args.no_bank), ("--effort", args.effort),
             ) if value
         ]
         if conflicting:
@@ -461,6 +479,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             name for name, value in (
                 ("--ids", args.ids), ("--out", args.out),
                 ("--bank-round", args.bank_round), ("--no-bank", args.no_bank),
+                ("--effort", args.effort),
                 # No dry-run preview exists for this mode — dispatch is the
                 # entire point, so silently ignoring the flag would let it
                 # look like a safe preview and dispatch for real instead.
@@ -485,6 +504,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             name for name, value in (
                 ("--ids", args.ids), ("--out", args.out),
                 ("--bank-round", args.bank_round), ("--no-bank", args.no_bank),
+                ("--effort", args.effort),
                 # Same reasoning as --build-bank above: no dry-run preview
                 # exists, so the flag must refuse rather than be swallowed.
                 ("--dry-run", args.dry_run),
@@ -500,6 +520,31 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         # --grader, if given, is honored as-is; otherwise it is resolved once
         # the bank manifest names the runner family it was built with.
         return args
+
+    if args.smoke:
+        if args.skill is None:
+            parser.error("--smoke needs a skill slug")
+        conflicting = [
+            name for name, value in (
+                ("--baseline", args.baseline), ("--out", args.out),
+                ("--rounds", args.rounds != 6), ("--bank-round", args.bank_round),
+                ("--no-bank", args.no_bank),
+                ("--runner", args.runner != "codex"), ("--grader", args.grader),
+                ("--allow-same-family", args.allow_same_family),
+            ) if value
+        ]
+        if conflicting:
+            parser.error(
+                f"--smoke always runs both arms on codex and writes nothing "
+                f"to evals/; {', '.join(conflicting)} has no meaning here"
+            )
+        if args.jobs < 1:
+            parser.error(f"--jobs must be at least 1, got {args.jobs}")
+        args.effort = args.effort or "xhigh"
+        return args
+
+    if args.effort is not None:
+        parser.error("--effort only has meaning under --smoke")
 
     if args.skill is None or args.baseline is None:
         parser.error("a skill slug and --baseline are required unless --aggregate is used")
@@ -747,6 +792,31 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     return 0
 
 
+def run_smoke_cli(args: argparse.Namespace, repo_root: Path) -> int:
+    """The fast inner loop: one worktree arm, absolute judging, no baseline,
+    no bank, no gate verdict, nothing written to evals/. See smoke.py.
+    """
+    skill_dir = repo_root / "skills" / args.skill
+    if not skill_dir.is_dir():
+        raise RunCaseError(f"no such skill: {skill_dir}")
+    config = load_config(skill_dir)
+    if config is None:
+        print(f"{args.skill}: no {CONFIG_PATH} — not opted in, skipped")
+        return 0
+    cases = load_fixture(skill_dir)
+    validate_declared_ids(cases, config)
+    if args.dry_run:
+        selected = smoke_select_cases(cases, config, args.ids)
+        print(f"skill: {args.skill}")
+        print(f"effort: {args.effort}  jobs: {args.jobs}")
+        print(f"selected case(s): {', '.join(str(c['id']) for c in selected)}")
+        print("dry run: validated and selected, dispatched nothing")
+        return 0
+    report = run_smoke(repo_root, skill_dir, config, cases, args.ids, args.jobs, args.effort)
+    print(format_report(report))
+    return 0 if report["ok"] else 1
+
+
 def run(args: argparse.Namespace, repo_root: Path) -> int:
     ctx = prepare(args, repo_root)
     if not ctx["opted_in"]:
@@ -794,6 +864,8 @@ def main(argv: list[str]) -> int:
             return run_build_bank(args, repo_root)
         if args.null_run:
             return run_null(args, repo_root)
+        if args.smoke:
+            return run_smoke_cli(args, repo_root)
         return run(args, repo_root)
     except RunCaseError as exc:
         print(f"error: {exc}", file=sys.stderr)

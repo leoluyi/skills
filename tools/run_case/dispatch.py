@@ -69,7 +69,8 @@ def stderr_tail(path: Path) -> str:
     return text[-STDERR_TAIL_BYTES:].strip() or "(empty)"
 
 
-def cli_command(family: str, prompt: str, empty_dir: Path, out_file: Path) -> list[str]:
+def cli_command(family: str, prompt: str, empty_dir: Path, out_file: Path,
+                 effort: str = CODEX_EFFORT) -> list[str]:
     drop = [token for name in DROPPED_ENV for token in ("-u", name)]
     if family == "codex":
         # --ignore-user-config is load-bearing: without it $CODEX_HOME/config.toml
@@ -80,14 +81,15 @@ def cli_command(family: str, prompt: str, empty_dir: Path, out_file: Path) -> li
             "codex", "exec", "-s", "read-only",
             "-C", str(empty_dir),
             "--skip-git-repo-check", "--ignore-user-config",
-            "-m", CODEX_MODEL, "-c", f"model_reasoning_effort={CODEX_EFFORT}",
+            "-m", CODEX_MODEL, "-c", f"model_reasoning_effort={effort}",
             "-o", str(out_file), prompt,
         ]
     # --strict-mcp-config with no --mcp-config loads no MCP server, so the
     # grader — the component fed attacker-influenced runner text — has no live
     # tools. Note the asymmetry: this CLI still reads the operator's global
     # CLAUDE.md and has no flag to suppress it, so unlike codex's
-    # --ignore-user-config the claude family is not fully pinned.
+    # --ignore-user-config the claude family is not fully pinned. ``effort``
+    # is unused here — this CLI has no reasoning-effort flag.
     return [
         "env", *drop,
         "claude", "-p", "--tools=", "--strict-mcp-config",
@@ -95,14 +97,30 @@ def cli_command(family: str, prompt: str, empty_dir: Path, out_file: Path) -> li
     ]
 
 
-def dispatch(family: str, prompt: str, workspace: Path, tag: str, timeout: int) -> tuple[str, Path]:
-    """Run one blind agent and return its stdout text plus the raw output path."""
+class _RetryableFailure(Exception):
+    """Non-zero exit or empty output: often transient CLI flakiness, worth one
+    retry. Raised only inside this module and always resolved into a
+    DispatchError before it can reach a caller.
+    """
+
+
+def _dispatch_once(family: str, prompt: str, workspace: Path, tag: str, timeout: int,
+                    effort: str | None) -> tuple[str, Path]:
+    """Run one CLI invocation under ``tag`` and return its output text and path.
+
+    Timeout and OSError raise DispatchError directly — a retry cannot fix
+    either, so they are fatal on the first attempt. Non-zero exit and empty
+    output raise _RetryableFailure instead, for ``dispatch()`` to retry once.
+    """
     out_file = workspace / "raw" / f"{tag}.out"
     err_file = workspace / "raw" / f"{tag}.err"
     out_file.parent.mkdir(parents=True, exist_ok=True)
     empty_dir = workspace / "empty"
     empty_dir.mkdir(parents=True, exist_ok=True)
-    command = cli_command(family, prompt, empty_dir, out_file)
+    command = cli_command(
+        family, prompt, empty_dir, out_file,
+        effort if effort is not None else CODEX_EFFORT,
+    )
     # stderr goes to its own file and is only ever used for diagnostics: merged
     # into the parsed stream, a CLI error's text can satisfy the same parse that
     # reads the real answer and fabricate a result.
@@ -126,7 +144,7 @@ def dispatch(family: str, prompt: str, workspace: Path, tag: str, timeout: int) 
         # A non-zero exit having printed a usage/auth/model error to stdout is
         # the dangerous case: that error text would otherwise be scored as the
         # arm's answer and fail every row in the chunk.
-        raise DispatchError(
+        raise _RetryableFailure(
             f"{tag}: {family} exited {proc.returncode} — its output is not an "
             f"answer and is never scored; stderr tail: {stderr_tail(err_file)}"
         )
@@ -134,11 +152,33 @@ def dispatch(family: str, prompt: str, workspace: Path, tag: str, timeout: int) 
         out_file.write_bytes(proc.stdout or b"")
     text = out_file.read_text(encoding="utf-8", errors="replace") if out_file.exists() else ""
     if not text.strip():
-        raise DispatchError(
+        raise _RetryableFailure(
             f"{tag}: {family} produced no output (exit {proc.returncode}) — "
             f"stderr tail: {stderr_tail(err_file)}"
         )
     return text, out_file
+
+
+def dispatch(family: str, prompt: str, workspace: Path, tag: str, timeout: int,
+             effort: str | None = None) -> tuple[str, Path]:
+    """Run one blind agent and return its stdout text plus the raw output path.
+
+    Retries once on non-zero exit or empty output. Never retries a timeout or
+    an OSError: a retried 1-hour timeout would double the worst-case
+    wall-clock for a failure mode a retry cannot fix, since a CLI that hung
+    once is likely to hang again — those stay fatal on the first attempt. The
+    retry writes to a ``-r2``-suffixed tag so the first attempt's raw out/err
+    files are preserved as evidence rather than overwritten.
+    """
+    try:
+        return _dispatch_once(family, prompt, workspace, tag, timeout, effort)
+    except _RetryableFailure as first:
+        try:
+            return _dispatch_once(family, prompt, workspace, f"{tag}-r2", timeout, effort)
+        except _RetryableFailure as second:
+            raise DispatchError(
+                f"{tag}: failed twice, giving up — attempt 1: {first}; retry: {second}"
+            ) from None
 
 
 def label_for_new(run_id: str, chunk_index: int) -> str:
