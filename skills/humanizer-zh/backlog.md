@@ -6,8 +6,6 @@ Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md).
 [`design-notes.md`](design-notes.md), `evals/results-*.md`, and commit messages — not here.
 Anything deleted from this file is recoverable with `git log -p`.
 
-2026-08-02 的分類與待裁決選項在 [`backlog-triage-2026-08-02.md`](../../backlog-triage-2026-08-02.md)。
-
 ## Open: the protection class is noisy at the row level
 
 2.1.0 shipped on the aggregate gate (`evals/results-2026-08-01-run-case-aggregate.md`): zero

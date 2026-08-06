@@ -10,8 +10,7 @@ messages, each skill's `design-notes.md`, and `evals/results-*.md`.
 那條「一次做完再一起 re-baseline」的儀器線 **2026-08-03 收工並併入 main**：判讀工具、
 ported-case sweep、衝突複審、`evals.json` 的結構修補、三條規則的兩側覆蓋、`缺連接詞` 保留欄的
 收窄，全部落地。過程與每一項的推導記在
-[`skills/humanizer-zh/design-notes.md`](skills/humanizer-zh/design-notes.md)；同輪的完整分類
-在 [`backlog-triage-2026-08-02.md`](backlog-triage-2026-08-02.md)。
+[`skills/humanizer-zh/design-notes.md`](skills/humanizer-zh/design-notes.md)。
 
 仍開著的儀器項（合成保護語料只剩 id 52、`語體漂移` 缺非母語寫作保護案、`自我背書` 未量測）
 與所有行為變更（`模糊歸屬` 的 isolated-instance 判斷、detect 預設、進階補完模式——順序固定，
