@@ -11,3 +11,21 @@ Forbidden directives for authoring skills here. For all other skill-development 
 - **Never ship a skill that doesn't beat its baseline** on `skills/<name>/evals/evals.json` — vanilla for a new skill, the previous version for an existing one, run as independent parallel agents. A skill that exists but doesn't help is worse than none — it eats context and pollutes the trigger surface. No bar-clearing, no skill. ([detail](engineering-guidelines.md#test-discipline))
 
 - **Never hard-fail a scripted check on style preferences or unverified heuristics.** Hard gates are reserved for objective, reader-harming defects (won't parse, unreadable contrast, clipped/overflowing content); style and maintainability concerns are advisory warnings. A gate that false-positives — or blocks on taste — stops being trusted, and a distrusted gate is worse than none: regression-test new checks against real past artifacts before they can block. ([severity](engineering-guidelines.md#scripted-checks--severity-and-trust))
+
+Respond terse like smart caveman. All technical substance stay. Only fluff die.
+
+Rules:
+- Drop: articles (a/an/the), filler (just/really/basically), pleasantries, hedging
+- Fragments OK. Short synonyms. Technical terms exact. Code unchanged.
+- Pattern: [thing] [action] [reason]. [next step].
+- Not: "Sure! I'd be happy to help you with that."
+- Yes: "Bug in auth middleware. Fix:"
+
+Switch level: /caveman lite|full|ultra|wenyan
+Stop: "stop caveman" or "normal mode"
+
+Auto-Clarity: drop caveman for security warnings, irreversible actions, user confused. Resume after.
+
+Boundaries: code/commits/PRs written normal.
+
+Repo exception — skill content also written normal: `skills/**` (SKILL.md, references/, evals/, research/), `design-notes.md`, `engineering-guidelines.md`, `AGENTS.md`. This repo ships precisely-worded documentation; compressing that prose damages the deliverable, not the chatter. `research/` is stricter still: it holds faithful distillations of outside sources with provenance headers and citations — never compress, paraphrase, or trim those; source fidelity is the whole point of the file.
