@@ -207,6 +207,25 @@ aggregate 或混 calibrate。`tools/run_case/aggregate.py` 的 `IDENTITY_FIELDS`
 `skills/humanizer-zh/evals/null-r-series-SUPERSEDED.md` 是留給另一個仍在執行舊策略
 （跨輪 `--baseline HEAD` 探針）的 session 的即時指標，事件過去、新校準跑完之後可以刪。
 
+**收尾（2026-08-06）**：`--build-bank --rounds 6` 建池，15 個 `--null-run` 配對全數
+成功（過程中 11 次 `claude exited 1`——與下方 ship-check 相同的 transient grader dispatch
+失敗，重試即過，非設定問題），`--calibrate` 重產 `calibration.json`（`method:
+"same-call"`，3 輪門檻：保護 7 列／命中 8 列）。`--aggregate` 對 null-run 結果的混用防呆
+按預期硬錯（「a --null-run result measures the noise floor, not a change」）。
+
+新設定下的 3 輪出貨判定（`results-2026-08-06-shipcheck-r1~r3`，新臂與 base 為同一份文字）：
+SHIP，零違規，兩類都在校準門檻內——`fix/gate-null-calibrated` 的原始驗證目標達成。
+詳細功效表（刻意打壞 k 列重量測）未在這次一併做：把 5 種破壞形狀 × 3/6 輪跑滿，成本遠
+超這次改動本身，且不擋出貨——舊表已標「待重量測，數字先當方向參考」，維持這個狀態，
+留給下一輪真的要動門檻常數時再補。
+
+**觀察，留給下次動 `run-case.json`／`dispatch.py` 併發模型的人**：chunk 6→3 省的是
+token（規則 blob 少送幾次），沒有省 wall-clock——`ThreadPoolExecutor` 只平行化 chunk
+之間，單一大 chunk（34 案、effort high）內部仍是序列生成，一輪的下限被最大的單一 chunk
+卡死。實測單輪 ship-check 最長跑到 4 小時以上，其中還有 2 次疑似掛住（三個 chunk 同時
+卡住 40 分鐘以上零輸出，殺掉重跑後正常完工，本身也是與上述 `claude exited 1` 同一顆雷
+的另一種呈現）。細節見根目錄 `backlog.md` 的對應開放項。
+
 ## Adversarial iteration log (rule-tuning rounds)
 
 The method lives in `evals/adversarial-eval-protocol.md`. Each row = one GAN-style round; the `eval #N` in the Patch column maps to `id: N` in `evals/evals.json`.

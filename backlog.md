@@ -80,6 +80,25 @@ case 追加進去，免去手改 JSON——與 `annotate` 的寫入端重疊：`
 humanizer-zh 底下：`evals/judged-cases.md` 在 `infographic-design` 也有一份，追加格式不屬於單一
 skill。
 
+**Open: chunk 6→3 省 token，但把每輪 wall-clock 拉更長，是否過度工程要再議。**
+`fix/gate-null-calibrated` 的 3-round ship-check 實測：round 1 全程 ~2 小時（12:40AM 起，
+02:46AM 三個 chunk 全部落地），round 2 單一 chunk（c1）就跑了近 4 小時才收（02:46 起、
+06:35 c1 runner 完工），且最後在 grader-c1 上 `claude exited 1` 失敗——與 `--null-run` 15 配對
+裡同一個失敗簽章（11/15 次、詳見下方「已解」項）撞了同一顆雷。
+
+根因：chunk 合併把「多顆小 call 平行跑」換成「少顆大 call 各自序列推理」——`dispatch.py`
+的 `ThreadPoolExecutor` 只平行化 chunk 之間，單一 chunk 內部（19/32/34 案一次性塞給
+runner，reasoning effort `high`）仍是一條龍序列生成，round 的 wall-clock 下限因此被最大的
+單一 chunk（34 案）卡死，而不是被總案例數卡死。省的是 token（少送 11 次規則 blob），付的是
+latency（大 chunk 生成時間不可切）——`reflective-rolling-crescent.md` 的風險備忘已經預見
+「34 案的大 chunk：grader 單 call ~95 列，row-matching 失敗率上升」，這次是實測到了，不是
+臆測。
+
+沒有立即動作：本輪的 token 省法已拍板，且尚未證明 6-chunk／xhigh 舊設定的 wall-clock 更短
+（舊設定單 chunk 案例少但 effort 更高，兩個變因同時換，沒有對照組）。留給下一次要動
+`run-case.json` 或 `dispatch.py` 併發模型的人：chunk 大小是 token 與 latency 的直接取捨，
+不是無成本的省錢招——調整前先量兩者，不要只看 token 帳。
+
 ## Per-skill backlogs
 
 - [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) — **the next round**, in the
