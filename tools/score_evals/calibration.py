@@ -12,14 +12,14 @@ every reported regression is a false alarm. Run thousands of such splits and the
 95th percentile of each statistic is its false-alarm ceiling, counted rather
 than assumed.
 
-`tools/run-case --calibrate` regenerates `calibration.json` from any set of
+`tools/score-evals --calibrate` regenerates `calibration.json` from any set of
 rounds sharing a base blob. Re-run it whenever the corpus, the rubric or the
 grader model changes: those numbers describe one measurement setup, not a
 property of the statistics.
 
 A same-call null closes that gap directly rather than working around it: two
 independent baseline generations, drawn from the baseline bank
-(``tools/run_case/bank.py``, ``--build-bank``) and judged inside one grader
+(``tools/score_evals/bank.py``, ``--build-bank``) and judged inside one grader
 call (``--null-run A,B``), give a comparison with the real gate's own pairing
 structure — the same single-call draw — with a known answer, since both
 labelled arms are baseline text. ``calibrate_same_call`` pools those null-run
@@ -39,8 +39,8 @@ import random
 from collections import defaultdict
 from pathlib import Path
 
-from run_case.errors import RunCaseError
-from run_case.report import HIT, PROTECTION
+from score_evals.errors import ScoreEvalsError
+from score_evals.report import HIT, PROTECTION
 
 CALIBRATION_PATH = Path(__file__).with_name("calibration.json")
 
@@ -76,9 +76,9 @@ def load_calibration(path: Path | None = None) -> dict:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except OSError as exc:
-        raise RunCaseError(f"cannot read calibration table {path}: {exc}") from None
+        raise ScoreEvalsError(f"cannot read calibration table {path}: {exc}") from None
     except json.JSONDecodeError as exc:
-        raise RunCaseError(f"{path} is not valid JSON: {exc}") from None
+        raise ScoreEvalsError(f"{path} is not valid JSON: {exc}") from None
     return data
 
 
@@ -143,12 +143,12 @@ def calibrate(pool: tuple[dict, ...], splits: int = SPLITS, seed: int = 0) -> di
     """Measure each statistic's false-alarm distribution from a pooled null."""
     blobs = {r["base_blob_sha256"] for r in pool}
     if len(blobs) != 1:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             "calibration needs rounds that scored the same baseline text: "
             f"{len(blobs)} distinct base blobs given"
         )
     if len(pool) < 6:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"{len(pool)} rounds given; 6 is the minimum, since a split needs "
             "three rounds on each side to produce the smallest gate-sized null"
         )
@@ -193,7 +193,7 @@ def calibrate(pool: tuple[dict, ...], splits: int = SPLITS, seed: int = 0) -> di
             "ceiling. This null pairs across separate grader calls, so its "
             "ceilings run loose relative to the real gate's single-call "
             "comparison — prefer calibrate_same_call once a --null-run pool "
-            "exists for this baseline. Regenerate with tools/run-case "
+            "exists for this baseline. Regenerate with tools/score-evals "
             "--calibrate after any change to the corpus, the rubric or the "
             "grader model."
         ),
@@ -268,7 +268,7 @@ def calibrate_same_call(null_pool: tuple[dict, ...], splits: int = SPLITS, seed:
     """
     errors = _same_call_identity_errors(null_pool)
     if errors:
-        raise RunCaseError("same-call calibration pool is invalid:\n  " + "\n  ".join(errors))
+        raise ScoreEvalsError("same-call calibration pool is invalid:\n  " + "\n  ".join(errors))
 
     incompatible: set[int] = set()
     for data in null_pool:
@@ -306,7 +306,7 @@ def calibrate_same_call(null_pool: tuple[dict, ...], splits: int = SPLITS, seed:
             "pool of --null-run results — each already a single blind grader "
             "call comparing two independent baseline generations. A statistic "
             "blocks only when it exceeds the ceiling. Regenerate with "
-            "tools/run-case --calibrate after any change to the corpus, the "
+            "tools/score-evals --calibrate after any change to the corpus, the "
             "rubric, the grader model, or the baseline bank."
         ),
         "percentile": NULL_PERCENTILE,

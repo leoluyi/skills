@@ -1,4 +1,4 @@
-"""Config and fixture layer: load and validate evals/run-case.json and
+"""Config and fixture layer: load and validate evals/score-evals.json and
 evals.json, then expand them into scored rows, chunks, and the criteria text.
 """
 
@@ -8,7 +8,7 @@ import json
 import re
 from pathlib import Path
 
-from run_case.errors import (
+from score_evals.errors import (
     CLASSES,
     CONFIG_PATH,
     HIT,
@@ -17,7 +17,7 @@ from run_case.errors import (
     ConfigError,
     FixtureError,
     Row,
-    RunCaseError,
+    ScoreEvalsError,
 )
 
 FIXTURE_PATH = Path("evals") / "evals.json"
@@ -500,17 +500,17 @@ def parse_ids(spec: str) -> tuple[tuple[int, ...], tuple[int, ...]]:
             try:
                 lo, hi = int(lo_text), int(hi_text)
             except ValueError:
-                raise RunCaseError(f"--ids: bad range {token!r}") from None
+                raise ScoreEvalsError(f"--ids: bad range {token!r}") from None
             if lo > hi:
-                raise RunCaseError(f"--ids: inverted range {token!r}")
+                raise ScoreEvalsError(f"--ids: inverted range {token!r}")
             ranged.extend(range(lo, hi + 1))
             continue
         try:
             listed.append(int(token))
         except ValueError:
-            raise RunCaseError(f"--ids: bad id {token!r}") from None
+            raise ScoreEvalsError(f"--ids: bad id {token!r}") from None
     if not listed and not ranged:
-        raise RunCaseError(f"--ids: selected nothing from {spec!r}")
+        raise ScoreEvalsError(f"--ids: selected nothing from {spec!r}")
     return tuple(sorted(set(listed))), tuple(sorted(set(ranged)))
 
 
@@ -519,10 +519,10 @@ def resolve_ids(spec: str, known: set[int]) -> tuple[int, ...]:
     listed, ranged = parse_ids(spec)
     unknown = sorted(i for i in listed if i not in known)
     if unknown:
-        raise RunCaseError(f"--ids names id(s) absent from evals.json: {unknown}")
+        raise ScoreEvalsError(f"--ids names id(s) absent from evals.json: {unknown}")
     selected = tuple(sorted(set(listed) | {i for i in ranged if i in known}))
     if not selected:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"--ids: {spec!r} matches no id in evals.json"
         )
     return selected

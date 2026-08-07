@@ -2,7 +2,7 @@
 
 Command-line layer: argument parsing, the prepare/materialize/execute pipeline
 that drives the other modules in order, the dry-run summary, and the top-level
-error handling that turns a RunCaseError into a one-line message.
+error handling that turns a ScoreEvalsError into a one-line message.
 """
 
 from __future__ import annotations
@@ -19,8 +19,8 @@ import tempfile
 import uuid
 from pathlib import Path
 
-from run_case import bank
-from run_case.arms import (
+from score_evals import bank
+from score_evals.arms import (
     GRADER_BRIEF,
     arm_blob,
     arm_version,
@@ -30,7 +30,7 @@ from run_case.arms import (
     runner_prompt,
     write_arm,
 )
-from run_case.config import (
+from score_evals.config import (
     build_chunks,
     build_rows,
     criteria_section,
@@ -40,9 +40,9 @@ from run_case.config import (
     unscored_notes,
     validate_declared_ids,
 )
-from run_case.aggregate import aggregate, aggregate_markdown, load_round
-from run_case.calibration import CALIBRATION_PATH, calibrate, calibrate_same_call
-from run_case.dispatch import (
+from score_evals.aggregate import aggregate, aggregate_markdown, load_round
+from score_evals.calibration import CALIBRATION_PATH, calibrate, calibrate_same_call
+from score_evals.dispatch import (
     CLAUDE_MODEL,
     CODEX_EFFORT,
     CODEX_MODEL,
@@ -53,15 +53,15 @@ from run_case.dispatch import (
     run_pipeline,
     worker_failure,
 )
-from run_case.errors import CONFIG_PATH, Chunk, Row, RunCaseError
-from run_case.report import (
+from score_evals.errors import CONFIG_PATH, Chunk, Row, ScoreEvalsError
+from score_evals.report import (
     chunk_table_lines,
     denominators,
     derivation_lines,
     report_markdown,
     verdict,
 )
-from run_case.smoke import format_report, run_smoke, select_cases as smoke_select_cases
+from score_evals.smoke import format_report, run_smoke, select_cases as smoke_select_cases
 
 SMOKE_EFFORTS = ("low", "medium", "high", "xhigh")
 
@@ -72,7 +72,7 @@ def prepare(args: argparse.Namespace, repo_root: Path) -> dict:
     """Load and validate everything that must hold before any dispatch."""
     skill_dir = repo_root / "skills" / args.skill
     if not skill_dir.is_dir():
-        raise RunCaseError(f"no such skill: {skill_dir}")
+        raise ScoreEvalsError(f"no such skill: {skill_dir}")
     config = load_config(skill_dir)
     if config is None:
         return {"opted_in": False, "skill_dir": skill_dir}
@@ -97,7 +97,7 @@ def prepare(args: argparse.Namespace, repo_root: Path) -> dict:
 
 
 def materialize(repo_root: Path, skill_dir: Path, config: dict, baseline: tuple[str, str]) -> dict:
-    workspace = Path(tempfile.mkdtemp(prefix="run-case-"))
+    workspace = Path(tempfile.mkdtemp(prefix="score-evals-"))
     prefixes = config["skill_paths"]
     ref, base_dir = baseline
     # The new arm comes off the working tree on purpose: the version being
@@ -127,7 +127,7 @@ def chunk_row_map(chunks: tuple[Chunk, ...], rows: tuple[Row, ...],
         chunk_ids[index] = ids
         chunk_rows[index] = tuple(row for row in rows if row.case_id in set(ids))
     if not chunk_rows:
-        raise RunCaseError("selection leaves no chunk to run")
+        raise ScoreEvalsError("selection leaves no chunk to run")
     return chunk_rows, chunk_ids
 
 
@@ -254,9 +254,9 @@ def resolve_baseline_arm(ctx: dict, arms: dict, args: argparse.Namespace,
     root = bank.bank_dir(ctx["skill_dir"], base_blob_sha256)
     manifest = bank.load_manifest(root)
     if manifest is None:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"no baseline bank at {root} for this baseline text — build one "
-            f"first: tools/run-case {args.skill} --baseline {args.baseline} "
+            f"first: tools/score-evals {args.skill} --baseline {args.baseline} "
             "--build-bank, or pass --no-bank to dispatch a live baseline arm "
             "this round"
         )
@@ -441,7 +441,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--runner", choices=FAMILIES, default="codex")
     parser.add_argument("--grader", choices=FAMILIES, help="default: the family the runner is not")
     parser.add_argument("--allow-same-family", action="store_true")
-    parser.add_argument("--out", help="report path (default skills/<skill>/evals/results-<date>-run-case.md)")
+    parser.add_argument("--out", help="report path (default skills/<skill>/evals/results-<date>-score-evals.md)")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
 
@@ -569,7 +569,7 @@ def run_aggregate(args: argparse.Namespace) -> int:
     null_rounds = [r for r in rounds if r.get("null")]
     if null_rounds:
         named = ", ".join(str(Path(r["source"]).name) for r in null_rounds)
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"--aggregate: {named} — a --null-run result measures the noise "
             "floor, not a change; pass it to --calibrate instead"
         )
@@ -584,7 +584,7 @@ def run_calibrate(args: argparse.Namespace) -> int:
     if all(is_null):
         table = calibrate_same_call(pool)
     elif any(is_null):
-        raise RunCaseError(
+        raise ScoreEvalsError(
             "--calibrate: pool mixes --null-run results with normal ones — "
             "pass one kind only (same-call rounds calibrate together, cross-"
             "round rounds calibrate together, never both)"
@@ -608,7 +608,7 @@ def run_calibrate(args: argparse.Namespace) -> int:
 def parse_baseline(args: argparse.Namespace) -> tuple[str, str]:
     ref, _, base_dir = args.baseline.partition(":")
     if not ref:
-        raise RunCaseError(f"--baseline: no git ref in {args.baseline!r}")
+        raise ScoreEvalsError(f"--baseline: no git ref in {args.baseline!r}")
     return ref, base_dir or f"skills/{args.skill}"
 
 
@@ -652,11 +652,11 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     try:
         round_a, round_b = (int(part.strip()) for part in args.null_run.split(","))
     except ValueError:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"--null-run wants 'A,B' (two bank round numbers), got {args.null_run!r}"
         ) from None
     if round_a == round_b:
-        raise RunCaseError(f"--null-run: rounds must differ, got {args.null_run!r} twice")
+        raise ScoreEvalsError(f"--null-run: rounds must differ, got {args.null_run!r} twice")
 
     chunk_rows, chunk_ids = chunk_row_map(ctx["chunks"], ctx["rows"], None)
     ctx["chunk_lines"] = chunk_table_lines(ctx["chunks"], chunk_rows, chunk_ids)
@@ -675,13 +675,13 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     root = bank.bank_dir(ctx["skill_dir"], base_blob_sha256)
     manifest = bank.load_manifest(root)
     if manifest is None:
-        raise RunCaseError(
-            f"no baseline bank at {root} — build one first: tools/run-case "
+        raise ScoreEvalsError(
+            f"no baseline bank at {root} — build one first: tools/score-evals "
             f"{args.skill} --baseline {args.baseline} --build-bank"
         )
     grader = args.grader or ("claude" if manifest["runner"] == "codex" else "codex")
     if grader == manifest["runner"] and not args.allow_same_family:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"bank runner and grader are both {grader}; cross-family grading "
             "is the default for a reason — pass --allow-same-family to override"
         )
@@ -696,7 +696,7 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     )
 
     run_id = uuid.uuid4().hex
-    workspace = Path(tempfile.mkdtemp(prefix="run-case-null-"))
+    workspace = Path(tempfile.mkdtemp(prefix="score-evals-null-"))
     # A wears the label the real gate's "new" arm would wear; B wears "base".
     # Both are baseline text, so this comparison's ground truth is known: any
     # row that reads as a regression here is the false-alarm rate itself.
@@ -736,7 +736,7 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     finally:
         discard_workspace(workspace)
     if errors:
-        raise RunCaseError("null-run grader dispatch failed:\n  " + "\n  ".join(sorted(errors)))
+        raise ScoreEvalsError("null-run grader dispatch failed:\n  " + "\n  ".join(sorted(errors)))
 
     results = reconcile(chunk_rows, graded, mapping)
     report = {
@@ -781,7 +781,7 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     }
     out_path = (
         ctx["skill_dir"] / "evals"
-        / f"null-{report['date']}-r{round_a}v{round_b}-run-case.json"
+        / f"null-{report['date']}-r{round_a}v{round_b}-score-evals.json"
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(
@@ -798,7 +798,7 @@ def run_smoke_cli(args: argparse.Namespace, repo_root: Path) -> int:
     """
     skill_dir = repo_root / "skills" / args.skill
     if not skill_dir.is_dir():
-        raise RunCaseError(f"no such skill: {skill_dir}")
+        raise ScoreEvalsError(f"no such skill: {skill_dir}")
     config = load_config(skill_dir)
     if config is None:
         print(f"{args.skill}: no {CONFIG_PATH} — not opted in, skipped")
@@ -840,7 +840,7 @@ def run(args: argparse.Namespace, repo_root: Path) -> int:
             args, ctx, arms, dn, run_id, results, baseline, baseline_source, bank_round
         )
         default_out = (
-            ctx["skill_dir"] / "evals" / f"results-{report['date']}-run-case.md"
+            ctx["skill_dir"] / "evals" / f"results-{report['date']}-score-evals.md"
         )
         write_outputs(report, Path(args.out) if args.out else default_out)
     finally:
@@ -867,6 +867,6 @@ def main(argv: list[str]) -> int:
         if args.smoke:
             return run_smoke_cli(args, repo_root)
         return run(args, repo_root)
-    except RunCaseError as exc:
+    except ScoreEvalsError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2

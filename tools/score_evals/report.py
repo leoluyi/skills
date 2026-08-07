@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import re
 
-from run_case.errors import CLASSES, HIT, PROTECTION, Chunk, Row
+from score_evals.errors import CLASSES, HIT, PROTECTION, Chunk, Row
 
 # A standalone A or B in a grader's reason. CJK counts as \w, so 「段落B」 and
 # 「A-08」 never match — only the labels the grader used for the two outputs.
@@ -103,7 +103,7 @@ def class_counts(results: tuple[dict, ...]) -> list[str]:
 def _header_lines(ctx: dict) -> list[str]:
     """Instrument facts first: nobody can compare two runs without them."""
     return [
-        f"# run-case — {ctx['skill']} — {ctx['date']}",
+        f"# score-evals — {ctx['skill']} — {ctx['date']}",
         "",
         f"- run id: `{ctx['run_id']}`",
         f"- new arm: working tree `{ctx['new_dir']}`, version {ctx['new_version']}, "
