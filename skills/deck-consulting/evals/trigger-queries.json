@@ -1,0 +1,61 @@
+{
+  "skill_name": "deck-consulting",
+  "queries": [
+    {
+      "id": 1,
+      "query": "下週的簡報幫我從頭做一遍，先把溝通定位講清楚，再往下排架構。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/full-run-by-name",
+      "note": "This skill is user-invoked (disable-model-invocation / allow_implicit_invocation: false), so it has no live trigger surface and this file is a record of what the description was tuned against, not evidence that anything fires. Kept because the description still has to read as this work to a human choosing a skill by name."
+    },
+    {
+      "id": 2,
+      "query": "投影片太多講不完，老闆說看不到重點，幫我想這場要怎麼收。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/problem-shaped",
+      "note": "The user names a symptom rather than a node; the description has to cover the case where the skill picks the node and says why."
+    },
+    {
+      "id": 3,
+      "query": "幫我把這幾頁的標題改成結論式標題，內容不用動。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/single-node",
+      "note": "Single-node entry with no prior artifacts — the commonest real request, and the one the description must not make sound like a mandatory full workflow."
+    },
+    {
+      "id": 4,
+      "query": "Can you review my deck page by page and tell me what a room would actually miss? I present on Thursday.",
+      "should_trigger": true,
+      "category": "positive/en/slide-review",
+      "note": "English entry into the layout-review node. Output language follows the request, so an English ask is in scope."
+    },
+    {
+      "id": 5,
+      "query": "幫我用 python-pptx 把這份大綱產成 .pptx 檔，套公司的範本。",
+      "should_trigger": false,
+      "category": "negative/file-generation-routes-to-a-pptx-workflow",
+      "note": "Building the deck file itself. This skill advises the presenter and writes Markdown artifacts; it never produces the .pptx. Routes to a pptx workflow."
+    },
+    {
+      "id": 6,
+      "query": "幫我把這個專案成果做成一張資訊圖表，一頁看完那種懶人包。",
+      "should_trigger": false,
+      "category": "negative/graphic-routes-to-infographic-design",
+      "note": "Designing a standalone explanatory graphic. Routes to infographic-design. Note the near-miss: this skill's 一頁收攏 node also produces a one-page thing, but that is an argument compressed into text, not a designed visual."
+    },
+    {
+      "id": 7,
+      "query": "這段簡報講稿的 AI 味幫我拿掉，「賦能」「全面提升」那種空話改掉，結構不要動。",
+      "should_trigger": false,
+      "category": "negative/voice-cleanup-routes-to-humanizer-zh",
+      "note": "Pure language cleanup on finished prose, explicitly no structural work. Routes to humanizer-zh."
+    },
+    {
+      "id": 8,
+      "query": "幫我擬一份系統汰換的簽呈，要有背景、方案比較、經費、風險跟建議事項。",
+      "should_trigger": false,
+      "category": "negative/formal-doc-routes-to-formal-doc-structure",
+      "note": "Authoring one formal written document to a fixed institutional shape, for a reader who reads it alone. Routes to formal-doc-structure. Same underlying material as a deck often is, but nobody stands up and delivers a 簽呈."
+    }
+  ]
+}
