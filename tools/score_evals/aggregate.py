@@ -295,6 +295,21 @@ def aggregate(rounds: tuple[dict, ...], table: dict | None = None) -> dict:
                 table.get("criteria_sha256") is not None
                 and table["criteria_sha256"] != rounds[0]["criteria_sha256"]
             ),
+            # Rounds that disagree with each other on grader never reach here —
+            # IDENTITY_FIELDS blocks the pool. Nothing, though, compares a round
+            # against the grader whose null produced these ceilings, so a run can
+            # be scored on a yardstick measured with a different judge.
+            "grader": table.get("grader"),
+            "grader_model": table.get("grader_model"),
+            "round_grader": rounds[0].get("grader"),
+            "round_grader_model": rounds[0].get("grader_model"),
+            "stale_grader": (
+                table.get("grader") is not None
+                and (
+                    table["grader"] != rounds[0].get("grader")
+                    or table.get("grader_model") != rounds[0].get("grader_model")
+                )
+            ),
         },
         "classes": scored,
         "protection_per_round_new": per_round_totals(rounds, PROTECTION, "new", incompatible),
@@ -353,6 +368,17 @@ def aggregate_markdown(agg: dict) -> str:
             "The calibration was measured under a different rubric than these "
             "rounds ran under. Its ceilings still describe the old setup; "
             "regenerate with `--calibrate` once six rounds exist under this one.",
+        ]
+
+    if cal.get("stale_grader"):
+        lines += [
+            "",
+            f"**The verdict below borrows a yardstick from a different judge.** "
+            f"These rounds were graded by `{cal['round_grader']}` "
+            f"({cal['round_grader_model']}); the ceilings come from a null pool "
+            f"graded by `{cal['grader']}` ({cal['grader_model']}). The margins are "
+            f"measured on these rounds and stand on their own — the SHIP/NO-SHIP "
+            f"line does not, until `--calibrate` is re-run under this grader.",
         ]
 
     header = "| class / arm | " + " | ".join(f"r{i}" for i in range(1, n + 1)) + " | mean |"
