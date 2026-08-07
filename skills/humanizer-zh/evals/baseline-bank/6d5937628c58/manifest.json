@@ -1,0 +1,18 @@
+{
+  "base_blob_sha256": "6d5937628c58a881a5eda8c149fbc989950e026542be4b9ab2a2c7017bd6f2d6",
+  "base_version": "2.2.0",
+  "baseline_dir": "skills/humanizer-zh",
+  "baseline_ref": "17f962d",
+  "chunk_prompt_sha256": {
+    "0": "6356289cf50159bc2e240fb2c6ba2637a0ec31f4e337781e73f814b83ffbfba0",
+    "1": "281b256a6920330ba293095332288d2eeda68737e5154d9c204c382c55a9d438",
+    "2": "c43dc9c3e3ee9d8d72bedaf7e57dcfc245befeaf22ed465c7b2c171264ffba38",
+    "3": "e0b7891b74dbeeafed980f7d32b7a164abcc6574dcb7753eeab1a0dcc166e1e0",
+    "4": "7d93452beef54a47e11f7ae9713d028fa5e29f0236c20567bf8efb3c928dc689",
+    "5": "a8ff3fb6179874be4ab841a083cbca165bd7c4dfb387d48e7a528b9e96b19076"
+  },
+  "rounds": 6,
+  "runner": "codex",
+  "runner_effort": "high",
+  "runner_model": "gpt-5.6-luna"
+}
