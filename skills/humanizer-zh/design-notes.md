@@ -616,3 +616,50 @@ SHIP。**退步來自那組範例，不是命名。**
 交界處產生一份 grader 對不上其他輪次的孤兒檔（`results-2026-08-06-narrow-r6-codexgrader-orphan.json`），
 必須重跑 round 5、6 才補回 6 輪一致的樣本。日後若要再拉 baseline bank／`--null-run`
 重新校準，這是要素之一。
+
+## score-evals 量測設定 v3：6-chunk、codex grader、`--null-sweep`（2026-08-08）
+
+`tools/score_evals` 換了第三輪量測設定。跟 v2 一樣，這是一組互相牽動出貨門檻的變更，
+不是幾個獨立補丁：
+
+- `evals/score-evals.json` 的 chunk 從 3 拆回 6。動機是牆鐘時間：一輪的耗時由最大的
+  chunk 決定（同一次 call 內的生成是序列的，`ThreadPoolExecutor` 只跨 chunk 平行），
+  3-chunk 佈局最大的 chunk 有 34 個案例。拆成 6 之後最大 chunk 降到 18。代價是規則
+  blob（約 112k 字元）每輪重送的次數加倍——這正是 v2 當初從 6 併成 3 的理由，所以這次
+  是把當時的取捨反向做一次，不是修正 v2 的錯。
+- grader 預設從「跟 runner 不同家族」改成 codex，`--allow-same-family` 移除。換到的是
+  成本與不必安裝第二個 CLI；換掉的是跨家族盲判（同家族 grader 比較有機會認出自己的
+  措辭）。
+- `calibration.json` 用 codex grader 重新校準。v2 的門檻是 15 組 claude 盲判空實驗
+  重抽出來的，在 grader 換家族之後，那條 SHIP／NO-SHIP 線等於是借別的裁判的尺。
+
+**chunk 佈局不是把 v2 之前的 6-chunk 直接還原。** 歷史佈局的 chunk0 只有 `[1, 9]`，
+而案例 2-8 是它之後才加進 fixture 的；照抄會讓 7 個案例從此不出現在任何 chunk 裡，
+分母悄悄變小而沒有任何東西會報錯。實際落地的 chunk0 是 `[1..9]`，全部 85 個 id
+各出現一次。
+
+**新的門檻與 v2 不可比。** 6 輪：保護在 4+ 確認、擋在 2 列以上或單列 margin 超過
++10；命中在 4+ 確認、擋在 5 列以上或單列 margin 超過 +2。命中的單列 margin 天花板從
+v2 的 +7 掉到 +2——codex grader 在這個 class 上的雜訊明顯低於 claude，閘因此變嚴；
+保護則反向從 +8 放寬到 +10。舊設定下量到的所有數字（v2 的 `calibration.json`、
+`b342aef9a059` bank、`null-2026-08-06-*` 那 15 組空實驗、所有 `results-2026-08-0*`
+輪次）描述的是另一組設定，`IDENTITY_FIELDS` 會在混用時硬錯。
+
+**baseline bank 從此不進版控**（`.gitignore` 加 `skills/*/evals/baseline-bank/`）。
+v2 的 bank 是有 commit 的，但那份紀錄其實沒有它看起來的價值：runner 輸出是隨機的，
+重建只會得到一份等價的 bank，不會得到同一份，所以 commit 它既不能重現也不能稽核。
+判定本身留在 results 與 null 結果檔裡，背後的原始 runner 文字不需要一起留。代價是
+下一輪對同一個 baseline 的量測要先 `--build-bank`（6 chunk × 6 輪 = 36 次 dispatch，
+約 9 分鐘，全部走 codex，不花 Claude token）。
+
+**工具側連帶變更**，兩個都是這次重建過程中發現的缺口：
+
+- `aggregate.py` 加了 grader 對照的提示：round 的 grader 與 `calibration.json` 的
+  grader 不一致時，報告會標明「這份判定借用了另一個裁判的尺」。`IDENTITY_FIELDS`
+  只擋 round 之間互相混池，不管 round 與校準來源之間的落差。這是提示不是硬閘——
+  margin 本身仍然成立，借來的只有那條 SHIP／NO-SHIP 線。
+- 新增 `--null-sweep`：一次跑完所有 `C(N,2)` 配對，`--null-batch`（預設 5）控制同時
+  在飛的配對數。`--jobs` 只平行化單一配對內的 chunk，所以配對逐一跑會退化成 15 波
+  只填了 6 個 slot 的池；批次化之後約 3 波。單一配對失敗不會拖垮整輪，重跑同一道
+  指令只會補沒跑到的部分——跳過與否是看結果檔內的 `base_blob_sha256`，不是看檔名，
+  因為 bank 重建之後同名的舊結果描述的是另一個 bank。
