@@ -38,6 +38,39 @@ What it does, in one pass:
 
 Everything runs through coding-agent CLIs (``codex exec`` / ``claude -p``);
 this repo never spends a billed vendor API key on eval dispatch.
+
+Rebuilding the bank and recalibrating
+-------------------------------------
+
+A chunk-layout change, a grader-family change, or an edited rule blob
+invalidates the baseline bank, the null pool and ``calibration.json`` together.
+Rebuild them in one pass, since each step's output feeds the next:
+
+1. ``--build-bank --rounds 6`` against a pinned commit hash, never ``HEAD``.
+   ``HEAD`` compares a committed change against itself once it lands, and
+   ``baseline_ref`` stores the literal string, so hash rounds and ``HEAD``
+   rounds refuse to pool.
+2. ``--null-sweep 6`` — every pair of bank rounds, ``C(6,2)`` = 15 at six
+   rounds, batched. (``--null-run A,B`` still scores a single pair by hand.)
+3. ``--calibrate`` over the 15 null results.
+
+Step 2 dominates the wall clock, and the reason is worth knowing: ``--jobs``
+parallelizes chunks *within* one pair, so running pairs one after another
+serializes 15 waves of a pool sized for 6 chunks. ``--null-sweep`` batches the
+pairs themselves — ``--null-batch`` of them in flight at once, each still
+dispatching one grader call per chunk, so the wire sees batch x chunks.
+
+**``--null-batch`` defaults to 5.** Over six chunks that is 30 concurrent
+dispatches, about three waves against fifteen for the serial version, and it
+completed with no throttling when the six-chunk layout landed on 2026-08-08.
+Batch size is a rate-limit tradeoff, not a correctness one, so lower it only
+if a provider starts refusing. A failed pair does not sink the sweep: the
+others finish, the failures are listed, and re-running the same command skips
+whatever already landed against this bank and retries only the rest.
+
+Change one identity field per rebuild. ``runner_effort`` is an identity field
+just like ``grader`` is, so folding an ``--effort`` change into a grader or
+chunk rebuild leaves two variables moving and no way to attribute the result.
 """
 
 import sys

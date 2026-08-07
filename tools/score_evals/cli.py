@@ -11,6 +11,7 @@ import argparse
 import concurrent.futures
 import datetime
 import hashlib
+import itertools
 import json
 import secrets
 import shutil
@@ -415,6 +416,20 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
              "for --calibrate, never for --aggregate",
     )
     parser.add_argument(
+        "--null-sweep", type=int, nargs="?", const=0, metavar="N",
+        help="score all C(N,2) pairs of the bank's first N rounds, in "
+             "concurrent batches — the whole null pool --calibrate wants, "
+             "in one command; omit N to sweep every round the bank holds. "
+             "Skips pairs already scored against this bank, so re-running "
+             "retries only what failed",
+    )
+    parser.add_argument(
+        "--null-batch", type=int, default=5, metavar="N",
+        help="pairs in flight at once under --null-sweep (default 5); each "
+             "pair dispatches one grader call per chunk, so the wire sees "
+             "N x chunks at a time — lower it if a provider starts throttling",
+    )
+    parser.add_argument(
         "--bank-round", type=int,
         help="pin the bank round used as this round's base arm (default: "
              "the smallest round not yet used by an existing results file "
@@ -446,12 +461,12 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
     modes = (
         bool(args.aggregate), bool(args.calibrate), args.build_bank,
-        bool(args.null_run), args.smoke,
+        bool(args.null_run), args.null_sweep is not None, args.smoke,
     )
     if sum(modes) > 1:
         parser.error(
-            "--aggregate, --calibrate, --build-bank, --null-run and --smoke "
-            "each dispatch (or score) a different thing; pick one"
+            "--aggregate, --calibrate, --build-bank, --null-run, --null-sweep "
+            "and --smoke each dispatch (or score) a different thing; pick one"
         )
 
     if args.aggregate or args.calibrate:
@@ -504,6 +519,8 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                 ("--ids", args.ids), ("--out", args.out),
                 ("--bank-round", args.bank_round), ("--no-bank", args.no_bank),
                 ("--effort", args.effort),
+                # --null-batch paces pairs, and this mode runs exactly one.
+                ("--null-batch", args.null_batch != 5),
                 # Same reasoning as --build-bank above: no dry-run preview
                 # exists, so the flag must refuse rather than be swallowed.
                 ("--dry-run", args.dry_run),
@@ -518,6 +535,33 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
             parser.error(f"--jobs must be at least 1, got {args.jobs}")
         # --grader, if given, is honored as-is; otherwise it is resolved once
         # the bank manifest names the runner family it was built with.
+        return args
+
+    if args.null_sweep is not None:
+        if args.skill is None or args.baseline is None:
+            parser.error("--null-sweep needs a skill slug and --baseline (to locate the bank)")
+        conflicting = [
+            name for name, value in (
+                ("--ids", args.ids), ("--out", args.out),
+                ("--bank-round", args.bank_round), ("--no-bank", args.no_bank),
+                ("--effort", args.effort), ("--dry-run", args.dry_run),
+            ) if value
+        ]
+        if conflicting:
+            parser.error(
+                f"--null-sweep scores bank rounds against each other; "
+                f"{', '.join(conflicting)} has no meaning here"
+            )
+        # 0 is the "no count given" sentinel; the bank's own round count
+        # stands in for it once the manifest is loaded.
+        if args.null_sweep != 0 and args.null_sweep < 2:
+            parser.error(
+                f"--null-sweep needs at least 2 rounds to form a pair, got {args.null_sweep}"
+            )
+        if args.null_batch < 1:
+            parser.error(f"--null-batch must be at least 1, got {args.null_batch}")
+        if args.jobs < 1:
+            parser.error(f"--jobs must be at least 1, got {args.jobs}")
         return args
 
     if args.smoke:
@@ -636,30 +680,26 @@ def run_build_bank(args: argparse.Namespace, repo_root: Path) -> int:
     return 0
 
 
-def run_null(args: argparse.Namespace, repo_root: Path) -> int:
+def null_setup(args: argparse.Namespace, repo_root: Path) -> dict | None:
+    """Everything a null comparison needs that does not depend on which pair
+    is being scored: the fixture, the baseline blob, the chunk prompts, and
+    the bank manifest. Hoisted out of the per-pair work because a sweep would
+    otherwise redo it — including a git read per pair — once per pair rather
+    than once per run. Returns None when the skill has not opted in.
+    """
     ctx = prepare(args, repo_root)
     if not ctx["opted_in"]:
         print(f"{args.skill}: no {CONFIG_PATH} — not opted in, skipped")
-        return 0
+        return None
     baseline = parse_baseline(args)
-    try:
-        round_a, round_b = (int(part.strip()) for part in args.null_run.split(","))
-    except ValueError:
-        raise ScoreEvalsError(
-            f"--null-run wants 'A,B' (two bank round numbers), got {args.null_run!r}"
-        ) from None
-    if round_a == round_b:
-        raise ScoreEvalsError(f"--null-run: rounds must differ, got {args.null_run!r} twice")
 
     chunk_rows, chunk_ids = chunk_row_map(ctx["chunks"], ctx["rows"], None)
     ctx["chunk_lines"] = chunk_table_lines(ctx["chunks"], chunk_rows, chunk_ids)
-    dn = denominators(ctx["rows"], ctx["cases"], ctx["config"])
     cases_by_id = {case["id"]: case for case in ctx["cases"]}
 
     base_files = files_from_ref(repo_root, baseline[0], baseline[1], ctx["config"]["skill_paths"])
     base_blob = arm_blob(base_files)
     base_blob_sha256 = hashlib.sha256(base_blob.encode("utf-8")).hexdigest()
-    base_version = arm_version(base_files)
     chunk_prompts = {
         index: runner_prompt(base_blob, tuple(cases_by_id[i] for i in chunk_ids[index]))
         for index in chunk_ids
@@ -672,16 +712,71 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
             f"no baseline bank at {root} — build one first: tools/score-evals "
             f"{args.skill} --baseline {args.baseline} --build-bank"
         )
-    grader = args.grader or "codex"
+    return {
+        "ctx": ctx,
+        "baseline": baseline,
+        "chunk_rows": chunk_rows,
+        "chunk_ids": chunk_ids,
+        "cases_by_id": cases_by_id,
+        "dn": denominators(ctx["rows"], ctx["cases"], ctx["config"]),
+        "base_blob_sha256": base_blob_sha256,
+        "base_version": arm_version(base_files),
+        "chunk_prompts": chunk_prompts,
+        "root": root,
+        "manifest": manifest,
+        "grader": args.grader or "codex",
+    }
 
-    texts_a = bank.verify_and_load(
-        root, manifest, round_a, chunk_prompts,
-        manifest["runner"], manifest["runner_model"], manifest.get("runner_effort"),
-    )
-    texts_b = bank.verify_and_load(
-        root, manifest, round_b, chunk_prompts,
-        manifest["runner"], manifest["runner_model"], manifest.get("runner_effort"),
-    )
+
+def bank_round_texts(setup: dict, round_index: int) -> dict:
+    """Load and verify one bank round's chunk texts, memoized on the setup.
+
+    A sweep reads each round once instead of twice per pair it appears in —
+    2 x C(N,2) loads become N. The cache is filled before any thread starts,
+    so concurrent pairs only ever read it.
+    """
+    cache = setup.setdefault("texts", {})
+    if round_index not in cache:
+        manifest = setup["manifest"]
+        cache[round_index] = bank.verify_and_load(
+            setup["root"], manifest, round_index, setup["chunk_prompts"],
+            manifest["runner"], manifest["runner_model"], manifest.get("runner_effort"),
+        )
+    return cache[round_index]
+
+
+def run_null(args: argparse.Namespace, repo_root: Path) -> int:
+    try:
+        round_a, round_b = (int(part.strip()) for part in args.null_run.split(","))
+    except ValueError:
+        raise ScoreEvalsError(
+            f"--null-run wants 'A,B' (two bank round numbers), got {args.null_run!r}"
+        ) from None
+    if round_a == round_b:
+        raise ScoreEvalsError(f"--null-run: rounds must differ, got {args.null_run!r} twice")
+    setup = null_setup(args, repo_root)
+    if setup is None:
+        return 0
+    return null_pair(setup, args, round_a, round_b)
+
+
+def null_pair(setup: dict, args: argparse.Namespace, round_a: int, round_b: int) -> int:
+    """Score one pair of bank rounds against each other. Shared by --null-run
+    and --null-sweep. Reads from `setup` and writes nothing back to it beyond
+    the memoized round texts, so concurrent pairs do not interfere.
+    """
+    ctx = setup["ctx"]
+    baseline = setup["baseline"]
+    chunk_rows, chunk_ids = setup["chunk_rows"], setup["chunk_ids"]
+    cases_by_id = setup["cases_by_id"]
+    dn = setup["dn"]
+    base_blob_sha256 = setup["base_blob_sha256"]
+    base_version = setup["base_version"]
+    manifest = setup["manifest"]
+    grader = setup["grader"]
+
+    texts_a = bank_round_texts(setup, round_a)
+    texts_b = bank_round_texts(setup, round_b)
 
     run_id = uuid.uuid4().hex
     workspace = Path(tempfile.mkdtemp(prefix="score-evals-null-"))
@@ -780,6 +875,103 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
     return 0
 
 
+def existing_null_pairs(skill_dir: Path, base_blob_sha256: str) -> set[tuple[int, int]]:
+    """Pairs already scored against *this* bank. A null result names its pair
+    in the filename but carries the blob it was measured on inside, and only
+    the blob decides whether the result still describes the current bank — a
+    same-named file from an older bank is not a pair that can be skipped.
+    """
+    done: set[tuple[int, int]] = set()
+    for path in sorted((skill_dir / "evals").glob("null-*-score-evals.json")):
+        try:
+            report = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        if report.get("base_blob_sha256") != base_blob_sha256:
+            continue
+        a, b = report.get("bank_round_a"), report.get("bank_round_b")
+        if isinstance(a, int) and isinstance(b, int):
+            done.add((min(a, b), max(a, b)))
+    return done
+
+
+def run_null_sweep(args: argparse.Namespace, repo_root: Path) -> int:
+    """Score every pair of bank rounds, in concurrent batches.
+
+    One --null-run per pair would serialize C(N,2) waves of a pool sized for
+    chunks, so the pairs are what gets batched: --jobs still bounds the chunks
+    inside a pair, and --null-batch bounds how many pairs are in flight, which
+    together put batch x chunks dispatches on the wire at once.
+
+    A pair that fails does not stop the sweep. Its siblings are independent
+    measurements, and killing fourteen good pairs because a fifteenth hit a
+    rate limit would waste the whole run; the failures are listed at the end
+    and re-running the same command picks up only what is missing.
+    """
+    setup = null_setup(args, repo_root)
+    if setup is None:
+        return 0
+    ctx, manifest = setup["ctx"], setup["manifest"]
+    base_blob_sha256 = setup["base_blob_sha256"]
+    # No count given: the bank knows how many rounds it holds, and asking the
+    # caller to repeat it is only a way to get it wrong.
+    rounds = args.null_sweep or manifest["rounds"]
+    if rounds < 2:
+        raise ScoreEvalsError(
+            f"--null-sweep needs at least 2 bank rounds to form a pair, "
+            f"but {setup['root']} holds {rounds}"
+        )
+    if manifest["rounds"] < rounds:
+        raise ScoreEvalsError(
+            f"--null-sweep {rounds} wants {rounds} bank rounds, but "
+            f"{setup['root']} holds {manifest['rounds']}"
+        )
+
+    all_pairs = list(itertools.combinations(range(1, rounds + 1), 2))
+    done = existing_null_pairs(ctx["skill_dir"], base_blob_sha256)
+    pairs = [pair for pair in all_pairs if pair not in done]
+    if done:
+        print(f"skipping {len(done)} pair(s) already scored against this bank")
+    if not pairs:
+        print(f"all {len(all_pairs)} pair(s) already scored — nothing to do")
+        return 0
+    print(f"sweeping {len(pairs)} pair(s), {args.null_batch} in flight at a time")
+
+    # Fill the round-text cache before any thread starts: after this the cache
+    # is read-only, so the pairs need no lock around it.
+    for round_index in sorted({r for pair in pairs for r in pair}):
+        bank_round_texts(setup, round_index)
+
+    # One pool over every pair, not a loop of per-batch pools. Batching with a
+    # barrier would make each group wait on its slowest pair before the next
+    # starts, which is the same stall --null-sweep exists to remove; a single
+    # pool keeps --null-batch pairs in flight continuously as slots free.
+    failures: list[str] = []
+    with concurrent.futures.ThreadPoolExecutor(max_workers=args.null_batch) as pool:
+        futures = {
+            pool.submit(null_pair, setup, args, a, b): (a, b)
+            for a, b in pairs
+        }
+        for future in concurrent.futures.as_completed(futures):
+            a, b = futures[future]
+            try:
+                future.result()
+            except Exception as exc:  # noqa: BLE001 — one pair must not sink the sweep
+                failures.append(f"r{a}v{b}: {exc}")
+
+    if failures:
+        print(
+            f"\n{len(failures)} of {len(pairs)} pair(s) failed; re-run the same "
+            f"command to retry only these:",
+            file=sys.stderr,
+        )
+        for line in sorted(failures):
+            print(f"  {line}", file=sys.stderr)
+        return 1
+    print(f"\nswept {len(pairs)} pair(s) cleanly")
+    return 0
+
+
 def run_smoke_cli(args: argparse.Namespace, repo_root: Path) -> int:
     """The fast inner loop: one worktree arm, absolute judging, no baseline,
     no bank, no gate verdict, nothing written to evals/. See smoke.py.
@@ -852,6 +1044,8 @@ def main(argv: list[str]) -> int:
             return run_build_bank(args, repo_root)
         if args.null_run:
             return run_null(args, repo_root)
+        if args.null_sweep is not None:
+            return run_null_sweep(args, repo_root)
         if args.smoke:
             return run_smoke_cli(args, repo_root)
         return run(args, repo_root)
