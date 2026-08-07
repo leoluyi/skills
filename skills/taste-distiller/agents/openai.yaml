@@ -1,0 +1,8 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Taste Distiller"
+  short_description: >-
+    從使用者退稿、重寫 AI 產出的實例裡，挖出他們心裡有但沒說出口的標準，蒸餾成
+    可重複使用的 Taste Profile：Markdown 的 1-5 分 rubric 加上 evaluator agent 用的
+    JSON 版。

@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Discuss With Me"
+  short_description: >-
+    與使用者一起深挖雙方都沒有答案的開放問題：擴大選項、查核論證、攻擊關鍵假設，
+    留下可被推翻的決策紀錄。

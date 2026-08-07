@@ -10,8 +10,8 @@ import re
 import subprocess
 from pathlib import Path
 
-from run_case.dispatch import sanitize
-from run_case.errors import Row, RunCaseError
+from score_evals.dispatch import sanitize
+from score_evals.errors import Row, ScoreEvalsError
 
 VERSION_RE = re.compile(r"^version:\s*(.+?)\s*$", re.MULTILINE)
 
@@ -85,13 +85,13 @@ def git(repo: Path, *args: str) -> str:
             timeout=GIT_TIMEOUT,
         )
     except subprocess.TimeoutExpired:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"git {' '.join(args)} timed out after {GIT_TIMEOUT}s"
         ) from None
     except OSError as exc:
-        raise RunCaseError(f"cannot run git {' '.join(args)}: {exc}") from exc
+        raise ScoreEvalsError(f"cannot run git {' '.join(args)}: {exc}") from exc
     if proc.returncode != 0:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"git {' '.join(args)} failed: {sanitize(proc.stderr).strip() or 'no output'}"
         )
     return proc.stdout
@@ -106,9 +106,9 @@ def check_tree_path(path: str) -> None:
     """
     parts = path.split("/")
     if path.startswith("/") or (len(path) > 1 and path[1] == ":"):
-        raise RunCaseError(f"git tree entry is an absolute path: {path!r}")
+        raise ScoreEvalsError(f"git tree entry is an absolute path: {path!r}")
     if any(part in ("", ".", "..") for part in parts):
-        raise RunCaseError(f"git tree entry has a traversal component: {path!r}")
+        raise ScoreEvalsError(f"git tree entry has a traversal component: {path!r}")
 
 
 def wanted(rel: str, prefixes: tuple[str, ...]) -> bool:
@@ -144,7 +144,7 @@ def files_from_ref(repo: Path, ref: str, skill_rel: str, prefixes: tuple[str, ..
             continue
         out.append((rel, git(repo, "show", "--end-of-options", f"{ref}:{path}")))
     if not out:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"ref {ref!r} path {skill_rel!r} expands to no file under {list(prefixes)}"
         )
     return tuple(sorted(out))
@@ -169,9 +169,9 @@ def files_from_worktree(skill_dir: Path, prefixes: tuple[str, ...]) -> tuple[tup
         try:
             out.append((rel, path.read_text(encoding="utf-8")))
         except (OSError, UnicodeDecodeError) as exc:
-            raise RunCaseError(f"cannot read {path}: {exc}") from exc
+            raise ScoreEvalsError(f"cannot read {path}: {exc}") from exc
     if not out:
-        raise RunCaseError(f"{skill_dir} expands to no file under {list(prefixes)}")
+        raise ScoreEvalsError(f"{skill_dir} expands to no file under {list(prefixes)}")
     return tuple(out)
 
 
@@ -192,7 +192,7 @@ def write_arm(workspace: Path, name: str, files: tuple[tuple[str, str], ...]) ->
         # arm root, whatever produced the relative path.
         target = root / rel
         if resolved_root not in target.resolve().parents:
-            raise RunCaseError(
+            raise ScoreEvalsError(
                 f"arm {name!r} entry {rel!r} resolves outside {resolved_root}"
             )
         target.parent.mkdir(parents=True, exist_ok=True)

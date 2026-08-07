@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Autopilot"
+  short_description: >-
+    把整份既定計畫自動跑完：subagent 執行、故障自修有次數上限、過驗證閘門後
+    commit、push、開 PR，全程不回頭問。明確呼叫才啟動。
+policy:
+  allow_implicit_invocation: false

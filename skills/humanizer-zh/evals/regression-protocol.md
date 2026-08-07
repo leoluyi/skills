@@ -6,7 +6,7 @@
 | 層 | 資產 | 跑法 |
 |---|---|---|
 | 觸發層 | `trigger-queries.json` | `tools/run-eval humanizer-zh`（已自動化，本文不涵蓋） |
-| 行為層 | `evals.json` 案例與 expectations | `tools/run-case humanizer-zh --baseline <ref>`；本文是它的判準 |
+| 行為層 | `evals.json` 案例與 expectations | `tools/score-evals humanizer-zh --baseline <ref>`；本文是它的判準 |
 | 品味層 | `judged-cases.md` | 人工終判語料，爭議條目的最終依據 |
 
 ## 判分標準
@@ -43,7 +43,7 @@ Verdict 分兩類，出貨門檻不同。分類看語意不看字面前綴
 門檻改架在重複性上：**真缺陷會重複出現，抽樣噪音不會。**
 
 ```
-tools/run-case --aggregate skills/<skill>/evals/results-*.json
+tools/score-evals --aggregate skills/<skill>/evals/results-*.json
 ```
 
 ### 門檻是量出來的，不是推出來的
@@ -52,7 +52,7 @@ tools/run-case --aggregate skills/<skill>/evals/results-*.json
 需約 125 輪。**換統計量救不了它**——每輪平均差乘輪數恰好等於逐格淨退步數，同一個量，
 差別只在把 ~50 個配對格先壓成 3 到 6 個輪總數。
 
-改用**空實驗數出來**。首選構法是 **same-call**：`tools/run-case --build-bank` 先跑
+改用**空實驗數出來**。首選構法是 **same-call**：`tools/score-evals --build-bank` 先跑
 N 輪獨立的 baseline 生成，存進 `evals/baseline-bank/`；`--null-run A,B` 把其中兩輪
 在同一次 grader call 裡盲判，兩邊都是 baseline 文字，正確答案已知是「沒有差異」，
 每一列退步都是假警報。用這種 null-run 結果的池子跑 `--calibrate`（自動偵測
@@ -64,8 +64,8 @@ N 輪獨立的 baseline 生成，存進 `evals/baseline-bank/`；`--null-run A,B
 互不重疊的半邊，一半當「新臂」。這個構法的比較是跨輪配對，比真實比較多一層雜訊
 （見下方「已知的鬆度」），門檻因此偏鬆，是退路而非目標狀態。
 
-表存在 `tools/run_case/calibration.json`（記 `method: "same-call"` 或
-`"cross-round"`），`tools/run-case --calibrate` 重新產生——語料、判分準則、判分模型、
+表存在 `tools/score_evals/calibration.json`（記 `method: "same-call"` 或
+`"cross-round"`），`tools/score-evals --calibrate` 重新產生——語料、判分準則、判分模型、
 runner 的 reasoning effort，或 baseline bank 換掉之後都要重跑，那些數字描述的是一組
 量測設定，不是統計量的性質。
 
@@ -157,9 +157,9 @@ detect / rewrite / --expect-author 模式）。
 
 ### 自動化版：`--smoke`
 
-上面手工流程的自動版本，跑 `tools/run-case <skill> --smoke`：worktree 單臂
+上面手工流程的自動版本，跑 `tools/score-evals <skill> --smoke`：worktree 單臂
 （改到一半的稿子，不比對 baseline）＋ codex 絕對判分（單一輸出直接對 key 判
-✅／❌，不做 A/B 盲比），對象是 `run-case.json` 的 `smoke_ids`（一組覆蓋各規則區的
+✅／❌，不做 A/B 盲比），對象是 `score-evals.json` 的 `smoke_ids`（一組覆蓋各規則區的
 精選案例，`--ids` 可換成別的子集）。同樣 contaminated、同樣**只能證偽不能證實**，
 且**結果永不寫進 `evals/`**——不會被 `--aggregate`／`--calibrate` 誤吃，也絕不是出貨
 判定的輸入。出貨仍照上面「三道判準」走完整輪。用途：改一版規則後幾分鐘內確認沒有

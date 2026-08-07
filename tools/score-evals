@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Score a skill's behaviour evals (``evals.json``) and report ship/no-ship.
 
-Opt-in per skill: a skill is scored only if it ships ``evals/run-case.json``.
+Opt-in per skill: a skill is scored only if it ships ``evals/score-evals.json``.
 Without that file the skill is skipped cleanly, so this tool stays runnable
 across every skill rather than erroring on the ones that never opted in. Once
 the config exists, a file it declares but that is missing is a hard error.
@@ -38,10 +38,10 @@ this repo never spends a billed vendor API key on eval dispatch.
 import sys
 from pathlib import Path
 
-# tools/ is not a package root, so put it on sys.path before importing run_case.
+# tools/ is not a package root, so put it on sys.path before importing score_evals.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from run_case.cli import main
+from score_evals.cli import main
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))

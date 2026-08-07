@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Technical RFP Writing & Review"
+  short_description: >-
+    從發包方角度撰寫或審查繁體中文技術型 RFP（需求規格書、需求規劃書、招標規格）：
+    檢查章節歸屬、消除重複、瘦身附錄、合併薄弱章節。不含一般公文。
+policy:
+  allow_implicit_invocation: false

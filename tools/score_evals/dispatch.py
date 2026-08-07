@@ -13,7 +13,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from run_case.errors import DispatchError, Row
+from score_evals.errors import DispatchError, Row
 
 CODEX_MODEL = "gpt-5.6-luna"
 CODEX_EFFORT = "high"

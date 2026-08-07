@@ -1,0 +1,8 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Goal Definer"
+  short_description: >-
+    把模糊的任務描述訪談成六元素 goal prompt（Outcome、Verification、Constraints、
+    Boundaries、Iteration Policy、Blocked Stop Condition），讓 agent 能自己跑好幾個
+    小時不偏離、不提早收工。

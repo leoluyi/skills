@@ -15,9 +15,9 @@ import secrets
 import tempfile
 from pathlib import Path
 
-from run_case.arms import arm_blob, files_from_worktree, key_table, runner_prompt, source_block
-from run_case.config import build_rows, criteria_section, resolve_ids, unscored_notes
-from run_case.dispatch import (
+from score_evals.arms import arm_blob, files_from_worktree, key_table, runner_prompt, source_block
+from score_evals.config import build_rows, criteria_section, resolve_ids, unscored_notes
+from score_evals.dispatch import (
     CODEX_MODEL,
     GRADER_TIMEOUT,
     RUNNER_TIMEOUT,
@@ -27,7 +27,7 @@ from run_case.dispatch import (
     progress,
     worker_failure,
 )
-from run_case.errors import Row, RunCaseError
+from score_evals.errors import Row, ScoreEvalsError
 
 SMOKE_GRADER_BRIEF = """\
 You are grading one output per case against a list of expected judgments.
@@ -84,7 +84,7 @@ def select_cases(cases: tuple[dict, ...], config: dict, ids: str | None) -> tupl
         selected_ids = config["smoke_ids"]
     selected = tuple(by_id[i] for i in selected_ids if i in by_id)
     if not selected:
-        raise RunCaseError("smoke: selection resolved to no case in evals.json")
+        raise ScoreEvalsError("smoke: selection resolved to no case in evals.json")
     return selected
 
 
@@ -225,7 +225,7 @@ def run_smoke(_repo_root: Path, skill_dir: Path, config: dict, cases: tuple[dict
     selected = select_cases(cases, config, ids)
     rows = build_rows(selected, config)
     if not rows:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             "smoke: selected case(s) "
             f"{', '.join(str(c['id']) for c in selected)} produce zero scored "
             "rows — every expectation on them is unscored "
@@ -233,7 +233,7 @@ def run_smoke(_repo_root: Path, skill_dir: Path, config: dict, cases: tuple[dict
         )
     criteria = criteria_section(skill_dir, config)
     notes = unscored_notes(selected, config)
-    workspace = Path(tempfile.mkdtemp(prefix="run-case-smoke-"))
+    workspace = Path(tempfile.mkdtemp(prefix="score-evals-smoke-"))
     print(f"smoke workspace: {workspace}")
 
     outputs, runner_errors = run_arm(skill_dir, config, selected, workspace, jobs, effort)

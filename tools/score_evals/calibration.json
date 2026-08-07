@@ -1,6 +1,6 @@
 {
   "method": "same-call",
-  "note": "False-alarm ceilings measured by resampling, with replacement, a pool of --null-run results — each already a single blind grader call comparing two independent baseline generations. A statistic blocks only when it exceeds the ceiling. Regenerate with tools/run-case --calibrate after any change to the corpus, the rubric, the grader model, or the baseline bank.",
+  "note": "False-alarm ceilings measured by resampling, with replacement, a pool of --null-run results — each already a single blind grader call comparing two independent baseline generations. A statistic blocks only when it exceeds the ceiling. Regenerate with tools/score-evals --calibrate after any change to the corpus, the rubric, the grader model, or the baseline bank.",
   "percentile": 0.95,
   "splits": 4000,
   "pool_rounds": 15,

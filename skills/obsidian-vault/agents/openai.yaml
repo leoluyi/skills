@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Obsidian Vault Notes"
+  short_description: >-
+    在 Obsidian 筆記庫搜尋、新增與串連筆記，維持 PARA / Johnny-Decimal 結構與
+    wikilink。

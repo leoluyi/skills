@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Recover a Deleted Claude Conversation"
+  short_description: >-
+    從 Chromium 瀏覽器快取搶救 Claude Desktop 或 claude.ai 上被誤刪的對話、訊息
+    或產出檔案（docx/pdf）。與快取覆蓋賽跑，須立即執行。
+policy:
+  allow_implicit_invocation: false

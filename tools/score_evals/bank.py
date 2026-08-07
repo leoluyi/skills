@@ -36,8 +36,8 @@ import sys
 import tempfile
 from pathlib import Path
 
-from run_case.dispatch import RUNNER_TIMEOUT, dispatch
-from run_case.errors import RunCaseError
+from score_evals.dispatch import RUNNER_TIMEOUT, dispatch
+from score_evals.errors import ScoreEvalsError
 
 BANK_DIRNAME = "baseline-bank"
 MANIFEST_NAME = "manifest.json"
@@ -65,7 +65,7 @@ def load_manifest(root: Path) -> dict | None:
     try:
         return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        raise RunCaseError(f"{path}: {exc}") from exc
+        raise ScoreEvalsError(f"{path}: {exc}") from exc
 
 
 def build(root: Path, rounds: int, family: str, model: str, effort: str | None,
@@ -76,7 +76,7 @@ def build(root: Path, rounds: int, family: str, model: str, effort: str | None,
     runner said, never a verdict about it.
     """
     if rounds < 1:
-        raise RunCaseError(f"--rounds must be at least 1, got {rounds}")
+        raise ScoreEvalsError(f"--rounds must be at least 1, got {rounds}")
     root.mkdir(parents=True, exist_ok=True)
     jobs_list = [
         (round_index, chunk_index, prompt)
@@ -90,7 +90,7 @@ def build(root: Path, rounds: int, family: str, model: str, effort: str | None,
     # given. That workspace must be scratch, not the bank root: the bank root
     # is what a later round reads back verbatim, and a diagnostic .err file
     # sitting next to chunk0.out is not part of what a runner said.
-    scratch = Path(tempfile.mkdtemp(prefix="run-case-bank-"))
+    scratch = Path(tempfile.mkdtemp(prefix="score-evals-bank-"))
 
     def run_one(item: tuple[int, int, str]) -> None:
         round_index, chunk_index, prompt = item
@@ -123,7 +123,7 @@ def build(root: Path, rounds: int, family: str, model: str, effort: str | None,
         # failure stay on disk — they are correct, real runner output, just
         # short of a full set. No manifest is written, so load_manifest still
         # returns None and a retried --build-bank starts clean.
-        raise RunCaseError("bank build failed:\n  " + "\n  ".join(sorted(errors)))
+        raise ScoreEvalsError("bank build failed:\n  " + "\n  ".join(sorted(errors)))
 
     manifest = {
         "base_blob_sha256": base_blob_sha256,
@@ -158,14 +158,14 @@ def verify_and_load(root: Path, manifest: dict, round_index: int,
     """
     if manifest["runner"] != family or manifest["runner_model"] != model \
             or manifest.get("runner_effort") != effort:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"{root}: bank was built with runner={manifest['runner']} "
             f"model={manifest['runner_model']} effort={manifest.get('runner_effort')}, "
             f"this run wants runner={family} model={model} effort={effort} — "
             "rebuild the bank for this setup, or match the run to the bank's"
         )
     if not (1 <= round_index <= manifest["rounds"]):
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"{root}: round {round_index} is out of range 1..{manifest['rounds']}"
         )
     out: dict[int, tuple[str, Path]] = {}
@@ -173,14 +173,14 @@ def verify_and_load(root: Path, manifest: dict, round_index: int,
         want = prompt_sha256(prompt)
         got = manifest["chunk_prompt_sha256"].get(str(chunk_index))
         if got != want:
-            raise RunCaseError(
+            raise ScoreEvalsError(
                 f"{root}: chunk {chunk_index}'s runner prompt no longer matches "
                 "the bank (rule blob, chunk layout, or a case's prompt text "
                 "changed since the bank was built) — rebuild with --build-bank"
             )
         path = chunk_out_path(root, round_index, chunk_index)
         if not path.exists():
-            raise RunCaseError(f"{root}: missing {path} for round {round_index}")
+            raise ScoreEvalsError(f"{root}: missing {path} for round {round_index}")
         out[chunk_index] = (path.read_text(encoding="utf-8"), path)
     return out
 
@@ -214,7 +214,7 @@ def pick_round(skill_dir: Path, base_blob_sha256: str, rounds: int) -> int:
     for candidate in range(1, rounds + 1):
         if candidate not in used:
             return candidate
-    raise RunCaseError(
+    raise ScoreEvalsError(
         f"all {rounds} bank round(s) already used by an existing results file "
         "for this baseline — pass --bank-round to reuse one deliberately, or "
         "rebuild the bank with more rounds (--build-bank --rounds N)"

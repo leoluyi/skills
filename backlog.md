@@ -23,11 +23,11 @@ key，所以仍然一批走。**
 
 ## Measurement infrastructure
 
-`tools/run-eval` exercises `trigger-queries.json` (whether the router fires);
-`tools/run-case` scores the behaviour layer against `evals.json`. A skill opts into the
-latter by shipping `evals/run-case.json`.
+`tools/run-eval` exercises `trigger-queries.json` (whether the skill triggers);
+`tools/score-evals` scores the behaviour layer against `evals.json`. A skill opts into the
+latter by shipping `evals/score-evals.json`.
 
-`corpus.md` is still hand-run — `run-case` reads `evals.json` only, and the corpus's
+`corpus.md` is still hand-run — `score-evals` reads `evals.json` only, and the corpus's
 judgment-table format is a different parse. Whether that is worth automating depends on
 whether the corpus stays a regression guard (see the saturation item in
 [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md)); a saturated fixture

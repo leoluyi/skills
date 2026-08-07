@@ -1,4 +1,4 @@
-"""Multi-round aggregation of run-case results.
+"""Multi-round aggregation of score-evals results.
 
 A single round's protection number is not a verdict. Measured over seven rounds
 on one skill state, the new arm's protection-class failures ranged 0–3 and the
@@ -39,9 +39,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from run_case.calibration import confirm_at, load_calibration, thresholds
-from run_case.errors import RunCaseError
-from run_case.report import HIT, PROTECTION
+from score_evals.calibration import confirm_at, load_calibration, thresholds
+from score_evals.errors import ScoreEvalsError
+from score_evals.report import HIT, PROTECTION
 
 # Two rounds can only ever say "these two agreed" or "these two differed"; the
 # first is indistinguishable from two identical draws of the same noise. Three
@@ -80,19 +80,19 @@ def load_round(path: Path) -> dict:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
     except OSError as exc:
-        raise RunCaseError(f"cannot read {path}: {exc}") from None
+        raise ScoreEvalsError(f"cannot read {path}: {exc}") from None
     except json.JSONDecodeError as exc:
-        raise RunCaseError(f"{path} is not valid JSON: {exc}") from None
+        raise ScoreEvalsError(f"{path} is not valid JSON: {exc}") from None
     if not isinstance(data, dict) or "results" not in data:
-        raise RunCaseError(f"{path} is not a run-case result file")
+        raise ScoreEvalsError(f"{path} is not a score-evals result file")
     if data.get("partial"):
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"{path} is a partial (--ids) run — a subset score cannot stand in "
             "for a round, since the rows it never ran read as passes"
         )
     missing = [name for name in IDENTITY_FIELDS if name not in data]
     if missing:
-        raise RunCaseError(
+        raise ScoreEvalsError(
             f"{path} predates aggregate scoring — it lacks {', '.join(missing)}. "
             "Re-run it; rounds whose skill text cannot be identified cannot be "
             "pooled with rounds whose can."
@@ -256,7 +256,7 @@ def aggregate(rounds: tuple[dict, ...], table: dict | None = None) -> dict:
     """Score the pooled rounds and return the ship decision with its evidence."""
     errors = identity_errors(rounds)
     if errors:
-        raise RunCaseError("rounds are not one sample:\n  " + "\n  ".join(errors))
+        raise ScoreEvalsError("rounds are not one sample:\n  " + "\n  ".join(errors))
 
     table = table if table is not None else load_calibration()
     incompatible = incompatible_ids(rounds)
@@ -324,7 +324,7 @@ def aggregate_markdown(agg: dict) -> str:
     n = agg["rounds"]
     cal = agg["calibration"]
     lines = [
-        f"# run-case aggregate — {agg['skill']} — {n} rounds",
+        f"# score-evals aggregate — {agg['skill']} — {n} rounds",
         "",
         f"- new arm: version {agg['new_version']}, blob sha256 `{agg['new_blob_sha256']}`",
         f"- base arm: `{agg['baseline_ref']}`, version {agg['base_version']}, "
@@ -414,7 +414,7 @@ def aggregate_markdown(agg: dict) -> str:
             "",
             "## Steering",
             "",
-            f"    tools/run-case {agg['skill']} --baseline {agg['baseline_ref']} --ids {ids}",
+            f"    tools/score-evals {agg['skill']} --baseline {agg['baseline_ref']} --ids {ids}",
             "",
             "A partial run rechunks the fixture, so it can only disconfirm: a row "
             "still red on a handful of cases is red on the whole set, but a row "

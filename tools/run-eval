@@ -3,7 +3,7 @@ set -euo pipefail
 
 if [[ $# -ne 1 ]]; then
   echo "usage: $(basename "$0") <skill-name>" >&2
-  echo "       env: RUN_EVAL_AGENT=claude|codex to pin the router CLI (default: auto-detect)" >&2
+  echo "       env: RUN_EVAL_AGENT=claude|codex to pin the judging CLI (default: auto-detect)" >&2
   exit 1
 fi
 
@@ -64,8 +64,8 @@ DESCRIPTION=$(awk '
 
 [[ -n "$DESCRIPTION" ]] || { echo "error: no description in $SKILL_MD" >&2; exit 1; }
 
-# The router runs as a one-shot subagent call through whatever coding-agent
-# CLI is installed, never a direct HTTP call to a vendor's API. This keeps
+# The trigger judgment runs as a one-shot subagent call through whatever
+# coding-agent CLI is installed, never a direct HTTP call to a vendor's API. This keeps
 # the harness cross-AI-company: it works with any CLI that supports a
 # non-interactive/exec mode, not just Anthropic's.
 AGENT="${RUN_EVAL_AGENT:-}"
@@ -84,10 +84,17 @@ case "$AGENT" in
   *) echo "error: unsupported RUN_EVAL_AGENT '$AGENT' (want claude or codex)" >&2; exit 1 ;;
 esac
 
-router_prompt() {
+# The wording below is the instrument, not documentation: editing it changes
+# what the harness measures, so every trigger result recorded before the edit
+# stops being comparable with every result after it. Reword only with a
+# deliberate baseline reset — re-run the suite and treat the new numbers as
+# the new zero. Changed 2026-08-07 (role sentence only: "skill router" ->
+# "judging whether a skill triggers", matching Anthropic's vocabulary; no
+# primary source uses "router" for skill selection).
+trigger_prompt() {
   local query="$1"
   cat <<EOF
-You are a skill router. Decide whether the skill below should fire for the user message, using ONLY its description's stated trigger conditions and exclusions — be strict, follow the description verbatim.
+You are judging whether a skill triggers. Decide whether the skill below should fire for the user message, using ONLY its description's stated trigger conditions and exclusions — be strict, follow the description verbatim.
 
 Skill: $SKILL_NAME
 Description: $DESCRIPTION
@@ -101,7 +108,7 @@ Reply with exactly one word and nothing else: TRIGGER or NONE.
 EOF
 }
 
-# Runs the router prompt as an isolated one-shot subagent call — no tool
+# Runs the trigger prompt as an isolated one-shot subagent call — no tool
 # access, no file/network side effects, just a text judgment.
 #
 # Nested-session note: when this script runs from inside an already-running
@@ -110,13 +117,13 @@ EOF
 # 2026-07-28): if ANTHROPIC_API_KEY is set in the environment, the `claude`
 # CLI prefers that metered billing-API path over the claude.ai CLI login —
 # and in a dev/CI shell where that key is present but uncredited, every call
-# silently fails. This tool only ever wants the free CLI-login router path
+# silently fails. This tool only ever wants the free CLI-login path
 # (never a billed API call, and never Anthropic's HTTP API directly — see
 # the cross-AI-company note above), so it explicitly drops the key for its
 # own subprocess only; it does not touch the parent shell's environment.
-invoke_router() {
+invoke_trigger_judge() {
   local query="$1" prompt raw
-  prompt=$(router_prompt "$query")
+  prompt=$(trigger_prompt "$query")
   case "$AGENT" in
     claude)
       # stderr goes to its own file, never into $raw: merging it in (an
@@ -217,7 +224,7 @@ while IFS= read -r entry; do
   # every negative case as `null` and FAIL it forever, silently.
   expected=$(jq -r 'if has("expected_trigger") then .expected_trigger else .should_trigger end' <<<"$entry")
 
-  raw=$(invoke_router "$query")
+  raw=$(invoke_trigger_judge "$query")
   # Word-boundary match: a plain 'TRIGGER|NONE' substring match would also
   # hit "triggered" or "NoneType" inside an unrelated CLI message.
   choice=$(grep -ioE '\<TRIGGER\>|\<NONE\>' <<<"$raw" | head -1 | tr '[:upper:]' '[:lower:]' || true)

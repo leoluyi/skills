@@ -161,9 +161,10 @@ tools/sync-skills
 | `tools/sync-skills` | 為每個技能建立 symlink，連進 `~/.claude/skills/`（Claude Code、Cursor）**與** `~/.agents/skills/`（Codex、OpenHands）。離線／內網替代做法。 |
 | `tools/archive-skill <name>` | 用 `git mv` 把技能（含 evals）搬進 `_archive/`。 |
 | `tools/usage-report [days]` | 統計 `~/.claude/projects/` transcript 裡的技能觸發次數。預設 90 天。 |
-| `tools/run-eval <name>` | 觸發層 eval：description 對 `evals/trigger-queries.json` 是否會觸發。 |
-| `tools/run-case <name> --baseline REF[:DIR]` | 行為層 eval：以盲測 runner 與 grader 對 `evals/evals.json` 評分（新版 vs 基準版），輸出 ship／no-ship。需 `evals/run-case.json` 才啟用。 |
+| `tools/run-eval <name>` | 觸發層 eval：description 是否會觸發。讀 `evals/trigger-queries.json`——`evals.json` 的行為案例歸 `tools/score-evals` 管。 |
+| `tools/score-evals <name> --baseline REF[:DIR]` | 行為層 eval：以盲測 runner 與 grader 對 `evals/evals.json` 評分（新版 vs 基準版），輸出 ship／no-ship。需 `evals/score-evals.json` 才啟用。 |
 | `tools/check-labels <name> \| --all` | 唯讀的 eval 標籤衛生檢查：`evals.json`／corpus 用到的規則名稱都要對得上真實規則，corpus 的引文片段要是原文的精確子字串。需 `evals/label-check.json` 才啟用。 |
+| `tools/check-invocation <name> \| --all` | 唯讀的呼叫模式檢查：每個技能都要有 `agents/openai.yaml`，且兩套 harness 的宣告一致（`disable-model-invocation` 對 `policy.allow_implicit_invocation`）。全 repo 適用，不需啟用宣告。 |
 | `tools/annotate <name> [--ids 15,18-20]` | 盲判讀：把 case 的引文剝掉 expectation 與規則名後呈現，收 1-4 的 AI 指數與一句理由，寫進 `evals/annotations.json`。帳本再渲染進 `evals/judged-cases.md` 的 `annotate:begin/end` 區段；`--check` 在渲染過期時 exit 1。 |
 | `tools/build-docs` | 從 `skills/*/catalog.md` 重新產生 `docs/index.html`、`docs/skills.json`，以及兩份 README 的技能目錄表格。 |
 
