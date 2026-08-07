@@ -1,0 +1,11 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Deck Consulting"
+  short_description: >-
+    像資深顧問一樣陪你把一場簡報做完，一次一個節點：溝通定位、骨架定形、素材汰選、
+    主張式標題、故事線、開場收尾、口說轉譯、逐頁診斷。每個節點的產出寫成檔案，
+    後面的節點直接接手。
+policy:
+  allow_implicit_invocation: false

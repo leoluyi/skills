@@ -49,5 +49,8 @@ skill。
   adjudication, still open as the blind 人機判定 harness
 - [`skills/blog-writing-zh/backlog.md`](skills/blog-writing-zh/backlog.md) — source-derived voice
   profile (獨立於主線之外，需要自己的 eval bar)
-- [`skills/humanizer-zh/backlog.md`](skills/humanizer-zh/backlog.md) 以外，其餘 skill 皆無 open
-  items：`avoid-china-writing`、`infographic-design`、`knowledge-doc-writing`、`plain-speak`。
+- [`skills/deck-consulting/backlog.md`](skills/deck-consulting/backlog.md) — v0.1.0 剛落地，
+  eval 只跑了四案單次；`layoutspec` 無法自我驗證、`onepager` 併進 `outline.md` 的取捨、
+  十一格節點選單對新使用者是否太寬
+- 上述三份以外，其餘 skill 皆無 open items：`avoid-china-writing`、`infographic-design`、
+  `knowledge-doc-writing`、`plain-speak`。

@@ -16,6 +16,12 @@ categories:
       en: "Draft and review 簽呈, meeting records, assessment reports, RFPs, and briefing outlines in Taiwan corporate Traditional Chinese."
       zh: "用台灣職場慣用的正體中文撰寫與審查簽呈、會議紀錄、評估報告、RFP 與說明提綱。"
 
+  - key: presentation
+    label: { en: "Presentation", zh: "簡報" }
+    blurb:
+      en: "Work a deck out one node at a time — what it is for, how it is structured, what the titles assert, how it opens, closes and gets delivered, and where the layout costs the room."
+      zh: "一次一個節點把一場簡報做出來：這場要幹嘛、架構怎麼排、標題講什麼、開場收尾與表達怎麼走，以及版面在哪裡讓聽眾讀不到。"
+
   - key: docs-design
     label: { en: "Docs & Design", zh: "文件與設計" }
     blurb:
