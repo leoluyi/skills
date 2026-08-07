@@ -1,4 +1,4 @@
-# Node: `storyline` 故事線串接
+# Node: `storyline` 敘事編排
 
 Turn a set of sections into something that runs. Fix the order, decide what each adjacency is doing, name the arc in a single breath, and write the sentences the presenter actually says when moving from one section to the next. The outline settles what the case is made of; this node settles the experience of sitting through it.
 

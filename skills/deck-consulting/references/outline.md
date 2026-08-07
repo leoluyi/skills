@@ -1,4 +1,4 @@
-# Node: `outline` 架構搭建
+# Node: `outline` 骨架定形
 
 Decide the shape of the argument: which structural form this presentation takes, how many top-level sections it has, what axis those sections divide on, and what sits under each of them. The outline is the load-bearing artifact — headlines, storyline, opening and closing all attach to it, so a category set that is wrong here stays wrong everywhere downstream.
 
@@ -6,7 +6,7 @@ Going wrong looks like an outline that mirrors how the presenter's work was orga
 
 ## Entry check
 
-Read `docs/deck-consulting/outline.md` if it exists. If it does, this is a revision: show the current structure, ask whether the form, the categories, or only the detail headings are wrong, and re-run from there. A changed category set invalidates the 一頁收攏 section in the same file and the 故事線 section in `script.md` — say so, and offer to re-run them.
+Read `docs/deck-consulting/outline.md` if it exists. If it does, this is a revision: show the current structure, ask whether the form, the categories, or only the detail headings are wrong, and re-run from there. A changed category set invalidates the 單頁濃縮 section in the same file and the 故事線 section in `script.md` — say so, and offer to re-run them.
 
 Read `docs/deck-consulting/positioning.md`. If it is missing, say so plainly: without it there is no standard to judge a structure against, so any form you propose will be generically sensible rather than pointed at this room. Offer both paths — run `positioning` first, or proceed from whatever material is at hand and treat the structure as provisional. Do what the user chooses.
 
@@ -50,4 +50,4 @@ Write `docs/deck-consulting/outline.md` with these sections. Prose plus a nested
 - **大綱** — a nested list: each top-level section with its detail headings beneath. Headings stay descriptive here; `headline` is where they become assertions.
 - **未納入** — the material that did not get a home, each with the section it lost to or the reason it does not serve the spine.
 
-Leave the file open for the `onepager` node, which appends a sibling `一頁收攏` section beneath this one. When you revise the outline, that section is stale — flag it rather than rewriting it silently.
+Leave the file open for the `onepager` node, which appends a sibling `單頁濃縮` section beneath this one. When you revise the outline, that section is stale — flag it rather than rewriting it silently.

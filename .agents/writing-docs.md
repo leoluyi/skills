@@ -10,7 +10,7 @@ The single source of truth for a skill's card. YAML front matter holding the ski
 - **`docs/index.html`** — the interactive catalog at `https://leoluyi.tw/skills/`. Generated; not committed (gitignored, built by CI).
 - **`docs/skills.json`** — the machine-readable twin (used by `npx skills` and any tool reading the catalog programmatically). Generated; not committed.
 
-`docs/catalog.yml` holds the six category definitions (bilingual label + blurb, and an optional `readmeNote`) that every skill's `category` field points into.
+`docs/catalog.yml` holds the category definitions (bilingual label + blurb, and an optional `readmeNote`) that every skill's `category` field points into.
 
 Act whenever a skill is added, renamed, recategorized, or has its trigger/description changed enough that the tagline or highlights go stale — edit `skills/<slug>/catalog.md`, then rebuild (see below).
 

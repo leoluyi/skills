@@ -23,16 +23,16 @@ npx skills update deck-consulting
 | 節點 | 做什麼 | 讀什麼 |
 |---|---|---|
 | `positioning` 溝通定位 | 房間裡是誰、能給什麼、最佳結果與可接受底線 | — |
-| `distill` 素材提煉 | 把原始素材壓成指定數量、指定側重的重點 | positioning |
-| `headline` 結論式標題 | 把描述性標題改寫成可被反駁的主張 | 內容或大綱、positioning |
-| `outline` 架構搭建 | 結構形式、分類軸、各節底下的細目 | positioning |
-| `onepager` 一頁收攏 | 整個論點壓成一頁：主張、綱要、訴求 | outline、positioning |
-| `storyline` 故事線串接 | 順序、轉場口白、一口氣說得完的敘事弧 | outline、positioning |
-| `opening` 開場設計 | 鉤子、框架，以及開場承諾給房間的價值 | positioning, outline |
-| `closing` 收尾設計 | 呼應開場的收束，以及要什麼 | positioning, opening |
-| `delivery` 表達手法 | 修辭手法與語域，寫成可以直接唸的講稿 | 任一內容節點、positioning |
-| `slidecheck` 版面健檢 | 逐頁版面問題，依讀者成本排序，每則附一個具體修改 | positioning（選用） |
-| `layoutspec` 版面規格 | 單頁版面規格，外加一段可直接貼進生圖工具的提示詞 | slidecheck 或 outline |
+| `distill` 素材汰選 | 把原始素材壓成指定數量、指定側重的重點 | positioning |
+| `headline` 主張式標題 | 把描述性標題改寫成可被反駁的主張 | 內容或大綱、positioning |
+| `outline` 骨架定形 | 結構形式、分類軸、各節底下的細目 | positioning |
+| `onepager` 單頁濃縮 | 整個論點壓成一頁：主張、綱要、訴求 | outline、positioning |
+| `storyline` 敘事編排 | 順序、轉場口白、一口氣說得完的敘事弧 | outline、positioning |
+| `opening` 破題定錨 | 鉤子、框架，以及開場承諾給房間的價值 | positioning, outline |
+| `closing` 收束提請 | 呼應開場的收束，以及要什麼 | positioning, opening |
+| `delivery` 口說轉譯 | 修辭手法與語域，寫成可以直接唸的講稿 | 任一內容節點、positioning |
+| `slidecheck` 逐頁診斷 | 逐頁版面問題，依讀者成本排序，每則附一個具體修改 | positioning（選用） |
+| `layoutspec` 排版藍圖 | 單頁的元素權重與閱讀動線規格，外加一段可直接貼進生圖工具的提示詞 | slidecheck 或 outline |
 
 每個節點只在進入時載入自己的 reference 檔，所以一場只想改五個標題的對話，不會付另外十個節點的成本。節點結束時它會說接下來哪一兩個節點合理，然後停下來——不會自己往下串，因為每個節點都是簡報者要做的決定，不是流水線的一站。
 
@@ -46,7 +46,7 @@ npx skills update deck-consulting
 
 ## 運作方式
 
-**狀態放在檔案裡，不放在對話裡。** 節點產出寫成 `docs/deck-consulting/` 底下的純 Markdown：`positioning.md`（定位）、`outline.md`（架構與一頁收攏）、`content.md`（提煉重點與結論式標題）、`script.md`（故事線、開場、收尾、講稿各佔一節）、`slidecheck.md`、`layoutspec.md`。共用檔案的節點各自只擁有一個具名章節，只改自己那節；當某個改動讓鄰節失效，它會講出來而不是順手改掉。這也是為什麼隔一週回來還能接得下去——要接手的是檔案，不是上次那段對話。
+**狀態放在檔案裡，不放在對話裡。** 節點產出寫成 `docs/deck-consulting/` 底下的純 Markdown：`positioning.md`（定位）、`outline.md`（架構與單頁濃縮）、`content.md`（提煉重點與主張式標題）、`script.md`（故事線、開場、收尾、講稿各佔一節）、`slidecheck.md`、`layoutspec.md`。共用檔案的節點各自只擁有一個具名章節，只改自己那節；當某個改動讓鄰節失效，它會講出來而不是順手改掉。這也是為什麼隔一週回來還能接得下去——要接手的是檔案，不是上次那段對話。
 
 改到上游時，它會指名哪些下游產出因此過期，並提議重跑。改了 `outline.md` 卻留著一份和它打架的 `script.md`，是這套檔案契約最想避免的結果。
 

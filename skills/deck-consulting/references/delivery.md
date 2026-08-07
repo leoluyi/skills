@@ -1,4 +1,4 @@
-# Node: `delivery` 表達手法
+# Node: `delivery` 口說轉譯
 
 Take one passage and decide how it gets said: which rhetorical device carries it, which register it sits in, and then the actual words, written to be spoken rather than read. Works on the output of any content node — a section from the outline, a distilled point, a headline that needs unpacking — or on a passage the user pastes in with no artifact behind it.
 

@@ -1,4 +1,4 @@
-# Node: `headline` 結論式標題
+# Node: `headline` 主張式標題
 
 Rewrite descriptive labels into assertions that carry the point. 「第三季業績」 tells the room what the slide is filed under; 「第三季成長 18%，主要來自新客」 tells them what to conclude. The second is a headline, and it is the difference between a room that reads your slides and a room that follows your argument.
 
@@ -44,7 +44,7 @@ The input that actually blocks good work is missing substance, not a missing art
 
 Write into `docs/deck-consulting/content.md` under these sections, leaving the rest of the file — including anything `distill` wrote — untouched.
 
-- **結論式標題** — the rewritten set. One line per title in the form 原標題 → 新標題, with a short pointer to the evidence the assertion rests on.
+- **主張式標題** — the rewritten set. One line per title in the form 原標題 → 新標題, with a short pointer to the evidence the assertion rests on.
 - **維持描述性** — the titles deliberately left as labels, each with the one-clause reason (導覽頁、議程、附錄、定義頁).
 - **待補事實的標題** — titles still waiting on substance, each written as the specific question the presenter needs to answer before this one can be asserted.
 

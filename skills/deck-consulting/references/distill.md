@@ -1,4 +1,4 @@
-# Node: `distill` 素材提煉
+# Node: `distill` 素材汰選
 
 Take whatever raw material the presenter has — a pasted brain-dump, a document, a folder of slide screenshots, last quarter's deck — and reduce it to a fixed number of points at a chosen emphasis. The output is not a summary. A summary tries to represent the material; a distillation tries to serve the room, and the difference is that a distillation throws away true things on purpose.
 

@@ -1,4 +1,4 @@
-# Node: `slidecheck` 版面健檢
+# Node: `slidecheck` 逐頁診斷
 
 Look at the slides the presenter actually has and report what is costing the reader, ranked, each with one concrete edit. This is the only node that starts from the artifact rather than from the argument — someone can arrive here with nothing but a deck and a meeting on Thursday.
 

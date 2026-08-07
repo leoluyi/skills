@@ -1,4 +1,4 @@
-# Node: `opening` 開場設計
+# Node: `opening` 破題定錨
 
 Build the first two minutes: the hook that earns attention, the framing that tells the room what kind of conversation this is, and the promise of what they hold at the end. These three do different jobs and are written separately — a strong hook attached to no promise buys interest that decays before the argument starts.
 

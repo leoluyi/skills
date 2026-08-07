@@ -1,4 +1,4 @@
-# Node: `closing` 收尾設計
+# Node: `closing` 收束提請
 
 Build the last two minutes: a recap that mirrors the opening's promise item for item, then the ask. The mirroring is the whole point. A closing that recaps what the presenter found most interesting, rather than what the opening promised, reads to the room as a different presentation that happens to have been delivered in the same hour.
 

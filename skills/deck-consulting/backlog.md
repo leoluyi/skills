@@ -34,7 +34,7 @@ Closed items do not stay here — see `design-notes.md`, `evals/`, and commits.
   region that the element list would fill) and nothing in the loop would catch it. Options are a
   self-consistency checklist inside the node, or accepting it as a documented limit.
 
-- **`onepager` writing into `outline.md` may be the wrong call.** It appends a `一頁收攏` section to
+- **`onepager` writing into `outline.md` may be the wrong call.** It appends a `單頁濃縮` section to
   the outline's file deliberately, so a structural change leaves the compression visibly stale next
   to it. The cost is that a user who wants only the one-pager — a real entry case, since that page
   gets forwarded on its own — has to extract it from a file that also holds the full structure, and

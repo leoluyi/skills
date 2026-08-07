@@ -1,4 +1,4 @@
-# Node: `onepager` 一頁收攏
+# Node: `onepager` 單頁濃縮
 
 Collapse the whole presentation onto a single page: one claim, a small number of 綱要 that are the reasons the claim holds, and a couple of supporting lines under each. This page is the argument in miniature — the thing the presenter opens with when the meeting is cut to ten minutes, and the thing that gets forwarded to the person who was not in the room.
 
@@ -6,7 +6,7 @@ Going wrong looks like a table of contents wearing a one-pager's layout: 市場�
 
 ## Entry check
 
-Read `docs/deck-consulting/outline.md`. If the file has a `一頁收攏` section already, this is a revision: show it, ask whether the 主張 or the 綱要 are what is wrong, and re-run from there.
+Read `docs/deck-consulting/outline.md`. If the file has a `單頁濃縮` section already, this is a revision: show it, ask whether the 主張 or the 綱要 are what is wrong, and re-run from there.
 
 If `outline.md` is missing, say so: without a settled structure there is nothing to compress, so the page would be built straight from raw material and would come out as a generically competent summary rather than this deck's argument. Offer both — run `outline` first, or build the page directly from the material and accept that the deck may later disagree with it. Do what the user chooses.
 
@@ -24,7 +24,7 @@ Read `docs/deck-consulting/positioning.md` when it exists. The page has to end i
 
 5. **Read it against the outline and against the clock.** Name what fell off the page and check the 主張 still stands without it; then read the page aloud. Complete when every drop is named with the reason it lost, and the read-through fits inside the window the presenter would realistically be given.
 
-6. **Write the page** into `docs/deck-consulting/outline.md` as its own `一頁收攏` section, say in one line what changed, and name what makes sense next — usually `storyline`, or `opening` when the 主張 turns out to be the hook.
+6. **Write the page** into `docs/deck-consulting/outline.md` as its own `單頁濃縮` section, say in one line what changed, and name what makes sense next — usually `storyline`, or `opening` when the 主張 turns out to be the hook.
 
 ## Craft
 
@@ -42,7 +42,7 @@ Read `docs/deck-consulting/positioning.md` when it exists. The page has to end i
 
 ## Output shape
 
-Append to `docs/deck-consulting/outline.md` as a sibling section titled `一頁收攏`, beneath the outline's own sections. It lives in the same file deliberately: when the structure changes, the compression is visibly stale next to it instead of drifting in a file nobody reopens.
+Append to `docs/deck-consulting/outline.md` as a sibling section titled `單頁濃縮`, beneath the outline's own sections. It lives in the same file deliberately: when the structure changes, the compression is visibly stale next to it instead of drifting in a file nobody reopens.
 
 Inside the section:
 

@@ -9,7 +9,7 @@ title:
   zh: "簡報顧問"
 tagline:
   en: "Advise on a presentation one node at a time — positioning, structure, headlines, storyline, opening, closing, delivery, layout — with each node's artifact on disk so the next one picks up where it left off"
-  zh: "像顧問一樣一次做一個節點：溝通定位、架構、結論式標題、故事線、開場收尾、表達手法、版面健檢，每個節點的產出落成檔案，下一個節點直接接手"
+  zh: "像顧問一樣一次做一個節點：溝通定位、骨架定形、主張式標題、敘事編排、破題定錨、收束提請、口說轉譯、逐頁診斷，每個節點的產出落成檔案，下一個節點直接接手"
 whenUse:
   en: "Reach for it when you have raw material and a date, and need one part of the deck settled — what it is for, how it is structured, what the titles assert, how it opens and closes, or what the layout is costing the room."
   zh: "當你手上有素材和一個日期，需要把簡報的某一段定下來時使用——這場要達成什麼、架構怎麼排、標題該講什麼、開場收尾怎麼走，或現有版面讓聽眾損失了什麼。"

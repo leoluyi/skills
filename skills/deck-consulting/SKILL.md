@@ -3,7 +3,7 @@ name: deck-consulting
 description: >-
   Consult on a presentation the way a senior advisor would, one node at a time — positioning, structure, condensation, headlines, storyline, opening, closing, delivery, layout — with each node's artifact written to disk so later nodes build on earlier ones instead of restarting from the raw material.
 app-description: >-
-  像資深顧問一樣陪你把一場簡報做完：溝通定位、素材提煉、結論式標題、架構搭建、一頁收攏、故事線串接、開場設計、收尾設計、表達手法、版面健檢、版面規格，一次做一個節點。每個節點的產出寫成檔案，後面的節點直接接手，不必每次從原始素材重講一遍。
+  像資深顧問一樣陪你把一場簡報做完：溝通定位、素材汰選、主張式標題、骨架定形、單頁濃縮、敘事編排、破題定錨、收束提請、口說轉譯、逐頁診斷、排版藍圖，一次做一個節點。每個節點的產出寫成檔案，後面的節點直接接手，不必每次從原始素材重講一遍。
 version: 0.1.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -43,16 +43,16 @@ The table is a menu, not a pipeline. Row order groups related work; it is not th
 | Node | 中文名 | Produces | Reads |
 |---|---|---|---|
 | `positioning` | 溝通定位 | The positioning brief: room, stakeholders, best outcome, floor, intelligence, do & don't, information tiers | — |
-| `distill` | 素材提煉 | Raw material condensed to a chosen number of points at a chosen emphasis | positioning |
-| `headline` | 結論式標題 | Descriptive labels rewritten as assertions that carry the point | content or outline, positioning |
-| `outline` | 架構搭建 | Structural form, categories, category logic, detail headings | positioning |
-| `onepager` | 一頁收攏 | The whole argument collapsed onto one page | outline, positioning |
-| `storyline` | 故事線串接 | Order, transitions, the arc, and the linking script between sections | outline, positioning |
-| `opening` | 開場設計 | Hook, framing, and the value the room is promised | positioning, outline |
-| `closing` | 收尾設計 | Recap mirroring the opening, and the ask | positioning, opening |
-| `delivery` | 表達手法 | Rhetorical device and register, written out as speakable script | any content node, positioning |
-| `slidecheck` | 版面健檢 | Per-slide layout problems, ranked, each with the fix | positioning (optional) |
-| `layoutspec` | 版面規格 | A layout specification, plus a paste-ready prompt for an image tool | slidecheck or outline |
+| `distill` | 素材汰選 | Raw material condensed to a chosen number of points at a chosen emphasis | positioning |
+| `headline` | 主張式標題 | Descriptive labels rewritten as assertions that carry the point | content or outline, positioning |
+| `outline` | 骨架定形 | Structural form, categories, category logic, detail headings | positioning |
+| `onepager` | 單頁濃縮 | The whole argument collapsed onto one page | outline, positioning |
+| `storyline` | 敘事編排 | Order, transitions, the arc, and the linking script between sections | outline, positioning |
+| `opening` | 破題定錨 | Hook, framing, and the value the room is promised | positioning, outline |
+| `closing` | 收束提請 | Recap mirroring the opening, and the ask | positioning, opening |
+| `delivery` | 口說轉譯 | Rhetorical device and register, written out as speakable script | any content node, positioning |
+| `slidecheck` | 逐頁診斷 | Per-slide layout problems, ranked, each with the fix | positioning (optional) |
+| `layoutspec` | 排版藍圖 | A layout specification, plus a paste-ready prompt for an image tool | slidecheck or outline |
 
 **Entering.** If the invocation names a node, enter it. If the user describes a problem instead — "投影片太多講不完", "老闆說看不懂重點" — name the node that fits, say in one line why, and enter it once they agree. If neither, show the table and ask which they want; when they have no artifacts on disk yet, say plainly that `positioning` is where this normally starts and why the rest gets easier after it.
 

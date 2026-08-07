@@ -23,16 +23,16 @@ It replaces an unbounded "have a look at my deck" with a list of nodes, each one
 | Node | What it settles | Reads |
 |---|---|---|
 | `positioning` 溝通定位 | Who is in the room, what they can grant, the best outcome and the floor | — |
-| `distill` 素材提煉 | Raw material cut to a chosen number of points at a chosen emphasis | positioning |
-| `headline` 結論式標題 | Descriptive labels rewritten as assertions someone could disagree with | content or outline, positioning |
-| `outline` 架構搭建 | Structural form, the axis the sections divide on, the detail headings | positioning |
-| `onepager` 一頁收攏 | The whole argument on one page: 主張, 綱要, the ask | outline, positioning |
-| `storyline` 故事線串接 | Order, spoken transitions, an arc sayable in one breath | outline, positioning |
-| `opening` 開場設計 | The hook, the framing, and what the room is promised | positioning, outline |
-| `closing` 收尾設計 | A recap mirroring the opening, and the ask | positioning, opening |
-| `delivery` 表達手法 | Rhetorical device and register, written out as speakable script | any content node, positioning |
-| `slidecheck` 版面健檢 | Per-slide layout findings ranked by reader cost, each with one edit | positioning (optional) |
-| `layoutspec` 版面規格 | A layout spec for one slide, plus a paste-ready image-tool prompt | slidecheck or outline |
+| `distill` 素材汰選 | Raw material cut to a chosen number of points at a chosen emphasis | positioning |
+| `headline` 主張式標題 | Descriptive labels rewritten as assertions someone could disagree with | content or outline, positioning |
+| `outline` 骨架定形 | Structural form, the axis the sections divide on, the detail headings | positioning |
+| `onepager` 單頁濃縮 | The whole argument on one page: 主張, 綱要, the ask | outline, positioning |
+| `storyline` 敘事編排 | Order, spoken transitions, an arc sayable in one breath | outline, positioning |
+| `opening` 破題定錨 | The hook, the framing, and what the room is promised | positioning, outline |
+| `closing` 收束提請 | A recap mirroring the opening, and the ask | positioning, opening |
+| `delivery` 口說轉譯 | Rhetorical device and register, written out as speakable script | any content node, positioning |
+| `slidecheck` 逐頁診斷 | Per-slide layout findings ranked by reader cost, each with one edit | positioning (optional) |
+| `layoutspec` 排版藍圖 | A layout spec for one slide, plus a paste-ready image-tool prompt | slidecheck or outline |
 
 A node loads its own reference file only on entry, so a session that only wants five headlines rewritten never pays for the other ten. When a node finishes it names the one or two nodes that now make sense and stops — it does not chain onward uninvited, because each node is a decision the presenter makes, not a pipeline stage.
 

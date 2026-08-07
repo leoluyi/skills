@@ -1,4 +1,4 @@
-# Node: `layoutspec` 版面規格
+# Node: `layoutspec` 排版藍圖
 
 Specify how one slide — or a small set that has to look like siblings — should be laid out: what occupies the frame, at what visual weight, in what order the eye takes it, and what gets left out. The artifact is a specification a human can execute in PowerPoint, Keynote, or Google Slides, plus a paste-ready prompt for whatever image tool the presenter already uses.
 
