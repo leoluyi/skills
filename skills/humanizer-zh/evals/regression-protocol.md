@@ -55,7 +55,10 @@ tools/score-evals --aggregate skills/<skill>/evals/results-*.json
 改用**空實驗數出來**。首選構法是 **same-call**：`tools/score-evals --build-bank` 先跑
 N 輪獨立的 baseline 生成，存進 `evals/baseline-bank/`；`--null-run A,B` 把其中兩輪
 在同一次 grader call 裡盲判，兩邊都是 baseline 文字，正確答案已知是「沒有差異」，
-每一列退步都是假警報。用這種 null-run 結果的池子跑 `--calibrate`（自動偵測
+每一列退步都是假警報。整池要一次跑完就用 `--null-sweep`，它把 `C(N,2)` 對全部派完，
+`--null-batch`（預設 5）控制同時在飛的配對數——`--jobs` 只平行化單一配對內的 chunk，
+配對逐一跑會退化成 15 波只填了幾個 slot 的池。用這種 null-run 結果的池子跑
+`--calibrate`（自動偵測
 `--null-run` 輸出並走 same-call 路徑），對池子做**有放回**重抽，每個統計量的 95 百分位
 就是它的假警報上限——這個構法跟真實出貨判定共用同一個「兩臂在一次 grader call 裡同判」
 的結構，不是模擬它。
@@ -84,9 +87,10 @@ runner 的 reasoning effort，或 baseline bank 換掉之後都要重跑，那�
 
 ### 這個閘抓得到什麼
 
-拿空實驗刻意打壞 k 列保護，數它擋下來的比例。**下表數字量在舊設定下**（6 chunk、
-codex effort xhigh、cross-round 空實驗）——3-chunk／effort high／same-call 上線後
-待重量測，數字先留著當方向參考，不當結論用：
+拿空實驗刻意打壞 k 列保護，數它擋下來的比例。**下表數字量在早期設定下**（codex
+effort xhigh、cross-round 空實驗、claude grader）——之後歷經 v2（3 chunk／effort
+high／same-call）與 v3（6 chunk／codex grader）兩次換設定都沒有重量測，數字先留著
+當方向參考，不當結論用：
 
 | 破壞形狀 | 3 輪 | 6 輪 |
 |---|---|---|
@@ -131,7 +135,7 @@ baseline 臂每輪答的是同一個 prompt——被判的是新臂，baseline �
 
 ### 兩相工作法：partial 導航，完整出貨
 
-完整一輪走 bank 是 3 個新臂 runner 加 3 個 grader（`--no-bank` 才會多派 3 個 baseline
+完整一輪走 bank 是 6 個新臂 runner 加 6 個 grader（`--no-bank` 才會多派 6 個 baseline
 runner），改一次措辭就跑滿還是慢。`--ids` 縮到相關的幾案，落在單一 chunk 時一兩個
 job 就有回音，適合在措辭之間快速排除方向。但它會**重切 chunk**，每案的模型負載與滿場
 完全不同，所以：
@@ -179,6 +183,11 @@ detect / rewrite / --expect-author 模式）。
 repo 鐵律：新版要贏 baseline。既有 skill 的 baseline 是**前一版**
 （`git show <前版commit>:skills/humanizer-zh/SKILL.md` 連同 references/ 取到 scratch
 目錄），不是 vanilla。
+
+這一節講的是**手動雙盤**，跟 `tools/score-evals` 的自動閘是兩套機制，跨家族的要求只
+約束這一套。自動閘自 2026-08-07 起 runner 與 grader 都預設 codex，換到的是成本與不必
+安裝第二個 CLI，換掉的是跨家族盲判；它靠的是空實驗校準出來的假警報上限，而不是靠判分
+端與改寫端不同家族。兩者互補：自動閘量得動門檻，手動雙盤才提供跨家族的獨立佐證。
 
 1. **改寫端 ×2，獨立平行**：agent A 載新版、agent B 載前版，同時啟動、互不知情，各自
    跑完全部案例。每組重複多次——單次分不出真差異與抽樣噪音，三輪可放行、六輪才擋得動。
