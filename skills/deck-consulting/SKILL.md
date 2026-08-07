@@ -76,9 +76,13 @@ docs/deck-consulting/
 
 The file names and the section names inside them are **fixed identifiers**, not output: they stay exactly as the node reference spells them, in Chinese, whatever language the session runs in. They are how one node finds what another wrote, so translating them breaks every downstream entry check. Everything under a heading — the prose, the options, the artifact's own content — follows the request's language per **Output Language** above.
 
+When the session is not running in Chinese, say this once, the first time you write: the headings are fixed keys the other nodes look up, the content under them is in your language, and renaming them is what breaks the handoff. One line. A reader who meets an unexplained Chinese heading in their own file reasonably assumes something went wrong and edits it — which is precisely the break the fixed identifier exists to prevent.
+
 Read what exists on entry. Write on exit, and say in one line what changed. When a node revises an artifact another node already consumed, say which downstream artifacts are now stale and offer to re-run them — silently leaving a stale `script.md` next to a rewritten `outline.md` is the worst outcome this contract exists to prevent.
 
 **Soft prerequisites.** No node blocks. When an input artifact is missing, say what is missing, what it costs to proceed without it (usually: the output has no standard to be judged against, so it will be generically competent instead of pointed), and offer both — run the prerequisite first, or proceed from whatever material is at hand. Then do what they choose. A user who wants five headlines rewritten in two minutes gets five headlines rewritten in two minutes.
+
+**A bounded request is answered before it is questioned.** When the user has already supplied the parameters a node would otherwise ask for — a count, an emphasis, the specific pages, the material itself — do the work in that same reply and put the offer to sharpen it underneath. The two-option offer above is for the genuinely underdetermined case; used on a complete request it degrades into the gate this rule exists to forbid. The failure looks reasonable from the inside every time: the node has good reasons to want the positioning first, and the user asked a question that has an answer right now.
 
 ## How this skill asks
 

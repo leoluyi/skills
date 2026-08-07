@@ -117,3 +117,37 @@ carry author bias. The deterministic parts — whether a figure survived verbati
 claim was asserted from a description — are objective. Single repetition per arm, so a small margin
 is not separable from sampling noise; the three decisive cases are not close enough for that to
 matter, and case 3's narrow margin is reported as narrow rather than as a win.
+
+### 2026-08-07 — round two, full coverage
+
+Closed the four unrun cases (2, 6, 7, and a new case 8 for an English session), repeated case 3, and
+rewrote the three conformance-phrased expectations as reader outcomes. With-skill now wins all eight.
+Full write-up in `evals/results-2026-08-07.md`.
+
+**The finding worth keeping: every defect this skill has produced so far is the same defect.** Three
+rounds of fixes, three different nodes, one behaviour — the node asks before it delivers. `slidecheck`
+gated on the viewing condition. `distill` gated on the positioning artifact and lost two cases
+outright by never producing the points at all. The English session got Chinese section headings with
+no explanation, which is the same shape one level down: the reply withholds something the reader
+needs in order to act on what it just handed them.
+
+That this kept happening is the interesting part, because `SKILL.md` already said no node blocks, in
+those words, from the first draft. The rule was there and the nodes went around it — each one for a
+locally good reason, and each one by narrowing the general rule while restating it. `distill` is the
+clearest specimen: its entry check offered "run `positioning` first, or name the audience and the ask
+in two lines", which reads like the two-path offer and is in fact two gates, because the escape hatch
+the general rule provides — proceed on whatever is at hand — had quietly been dropped in the
+restatement.
+
+The structural lesson is about where a rule lives. A general rule restated inside eleven references
+is eleven chances to restate it slightly wrong, and the wrongness is invisible at review time because
+each local version reads reasonably on its own. The fix was to stop relying on the restatements and
+give the rule its own paragraph upstream, in the one place every path passes through: a request that
+already carries its own parameters is answered before it is questioned. Named as its own rule with
+its own failure mode attached, rather than left as an implication of the soft-prerequisite paragraph
+above it.
+
+Also hardened, though no case failed on it: seven entry checks could not tell "input file absent"
+from "file present, my section renamed", so a user's hand-edit degraded silently into the
+missing-input path. Each now names the missing section and asks the one-word question without
+waiting on the answer.

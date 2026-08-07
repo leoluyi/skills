@@ -6,13 +6,13 @@
       "prompt": "下週三要跟財務長和資訊處長報告客服系統汰換案，我手上東西很雜，先貼給你：\n\n- 現行系統 2016 年上線，原廠已在 2024 年底終止支援，現在靠內部同仁自己維護\n- 去年因系統問題造成的服務中斷共 4 次，累計 11 小時\n- 客服單月進線約 3.2 萬通，尖峰時段查詢要等 8 秒以上才有回應\n- 找了三家廠商報價，區間落在 480 萬到 760 萬\n- 資訊處只有 6 個人，同時還在做另一個帳務系統專案\n- 我自己試算換掉之後每年可省約 90 萬外部維護費（這個數字是我抓的，還沒給財務看過）\n\n我要的是他們當場核准預算。時間很趕，你先給我一版你的判斷，我再改。",
       "expected_output": "Trap: answering with generic deck coaching (少放字、一頁一重點、加個總結頁) that would read the same under anybody's material. Success: the session is placed in one named starting point, and what comes back is a standard a reader can hold every later slide decision against — including what the presenter still walks out with when the budget is refused.",
       "expectations": [
-        "one-named-starting-point: The reply says which single piece of work this session is doing and why that one first, instead of covering several at once or dropping straight into slide-level edits.",
+        "one-named-starting-point: A reader finishes the reply able to say in one sentence what got settled and what is still open, rather than holding several half-finished threads at once.",
         "floor-survives-refusal: A reader can tell from the output alone what the presenter still walks out with if the budget request is refused, and that outcome is a different result — not a smaller version of the same approval.",
         "outcomes-are-observable: Each stated outcome is something an observer in the room could record as having happened (a decision, a commitment, a scheduled next step), not an internal state such as 認同, 支持, or 建立信任.",
         "derived-from-this-material: Every option, posture, or judgement offered names specific items from this message (終止支援, 4 次中斷, 480–760 萬, 6 人); none of it would still read correctly if pasted under a different presenter's material.",
         "unverified-figure-flagged: The 90 萬 saving is carried with the user's own caveat that it is self-calculated and unreviewed, rather than presented as an established saving.",
         "no-invented-specifics: No figure, department, competitor, vendor name, or stakeholder concern appears that is absent from the user's message; anything the argument needs and lacks is put back to the presenter as a question.",
-        "says-where-it-wrote: The reply names the file path it wrote the result to, so the user can find it without asking."
+        "says-where-it-wrote: A reader can go straight to the result after the session ends without having to ask a follow-up question about where it went."
       ]
     },
     {
@@ -62,7 +62,7 @@
         "inference-marked: Every finding that could only be settled by looking at the file is marked as inferred and written as something the presenter can confirm in seconds, not stated as observed fact.",
         "no-rendering-claims: The reply asserts no type size, contrast level, colour value, margin, or alignment offset — none of which the description contains.",
         "scope-stated-before-findings: A reader can tell, before the findings start, which half of a layout review this input can deliver and which half it cannot.",
-        "viewing-condition-settled: The reply establishes or asks whether the deck is projected in a room or read on a screen, and says why the answer changes the findings.",
+        "viewing-condition-settled: A reader can tell which viewing assumption the findings rest on and therefore which of them to re-check if that assumption turns out wrong.",
         "content-findings-still-land: The review still names what the description does support — page 4 carrying two messages under one title, page 5 cropped past what it is cited for, page 7 being script rather than a slide — ranked by what each costs the reader, each with one edit the presenter could perform without a follow-up question.",
         "clean-pages-named: Pages with nothing worth reporting are said to be fine, so a presenter with one evening left knows what not to rebuild."
       ]
@@ -90,6 +90,20 @@
         "source-facts-preserved: 2026-05-14, 3 of 7, 9→4, 47 minutes, 11 FTE, 8-12%, and the names Project Northwind and Larkfield Systems survive unchanged rather than being translated into invented Chinese equivalents or re-expressed approximately.",
         "internal-estimate-stays-an-estimate: The 8-12% overrun is carried as the source's internal estimate, not restated as a confirmed overrun.",
         "no-english-mirroring: The reply does not echo English scaffolding at the user (mode names, step labels, headings) in output the presenter is meant to read or reuse."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "I'm presenting to our regional VP on Thursday and I need the structure sorted. Raw material:\n\n- Support ticket volume up 34% year on year, headcount flat\n- We piloted an AI triage layer in two markets; deflection hit 22% in one, 9% in the other\n- The low performer was the market where we never localised the knowledge base\n- Rolling it out to the remaining six markets needs one engineer for a quarter\n- The VP killed a similar proposal 18 months ago because the vendor demo was all we had\n\nGive me the outline.",
+      "expected_output": "The session runs in English, so everything composed for the reader — the options offered, the prose, the artifact's own content — is English. The artifact's file name and its section headings are fixed identifiers the other nodes look up by name, so they stay as the reference spells them regardless of session language. Trap: translating the section headings, which breaks every downstream entry check silently, or answering in Chinese because the skill's examples are.",
+      "expectations": [
+        "reader-facing-text-in-english: Every string composed for this user — the structural options offered, the reasoning, the content written into the artifact — is in English; none of it arrives in Chinese because the skill's examples are.",
+        "section-identifiers-unchanged: The artifact's headings are the fixed identifiers the reference names, so a later node looking them up by name would find them; they are not translated to match the session.",
+        "identifier-choice-explained: A reader who notices the headings are not in their language can tell from the reply why, without having to ask.",
+        "structure-serves-the-decision: The top-level sections are things the VP has to accept before approving, not a chronology of the team's own work; a reader can name the decision each section is clearing.",
+        "prior-rejection-addressed: The VP having killed a similar proposal for lack of evidence is placed in the structure rather than dropped, since it is the strongest fact about this room in the material.",
+        "figures-verbatim: 34%, 22%, 9%, six markets, one engineer for a quarter, and 18 months survive exactly as given — not rounded, not averaged into a single deflection number.",
+        "weak-result-not-buried: The 9% market is present in the structure with its stated cause (the unlocalised knowledge base), not smoothed into an average with the 22% market."
       ]
     }
   ]

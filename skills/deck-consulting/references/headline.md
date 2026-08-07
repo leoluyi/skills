@@ -6,7 +6,7 @@ Going wrong takes two shapes. The soft failure is a label with a verb bolted on 
 
 ## Entry check
 
-Work from whatever the user pointed at. Three shapes come in and all are normal: a single title, a pasted list of slide titles, or the headings already sitting in `docs/deck-consulting/content.md` or `docs/deck-consulting/outline.md`. When they named none, read those two files and offer their headings as the working set.
+Work from whatever the user pointed at. Three shapes come in and all are normal: a single title, a pasted list of slide titles, or the headings already sitting in `docs/deck-consulting/content.md` or `docs/deck-consulting/outline.md`. When they named none, read those two files and offer their headings as the working set. If one of them is on disk without the section the headings live under — no `提煉重點` in `content.md`, no `大綱` in `outline.md` — say which section you went looking for rather than treating the file as having nothing in it, and ask whether it was renamed or removed, since a hand-edited heading is the usual cause and the answer is one word. Take the titles from wherever they actually sit in the file, or from what the user pasted, and rewrite them in the meantime.
 
 Read `docs/deck-consulting/positioning.md` if it exists — it is what decides which of several true assertions a headline should make. Missing it costs aim, not the node: say that without it you will write headlines that are accurate but not aimed, offer to run `positioning` first or to take the audience and the ask in two lines, and proceed on whichever they pick.
 

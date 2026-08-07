@@ -10,6 +10,8 @@ Read `docs/deck-consulting/script.md` if it exists. If it already has a `故事�
 
 Read `docs/deck-consulting/outline.md`. If it is missing, say so plainly: without a settled section set there is nothing to order, so any storyline you write is really an outline in disguise and will be redone once the structure lands. Offer both — run `outline` first, or work from whatever section list the user can give verbally. Do what the user chooses.
 
+The file being there is not the same as the section being there. When `outline.md` exists but holds no `大綱`, name that section as what is missing rather than reporting the file as absent, and ask whether it was renamed or removed — a hand-edited heading is the likely cause and either answer is a single word. The ordering does not wait on it: point at whichever heading now holds the sections, or take the list verbally, and run from that.
+
 Read `docs/deck-consulting/positioning.md` when it exists. Order is decided against what the room can grant, and the 可接受底線 is what tells you where an early exit is survivable.
 
 ## Steps

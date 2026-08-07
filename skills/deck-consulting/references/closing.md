@@ -10,6 +10,8 @@ Read `docs/deck-consulting/positioning.md` for the 目標三層 and the 採取�
 
 Either can be missing. Say which, say what it costs — without the opening's promise the recap has nothing to mirror and becomes a summary of the deck, which is a different and weaker thing; without the positioning the ask has no floor to fall back to and will be pitched at whatever feels bold — and offer both paths: run `opening` or `positioning` first, or reconstruct the promise in two minutes from the outline and the presenter's answer to "what do you want them holding when they walk out". Then do what they choose.
 
+`script.md` can also be on disk and still not hold what this node reads: no `開場` section at all, or a `開場` that carries no `承諾清單`. Say which of the two is missing by name instead of reporting the opening as never written — the presenter usually knows, because a renamed heading is their own edit, and the question costs them one word. It changes nothing about proceeding: a closing asked for now gets written now, mirroring whatever promise-shaped lines the `開場` does contain, with each reconstructed item marked so the presenter can see which ones you supplied.
+
 If a `收尾` section is already in `script.md`, this is a revision: show it, ask whether the recap or the ask is what is wrong, and rework only that part.
 
 ## Steps

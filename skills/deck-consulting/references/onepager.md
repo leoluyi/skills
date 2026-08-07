@@ -10,6 +10,8 @@ Read `docs/deck-consulting/outline.md`. If the file has a `單頁濃縮` section
 
 If `outline.md` is missing, say so: without a settled structure there is nothing to compress, so the page would be built straight from raw material and would come out as a generically competent summary rather than this deck's argument. Offer both — run `outline` first, or build the page directly from the material and accept that the deck may later disagree with it. Do what the user chooses.
 
+A third case sits between those two and is worth separating: the file is on disk but the `大綱` it should carry is not in it. Say that by name — the file is here, the section is not — and ask whether it was renamed or removed, since a hand-edited heading is the usual cause and the answer takes one word. Treating it as a missing file instead sends the presenter off to re-run `outline` over structure they already have. Nothing is waiting on the answer: compress whatever section-shaped content the file does hold, or the material directly, and note in the page which one it came from.
+
 Read `docs/deck-consulting/positioning.md` when it exists. The page has to end in the ask, and the ask lives there.
 
 ## Steps

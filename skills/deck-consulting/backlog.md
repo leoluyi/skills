@@ -6,25 +6,25 @@ Closed items do not stay here — see `design-notes.md`, `evals/`, and commits.
 
 ## Open
 
-- **The first eval round covered four of the seven cases, once each.** Cases 1, 3, 4 and 5 ran
-  with-skill against vanilla and the skill won all four; cases 2, 6 and 7 — the navigation-page
-  boundary, the injection probe, and the zh-request-over-English-source language case — have not
-  been run at all, and no configuration was repeated, so a narrow margin cannot be separated from
-  sampling noise. See the iteration log in `design-notes.md`. The next round should close the three
-  unrun cases first, then repeat the narrow one (case 3).
+- **Seven of the eight cases have one repetition each.** All eight now run with-skill against vanilla
+  and the skill wins all eight, but only case 3 was repeated. A one-assertion margin on a
+  single-repetition case cannot be separated from sampling noise — that applies to case 2, where
+  vanilla's only loss was building a claim on a figure it derived rather than one the material
+  contained. Worth a second rep on 2, 6 and 7 before treating those margins as real.
 
-- **Nothing exercises an English-language session.** `trigger-queries.json` treats an English request
-  as in scope and `SKILL.md` now states that artifact file and section names stay Chinese while their
-  contents follow the request. That rule has never been run. A case with an English prompt, asserting
-  which language each side of that split comes out in, would settle whether the exemption reads
-  clearly enough to be obeyed.
+- **The remaining nodes have never been run in an eval.** The suite exercises `positioning`,
+  `distill`, `headline`, `outline`, `storyline` and `slidecheck`. `onepager`, `opening`, `closing`,
+  `delivery` and `layoutspec` have no case, so their entry checks, their soft-prerequisite paths and
+  the shared-section discipline in `script.md` are untested. `closing` is the one to write first: it
+  is the only node that reads a named subsection out of another node's section (`承諾清單` inside
+  `開場`), which makes it the most likely place a lookup silently misses.
 
-- **Three eval expectations measure conformance rather than reader outcome.** `one-named-starting-point`
-  (case 1), `says-where-it-wrote` (case 1) and `viewing-condition-settled` (case 5) each restate an
-  instruction from `SKILL.md` or a reference rather than something the reader gets. They were kept
-  because each has a real user consequence behind it — a session that starts nowhere, an artifact the
-  user cannot find, a review whose findings silently depend on an unstated assumption — but the
-  phrasing should be rewritten to name that consequence instead of the instruction.
+- **Nothing has ever exercised a real multi-node session.** Every case is a single turn against
+  inlined artifacts; no run has actually written a file and had a later node read it back. The
+  file-handoff contract — the thing the whole skill is built on — is therefore verified only by
+  reading. A scripted two-node run (`positioning` then `opening`, on disk, in a scratch directory)
+  would settle it, and would also be the only thing that can catch a section-name drift between two
+  reference files.
 
 - **`layoutspec` cannot verify its own output.** The node produces a layout spec and an image prompt,
   and neither harness has an image tool, so nothing checks that the spec is buildable or that the

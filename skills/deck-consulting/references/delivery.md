@@ -10,7 +10,7 @@ Get the passage first. If the user names a section, read it from `docs/deck-cons
 
 Read `docs/deck-consulting/positioning.md` if it exists, for the 採取姿態 and the room. Without it you can still write a passage that sounds good, but you cannot tell whether sounding good is what this room needs — say that plainly, offer to run `positioning` first or to proceed from a two-line description of the audience, and do what they choose.
 
-Read `docs/deck-consulting/script.md` if it exists. The `開場` and `收尾` sections, when present, are where the presenter's register has already been settled; match it rather than establishing a second one. If a `講稿` section already holds a version of this passage, this is a revision: show it and ask what is wrong with how it sounds.
+Read `docs/deck-consulting/script.md` if it exists. The `開場` and `收尾` sections, when present, are where the presenter's register has already been settled; match it rather than establishing a second one. When the file is there and neither section is in it, say which two headings you went looking for by name — a renamed heading reads exactly like a script nobody has written yet, and the presenter can tell you which it is in a word. The passage does not wait on the answer: settle the register from their own sentences and write it, saying that is where it came from. If a `講稿` section already holds a version of this passage, this is a revision: show it and ask what is wrong with how it sounds.
 
 ## Steps
 

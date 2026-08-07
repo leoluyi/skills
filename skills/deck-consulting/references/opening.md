@@ -10,6 +10,8 @@ Read `docs/deck-consulting/positioning.md` and `docs/deck-consulting/outline.md`
 
 Either can be missing. Say which one, say what it costs — without the positioning the hook has no room to be aimed at and comes out generically punchy; without the outline the promise is a guess the closing will later be audited against — and offer both paths: run the prerequisite first, or work from whatever the presenter can tell you in two minutes. Then do what they choose.
 
+A file that is present without the part you came for is the same gap wearing a disguise: `positioning.md` with no `採取姿態` in it, `outline.md` with no `大綱`. Name the section that is not there rather than reporting the whole file as absent, and ask whether it was renamed or removed — someone editing the artifact by hand is the likely cause, and the presenter can answer in a word. The paths stay the ones above, so an opening asked for right now is written in that same reply, from whatever those files do hold, with the inferred part marked.
+
 Read `docs/deck-consulting/script.md` if it exists. If a `開場` section is already there, this is a revision: show it, ask which of the three parts is wrong, and rework only that part. When the promise changes, say that the `收尾` section is now stale, because the closing mirrors this promise item for item.
 
 ## Steps

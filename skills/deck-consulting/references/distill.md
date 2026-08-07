@@ -6,7 +6,9 @@ Going wrong looks like a tidier version of the input: the same twelve topics, sh
 
 ## Entry check
 
-Read `docs/deck-consulting/positioning.md` if it exists. The positioning is what decides which points survive, so when it is missing, say so plainly: without it you can rank by what looks important in the material, but nothing tells you what the room needs, and the result will be a competent generic summary. Offer both — run `positioning` first, or name the audience and the ask in two lines right now and proceed on that. Do what they choose.
+Read `docs/deck-consulting/positioning.md` if it exists. The positioning is what decides which points survive, so when it is missing, say so plainly: without it you can rank by what looks important in the material, but nothing tells you what the room needs, and the result will be a competent generic summary.
+
+Saying that is the whole obligation. When the request already carries its own parameters — a count, a named emphasis, a specific pile of material — produce the points in the same reply, on the material's own prominence, and put the offer underneath: run `positioning` for a version aimed at the room, or give the audience and the ask in two lines and this gets re-ranked. Asking first and delivering second turns 「提煉成五個重點」 into a conversation, which is the failure this node's soft prerequisite exists to prevent.
 
 Read `docs/deck-consulting/content.md` if it exists. If it does, this is a re-distillation: show the current points, ask whether the count, the emphasis, or the source material is what changed, and re-run from that step rather than from scratch.
 
@@ -16,7 +18,7 @@ Take stock of what material is actually in hand before asking anything else. If 
 
 1. **Inventory the material and read it back.** One short paragraph per source: what it is, roughly how much is in it, and what it appears to be arguing. Where the material is images, work slide by slide — say what is on each one, and name explicitly anything you cannot read: an axis label that is too small, a number cut off at the edge, a chart with no legend. An unreadable figure is a figure you do not have; ask for it rather than reconstructing it from the shape of the bars. Complete when the user recognizes their own material in your description and has answered the questions about what was unreadable.
 
-2. **Fix the number of points.** Offer counts tied to what each one buys — 三點（口頭轉述得住）, 五點（一頁投影片的上限）, 七到八點（完整交代，但聽眾記不住） — and say which fits the occasion you read in the positioning. Complete when the user has named a number.
+2. **Fix the number of points.** When the user already named a count, that is the count — take it and move on. Otherwise offer counts tied to what each one buys — 三點（口頭轉述得住）, 五點（一頁投影片的上限）, 七到八點（完整交代，但聽眾記不住） — and say which fits the occasion you read in the positioning. Complete when a number is settled, from them or from their original request.
 
 3. **Fix the emphasis.** Offer angles derived from their positioning and their material — 爭取資源, 進度回報, 建立風險意識, 說服採用某方案, 讓對方選 A 或 B. Name for each what it will push to the front and what it will push out. Complete when the user has picked one, and understands that a different pick produces a different set of points from the same material.
 

@@ -10,7 +10,7 @@ Going wrong looks like a spec full of numbers — 「標題 32pt，靠左 1.2cm�
 
 Ask which slide, and what it has to accomplish. One slide at a time, or one small set that shares a pattern — a spec covering nine unrelated slides is nine thin specs, and each of them would have been better alone.
 
-Read `docs/deck-consulting/slidecheck.md` and `docs/deck-consulting/outline.md` if they exist; either one tells you what this slide is for and saves the first three questions. Neither is required. Without them, ask directly what single thing the audience should walk away from this slide believing, and note in the artifact that the spec was built from that answer rather than from a structure on disk.
+Read `docs/deck-consulting/slidecheck.md` and `docs/deck-consulting/outline.md` if they exist; either one tells you what this slide is for and saves the first three questions. Neither is required. Without them, ask directly what single thing the audience should walk away from this slide believing, and note in the artifact that the spec was built from that answer rather than from a structure on disk. When one of them is on disk but the section you came for is not — no `逐頁問題` in `slidecheck.md`, no `大綱` in `outline.md` — name that section instead of saying the file is not there, and ask whether it was renamed or removed; a hand-edited heading looks identical to a node that never ran, and only the presenter can tell the two apart. The spec carries on from the direct question either way.
 
 Ask the viewing condition — projected, read on screen, or both — and whether the deck has a template with fixed fonts and colours already. A spec that ignores an existing template gets translated back into it badly by whoever executes it.
 
