@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Plan → Goal"
+  short_description: >-
+    把粗略或手寫的計畫轉成可自動執行的 goal spec：目標、可機器驗證的完成條件、
+    禁止事項與停止上限，讓 agent 自己跑完而不偏離。
+policy:
+  allow_implicit_invocation: false

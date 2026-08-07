@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Formal Internal Doc Structure"
+  short_description: >-
+    撰寫或改寫繁體中文內部正式商業文件：簽呈、會議紀錄、評估報告、專案規劃、
+    採購與廠商溝通。依讀者需求挑結構，產出可直接使用的草稿。不含 RFP。
+policy:
+  allow_implicit_invocation: false

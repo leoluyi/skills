@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Knowledge Doc Writing (Diátaxis)"
+  short_description: >-
+    把自學或研究成果整理成 Diátaxis 四區塊知識文件（tutorial、how-to、reference、
+    explanation），素材撐不起的區塊列為缺口，不捏造。

@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Cross-Strait Chinese Localizer"
+  short_description: >-
+    稽核並改寫繁體中文，去除大陸（PRC）用語改成台灣正體中文慣用法，涵蓋詞彙、
+    網路黑話、簡體字殘留、音譯與語法差異。

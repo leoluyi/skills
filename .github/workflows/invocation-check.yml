@@ -1,0 +1,48 @@
+name: Check invocation declarations
+
+# tools/check-invocation validates that every skill ships agents/openai.yaml
+# and that its invocation mode is declared the same way in both harnesses:
+# disable-model-invocation (Claude Code) and policy.allow_implicit_invocation
+# (Codex). Neither harness reads the other's field, so a skill declared on one
+# side only still auto-fires on the side that was missed — silently, and for
+# exactly the skills whose point is that they never fire on their own.
+#
+# Unlike the eval-label gate this one is repo-wide rather than opt-in: the
+# pairing is an invariant of what a skill is, not a per-skill feature, so a
+# skill without the file fails rather than skipping.
+#
+# Its own workflow file, not a job in docs-check.yml, for the reason spelled
+# out in eval-labels.yml: on.paths applies per workflow, so independent gates
+# need independent trigger sets.
+
+on:
+  pull_request:
+    paths:
+      - "skills/*/SKILL.md"
+      - "skills/*/agents/**"
+      - "tools/check-invocation"
+      - ".github/workflows/invocation-check.yml"
+  push:
+    branches: [main]
+    paths:
+      - "skills/*/SKILL.md"
+      - "skills/*/agents/**"
+      - "tools/check-invocation"
+      - ".github/workflows/invocation-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check-invocation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Validate invocation declarations across both harnesses
+        run: uv run tools/check-invocation --all

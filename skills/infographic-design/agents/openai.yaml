@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Infographic Design"
+  short_description: >-
+    設計專業、精緻的解說型視覺圖像（SVG 或單檔 HTML）：資訊圖表、懶人包、圖解、
+    one-pager、時間軸／比較／流程圖，也可審閱既有圖表提出修改建議。

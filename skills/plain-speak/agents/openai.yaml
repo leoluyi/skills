@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Plain Speak: Jargon into Plain Language"
+  short_description: >-
+    把技術術語、程式概念或艱澀工程文字翻譯成非技術主管或同事能懂的白話文，
+    也可審閱既有白話草稿是否夠白話。

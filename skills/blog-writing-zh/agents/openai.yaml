@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Traditional Chinese Blog Writer"
+  short_description: >-
+    撰寫或改寫具真實人味的繁體中文部落格文章／電子報，可從主題起草或改寫既有筆記、
+    翻譯稿，附 3-5 組標題／副標備選。
+policy:
+  allow_implicit_invocation: false

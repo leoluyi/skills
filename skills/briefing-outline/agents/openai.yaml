@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Briefing Outline"
+  short_description: >-
+    將數份文件或一份長報告濃縮成高空俯瞰的說明提綱，逐節點出重點並指向細節來源，
+    讓主管或委員會快速掌握全貌。

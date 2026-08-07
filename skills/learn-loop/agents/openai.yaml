@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Learn Loop"
+  short_description: >-
+    結構化學習迴圈（先教後考 + 來源查證），把一個新概念精煉成 Obsidian vault 的
+    知識結晶。六步互動流程，會佔用整段對話，僅在明確叫用時啟動。
+policy:
+  allow_implicit_invocation: false

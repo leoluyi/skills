@@ -1,0 +1,7 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Breakdown"
+  short_description: >-
+    先把所有情況完整攤開再評估，每個 case 標明事實與推論、深度一致、排除項明列；
+    接著把問題拆成一題一決策交給使用者，答完才給建議。

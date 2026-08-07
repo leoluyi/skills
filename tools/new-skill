@@ -15,6 +15,7 @@ fi
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SKILL_DIR="$REPO_ROOT/skills/$NAME"
 EVAL_DIR="$SKILL_DIR/evals"
+AGENTS_DIR="$SKILL_DIR/agents"
 
 if [[ -e "$SKILL_DIR" ]]; then
   echo "error: $SKILL_DIR already exists" >&2
@@ -25,7 +26,7 @@ if [[ -e "$EVAL_DIR" ]]; then
   exit 1
 fi
 
-mkdir -p "$SKILL_DIR" "$EVAL_DIR"
+mkdir -p "$SKILL_DIR" "$EVAL_DIR" "$AGENTS_DIR"
 
 cat > "$SKILL_DIR/SKILL.md" <<EOF
 ---
@@ -96,17 +97,33 @@ cat > "$EVAL_DIR/trigger-queries.json" <<EOF
 }
 EOF
 
+# Codex-side metadata. Scaffolded model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true. To make the skill
+# user-invoked, set `disable-model-invocation: true` in SKILL.md AND uncomment
+# the policy block below — one without the other still auto-fires on the
+# harness that was missed. 'tools/check-invocation' enforces the pairing.
+cat > "$AGENTS_DIR/openai.yaml" <<EOF
+interface:
+  display_name: "[TODO: human-readable title for the Codex skill picker]"
+  short_description: >-
+    [TODO: one-line summary a person browsing the picker can act on.]
+# policy:
+#   allow_implicit_invocation: false
+EOF
+
 sed "s/{{SKILL_NAME}}/$NAME/g" "$REPO_ROOT/tools/templates/regression-protocol.md" \
   > "$EVAL_DIR/regression-protocol.md"
 
 echo "created:"
 echo "  $SKILL_DIR/SKILL.md"
+echo "  $AGENTS_DIR/openai.yaml"
 echo "  $EVAL_DIR/evals.json"
 echo "  $EVAL_DIR/trigger-queries.json"
 echo "  $EVAL_DIR/regression-protocol.md"
 echo
 echo "next steps:"
-echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji"
+echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji,"
+echo "     then agents/openai.yaml (invocation mode + picker text; check with 'tools/check-invocation $NAME')"
 echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
 echo "  3. add at least one realistic prompt to skills/$NAME/evals/evals.json,"
 echo "     fill in the TODO ship gates in evals/regression-protocol.md,"

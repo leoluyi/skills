@@ -1,0 +1,10 @@
+# Codex skill metadata. `allow_implicit_invocation: false` pairs with
+# `disable-model-invocation: true` in SKILL.md — user-invoked in both harnesses
+# or neither.
+interface:
+  display_name: "Options"
+  short_description: >-
+    把懸而未決的方向決策改成可點選的選項重問一次，之後整段對話遇到架構、套件、
+    資料模型、範圍、順序這類決策都先給 2-4 個互斥選項再動作。
+policy:
+  allow_implicit_invocation: false
