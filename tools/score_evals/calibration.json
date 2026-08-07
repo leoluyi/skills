@@ -4,71 +4,71 @@
   "percentile": 0.95,
   "splits": 4000,
   "pool_rounds": 15,
-  "base_blob_sha256": "b342aef9a0599ae7c70eebe914d82b5d3e27c95c4f753d4e29d91dc60ac59f41",
+  "base_blob_sha256": "6d5937628c58a881a5eda8c149fbc989950e026542be4b9ab2a2c7017bd6f2d6",
   "criteria_sha256": "3876e6b12255086231ae8985d36a4f3754146bb3798c81e026a15e57c2266c41",
-  "grader": "claude",
-  "grader_model": "claude-opus-5",
-  "grader_effort": null,
+  "grader": "codex",
+  "grader_model": "gpt-5.6-luna",
+  "grader_effort": "high",
   "runner": "codex",
   "runner_model": "gpt-5.6-luna",
   "runner_effort": "high",
   "sources": [
-    "null-2026-08-05-r1v2-run-case.json",
-    "null-2026-08-05-r1v3-run-case.json",
-    "null-2026-08-05-r1v4-run-case.json",
-    "null-2026-08-05-r1v5-run-case.json",
-    "null-2026-08-06-r1v6-run-case.json",
-    "null-2026-08-06-r2v3-run-case.json",
-    "null-2026-08-06-r2v4-run-case.json",
-    "null-2026-08-06-r2v5-run-case.json",
-    "null-2026-08-06-r2v6-run-case.json",
-    "null-2026-08-06-r3v4-run-case.json",
-    "null-2026-08-06-r3v5-run-case.json",
-    "null-2026-08-06-r3v6-run-case.json",
-    "null-2026-08-06-r4v5-run-case.json",
-    "null-2026-08-06-r4v6-run-case.json",
-    "null-2026-08-06-r5v6-run-case.json"
+    "null-2026-08-08-r1v2-score-evals.json",
+    "null-2026-08-08-r1v3-score-evals.json",
+    "null-2026-08-08-r1v4-score-evals.json",
+    "null-2026-08-08-r1v5-score-evals.json",
+    "null-2026-08-08-r1v6-score-evals.json",
+    "null-2026-08-08-r2v3-score-evals.json",
+    "null-2026-08-08-r2v4-score-evals.json",
+    "null-2026-08-08-r2v5-score-evals.json",
+    "null-2026-08-08-r2v6-score-evals.json",
+    "null-2026-08-08-r3v4-score-evals.json",
+    "null-2026-08-08-r3v5-score-evals.json",
+    "null-2026-08-08-r3v6-score-evals.json",
+    "null-2026-08-08-r4v5-score-evals.json",
+    "null-2026-08-08-r4v6-score-evals.json",
+    "null-2026-08-08-r5v6-score-evals.json"
   ],
   "thresholds": {
     "3/保護": {
       "confirm_at": 2,
-      "confirmed_max": 7,
-      "row_margin_max": 8
-    },
-    "3/命中": {
-      "confirm_at": 2,
-      "confirmed_max": 8,
-      "row_margin_max": 7
-    },
-    "4/保護": {
-      "confirm_at": 3,
-      "confirmed_max": 4,
-      "row_margin_max": 9
-    },
-    "4/命中": {
-      "confirm_at": 3,
-      "confirmed_max": 6,
-      "row_margin_max": 7
-    },
-    "5/保護": {
-      "confirm_at": 3,
       "confirmed_max": 5,
       "row_margin_max": 9
     },
+    "3/命中": {
+      "confirm_at": 2,
+      "confirmed_max": 7,
+      "row_margin_max": 2
+    },
+    "4/保護": {
+      "confirm_at": 3,
+      "confirmed_max": 2,
+      "row_margin_max": 10
+    },
+    "4/命中": {
+      "confirm_at": 3,
+      "confirmed_max": 5,
+      "row_margin_max": 2
+    },
+    "5/保護": {
+      "confirm_at": 3,
+      "confirmed_max": 3,
+      "row_margin_max": 10
+    },
     "5/命中": {
       "confirm_at": 3,
-      "confirmed_max": 7,
-      "row_margin_max": 7
+      "confirmed_max": 6,
+      "row_margin_max": 2
     },
     "6/保護": {
       "confirm_at": 4,
-      "confirmed_max": 4,
-      "row_margin_max": 9
+      "confirmed_max": 2,
+      "row_margin_max": 10
     },
     "6/命中": {
       "confirm_at": 4,
       "confirmed_max": 5,
-      "row_margin_max": 7
+      "row_margin_max": 2
     }
   }
 }
