@@ -306,6 +306,16 @@ root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落
   一條 carve-out，而是先決定這個期望本身站不站得住：一段同時踩到三條以上規則的真人文字，
   要求零 flag 是不是把保護類的判準訂得比規則集本身還嚴。
 
+- [ ] **id 2 量不到模式，卻是模式翻轉唯一的哨兵。** 它是 14 個 `rewrite_case_ids` 裡唯一不用
+  `rewrite` 字面的（prompt 寫「幫我把 AI 味拿掉」），所以 detect 預設那一輪指名要盯它。實際跑
+  下來六列全綠，但綠得沒有資訊：該案兩臂都一個字沒改，於是三列全域檢核（保真／不換湯／不代筆）
+  全部靠「什麼都不做」通過，`preserves-declared-voice` 與 `does-not-flatten-specifics` 同理，
+  而 `still-removes-genuine-aiisms` 只要求規則跑過——detect 也會跑規則。**六列在 detect 與
+  rewrite 之下結果相同**，計分層看不出模式。2026-08-04 是靠單案補跑讀 runner 輸出第一行
+  （`案例 2｜rewrite｜`）才確認路由正確的。這是 id 78 那條「保真列不能靠什麼都不做過關」的
+  同款病，發生在哨兵案自己身上。要嘛給 id 2 配兩條真的該改的 AI 味，要嘛承認模式歸屬得靠
+  runner 輸出驗而不是計分列。
+
 - [ ] **Make `detect` the default mode, and ask before rewriting.** Requested 2026-07-30. Today
   `rewrite` is the default and the skill edits text without being asked twice; the wanted
   behaviour is detect-first — run the audit, report findings grouped P0/P1/P2, then ask whether
@@ -314,6 +324,11 @@ root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落
   testing what they say they test. Held out of the carve-out-gate branch deliberately: the mode
   switch changes which cases exercise rewrite paths at all, and the three global rewrite checks
   (保真／不換湯／不代筆) currently ride on the four rewrite-mode cases in chunk 1 (ids 2, 6, 8, 9).
+
+  **狀態（2026-08-08）。** 措辭已經定案，見 design-notes 的三版對照——v3 那版拿掉所有對「該
+  產出什麼」的描述，只留路由。它跑過的 18 輪全在量測設定 v1（`run-case`、claude grader、
+  均值護欄）之下，那個護欄事後被空實驗判為 47% 假警報並由 `row_margin` 取代，所以 v3 的
+  SHIP／NO-SHIP **未判**。剩下的工作只有一件：照現行協議重跑一輪。不要再調措辭。
 
 - [ ] **進階補完模式 — close the smallest holes by asking, never by writing.** Wanted
   2026-07-30. Today the skill is pure subtraction, and `docs/humanizer-zh.md` says so twice:
