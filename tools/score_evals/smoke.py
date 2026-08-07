@@ -1,8 +1,7 @@
 """Fast single-arm smoke run: an absolute-judged inner loop distinct from the
 gate's comparative two-arm bank/null machinery — nothing to blind against
 here, so no bank, no null-run. Runner and grader both dispatch through
-``codex``, a deliberate divergence from the gate's cross-family default; this
-module never goes through cli.py's ``--allow-same-family`` check. Nothing
+``codex`` — same-family, like the gate's default since 2026-08-07. Nothing
 writes under evals/ — the returned report is meant to be read once, never
 ingested by ``--aggregate`` or ``--calibrate``.
 """

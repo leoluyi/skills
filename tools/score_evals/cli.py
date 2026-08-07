@@ -439,8 +439,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--ids", help="run a subset, e.g. 1-9,20; marks the run partial")
     parser.add_argument("--jobs", type=int, default=12, help="concurrency cap (default 12)")
     parser.add_argument("--runner", choices=FAMILIES, default="codex")
-    parser.add_argument("--grader", choices=FAMILIES, help="default: the family the runner is not")
-    parser.add_argument("--allow-same-family", action="store_true")
+    parser.add_argument("--grader", choices=FAMILIES, help="default: codex, same as --runner")
     parser.add_argument("--out", help="report path (default skills/<skill>/evals/results-<date>-score-evals.md)")
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args(argv)
@@ -530,7 +529,6 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
                 ("--rounds", args.rounds != 6), ("--bank-round", args.bank_round),
                 ("--no-bank", args.no_bank),
                 ("--runner", args.runner != "codex"), ("--grader", args.grader),
-                ("--allow-same-family", args.allow_same_family),
             ) if value
         ]
         if conflicting:
@@ -549,12 +547,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     if args.skill is None or args.baseline is None:
         parser.error("a skill slug and --baseline are required unless --aggregate is used")
     if args.grader is None:
-        args.grader = "claude" if args.runner == "codex" else "codex"
-    if args.grader == args.runner and not args.allow_same_family:
-        parser.error(
-            f"runner and grader are both {args.runner}; cross-family grading is the "
-            "default for a reason — pass --allow-same-family to override"
-        )
+        args.grader = "codex"
     if args.jobs < 1:
         parser.error(f"--jobs must be at least 1, got {args.jobs}")
     if args.bank_round is not None and args.bank_round < 1:
@@ -679,12 +672,7 @@ def run_null(args: argparse.Namespace, repo_root: Path) -> int:
             f"no baseline bank at {root} — build one first: tools/score-evals "
             f"{args.skill} --baseline {args.baseline} --build-bank"
         )
-    grader = args.grader or ("claude" if manifest["runner"] == "codex" else "codex")
-    if grader == manifest["runner"] and not args.allow_same_family:
-        raise ScoreEvalsError(
-            f"bank runner and grader are both {grader}; cross-family grading "
-            "is the default for a reason — pass --allow-same-family to override"
-        )
+    grader = args.grader or "codex"
 
     texts_a = bank.verify_and_load(
         root, manifest, round_a, chunk_prompts,

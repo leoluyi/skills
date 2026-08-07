@@ -22,11 +22,16 @@ What it does, in one pass:
    the inlined SKILL.md frontmatter names the skill, so a determined agent
    could go looking for the fixture. The blinding is in what is supplied, not
    in a sandbox, on the codex side.
-3. Dispatches one blind grader per chunk on the other CLI family, with both
-   arms' outputs labelled A/B under a per-run mapping, that chunk's scoring
-   key, the source prompts the outputs came from, and the protocol's criteria
-   section verbatim. The grader never sees the skill, the version labels, or
-   any previous results file.
+3. Dispatches one blind grader per chunk — ``codex`` by default, same as the
+   runner, since 2026-08-07 — with both arms' outputs labelled A/B under a
+   per-run mapping, that chunk's scoring key, the source prompts the outputs
+   came from, and the protocol's criteria section verbatim. The grader never
+   sees the skill, the version labels, or any previous results file. Runner
+   and grader defaulting to the same family trades away cross-family
+   blinding (a same-family grader has a better chance of recognizing its own
+   phrasing echoed back) for lower cost and no dependency on a second CLI
+   being installed; pass ``--grader claude`` for the older cross-family
+   default.
 4. Reconciles and reports. The verdict class of every row is decided here,
    not by the grader, so the "zero protection-class false kills" gate means
    the same thing in every chunk and every run.

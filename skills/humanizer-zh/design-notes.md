@@ -516,3 +516,79 @@ carve-out 放行 `模糊歸屬`,另外主動放行 `對比句式`、`對讀者�
 **單一抽樣的限度。** 六輪 grader reason 顯示 flag 數在 2 到 6 之間浮動、開火規則逐輪不同
 （r2 是 A 六 B 二,r3 是 A 三 B 六,r6 的 A 標 `空降主張`/`對讀者說教`）。本輪的三條是一次
 抽樣,不是穩定集合;可確定的是 `意義膨脹` 從未被納入考慮,以及 carve-out 可達性已不是瓶頸。
+
+## `--smoke` 判標籤，閘判修補——同一份輸出兩種判決（2026-08-06）
+
+`tools/score-evals --smoke`（2026-08-07 前叫 `tools/run-case`）與正式閘不是同一把尺，
+同一份 runner 輸出可以在兩邊拿到相反的判決。差別在 grader 讀什麼：
+
+- **閘**（比較式、跨家族）讀的是**修補**。eval id 9 的 `flags-bare-verb`，閘給 pass 的
+  理由寫「Both flag 「專有名詞不誤傷」 and restore subject/object in the fix.」——標籤叫
+  什麼名字不是判準，受詞有沒有補回來才是。
+- **`--smoke`**（絕對式、runner 與 grader 同為 codex）讀的是**標籤**。同一列的 fail 理由
+  寫「輸出以過度簡寫概括該句，未明確指出動詞裸用及主詞、受詞缺漏」——修補在，但子形態
+  名字沒寫出來，就紅。
+
+**子形態命名本來就沒被要求。** `SKILL.md` 的輸出契約只寫到 canonical rule name（`:75`
+「Each flag cites its canonical rule name」、`:48` 「under the row's canonical rule」），
+沒有任何一處要求把 `動詞裸用`／`繫詞架構被抽掉` 這層寫進 flag。baseline-bank
+`b342aef9a059` 六輪 chunk0 對同一句的輸出可以佐證：`動詞裸用` 出現 **0 次**，六輪全部只
+寫 `過度簡寫` 加一句改法方向（r5 是唯一連改法方向都沒寫的一輪），而該列 base 臂的歷史
+成績是 50/52 pass。子形態要不要寫是 runner 自由發揮，所以逐輪浮動——`--smoke` 等於在
+計分一件從未被規定的事。
+
+**單一 rep 的 `--smoke` 會翻結論。** 未改動的 HEAD 跑 3 reps `--smoke --ids 9`：
+`flags-copula-elision` 1/3、`flags-bare-verb` 2/3、`全域:不換湯` 1/3；同一天三輪
+ship-check（`results-2026-08-06-shipcheck-r1~r3`）那兩列都是 3/3 pass。浮動不限於這兩列，
+`全域:不換湯` 同樣在跳。
+
+**用法。** `--smoke` 紅一列，當作「去看一眼」的訊號，不是缺陷判定。動手改規則文字之前，
+先查那一列在 `evals/results-*.json`／`evals/null-*.json` 的基準通過率（`case_id` +
+`expectation`，`base`／`new` 兩欄），基準本來就八九成 pass 的列，單次紅八成是抽樣。真要
+判斷一次改動的方向，兩臂各跑約 3 reps（改動樹一組、`git worktree` 開一份 HEAD 一組），
+不要用單 rep 對單 rep。
+
+## `過度簡寫` 加 `動詞裸用` 命名的嘗試——閘上量測，NO-SHIP（2026-08-07）
+
+承上一節的診斷，動手在 `zh-rules.md` 的 `過度簡寫` 抓 一行把 `動詞裸用` 命名、補上一組
+前／後範例，指望讓子形態命名更穩定。診斷本身沒錯，但拿正式閘一量，這個修法本身站不住：
+
+**目標列從來沒壞過。** 改動前先查 `evals/results-*.json`／`evals/null-*.json`，
+`flags-bare-verb`／`flags-copula-elision`（eval id 9）base 臂歷史成績 42–50/52 pass。
+改動當天三輪 shipcheck 兩列都是 3/3。動手改之前就該把這當停止訊號，沒有——先做了才回頭
+查歷史。
+
+**6 輪閘上量測：NO-SHIP。** `--baseline HEAD`，`--bank-round` 重用既有 base 樣本、new
+臂各輪重新生成，6 輪 aggregate：
+
+| class / arm | r1 | r2 | r3 | r4 | r5 | r6 | mean |
+|---|---|---|---|---|---|---|---|
+| 保護 new | 12 | 14 | 11 | 11 | 10 | 12 | 11.67 |
+| 命中 new | 17 | 13 | 12 | 15 | 13 | 12 | 13.67 |
+| 命中 base | 8 | 11 | 11 | 10 | 15 | 14 | 11.50 |
+
+保護在 n=4 一度衝到 5 個確認列（超門檻），n=6 收斂回 2 個確認列（未過門檻）——這正是
+「單輪不足以定位誤判面」的示範，多跑幾輪就把它洗掉了。命中沒有洗掉：margin 穩定在
++8～+10，門檻是 +7，六輪定案 **NO-SHIP**。沒有任何一列在 6 輪裡撐到確認門檻
+（最高 3/6）——是瀰漫性的小幅劣化，不是某一列的具體缺陷，猜測是改動規則文字的措辭，
+連帶擾動了 runner 對其他規則的判讀，不是這行文字本身寫錯了什麼。
+
+**已排除的機制假設。** 一度懷疑 `動詞裸用` 的定義擠進了 `語體漂移` 的判準地盤，
+拖累 id 67／68（`flags-register-drift`）——三輪數據撐不住這個故事（67 只 1/3、
+68 只 1/3，不到確認門檻）。也查過 id 59（`expected-behavior`／
+`preserves-rhetorical-question`）連續三輪同紅，但 grader reason 顯示開火的是
+對讀者說教／反問句／模糊歸屬——跟過度簡寫或動詞裸用完全無關，是這個 case 本身在兩臂
+都不穩定的既有現象，不是這次改動造成。
+
+**結論：改動已 revert。** `zh-rules.md` 退回 2.2.0 原文；本節與上一節（`--smoke` 判標籤
+閘判修補）留著，因為兩者都是這次過程唯一站得住的產出——診斷是對的，修法沒有通過量測。
+下次有人想再命名 `動詞裸用`，先讀這節，改法要換一個，不是換一次量測手氣。
+
+**副產品：閘的 grader 家族預設換了。** 過程中把 `cli.py` 的 grader 預設從
+「跑者的另一家族」改成固定 `codex`，`--allow-same-family` 隨之整段拿掉——這是獨立的
+基礎設施決定，不是這次 skill 改動的一部分，細節見 `tools/score-evals` 檔頭與
+`tools/score_evals/cli.py`（同日上游把 `run-case` 更名為 `score-evals`，這個改動是在
+更名後的檔案上落地的）。**代價**：切換發生在這次量測進行中，round 6 因此在舊/新預設
+交界處產生一份 grader 對不上其他輪次的孤兒檔（`results-2026-08-06-narrow-r6-codexgrader-orphan.json`），
+必須重跑 round 5、6 才補回 6 輪一致的樣本。日後若要再拉 baseline bank／`--null-run`
+重新校準，這是要素之一。
