@@ -11,3 +11,5 @@ dist/*
 docs/index.html
 docs/skills.json
 docs/guide/
+
+.claude/
