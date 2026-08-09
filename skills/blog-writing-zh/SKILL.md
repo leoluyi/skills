@@ -4,26 +4,16 @@ description: >-
   Write or rewrite Traditional Chinese (Taiwan) blog posts with a genuine human
   voice, modeled on seven studied blogs (知識倉鼠, 保哥, 高見龍,
   90s.pm.investing, AI避坑情報員, Julia Evans, Simon Willison). Manual trigger
-  only — invoke by name when asked to 寫部落格文章／
-  電子報／blog post, 把筆記改寫成文章, 把 Obsidian 筆記變成 blog, 翻譯改寫外文文章／演講／
-  討論串成中文長文, or "用我的風格寫一篇 X", or 不確定該用什麼風格寫（本 skill 會依讀者與目的推薦配方）. Supports two modes — compose (from a topic
-  or loose material) and rewrite (from an Obsidian note, translation source, or
-  draft) — and three technical-description modes (操作型可重現教學, 概念型心智
-  模型導讀, 推演型原理解說) with actionability and concept-clarity checklists — plus composable voice axes (opening strategy × persona intensity ×
-  metaphor density × closing move) with presets, an optional
-  dual-draft mode (write two deliberately divergent drafts, then merge
-  the strengths) for long or high-stakes pieces, a selectable length
-  tier (短打/標準/深文/工具書級), and an automatic post-draft check that
-  suggests splitting into a series (with outline) when one piece can't hold
-  the material. Output is always the article
-  PLUS 3-5 title/subtitle candidates. Pipeline position: this skill supplies
-  structure and voice (加法), then ACTIVELY INVOKES humanizer-zh as the
-  de-AI finishing pass (減法) — loading and running it (rewrite mode, voice
-  profile mapped from the chosen 風味) rather than merely telling the user to,
-  in any environment that can load sibling skills — plus avoid-china-writing if
-  PRC usage may have leaked in. Do NOT invoke for 正式公文／簽呈 (use formal-doc-structure), RFP (use
-  rfp-writing), 白話翻譯單一術語 (use plain-speak), or pure de-AI editing of an
-  existing text with no restructuring (use humanizer-zh directly).
+  only. Invoke by name for 寫部落格文章／電子報／blog post, 把筆記改寫成文章,
+  把 Obsidian 筆記變成 blog, 翻譯改寫外文文章／演講／討論串成中文長文,
+  "用我的風格寫一篇 X", or 不確定該用什麼風格寫. Supports compose and
+  rewrite modes, three technical-description modes (操作型可重現教學, 概念型
+  心智模型導讀, 推演型原理解說), selectable voice axes and length tiers
+  (短打/標準/深文/工具書級), optional dual drafts, and series-splitting
+  suggestions. Output article plus 3-5 title/subtitle candidates. Do NOT invoke
+  for 正式公文／簽呈 (use formal-doc-structure), RFP (use rfp-writing), 白話翻譯
+  單一術語 (use plain-speak), or pure de-AI editing without restructuring (use
+  humanizer-zh).
 app-description: >-
   撰寫或改寫具真實人味的繁體中文部落格文章／電子報，模仿知識倉鼠、保哥、高見龍、Julia Evans、Simon
   Willison 等風格。適用於「寫部落格文章」「把筆記改寫成文章」「把 Obsidian
