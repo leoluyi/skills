@@ -91,7 +91,7 @@ tools/sync-skills
 
 | Skill | 叫用方式 | 做什麼 |
 |---|---|---|
-| **簡報顧問**<br>[`deck-consulting`](skills/deck-consulting/SKILL.md) | `user-invoked` | 像顧問一樣一次做一個節點：溝通定位、骨架定形、主張式標題、敘事編排、破題定錨、收束提請、口說轉譯、逐頁診斷，每個節點的產出落成檔案，下一個節點直接接手 |
+| **簡報顧問**<br>[`deck-consulting`](skills/deck-consulting/SKILL.md) | `user-invoked` | 像顧問一樣一次做一個節點：溝通定位、骨架定形、主張式標題、敘事編排、破題定錨、收束提請、口說轉譯、逐頁診斷，保留跨 session 狀態與每個節點的檔案產出，下一個節點直接接手 |
 | **簡報內容撰寫**<br>[`deck-writer`](skills/deck-writer/SKILL.md) | `model-invoked` | 把主題或素材寫成完整的逐頁簡報 Markdown，包含論證、主張式標題、投影片內文、來源註記與講者備註 |
 
 ### 文件與設計

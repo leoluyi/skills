@@ -96,7 +96,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 
 | Skill | Invocation | What it does |
 |---|---|---|
-| **Deck Consulting**<br>[`deck-consulting`](skills/deck-consulting/SKILL.md) | `user-invoked` | Advise on a presentation one node at a time — positioning, structure, headlines, storyline, opening, closing, delivery, layout — with each node's artifact on disk so the next one picks up where it left off |
+| **Deck Consulting**<br>[`deck-consulting`](skills/deck-consulting/SKILL.md) | `user-invoked` | Advise on a presentation one node at a time — positioning, structure, headlines, storyline, opening, closing, delivery, layout — with current cross-session state and each node's artifact on disk so the next one picks up where it left off |
 | **Deck Writer**<br>[`deck-writer`](skills/deck-writer/SKILL.md) | `model-invoked` | Turn a topic or source bundle into a complete slide-by-slide Markdown deck with an argument, assertion-style titles, full on-slide copy, evidence notes, and speaker notes |
 
 ### Docs & Design

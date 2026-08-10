@@ -4,7 +4,7 @@ description: >-
   Consult on a presentation the way a senior advisor would, one node at a time — positioning, structure, condensation, headlines, storyline, opening, closing, delivery, layout — with each node's artifact written to disk so later nodes build on earlier ones instead of restarting from the raw material.
 app-description: >-
   像資深顧問一樣陪你把一場簡報做完：溝通定位、素材汰選、主張式標題、骨架定形、單頁濃縮、敘事編排、破題定錨、收束提請、口說轉譯、逐頁診斷、排版藍圖，一次做一個節點。每個節點的產出寫成檔案，後面的節點直接接手，不必每次從原始素材重講一遍。
-version: 0.1.0
+version: 0.2.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 disable-model-invocation: true
@@ -36,7 +36,7 @@ The English in this file is structural labelling for you, not literal output. Ne
 
 ## Nodes
 
-Each node is one sitting's work with one artifact at the end. Read `references/<node>.md` when you enter a node, and not before — a session that only wants `headline` should not pay for the other ten.
+Each node is one sitting's work with one artifact at the end. Read `references/<node>.md` when you enter a node, and not before — a session that only wants `headline` should not pay for the other ten. Every node also reads the shared `context.md` checkpoint when it exists.
 
 The table is a menu, not a pipeline. Row order groups related work; it is not the order anyone has to run them in, and the *Reads* column is what a node uses when it is there, not a queue it waits on.
 
@@ -54,6 +54,8 @@ The table is a menu, not a pipeline. Row order groups related work; it is not th
 | `slidecheck` | 逐頁診斷 | Per-slide layout problems, ranked, each with the fix | positioning (optional) |
 | `layoutspec` | 排版藍圖 | A layout specification, plus a paste-ready prompt for an image tool | slidecheck or outline |
 
+The node-specific artifacts are the latest results. `context.md` is the cross-session checkpoint that tells you where the work stopped and which decisions are still live. Read `decision-log.md` only when the checkpoint conflicts with an artifact, the presenter asks why a premise changed, or a premise is being revised.
+
 **Entering.** If the invocation names a node, enter it. If the user describes a problem instead — "投影片太多講不完", "老闆說看不懂重點" — name the node that fits, say in one line why, and enter it once they agree. If neither, show the table and ask which they want; when they have no artifacts on disk yet, say plainly that `positioning` is where this normally starts and why the rest gets easier after it.
 
 **Leaving.** A node ends when its artifact is on disk and the user has seen what changed. Then name the one or two nodes that now make sense next, and stop. Do not chain into the next node uninvited — each node is a decision the presenter makes, not a pipeline stage.
@@ -64,12 +66,14 @@ Node artifacts are plain Markdown under `docs/deck-consulting/` in the current w
 
 ```
 docs/deck-consulting/
+├── context.md        # cross-session current state and open decisions
 ├── positioning.md   # the positioning brief
 ├── outline.md       # structure, detail headings, one-pager
 ├── content.md       # distilled points and headlines
 ├── script.md        # 故事線, 開場, 收尾, 講稿 — one section per node
 ├── slidecheck.md    # per-slide layout findings
-└── layoutspec.md    # layout specification and image prompt
+├── layoutspec.md    # layout specification and image prompt
+└── decision-log.md   # material premise changes only
 ```
 
 `script.md`, `outline.md` and `content.md` are each shared by more than one node. Each node owns a fixed set of named sections and rewrites only those; where a change makes a sibling section wrong, say so rather than editing it.
@@ -78,7 +82,18 @@ The file names and the section names inside them are **fixed identifiers**, not 
 
 When the session is not running in Chinese, say this once, the first time you write: the headings are fixed keys the other nodes look up, the content under them is in your language, and renaming them is what breaks the handoff. One line. A reader who meets an unexplained Chinese heading in their own file reasonably assumes something went wrong and edits it — which is precisely the break the fixed identifier exists to prevent.
 
-Read what exists on entry. Write on exit, and say in one line what changed. When a node revises an artifact another node already consumed, say which downstream artifacts are now stale and offer to re-run them — silently leaving a stale `script.md` next to a rewritten `outline.md` is the worst outcome this contract exists to prevent.
+Read `context.md` and the relevant artifacts on entry. If `context.md` is absent, recover the checkpoint from the artifacts and the user's supplied material without asking them to repeat facts already present. Update `context.md` after every answer that changes the current node, a load-bearing premise, an unresolved question, or artifact freshness. Write the node artifact on exit, and say in one line what changed. When a node revises an artifact another node already consumed, say which downstream artifacts are now stale and offer to re-run them — silently leaving a stale `script.md` next to a rewritten `outline.md` is the worst outcome this contract exists to prevent.
+
+**Cross-session checkpoint.** Keep `context.md` short and current, not as a transcript. Use these fixed sections:
+
+- `## 目前狀態` — current node, objective, last completed decision, and next decision.
+- `## 有效前提` — only cross-node premises, each marked `confirmed` or `provisional`, with a pointer to the artifact that carries the detail.
+- `## 待確認` — unanswered questions that can change the work.
+- `## 產出狀態` — artifact paths and any stale downstream results.
+
+`positioning.md` remains the canonical latest positioning brief. `context.md` points to it and records only the resume information needed across sessions; it does not copy the brief. If the checkpoint and a completed artifact conflict, treat the artifact as the latest result, repair `context.md`, and continue from there.
+
+**Premise trail.** Append to `decision-log.md` only when a load-bearing premise is materially changed, narrowed, widened, reversed, or changes status. A log entry records the date and node, premise, old value, new value, reason or source, and affected artifacts. Do not log every question, wording change, or ordinary revision. The log explains past changes; it never overrides the latest artifact or checkpoint.
 
 **Soft prerequisites.** No node blocks. When an input artifact is missing, say what is missing, what it costs to proceed without it (usually: the output has no standard to be judged against, so it will be generically competent instead of pointed), and offer both — run the prerequisite first, or proceed from whatever material is at hand. Then do what they choose. A user who wants five headlines rewritten in two minutes gets five headlines rewritten in two minutes.
 
@@ -100,6 +115,8 @@ Ask one decision at a time and act on the answer before asking the next. A node 
 ## What every node owes
 
 **Traceability.** Every claim in an artifact comes from the user's material or from an answer they gave. When you need a fact the material does not contain — a number, a competitor's name, what the CFO cares about — ask for it or mark it explicitly as a gap for them to fill. Inventing plausible content is the one failure a presenter cannot catch before they are standing in front of the room.
+
+**Premise changes leave a trace.** When a user's answer changes a premise that other nodes depend on, update `context.md`, append one concise entry to `decision-log.md`, and name the downstream artifacts that are now stale. Keep the latest answer in the relevant node artifact; keep the history only in the log.
 
 **Cuts get a reason.** When you drop or demote something the user supplied, say what you dropped and against which part of the positioning it lost. A cut they cannot audit is a cut they will silently reinstate.
 

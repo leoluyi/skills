@@ -105,6 +105,19 @@
         "figures-verbatim: 34%, 22%, 9%, six markets, one engineer for a quarter, and 18 months survive exactly as given — not rounded, not averaged into a single deflection number.",
         "weak-result-not-buried: The 9% market is present in the structure with its stated cause (the unlocalised knowledge base), not smoothed into an average with the 22% market."
       ]
+    },
+    {
+      "id": 9,
+      "prompt": "這是跨 session 接續。請把下面內容視為工作目錄裡已存在的 docs/deck-consulting/context.md 與 docs/deck-consulting/positioning.md。\n\ncontext.md：\n## 目前狀態\n- 目前節點：positioning\n- 已完成：溝通場景、利害關係人、最佳結果\n- 下一步：確認可接受底線\n\n## 有效前提\n- [confirmed] 房間是財務長與資訊處長。\n- [confirmed] 最佳結果是當場核准 480 萬到 760 萬的汰換預算。\n\n## 待確認\n- 可接受底線是什麼？\n\n## 產出狀態\n- positioning.md：目前版本\n- outline.md、storyline：尚未建立\n\npositioning.md 的目前內容已包含上述場景、利害關係人與最佳結果。\n\n我現在修正一個前提：最佳結果不再是核准整段預算，而是請兩位主管在 A、B 兩個方案中選一個。請接著做，不要重新問已經確認的場景、利害關係人或最佳結果。請更新 context.md，並把這次重大變更追加到 decision-log.md；然後只問下一個尚未決定的問題。",
+      "expected_output": "A cross-session continuation should use the supplied checkpoint instead of restarting the positioning interview. The changed best outcome is a material premise revision, so the response should carry the old and new values into a concise decision-log entry, update the current checkpoint, identify any downstream impact, and ask only the next unresolved question.",
+      "expectations": [
+        "resume-from-checkpoint: The response treats the room and stakeholder mapping as already confirmed and does not ask the user to repeat them.",
+        "changed-premise-recorded: The response clearly records the old best outcome and the new A-or-B choice as a material premise change for decision-log.md.",
+        "checkpoint-updated: The response updates the current state and effective premise in context.md, including the next unresolved decision.",
+        "impact-named: The response identifies that any artifact judged against the old positioning would need review, without inventing artifacts that the supplied state says do not exist.",
+        "one-next-question: The response asks only one next decision, focused on the still-open acceptable floor or an explicitly equivalent positioning question.",
+        "no-transcript: The response treats ordinary Q&A as checkpoint content and does not propose recording the full conversation."
+      ]
     }
   ]
 }
