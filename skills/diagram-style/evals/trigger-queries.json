@@ -16,9 +16,8 @@
     {
       "id": 3,
       "query": "幫我設計一張 RAG 查詢流程的架構圖，我只提供主題。",
-      "should_trigger": false,
-      "category": "negative/from-scratch",
-      "note": "沒有既有圖表素材，屬於從無到有製圖。"
+      "should_trigger": true,
+      "category": "positive/from-scratch"
     },
     {
       "id": 4,
@@ -32,6 +31,19 @@
       "should_trigger": false,
       "category": "negative/deck-writing",
       "note": "這是簡報內容撰寫，不是既有圖表重繪。"
+    },
+    {
+      "id": 6,
+      "query": "參考這張圖片的構圖與氛圍，重新設計一張 Kubernetes 部署流程圖。",
+      "should_trigger": true,
+      "category": "positive/image-as-reference"
+    },
+    {
+      "id": 7,
+      "query": "參考這張照片的氣氛，生成一幅森林中的科幻城市插畫。",
+      "should_trigger": false,
+      "category": "negative/non-diagram-image-generation",
+      "note": "這是一般圖片生成，不是架構圖或流程圖。"
     }
   ]
 }

@@ -29,11 +29,12 @@
     },
     {
       "id": 2,
-      "name": "no-trigger-on-creation",
+      "name": "generate-on-creation",
       "prompt": "幫我設計一張 RAG 查詢流程的架構圖。",
-      "expected_output": "不應觸發本 skill——沒有既有素材，屬於從無到有製圖",
+      "expected_output": "判定為 generate，從需求建立內容與結構，並套用 canvas design system 原則",
       "expectations": [
-        "creation-boundary: 從無到有製圖請求不觸發本 skill"
+        "generate-intent: 沒有提供圖片時判定為 generate",
+        "canvas-system-applied: 以 visual philosophy、構圖、層級、節奏與精修原則約束新圖"
       ],
       "files": []
     },
@@ -174,6 +175,32 @@
       ],
       "files": [
         "diagram.svg"
+      ]
+    },
+    {
+      "id": 14,
+      "name": "image-style-reference-is-generate",
+      "prompt": "參考這張圖的構圖與氣氛，重新設計一張零信任網路架構圖。",
+      "expected_output": "判定為 generate；附件只作構圖與氣氛參考，不保留其像素、文字或節點",
+      "expectations": [
+        "reference-is-generate: 圖片只作風格、構圖、氛圍或主體參考時判定為 generate",
+        "reference-not-edit-target: 不把參考圖當成需要保留內容的修改目標"
+      ],
+      "files": [
+        "reference.png"
+      ]
+    },
+    {
+      "id": 15,
+      "name": "preserve-part-is-edit",
+      "prompt": "保留這張圖的節點、文字與箭頭，只把配色和卡片樣式換掉。",
+      "expected_output": "判定為 edit；保留指定內容，只修改配色與卡片樣式",
+      "expectations": [
+        "preservation-is-edit: 修改既有圖片且要求保留部分內容時判定為 edit",
+        "edit-scope-respected: 只修改獲授權的視覺屬性"
+      ],
+      "files": [
+        "diagram.png"
       ]
     }
   ]

@@ -101,7 +101,7 @@ tools/sync-skills
 | Skill | 叫用方式 | 做什麼 |
 |---|---|---|
 | **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
-| **架構圖重繪**<br>[`diagram-style`](skills/diagram-style/SKILL.md) | `model-invoked` | 保留既有架構圖或流程圖的節點、連線、群組與文字，只重新套用筆調、配色與媒材格式 |
+| **架構圖設計與重繪**<br>[`diagram-style`](skills/diagram-style/SKILL.md) | `model-invoked` | 從需求建立新圖，或保留指定內容重新設計既有架構圖與流程圖 |
 | **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
 
 ### 知識管理

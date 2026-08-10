@@ -6,23 +6,27 @@ languages: [zh-TW, en]
 tags: [diagram, svg, pptx, architecture-diagram, flowchart, visual-style, traditional-chinese]
 title:
   en: "Diagram Style"
-  zh: "架構圖重繪"
+  zh: "架構圖設計與重繪"
 tagline:
-  en: "Restyle an existing architecture or flow diagram while preserving its nodes, connections, groups, and text"
-  zh: "保留既有架構圖或流程圖的節點、連線、群組與文字，只重新套用筆調、配色與媒材格式"
+  en: "Generate a new diagram from requirements or restyle an existing one while preserving requested content"
+  zh: "從需求建立新圖，或保留指定內容重新設計既有架構圖與流程圖"
 whenUse:
-  en: "Use it when an existing SVG, PPTX, Mermaid source, or node-and-relationship list needs a new visual style or a consistent treatment across diagrams."
-  zh: "當既有 SVG、PPTX、Mermaid 原碼或節點關係條列需要換筆調、配色，或多張圖需要統一外觀時使用。"
+  en: "Use it to create an architecture or flow diagram from a topic or requirements, or when an existing SVG, PPTX, Mermaid source, or image needs a new visual treatment."
+  zh: "從主題或需求建立架構圖、流程圖，或替既有 SVG、PPTX、Mermaid 原碼與圖片換視覺風格時使用。"
 whenNot:
-  en: "Do not use it to invent diagram content from a topic alone or to change the source structure without the missing relationships."
-  zh: "不要用於只給主題就從零製圖，也不要在缺少對照關係時自行改寫素材結構。"
+  en: "Do not infer unsupported system facts, or silently change content that the user asked an edit to preserve."
+  zh: "不要捏造需求未提供的系統事實，也不要在 edit 模式默默修改使用者要求保留的內容。"
 highlights:
   en:
+    - "Classifies each request as generate or edit based on how supplied images are meant to be used"
+    - "Uses a canvas design system for deliberate visual philosophy, composition, rhythm, hierarchy, and refinement"
     - "Separates role, pen, colour, structure, and media so one layer can change without silently changing another"
     - "Preserves source text, node counts, connections, and groups through explicit reconciliation"
     - "Uses derived colour gates for contrast, grayscale separation, print safety, and category limits"
     - "Handles SVG and PPTX rendering with fit checks that resize layout instead of truncating labels"
   zh:
+    - "依圖片用途判定 generate 或 edit，不以是否有附件作為唯一依據"
+    - "以 canvas design system 約束視覺哲學、構圖、節奏、層級與精修"
     - "分開角色、筆調、顏色、結構與媒材，換一層不默默改動其他層"
     - "用明確核對保留素材文字、節點數、連線與群組"
     - "以推導出的顏色閘門檢查對比、灰階區隔、列印安全與類別上限"
