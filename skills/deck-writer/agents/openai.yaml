@@ -1,0 +1,8 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Deck Writer"
+  short_description: >-
+    把主題或素材寫成完整的逐頁簡報 Markdown，含文案、來源與講者備註。
+  default_prompt: >-
+    Use $deck-writer to turn my topic or source material into a complete slide-by-slide Markdown content deck.

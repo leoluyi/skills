@@ -1,0 +1,44 @@
+{
+  "skill_name": "deck-writer",
+  "queries": [
+    {
+      "id": 1,
+      "query": "把這份研究報告整理成 12 頁簡報，先寫大綱和每頁完整文案。",
+      "should_trigger": true,
+      "category": "positive/full-deck"
+    },
+    {
+      "id": 2,
+      "query": "我要對董事會提報 AI 投資計畫，幫我把素材拆成 8 張投影片，標題要直接講結論。",
+      "should_trigger": true,
+      "category": "positive/slide-copy"
+    },
+    {
+      "id": 3,
+      "query": "Create a slide-by-slide Markdown deck from these interview notes, including chart specs and speaker notes.",
+      "should_trigger": true,
+      "category": "positive/markdown-deck"
+    },
+    {
+      "id": 4,
+      "query": "這份已經做好的簡報哪三頁最難懂？先幫我診斷，不要重寫。",
+      "should_trigger": false,
+      "category": "negative/existing-deck-review",
+      "note": "This asks for diagnosis of an existing deck, not creation of a complete content deck."
+    },
+    {
+      "id": 5,
+      "query": "把這份 Markdown 做成精緻的 16:9 PowerPoint，幫我排版並輸出 pptx。",
+      "should_trigger": false,
+      "category": "negative/presentation-production",
+      "note": "This asks for visual production and a presentation file, outside the content-only boundary."
+    },
+    {
+      "id": 6,
+      "query": "幫我寫一份 3,000 字的市場進入策略報告，給總經理閱讀。",
+      "should_trigger": false,
+      "category": "negative/long-form-report",
+      "note": "A long-form report needs document-writing conventions, not slide-by-slide deck content."
+    }
+  ]
+}
