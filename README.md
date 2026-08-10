@@ -172,8 +172,10 @@ tools/sync-skills
 | `tools/sync-skills` | Per-skill symlinks into `~/.claude/skills/` (Claude Code, Cursor) **and** `~/.agents/skills/` (Codex, OpenHands). Offline / airgapped fallback. |
 | `tools/archive-skill <name>` | `git mv` a skill (and its evals) to `_archive/`. |
 | `tools/usage-report [days]` | Count skill triggers in `~/.claude/projects/` transcripts. Default 90 days. |
-| `tools/run-eval <name>` | Trigger-layer eval: does the description fire? Reads `evals/trigger-queries.json` — the behaviour cases in `evals.json` belong to `tools/score-evals`. |
-| `tools/score-evals <name> --baseline REF[:DIR]` | Behaviour-layer eval: score `evals/evals.json` new-vs-baseline through blind runners and graders, and report ship/no-ship. Opt-in — needs `evals/score-evals.json`. |
+| `tools/eval validate <name> \| --all` | Validate eval fixtures and optional configs without model calls. |
+| `tools/eval trigger <name>` | Check description invocation against `evals/trigger-queries.json`. |
+| `tools/eval quick <name> [--ids ...]` | Fast single-arm smoke run over representative cases. |
+| `tools/eval gate <name> --baseline REF` | Adaptive blind A/B regression gate with cached baseline outputs. Add `--ids` for a bounded one-round diagnostic. |
 | `tools/check-labels <name> \| --all` | Read-only eval hygiene gate: every rule label in `evals.json`/corpus resolves to a real rule name, every corpus 引文片段 is an exact substring. Opt-in — needs `evals/label-check.json`. |
 | `tools/check-invocation <name> \| --all` | Read-only invocation gate: every skill ships `agents/openai.yaml`, and its mode agrees across both harnesses (`disable-model-invocation` vs `policy.allow_implicit_invocation`). Repo-wide, no opt-in. |
 | `tools/annotate <name> [--ids 15,18-20]` | Blind adjudication: show a case's span with the expectation and rule name stripped, take an AI 指數 1-4 plus a rationale, and record it in `evals/annotations.json`. Renders the ledger into `evals/judged-cases.md` between `annotate:begin/end`; `--check` fails if that render is stale. |

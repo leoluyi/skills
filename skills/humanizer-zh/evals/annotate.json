@@ -3,7 +3,7 @@
   "ledger": "evals/annotations.json",
   "rendered": "evals/judged-cases.md",
   "render_marker": "annotate",
-  "verdict_class_from": "evals/score-evals.json",
+  "verdict_class_from": "evals/annotation-config.json",
   "genres": [
     "社群貼文",
     "銷售頁",

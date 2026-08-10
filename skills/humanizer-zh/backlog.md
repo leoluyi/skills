@@ -3,12 +3,12 @@
 Repo-level and `tools/` items live in the root [`backlog.md`](../../backlog.md).
 
 **Open items only.** What already shipped, and why it took the shape it did, lives in
-[`design-notes.md`](design-notes.md), `evals/results-*.md`, and commit messages — not here.
+[`design-notes.md`](design-notes.md), `evals/judged-cases.md`, and commit messages — not here.
 Anything deleted from this file is recoverable with `git log -p`.
 
 ## Open: the protection class is noisy at the row level
 
-2.1.0 shipped on the aggregate gate (`evals/results-2026-08-01-run-case-aggregate.md`): zero
+2.1.0 shipped after the aggregate gate: zero
 confirmed protection false kills over three rounds, both class means well clear of 1.5.0. What
 the rounds also showed is worth keeping in view — across ten rounds on two skill states, the
 new arm's protection failures landed on **eight different rows** and no row failed
@@ -181,7 +181,7 @@ design-notes）。第二個用途問的是另一件事——**這段究竟是不
   2026-08-01 那場 session 被汙染的方式，工具必須在判讀未關閉時拒絕執行，而不是只把規則寫在
   文件裡。帳本已經知道哪些判讀還開著，這道閘有現成的依據。依賴 (C)。
 
-不要重蓋：`evals.json` 的讀寫與報告渲染在 `tools/score-evals` 已經有了，問作者的迴圈與落帳在
+不要重蓋：`evals.json` 的讀寫與報告渲染在 `tools/eval` 已經有了，問作者的迴圈與落帳在
 `tools/annotate` 自己的 `--card` / `--record` 與帳本也已經有了。新的只有盲的那一層。另外，
 root [`backlog.md`](../../backlog.md) 把 `tools/add-case` 排在「annotate 落地 ＋ 一輪真實 sweep」
 之後才決定——兩個前置現在都到齊了，而帳本加渲染這條寫入端已經蓋掉它原本想做的事，那一項該下

@@ -72,7 +72,7 @@ uncaught until the next full sweep.
 
 ## Out of scope
 
-Description/trigger routing (that is `tools/run-eval` over
+Description/trigger routing (that is `tools/eval trigger` over
 `trigger-queries.json`, and the description is unchanged in v0.11.0 by
 design). Generated-artifact quality on id-1/id-3.
 

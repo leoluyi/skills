@@ -74,7 +74,7 @@ the texture is visible; only the 0/3→3/3 cells enter the conclusion.
 
 ## Out of scope
 
-Description/trigger routing is not tested here (that is `tools/run-eval` over
+Description/trigger routing is not tested here (that is `tools/eval trigger` over
 `trigger-queries.json`). This protocol covers generated-artifact quality only.
 
 ## Amendment v2 — reduced re-registration (what actually ran)

@@ -97,6 +97,13 @@ cat > "$EVAL_DIR/trigger-queries.json" <<EOF
 }
 EOF
 
+cat > "$EVAL_DIR/config.json" <<EOF
+{
+  "profile": "standard",
+  "quick_ids": [1]
+}
+EOF
+
 # Codex-side metadata. Scaffolded model-invoked: no `policy` block, so
 # `allow_implicit_invocation` stays at its default of true. To make the skill
 # user-invoked, set `disable-model-invocation: true` in SKILL.md AND uncomment
@@ -111,21 +118,18 @@ interface:
 #   allow_implicit_invocation: false
 EOF
 
-sed "s/{{SKILL_NAME}}/$NAME/g" "$REPO_ROOT/tools/templates/regression-protocol.md" \
-  > "$EVAL_DIR/regression-protocol.md"
-
 echo "created:"
 echo "  $SKILL_DIR/SKILL.md"
 echo "  $AGENTS_DIR/openai.yaml"
 echo "  $EVAL_DIR/evals.json"
 echo "  $EVAL_DIR/trigger-queries.json"
-echo "  $EVAL_DIR/regression-protocol.md"
+echo "  $EVAL_DIR/config.json"
 echo
 echo "next steps:"
 echo "  1. fill in the SKILL.md frontmatter: description (the trigger gate), tags, and openclaw emoji,"
 echo "     then agents/openai.yaml (invocation mode + picker text; check with 'tools/check-invocation $NAME')"
 echo "  2. write the body (under 500 lines; references/ + scripts/ for the rest)"
-echo "  3. add at least one realistic prompt to skills/$NAME/evals/evals.json,"
-echo "     fill in the TODO ship gates in evals/regression-protocol.md,"
-echo "     and flesh out evals/trigger-queries.json (then check with 'tools/run-eval $NAME')"
+echo "  3. add at least three realistic prompts to skills/$NAME/evals/evals.json,"
+echo "     update evals/config.json for quick_ids / critical_expectations when needed,"
+echo "     and flesh out evals/trigger-queries.json (then run 'tools/eval validate $NAME')"
 echo "  4. run 'tools/sync-skills' if airgapped, otherwise consumers pick it up via 'npx skills update --all'"

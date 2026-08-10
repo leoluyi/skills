@@ -36,6 +36,10 @@ tools/sync-skills        # per-skill symlinks into ~/.claude/skills and ~/.agent
 
 Scaffold a new skill with `tools/new-skill <kebab-name>`.
 
+Run `tools/eval validate --all` before opening a PR.
+Use `tools/eval quick <name>` for fast feedback and `tools/eval gate <name> --baseline REF` for release evidence.
+Pass `--ids` for a bounded one-round diagnostic probe.
+
 ---
 
 # 貢獻指南
@@ -69,3 +73,6 @@ tools/sync-skills        # 為每個 skill 建立 symlink 到 ~/.claude/skills �
 ```
 
 用 `tools/new-skill <kebab-name>` 建立新 skill 的骨架。
+
+送 PR 前執行 `tools/eval validate --all`。
+快速回饋用 `tools/eval quick <name>`，出貨證據用 `tools/eval gate <name> --baseline REF`；加 `--ids` 可做三分鐘內的一輪診斷。

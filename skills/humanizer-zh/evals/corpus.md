@@ -11,8 +11,8 @@
 | `evals.json` | 給定一段 prompt，skill 的行為是否符合預期 |
 | `judged-cases.md` | 某條規則當初為什麼長成這樣 |
 
-方法論在 `adversarial-eval-protocol.md`（進攻：找盲點）與 `regression-protocol.md`
-（防守：出貨門檻）。歷次跑分結果記在 `../design-notes.md` 的對抗迭代 log。
+方法論在 `adversarial-eval-protocol.md`（進攻：找盲點）；防守與出貨使用 repo 共用的
+`tools/eval quick`／`tools/eval gate`。歷次判讀證據記在 `../design-notes.md` 的對抗迭代 log。
 
 **版權。** 只引短段並標出處 URL，不整篇轉存、不重新發布。真人桶的身分**以外部考據為準**，
 不以 skill 的判斷為準——真人文被標是一筆 false-positive 資料點，不是「這個作者是 AI」的證據。

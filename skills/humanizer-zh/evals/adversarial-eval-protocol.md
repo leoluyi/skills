@@ -5,8 +5,8 @@
 那邊優化**加法**（怎麼寫出聲音），這邊優化**減法**（怎麼準確辨識 AI 味
 而不誤傷真人）。
 
-本文件管**進攻**（找盲點、產新規則）；改完規則後的回歸驗證（跑 `evals.json`、
-比 baseline、出貨門檻）走 `regression-protocol.md`。
+本文件管**進攻**（找盲點、產新規則）；改完規則後使用 repo 共用的
+`tools/eval quick` 與 `tools/eval gate`。
 
 ## 原理對照（GAN → 本 skill）
 

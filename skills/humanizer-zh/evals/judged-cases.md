@@ -144,7 +144,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 空泛形容詞 ＋ 排比句型
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 16（銷售頁）
 
@@ -156,7 +156,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 形容詞堆疊 ＋ 空洞承諾，整句沒有具體資訊
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 18（電子報）
 
@@ -168,7 +168,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 三段對比句排比，每句都是「不是 X 而是 Y」
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 19（社群貼文）
 
@@ -192,7 +192,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 太多 —— ，然後看起來就像英文的句法直翻譯
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 22（社群貼文）
 
@@ -216,7 +216,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 沒AI感
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 23 複審（2026-08-01）
 
@@ -236,7 +236,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 諂媚開場 ＋ 三句都在誇問題本身，沒回答問題
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 25（銷售頁）
 
@@ -270,7 +270,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 這是人類會寫的
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 27 複審（2026-08-01）
 
@@ -300,7 +300,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 一句話換了三個主詞
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 31（電子報）
 
@@ -310,7 +310,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 31 複審（2026-08-01）
 
@@ -330,7 +330,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** citeturn0search2 是 chatgpt 的 artifact
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 33（辦公文書）
 
@@ -340,7 +340,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 33 複審（2026-08-01）
 
@@ -363,7 +363,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 辦公文書對空泛用語容忍度更低——「強調透過成效追蹤實現內容的持續改進與長期優化」完全沒有實質意義
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 35（電子報長文節錄）
 
@@ -373,7 +373,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 35 複審（2026-08-01）
 
@@ -396,7 +396,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 「意義」欄每一格都套「體現/展現了 X 的價值」句式，重複公式化
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 37（電子報）
 
@@ -406,7 +406,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 1/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 37 複審（2026-08-01）
 
@@ -426,7 +426,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 短句堆砌結構，「愣了一下」與「停了一下」重複同一句式
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬命中類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 40（銷售頁）
 
@@ -436,7 +436,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 41（銷售頁）
 
@@ -448,7 +448,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 見證引言太生硬，制式模板腔
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 41 複審（2026-08-01）
 
@@ -466,7 +466,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 43（社群貼文）
 
@@ -478,7 +478,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 短句堆砌結構，「沒有 X」三連排比
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。本案的引文自判讀後已變動，這則判讀對應的是舊文字。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。本案的引文自判讀後已變動，這則判讀對應的是舊文字。
 
 #### id 43 複審（2026-08-01）
 
@@ -496,7 +496,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 45（電子報）
 
@@ -508,7 +508,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 短句堆砌結構＋「不是…而是」對比句式
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 45 複審（2026-08-01）
 
@@ -526,7 +526,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 47（社群貼文）
 
@@ -538,7 +538,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 非中文句型，語氣詞刻意堆砌但語序不自然
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。本案的引文自判讀後已變動，這則判讀對應的是舊文字。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 4/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。本案的引文自判讀後已變動，這則判讀對應的是舊文字。
 
 #### id 47 複審（2026-08-01）
 
@@ -556,7 +556,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 49（辦公文書）
 
@@ -566,7 +566,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 50（電子報）
 
@@ -576,7 +576,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **Verdict (author, 2026-08-01, blind 1-4 on the raw span).** AI 指數 1/4（偏人）。
 
-**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得）。key 未變動。
+**Consequence for the instrument.** 與 key 一致——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得）。key 未變動。
 
 ### id 51（電子報長文）
 
@@ -600,7 +600,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 句式對稱過整 ＋ 堆砌「短句」
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 52 複審（2026-08-01）
 
@@ -620,7 +620,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 部落格體裁應更強調連接詞，這個句子太生硬
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 53 複審（2026-08-01）
 
@@ -640,7 +640,7 @@ Note this is *not* the 量詞 axis. 條 vs 個/支 as a classifier question belo
 
 **What the verdict turned on.** 如果是小說還 OK，電子報體裁就很怪
 
-**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `score-evals.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
+**Consequence for the instrument.** **與 key 相左**——本案在 `evals.json` 屬保護類（依 `annotation-config.json` 的 `verdict_class` 推得），判讀為 3/4。`evals.json` 未被本工具改動；要不要動 key，是下一步各自的決定。
 
 #### id 54 複審（2026-08-01）
 
