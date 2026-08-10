@@ -3,10 +3,10 @@ exit=0
   --canvas:#FDFDFC; --ink-strong:#002B36;
   --cat-1-base:#084D7F; --cat-1-card:#E5EBF0; --cat-1-card-sub:#D6E1E8;
   --cat-1-region:#F3F6F7; --cat-1-region-line:#D6E1E8; --cat-1-label:#084D7F;
-  --cat-2-base:#C45323; --cat-2-card:#F7ECE6; --cat-2-card-sub:#F4E2D9;
-  --cat-2-region:#FBF6F3; --cat-2-region-line:#F4E2D9; --cat-2-label:#BB4F21;
-  --cat-3-base:#899F00; --cat-3-card:#F1F4E3; --cat-3-card-sub:#EAEED4;
-  --cat-3-region:#F8F9F2; --cat-3-region-line:#EAEED4; --cat-3-label:#6E7700;
+  --cat-2-base:#899F00; --cat-2-card:#F1F4E3; --cat-2-card-sub:#EAEED4;
+  --cat-2-region:#F8F9F2; --cat-2-region-line:#EAEED4; --cat-2-label:#6E7700;
+  --cat-3-base:#C45323; --cat-3-card:#F7ECE6; --cat-3-card-sub:#F4E2D9;
+  --cat-3-region:#FBF6F3; --cat-3-region-line:#F4E2D9; --cat-3-label:#BB4F21;
   --terminal:#002B36;
   --accent:#686EC8;
   --highlight:#F0DF6F;
@@ -19,22 +19,22 @@ exit=0
 | cat-1-line on card (border) | 8.2:1 | PASS |
 | white on cat-1-line (badge) | 9.8:1 | PASS |
 | cat-1-label on region | 8.1:1 | PASS |
-| ink on cat-2-card | 12.9:1 | PASS |
-| ink on cat-2-region | 14.0:1 | PASS |
-| cat-2-line on card (border) | 4.6:1 | PASS |
-| white on cat-2-line (badge) | 5.3:1 | PASS |
+| ink on cat-2-card | 13.4:1 | PASS |
+| ink on cat-2-region | 14.2:1 | PASS |
+| cat-2-line on card (border) | 3.2:1 | PASS |
+| dark on cat-2-line (badge) | 5.3:1 | PASS |
 | cat-2-label on region | 4.6:1 | PASS |
-| ink on cat-3-card | 13.4:1 | PASS |
-| ink on cat-3-region | 14.2:1 | PASS |
-| cat-3-line on card (border) | 3.2:1 | PASS |
-| dark on cat-3-line (badge) | 5.3:1 | PASS |
+| ink on cat-3-card | 12.9:1 | PASS |
+| ink on cat-3-region | 14.0:1 | PASS |
+| cat-3-line on card (border) | 4.6:1 | PASS |
+| white on cat-3-line (badge) | 5.3:1 | PASS |
 | cat-3-label on region | 4.6:1 | PASS |
 | ink on highlight | 11.1:1 | PASS |
 | highlight on canvas | 1.33:1 | PASS |
 note: highlight is 16° from #899F00. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
 | white on terminal | 15.0:1 | PASS |
 
-greyscale L: cat-1=7%  cat-2=18%  cat-3=30%
-category lightness: ascending — safe for ordered stages
+greyscale L: cat-1=7%  cat-2=30%  cat-3=18%
+category lightness: NOT ascending — fine for lanes/actors, but for ordered stages the shading will run against the reading order
 
 all text-carrying pairs pass.

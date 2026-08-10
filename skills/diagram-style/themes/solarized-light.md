@@ -28,8 +28,8 @@ mode: standard
 ```css
 :root{
   --cat-1-base:  #084D7F;   /* blue 色相 H205，壓暗至灰階 7% */
-  --cat-2-base:  #C45323;   /* orange 色相 H18，彩度 80→70，灰階釘在 18% */
-  --cat-3-base:  #899F00;   /* green 色相 H68，滿彩 */
+  --cat-2-base:  #899F00;   /* green 色相 H68，滿彩 */
+  --cat-3-base:  #C45323;   /* orange 色相 H18，彩度 80→70，灰階釘在 18% */
   --infra-base:  #647C84;   /* base00 +8% 彩 */
   --terminal:    #002B36;   /* base03 — 原值 */
   --ink-strong:  #002B36;   /* base03 — 原值 */
