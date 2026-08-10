@@ -1,0 +1,36 @@
+exit=0
+:root{
+  --canvas:#FFFFFF; --ink-strong:#1E2A36;
+  --cat-1-base:#295087; --cat-1-card:#E1E7EE; --cat-1-card-sub:#D4DCE7;
+  --cat-1-region:#E1E6EE; --cat-1-region-line:#A9B9CF; --cat-1-label:#295087;
+  --cat-2-base:#279B8D; --cat-2-card:#D2EAE7; --cat-2-card-sub:#BEE1DD;
+  --cat-2-region:#E1F1EF; --cat-2-region-line:#A9D7D1; --cat-2-label:#1E776C;
+  --cat-3-base:#E9A552; --cat-3-card:#F8E2C8; --cat-3-card-sub:#F5D6AF;
+  --cat-3-region:#FAECDB; --cat-3-region-line:#F5D5AE; --cat-3-label:#A75411;
+  --terminal:#26364A;
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 11.7:1 | PASS |
+| ink on cat-1-region | 11.6:1 | PASS |
+| cat-1-line on card (border) | 7.3:1 | PASS |
+| white on cat-1-line (badge) | 9.1:1 | PASS |
+| cat-1-label on region | 6.5:1 | PASS |
+| ink on cat-2-card | 11.6:1 | PASS |
+| ink on cat-2-region | 12.5:1 | PASS |
+| cat-2-line on card (border) | 3.2:1 | PASS |
+| dark on cat-2-line (badge) | 4.7:1 | PASS |
+| cat-2-label on region | 4.6:1 | PASS |
+| ink on cat-3-card | 11.6:1 | PASS |
+| ink on cat-3-region | 12.6:1 | PASS |
+| cat-3-line on card (border) | 3.2:1 | PASS |
+| dark on cat-3-line (badge) | 4.7:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+| white on terminal | 12.3:1 | PASS |
+
+greyscale L: cat-1=8%  cat-2=26%  cat-3=45%
+category lightness: ascending — safe for ordered stages
+note: warm bump (+7%) applied to cat-3
+
+all text-carrying pairs pass.

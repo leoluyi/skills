@@ -1,0 +1,182 @@
+[
+  {
+    "name": "gate_4cats_outline",
+    "why": "四類別在純框線模式應被擋下（上限 3），訊息須說明是 outline 的緣故",
+    "args": [
+      "--cat",
+      "0F3157,2367B0,5091D8,8FBCEB",
+      "--ink",
+      "0F3157",
+      "--outline"
+    ]
+  },
+  {
+    "name": "gate_greyscale_too_close",
+    "why": "Bootstrap 的 primary 與 success 明度相同，應被灰階閘門擋下",
+    "args": [
+      "--cat",
+      "0D6EFD,198754,FFC107",
+      "--ink",
+      "212529"
+    ]
+  },
+  {
+    "name": "gate_tailwind_same_shade",
+    "why": "Tailwind 同一階跨色相時明度相近，應被擋下",
+    "args": [
+      "--cat",
+      "3B82F6,10B981,F59E0B",
+      "--ink",
+      "1F2937"
+    ]
+  },
+  {
+    "name": "warm_bump_applied",
+    "why": "暖色相須套用 +7 修正，且訊息要指出是哪幾個類別",
+    "args": [
+      "--cat",
+      "2A78D6,1BAF7A,EDA100",
+      "--ink",
+      "12336E",
+      "--terminal",
+      "12336E"
+    ]
+  },
+  {
+    "name": "dark_canvas_mixes_toward_canvas",
+    "why": "深底：色階朝畫布混、墨色往亮處解、徽章與終點改用畫布色而非白字",
+    "args": [
+      "--cat",
+      "337ECA,3BB180,DDB75D",
+      "--canvas",
+      "12151C",
+      "--ink",
+      "F2F5F8",
+      "--terminal",
+      "E8ECF2"
+    ]
+  },
+  {
+    "name": "badge_ink_flips_on_light_canvas",
+    "why": "淺底時徽章仍應用白字，確認 badge-ink 不會兩邊都選畫布色",
+    "args": [
+      "--cat",
+      "2A78D6,1BAF7A,EDA100",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "12336E",
+      "--terminal",
+      "12336E"
+    ]
+  },
+  {
+    "name": "gate_print_rejects_offwhite_canvas",
+    "why": "print 模式下非純白畫布應被擋（費墨且會留下可見方框）",
+    "args": [
+      "--cat",
+      "345179,3B9A8E,D9AB72",
+      "--canvas",
+      "FAFAF8",
+      "--ink",
+      "1E2A36",
+      "--print"
+    ]
+  },
+  {
+    "name": "gate_print_needs_wider_grey_gap",
+    "why": "print 模式的灰階門檻是 15% 而非 10%，12 點的間距應被擋",
+    "args": [
+      "--cat",
+      "34527A,35897F,DBAE78",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "1E2A36",
+      "--print"
+    ]
+  },
+  {
+    "name": "print_tint_floor_raised",
+    "why": "print 模式的網點下限 8%，色階整組上移",
+    "args": [
+      "--cat",
+      "345179,3B9A8E,D9AB72",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "1E2A36",
+      "--terminal",
+      "26364A",
+      "--print"
+    ]
+  },
+  {
+    "name": "gate_highlight_too_pale",
+    "why": "螢光筆對畫布低於 1.5:1 應被擋（在紙上看不見）",
+    "args": [
+      "--cat",
+      "084D7F,C45323,899F00",
+      "--canvas",
+      "FDFDFC",
+      "--ink",
+      "002B36",
+      "--highlight",
+      "F5E9C8"
+    ]
+  },
+  {
+    "name": "five_cats_filled_now_allowed",
+    "why": "填色模式無硬上限，跨度足夠的五類應通過",
+    "args": [
+      "--cat",
+      "54478C,048BA8,0DB39E,16DB93,B9E769",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "22243A"
+    ]
+  },
+  {
+    "name": "soft_note_above_five",
+    "why": "超過 5 類只提醒不擋",
+    "args": [
+      "--cat",
+      "1A1030,54478C,048BA8,0DB39E,2ECC71,B9E769",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "22243A"
+    ]
+  },
+  {
+    "name": "gate_highlight_hue_collides",
+    "why": "螢光筆與類別色同色系應被擋（畫記會讀成類別）",
+    "args": [
+      "--cat",
+      "084D7F,C45323,899F00",
+      "--canvas",
+      "FDFDFC",
+      "--ink",
+      "002B36",
+      "--highlight",
+      "E8CD7B"
+    ]
+  },
+  {
+    "name": "print_and_vivid_compose",
+    "why": "print 與 vivid 並存：走 vivid 階梯、套 print 的純白畫布與 15% 灰階門檻",
+    "args": [
+      "--cat",
+      "295087,279B8D,E9A552",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "1E2A36",
+      "--terminal",
+      "26364A",
+      "--print",
+      "--vivid"
+    ]
+  }
+]

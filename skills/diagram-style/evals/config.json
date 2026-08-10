@@ -1,0 +1,10 @@
+{
+  "profile": "standard",
+  "quick_ids": [2, 3, 11],
+  "critical_expectations": [
+    "0/content-preserved",
+    "1/cross-dimension-not-guessed",
+    "4/pptx-text-preserved",
+    "5/source-text-preserved"
+  ]
+}

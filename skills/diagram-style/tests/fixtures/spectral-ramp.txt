@@ -1,0 +1,46 @@
+exit=0
+:root{
+  --canvas:#FFFFFF; --ink-strong:#22243A;
+  --cat-1-base:#048BA8; --cat-1-card:#D2EAEF; --cat-1-card-sub:#BEE1E8;
+  --cat-1-region:#DCEFF3; --cat-1-region-line:#9BD1DC; --cat-1-label:#03738B;
+  --cat-2-base:#12B279; --cat-2-card:#C8EDE0; --cat-2-card-sub:#B1E6D3;
+  --cat-2-region:#DEF4EC; --cat-2-region-line:#A0E0C9; --cat-2-label:#0C7B54;
+  --cat-3-base:#8ACC20; --cat-3-card:#D6EDB1; --cat-3-card-sub:#C4E690;
+  --cat-3-region:#EFF8E0; --cat-3-region-line:#D0EBA6; --cat-3-label:#537A13;
+  --cat-4-base:#D0CBEB; --cat-4-card:#EDEBF7; --cat-4-card-sub:#E8E5F5;
+  --cat-4-region:#F8F8FC; --cat-4-region-line:#ECEAF7; --cat-4-label:#7263C3;
+  --terminal:#22243A;
+  --accent:#F29E4C;
+  --highlight:#ECE196;
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 12.1:1 | PASS |
+| ink on cat-1-region | 12.8:1 | PASS |
+| cat-1-line on card (border) | 3.7:1 | PASS |
+| white on cat-1-line (badge) | 4.7:1 | PASS |
+| cat-1-label on region | 4.6:1 | PASS |
+| ink on cat-2-card | 12.0:1 | PASS |
+| ink on cat-2-region | 13.2:1 | PASS |
+| cat-2-line on card (border) | 3.2:1 | PASS |
+| dark on cat-2-line (badge) | 4.7:1 | PASS |
+| cat-2-label on region | 4.6:1 | PASS |
+| ink on cat-3-card | 12.0:1 | PASS |
+| ink on cat-3-region | 13.9:1 | PASS |
+| cat-3-line on card (border) | 3.2:1 | PASS |
+| dark on cat-3-line (badge) | 4.7:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+| ink on cat-4-card | 12.9:1 | PASS |
+| ink on cat-4-region | 14.3:1 | PASS |
+| cat-4-line on card (border) | 3.2:1 | PASS |
+| dark on cat-4-line (badge) | 5.0:1 | PASS |
+| cat-4-label on region | 4.6:1 | PASS |
+| ink on highlight | 11.4:1 | PASS |
+| highlight on canvas | 1.33:1 | PASS |
+| white on terminal | 15.2:1 | PASS |
+
+greyscale L: cat-1=21%  cat-2=33%  cat-3=49%  cat-4=62%
+category lightness: ascending — safe for ordered stages
+
+all text-carrying pairs pass.

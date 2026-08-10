@@ -1,0 +1,47 @@
+exit=0
+:root{
+  --canvas:#FFFFFF; --ink-strong:#22243A;
+  --cat-1-base:#54478C; --cat-1-card:#EEEDF4; --cat-1-card-sub:#E4E2ED;
+  --cat-1-region:#F8F8FA; --cat-1-region-line:#E4E2ED; --cat-1-label:#54478C;
+  --cat-2-base:#048BA8; --cat-2-card:#E6F3F6; --cat-2-card-sub:#D7ECF1;
+  --cat-2-region:#F5FAFC; --cat-2-region-line:#D7ECF1; --cat-2-label:#047C96;
+  --cat-3-base:#0DB39E; --cat-3-card:#E7F7F5; --cat-3-card-sub:#D8F3EF;
+  --cat-3-region:#F5FCFB; --cat-3-region-line:#D8F3EF; --cat-3-label:#098172;
+  --cat-4-base:#16DB93; --cat-4-card:#E8FBF4; --cat-4-card-sub:#DAF9EE;
+  --cat-4-region:#F6FEFB; --cat-4-region-line:#DAF9EE; --cat-4-label:#0D8459;
+  --cat-5-base:#B9E769; --cat-5-card:#F8FDF0; --cat-5-card-sub:#F4FBE7;
+  --cat-5-region:#FCFEF9; --cat-5-region-line:#F4FBE7; --cat-5-label:#588014;
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 13.1:1 | PASS |
+| ink on cat-1-region | 14.3:1 | PASS |
+| cat-1-line on card (border) | 7.7:1 | PASS |
+| white on cat-1-line (badge) | 8.9:1 | PASS |
+| cat-1-label on region | 7.5:1 | PASS |
+| ink on cat-2-card | 13.4:1 | PASS |
+| ink on cat-2-region | 14.5:1 | PASS |
+| cat-2-line on card (border) | 4.1:1 | PASS |
+| white on cat-2-line (badge) | 4.7:1 | PASS |
+| cat-2-label on region | 4.6:1 | PASS |
+| ink on cat-3-card | 13.8:1 | PASS |
+| ink on cat-3-region | 14.6:1 | PASS |
+| cat-3-line on card (border) | 3.2:1 | PASS |
+| dark on cat-3-line (badge) | 5.3:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+| ink on cat-4-card | 14.1:1 | PASS |
+| ink on cat-4-region | 14.8:1 | PASS |
+| cat-4-line on card (border) | 3.2:1 | PASS |
+| dark on cat-4-line (badge) | 5.5:1 | PASS |
+| cat-4-label on region | 4.6:1 | PASS |
+| ink on cat-5-card | 14.7:1 | PASS |
+| ink on cat-5-region | 15.0:1 | PASS |
+| cat-5-line on card (border) | 3.2:1 | PASS |
+| dark on cat-5-line (badge) | 5.7:1 | PASS |
+| cat-5-label on region | 4.6:1 | PASS |
+
+greyscale L: cat-1=8%  cat-2=21%  cat-3=35%  cat-4=53%  cat-5=68%
+category lightness: ascending — safe for ordered stages
+
+all text-carrying pairs pass.

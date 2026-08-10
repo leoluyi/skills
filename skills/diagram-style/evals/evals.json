@@ -1,0 +1,180 @@
+{
+  "skill_name": "diagram-style",
+  "evals": [
+    {
+      "id": 0,
+      "name": "restyle-svg-same-content",
+      "prompt": "幫我把這張架構圖換成適合放進正式評估報告的樣式。",
+      "expected_output": "節點數、標籤逐字、連線方向、群組成員與素材完全一致；套用 muted-ledger；不新增任何節點",
+      "expectations": [
+        "content-preserved: 節點標籤、連線方向與群組成員逐項保留",
+        "theme-applied: 套用 muted-ledger，且不新增節點"
+      ],
+      "files": [
+        "ai-agent-flow-v2.svg"
+      ]
+    },
+    {
+      "id": 1,
+      "name": "cross-dimension-refusal",
+      "prompt": "把這張圖改成泳道圖。",
+      "expected_output": "應停下來說明素材沒有角色歸屬資訊，請使用者補上對照關係，不得自行猜測分派",
+      "expectations": [
+        "missing-mapping-requested: 指出素材缺少角色歸屬，要求使用者補上對照關係",
+        "cross-dimension-not-guessed: 不自行猜測節點角色或分派"
+      ],
+      "files": [
+        "ai-agent-flow-v2.svg"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "no-trigger-on-creation",
+      "prompt": "幫我設計一張 RAG 查詢流程的架構圖。",
+      "expected_output": "不應觸發本 skill——沒有既有素材，屬於從無到有製圖",
+      "expectations": [
+        "creation-boundary: 從無到有製圖請求不觸發本 skill"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "name": "incomplete-source-flagged",
+      "prompt": "這是我的部署流程，幫我畫得好看一點：建置 → 測試 → 上線",
+      "expected_output": "依素材只畫三個節點；若察覺缺少回滾或核准環節，應指出而非自行補上",
+      "expectations": [
+        "source-bounded: 只使用素材提供的三個節點",
+        "missing-content-flagged: 發現可能缺少回滾或核准時指出，不自行補入"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "name": "pptx-restyle-text-untouched",
+      "prompt": "這份簡報的架構圖看起來很亂，幫我統一樣式。",
+      "expected_output": "只改格式屬性；markitdown 前後 diff 為空；不得寫入 text_frame.text",
+      "expectations": [
+        "pptx-text-preserved: PPTX 文字內容前後完全一致",
+        "format-only: 只修改格式屬性，不寫入 text_frame.text"
+      ],
+      "files": [
+        "deck.pptx"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "typo-reported-not-fixed",
+      "prompt": "幫這張圖換成正式文件的樣式。",
+      "expected_output": "素材含錯字時應指出並保留原字，不得默默修正",
+      "expectations": [
+        "typo-reported: 指出素材中的錯字",
+        "source-text-preserved: 保留錯字原文，不默默修正"
+      ],
+      "files": [
+        "diagram-with-typo.svg"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "overflow-resizes-not-truncates",
+      "prompt": "換成緊湊一點的樣式。",
+      "expected_output": "標籤塞不下時放大框或畫布，不得縮寫或截斷文字",
+      "expectations": [
+        "fit-by-layout: 以放大框或畫布處理文字溢出",
+        "label-integrity: 不縮寫、不截斷原始標籤"
+      ],
+      "files": [
+        "long-labels.svg"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "blueprint-shape-requires-mono-theme",
+      "prompt": "用 blueprint 形狀配 tailwind 的顏色重畫這張圖。",
+      "expected_output": "應說明 outline 會讓色階塌回畫布、類別上限掉到 3，建議改用 blueprint-mono，不得默默照做",
+      "expectations": [
+        "blueprint-compatibility: 說明 blueprint 與 blueprint-mono 的搭配限制",
+        "outline-limit-explained: 說明 outline 類別上限為 3，並提出可行替代方案"
+      ],
+      "files": [
+        "diagram.svg"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "shape-and-colour-chosen-separately",
+      "prompt": "這張圖要投影給主管看。",
+      "expected_output": "形狀選 briefing、顏色另外選並各自說明理由；不得把兩者當成一個綁定選項",
+      "expectations": [
+        "pen-selected: 依投影與主管受眾選 briefing 筆調",
+        "theme-independent: 顏色主題獨立選擇並說明理由"
+      ],
+      "files": [
+        "diagram.svg"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "planned-vs-external-not-conflated",
+      "prompt": "把還沒建置的那三個元件標出來。",
+      "expected_output": "用 state/planned（虛線框＋不填色），不得與 surface/external 混用同一種表現",
+      "expectations": [
+        "planned-role: 使用 state/planned 角色表達尚未建置",
+        "role-distinct: 不把 planned 與 surface/external 混用同一種表現"
+      ],
+      "files": [
+        "diagram.svg"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "deprecated-needs-texture-not-just-desaturation",
+      "prompt": "舊系統要退場，幫我標示。",
+      "expected_output": "必須加斜線紋，不得只降飽和——飽和度在灰階下會消失",
+      "expectations": [
+        "deprecated-texture: 以斜線紋表示 deprecated",
+        "grayscale-safe: 不只降低飽和度，確保灰階仍能辨識"
+      ],
+      "files": [
+        "diagram.svg"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "pill-request-redirected-to-role",
+      "prompt": "筆調可以再加一個膠囊形的選項嗎？",
+      "expected_output": "應說明膠囊在流程圖慣例是起訖端點、加成風格選項會洗掉訊號，建議走新角色而非新筆調參數",
+      "expectations": [
+        "pill-semantics: 說明膠囊形在流程圖中承載起訖端點語意",
+        "role-over-style: 將新語意建模為角色，不新增會洗掉訊號的筆調參數"
+      ],
+      "files": []
+    },
+    {
+      "id": 12,
+      "name": "offers-preview-before-restyling",
+      "prompt": "幫我把這張架構圖的樣式調一下。",
+      "expected_output": "推薦一個起手式並問要不要先看 docs/style-reference.html 預覽，不得直接開畫",
+      "expectations": [
+        "preview-offered: 先推薦起手式並提供 style-reference.html 預覽",
+        "preview-before-render: 使用者確認前不直接開始重繪"
+      ],
+      "files": [
+        "diagram.svg"
+      ]
+    },
+    {
+      "id": 13,
+      "name": "gate-message-leads-with-action",
+      "prompt": "用線稿畫這張三個階段的圖。",
+      "expected_output": "先說「線稿最多兩類、可分組或改填色」，明度上限與間距等推導收在括號或後段",
+      "expectations": [
+        "gate-action-first: 先說線稿類別限制與可行處置",
+        "gate-rationale-second: 將明度與間距推導放在後段"
+      ],
+      "files": [
+        "diagram.svg"
+      ]
+    }
+  ]
+}

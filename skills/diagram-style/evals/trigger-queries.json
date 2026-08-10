@@ -1,0 +1,37 @@
+{
+  "skill_name": "diagram-style",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我把這張既有架構圖換成適合正式評估報告的樣式。",
+      "should_trigger": true,
+      "category": "positive/existing-material"
+    },
+    {
+      "id": 2,
+      "query": "這幾張流程圖要看起來一致，請統一筆調與配色。",
+      "should_trigger": true,
+      "category": "positive/consistency"
+    },
+    {
+      "id": 3,
+      "query": "幫我設計一張 RAG 查詢流程的架構圖，我只提供主題。",
+      "should_trigger": false,
+      "category": "negative/from-scratch",
+      "note": "沒有既有圖表素材，屬於從無到有製圖。"
+    },
+    {
+      "id": 4,
+      "query": "用 diagram-style 把這份 SVG 的顏色換成適合列印的配色。",
+      "should_trigger": true,
+      "category": "positive/direct-skill"
+    },
+    {
+      "id": 5,
+      "query": "這份簡報內容請幫我重寫成逐頁簡報 Markdown。",
+      "should_trigger": false,
+      "category": "negative/deck-writing",
+      "note": "這是簡報內容撰寫，不是既有圖表重繪。"
+    }
+  ]
+}

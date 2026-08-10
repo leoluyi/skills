@@ -1,0 +1,35 @@
+exit=1
+:root{
+  --canvas:#FFFFFF; --ink-strong:#1E2A36;
+  --cat-1-base:#34527A; --cat-1-card:#E3E7EC; --cat-1-card-sub:#D4DBE3;
+  --cat-1-region:#EFF1F4; --cat-1-region-line:#D2D9E2; --cat-1-label:#34527A;
+  --cat-2-base:#35897F; --cat-2-card:#E3EEED; --cat-2-card-sub:#D3E5E3;
+  --cat-2-region:#EFF6F5; --cat-2-region-line:#D3E5E3; --cat-2-label:#2F7A71;
+  --cat-3-base:#DBAE78; --cat-3-card:#F7EEE3; --cat-3-card-sub:#F5E8D8;
+  --cat-3-region:#FAF3EB; --cat-3-region-line:#F5E8D8; --cat-3-label:#966428;
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 11.7:1 | PASS |
+| ink on cat-1-region | 12.9:1 | PASS |
+| cat-1-line on card (border) | 7.3:1 | PASS |
+| white on cat-1-line (badge) | 9.0:1 | PASS |
+| cat-1-label on region | 7.0:1 | PASS |
+| ink on cat-2-card | 12.3:1 | PASS |
+| ink on cat-2-region | 13.3:1 | PASS |
+| cat-2-line on card (border) | 4.1:1 | PASS |
+| white on cat-2-line (badge) | 4.9:1 | PASS |
+| cat-2-label on region | 4.6:1 | PASS |
+| ink on cat-3-card | 12.7:1 | PASS |
+| ink on cat-3-region | 13.3:1 | PASS |
+| cat-3-line on card (border) | 3.2:1 | PASS |
+| dark on cat-3-line (badge) | 5.2:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+
+greyscale L: cat-1=8%  cat-2=20%  cat-3=47%
+category lightness: ascending — safe for ordered stages
+FAIL: two categories within 15% luminance — indistinguishable in greyscale. Spread the lightness ladder.
+note: warm bump (+7%) applied to cat-3
+
+1 contrast failure(s).

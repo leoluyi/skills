@@ -1,0 +1,40 @@
+exit=0
+:root{
+  --canvas:#FFFFFF; --ink-strong:#0F3157;
+  --cat-1-base:#0F3157; --cat-1-card:#FFFFFF; --cat-1-card-sub:#FFFFFF;
+  --cat-1-region:#FFFFFF; --cat-1-region-line:#FFFFFF; --cat-1-label:#0F3157;
+  --cat-2-base:#2367B0; --cat-2-card:#FFFFFF; --cat-2-card-sub:#FFFFFF;
+  --cat-2-region:#FFFFFF; --cat-2-region-line:#FFFFFF; --cat-2-label:#2367B0;
+  --cat-3-base:#5091D8; --cat-3-card:#FFFFFF; --cat-3-card-sub:#FFFFFF;
+  --cat-3-region:#FFFFFF; --cat-3-region-line:#FFFFFF; --cat-3-label:#2D77C8;
+  --terminal:#0F3157;
+  --accent:#B03A2E;
+  --highlight:#CBE2F3;
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 13.1:1 | PASS |
+| ink on cat-1-region | 13.1:1 | PASS |
+| cat-1-line on card (border) | 14.1:1 | PASS |
+| white on cat-1-line (badge) | 14.1:1 | PASS |
+| cat-1-label on region | 13.1:1 | PASS |
+| ink on cat-2-card | 13.1:1 | PASS |
+| ink on cat-2-region | 13.1:1 | PASS |
+| cat-2-line on card (border) | 6.6:1 | PASS |
+| white on cat-2-line (badge) | 6.6:1 | PASS |
+| cat-2-label on region | 5.8:1 | PASS |
+| ink on cat-3-card | 13.1:1 | PASS |
+| ink on cat-3-region | 13.1:1 | PASS |
+| cat-3-line on card (border) | 3.9:1 | PASS |
+| dark on cat-3-line (badge) | 4.9:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+| ink on highlight | 9.8:1 | PASS |
+| highlight on canvas | 1.34:1 | PASS |
+note: highlight is 6° from #2367B0. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
+| white on terminal | 13.1:1 | PASS |
+
+greyscale L: cat-1=3%  cat-2=13%  cat-3=27%
+category lightness: ascending — safe for ordered stages
+
+all text-carrying pairs pass.

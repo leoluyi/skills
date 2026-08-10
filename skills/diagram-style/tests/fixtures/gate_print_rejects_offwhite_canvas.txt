@@ -1,0 +1,35 @@
+exit=1
+:root{
+  --canvas:#FAFAF8; --ink-strong:#1E2A36;
+  --cat-1-base:#345179; --cat-1-card:#E2E6E9; --cat-1-card-sub:#D6DCE1;
+  --cat-1-region:#EAECEE; --cat-1-region-line:#CED5DC; --cat-1-label:#345179;
+  --cat-2-base:#3B9A8E; --cat-2-card:#DFEDE9; --cat-2-card-sub:#D0E5E1;
+  --cat-2-region:#EBF2F0; --cat-2-region-line:#D0E5E1; --cat-2-label:#2E786E;
+  --cat-3-base:#D9AB72; --cat-3-card:#F3E9DC; --cat-3-card-sub:#F0E3D1;
+  --cat-3-region:#F5EEE4; --cat-3-region-line:#F0E3D1; --cat-3-label:#916227;
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 11.6:1 | PASS |
+| ink on cat-1-region | 12.3:1 | PASS |
+| cat-1-line on card (border) | 7.3:1 | PASS |
+| white on cat-1-line (badge) | 9.1:1 | PASS |
+| cat-1-label on region | 6.8:1 | PASS |
+| ink on cat-2-card | 12.1:1 | PASS |
+| ink on cat-2-region | 12.8:1 | PASS |
+| cat-2-line on card (border) | 3.3:1 | PASS |
+| dark on cat-2-line (badge) | 4.8:1 | PASS |
+| cat-2-label on region | 4.6:1 | PASS |
+| ink on cat-3-card | 12.2:1 | PASS |
+| ink on cat-3-region | 12.7:1 | PASS |
+| cat-3-line on card (border) | 3.2:1 | PASS |
+| dark on cat-3-line (badge) | 4.9:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+FAIL: print theme on canvas #FAFAF8 — use #FFFFFF. Printing a near-white background wastes ink and leaves a visible box edge where the graphic meets the page.
+
+greyscale L: cat-1=8%  cat-2=26%  cat-3=45%
+category lightness: ascending — safe for ordered stages
+note: warm bump (+7%) applied to cat-3
+
+1 contrast failure(s).
