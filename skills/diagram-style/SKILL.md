@@ -23,7 +23,7 @@ SVG 與 PPTX——角色是契約，媒材是實作。
 | 層 | 決定 | 預設 | 定義在 |
 |---|---|---|---|
 | 筆調 | 每個角色的幾何：圓角、線寬、線型、密度 | `pens/` 三選一 | `references/layer-pen.md` |
-| 顏色 | 每個角色的墨色：填色、邊框、文字 | `themes/` 六選一 | `themes/` |
+| 顏色 | 每個角色的墨色：填色、邊框、文字 | `themes/` 八選一 | `themes/` |
 | 結構 | 怎麼排 | **沿用素材** | `references/layer-structure.md` |
 
 媒材對映：SVG 見 `references/render-svg.md`，PPTX 見 `references/render-pptx.md`。
@@ -61,12 +61,14 @@ SVG 與 PPTX——角色是契約，媒材是實作。
 | 技術讀者、長時間螢幕閱讀 | `solarized-light` | 3 |
 | 會被印出來或影印 | `muted-ledger` | 3 |
 | 要跟既有前端介面一致 | `tailwind-default` | 4 |
+| 技術簡報、網格紙感、亮藍焦點 | `gridline-studio` | 4 |
+| 教學簡報、暖白底、橘色焦點 | `warm-clarity` | 3 |
 | 四階流程，起點深、暖冷有方向、會印出來 | `dusk-ramp` | 4 |
 | 四階流程，螢幕、要色相跨得遠 | `spectral-ramp` | 4 |
 | 附錄線稿（僅配 `blueprint`） | `blueprint-mono` | 3 |
 
 **唯一的搭配限制**：`blueprint` 筆調必須配 `blueprint-mono` 主題，反之亦然。
-其餘 2 筆調 × 3 主題自由組合。
+其餘非 `blueprint` 的筆調與主題可自由組合。
 
 ### 先問要不要看預覽
 

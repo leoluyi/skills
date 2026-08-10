@@ -1,44 +1,57 @@
 exit=0
 :root{
-  --canvas:#FDFDFC; --ink-strong:#002B36;
-  --cat-1-base:#084D7F; --cat-1-card:#E5EBF0; --cat-1-card-sub:#D6E1E8;
-  --cat-1-region:#F3F6F7; --cat-1-region-line:#D6E1E8; --cat-1-label:#084D7F;
-  --cat-2-base:#899F00; --cat-2-card:#F1F4E3; --cat-2-card-sub:#EAEED4;
-  --cat-2-region:#F8F9F2; --cat-2-region-line:#EAEED4; --cat-2-label:#6E7700;
-  --cat-3-base:#D9A60B; --cat-3-card:#F7EED3; --cat-3-card-sub:#F5E9C5;
-  --cat-3-region:#F9F3E1; --cat-3-region-line:#F5E9C5; --cat-3-label:#946504;
-  --cat-s-base:#C45323; --cat-s-card:#F7ECE6; --cat-s-card-sub:#F4E2D9;
-  --cat-s-region:#FBF6F3; --cat-s-region-line:#F4E2D9; --cat-s-label:#BB4F21;
+  --canvas-white:#FFFFFF; --canvas-tint:#FEFDF8;
+  --canvas:#FFFFFF; --ink-strong:#002B36;
+  --cat-1-base:#084D7F; --cat-1-line:#074673; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#E6EDF2; --cat-1-card-sub:#D7E3EB;
+  --cat-1-region:#F5F8FA; --cat-1-region-line:#D7E3EB; --cat-1-label:#084D7F;
+  --cat-2-base:#899F00; --cat-2-line:#7D9100; --cat-2-badge-ink:#111111;
+  --cat-2-card:#F3F5E6; --cat-2-card-sub:#ECF0D6;
+  --cat-2-region:#FAFBF5; --cat-2-region-line:#ECF0D6; --cat-2-label:#6F7800;
+  --cat-3-base:#D9A60B; --cat-3-line:#B07D05; --cat-3-badge-ink:#111111;
+  --cat-3-card:#F9F0D6; --cat-3-card-sub:#F6EBC7;
+  --cat-3-region:#FBF5E4; --cat-3-region-line:#F6EBC7; --cat-3-label:#966604;
+  --cat-s-base:#C45323; --cat-s-line:#B34C20; --cat-s-badge-ink:#FFFFFF;
+  --cat-s-card:#F9EEE9; --cat-s-card-sub:#F6E3DC;
+  --cat-s-region:#FDF8F6; --cat-s-region-line:#F6E3DC; --cat-s-label:#BD5022;
   --terminal:#002B36;
-  --accent:#686EC8;
+  --accent:#A13D7C;
   --highlight:#F0DF6F;
+  --slide-ink:var(--ink-strong);
+  --slide-emphasis:#A13D7C;
+  --slide-title-rule:var(--slide-emphasis);
+  --slide-hero:var(--slide-emphasis);
+  --slide-category-1:var(--cat-1-line);
+  --slide-category-2:var(--cat-2-line);
+  --slide-category-3:var(--cat-3-line);
 }
 
 | pair | ratio | verdict |
 |---|---|---|
-| ink on cat-1-card | 12.5:1 | PASS |
-| ink on cat-1-region | 13.8:1 | PASS |
-| cat-1-line on card (border) | 8.2:1 | PASS |
+| ink on cat-1-card | 12.7:1 | PASS |
+| ink on cat-1-region | 14.1:1 | PASS |
+| cat-1-line on card (border) | 8.3:1 | PASS |
 | white on cat-1-line (badge) | 9.8:1 | PASS |
-| cat-1-label on region | 8.1:1 | PASS |
-| ink on cat-2-card | 13.4:1 | PASS |
-| ink on cat-2-region | 14.2:1 | PASS |
+| cat-1-label on region | 8.3:1 | PASS |
+| ink on cat-2-card | 13.6:1 | PASS |
+| ink on cat-2-region | 14.4:1 | PASS |
 | cat-2-line on card (border) | 3.2:1 | PASS |
 | dark on cat-2-line (badge) | 5.3:1 | PASS |
 | cat-2-label on region | 4.6:1 | PASS |
-| ink on cat-3-card | 13.0:1 | PASS |
-| ink on cat-3-region | 13.5:1 | PASS |
+| ink on cat-3-card | 13.2:1 | PASS |
+| ink on cat-3-region | 13.8:1 | PASS |
 | cat-3-line on card (border) | 3.2:1 | PASS |
-| dark on cat-3-line (badge) | 5.1:1 | PASS |
+| dark on cat-3-line (badge) | 5.2:1 | PASS |
 | cat-3-label on region | 4.6:1 | PASS |
-| ink on cat-s-card | 12.9:1 | PASS |
-| ink on cat-s-region | 14.0:1 | PASS |
+| ink on cat-s-card | 13.2:1 | PASS |
+| ink on cat-s-region | 14.3:1 | PASS |
 | cat-s-line on card (border) | 4.6:1 | PASS |
 | white on cat-s-line (badge) | 5.3:1 | PASS |
 | cat-s-label on region | 4.6:1 | PASS |
 | ink on highlight | 11.1:1 | PASS |
-| highlight on canvas | 1.33:1 | PASS |
+| highlight on canvas | 1.36:1 | PASS |
 note: highlight is 7° from #D9A60B. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
+| slide emphasis on canvas | 6.0:1 | PASS |
 | white on terminal | 15.0:1 | PASS |
 
 greyscale L: cat-1=7%  cat-2=30%  cat-3=42%

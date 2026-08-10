@@ -1,11 +1,14 @@
 exit=1
 :root{
   --canvas:#FFFFFF; --ink-strong:#212529;
-  --cat-1-base:#0D6EFD; --cat-1-card:#E7F0FF; --cat-1-card-sub:#D8E8FF;
+  --cat-1-base:#0D6EFD; --cat-1-line:#0262F0; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#E7F0FF; --cat-1-card-sub:#D8E8FF;
   --cat-1-region:#F5F9FF; --cat-1-region-line:#D8E8FF; --cat-1-label:#0267FB;
-  --cat-2-base:#198754; --cat-2-card:#E8F3EE; --cat-2-card-sub:#DAECE4;
+  --cat-2-base:#198754; --cat-2-line:#177B4D; --cat-2-badge-ink:#FFFFFF;
+  --cat-2-card:#E8F3EE; --cat-2-card-sub:#DAECE4;
   --cat-2-region:#F6FAF8; --cat-2-region-line:#DAECE4; --cat-2-label:#188251;
-  --cat-3-base:#FFC107; --cat-3-card:#FFF4D5; --cat-3-card-sub:#FFF1C6;
+  --cat-3-base:#FFC107; --cat-3-line:#B97D00; --cat-3-badge-ink:#111111;
+  --cat-3-card:#FFF4D5; --cat-3-card-sub:#FFF1C6;
   --cat-3-region:#FFF8E4; --cat-3-region-line:#FFF1C6; --cat-3-label:#9C6600;
 }
 

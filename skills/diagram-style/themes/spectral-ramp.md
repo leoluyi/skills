@@ -30,8 +30,9 @@ mode: vivid
   --terminal:    #22243A;
   --ink-strong:  #22243A;
   --ink-muted:   #575B72;
-  --canvas:      #FFFFFF;
-  --accent:      #F29E4C;   /* 沙橘 — Sandy Brown，漸層暖端，不進類別 */
+  --canvas-white: #FFFFFF;
+  --canvas-tint:  #F7F5FC;   /* 淡光譜紫 */
+  --accent:      #46648F;   /* slate blue — 低彩度文字強調，不進類別 */
   --highlight:   #ECE196;   /* 螢光筆 — 黃 H52 S70 */
 }
 ```
@@ -70,7 +71,8 @@ mode: vivid
 `83E377` (61) 與 `B9E769` (68) 只差 7.4 明度，`EFEA5A` (78) 也只差 9.4。
 
 尾端的 `F1C453` (59) 與 `F29E4C` (44) 明度反而下降——
-那是漸層在暖端回落，不是取樣錯誤。`F29E4C` 因此拿去當 `accent`。
+那是漸層在暖端回落，不是取樣錯誤。
+`F29E4C` 作為文字強調色時會因對比解算而變成棕橘，因此只保留為來源參考；`accent` 使用低彩度 slate blue，避免強調文字壓過四個類別。
 
 ## 陷阱
 

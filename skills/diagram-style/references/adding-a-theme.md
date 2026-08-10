@@ -106,7 +106,7 @@ print([resat(c, 2.2) for c in ['#4D455C', '#7B947E']])
 - `ink-strong` — 對每個 `card` 階都要 ≥4.5:1。用色票最暗的色通常剛好。
 - `ink-muted`、`infra` — 中性，不搶類別色。
 - `terminal` — 深色實心，且**不要與 cat-1 同值**。
-- `accent` — 見步驟 3。
+- `accent` — 見步驟 3；投影片的 `--slide-emphasis` 會由它針對所選 canvas 解出可讀文字色。
 - `highlight` — 見下。
 
 ### highlight 的解法

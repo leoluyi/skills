@@ -21,8 +21,9 @@ mode: outline
   --infra-base:  #6B7684;
   --terminal:    #0F3157;
   --ink-strong:  #0F3157;
-  --canvas:      #FFFFFF;
-  --accent:      #B03A2E;
+  --canvas-white: #FFFFFF;
+  --canvas-tint:  #F4F8FC;   /* 淡藍紙色 */
+  --accent:      #D35400;   /* 高彩度橘，與單色藍分離 */
   --highlight:   #CBE2F3;   /* 螢光筆 — 藍 H205 S64 — 單色主題用同色相的淺階 */
 }
 ```

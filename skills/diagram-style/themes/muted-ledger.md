@@ -30,7 +30,8 @@ mode: print
   --infra-base:  #8A8F96;
   --terminal:    #26364A;
   --ink-strong:  #1E2A36;
-  --canvas:      #FFFFFF;   /* 純白＝紙白 */
+  --canvas-white: #FFFFFF;   /* 純白＝紙白，列印預設 */
+  --canvas-tint:  #F7F5F1;   /* 淡帳冊紙色，螢幕預覽可選 */
   --accent:      #6D63A8;
   --highlight:   #ECE196;   /* 螢光筆 — 黃 H52 S70 */
 }

@@ -24,8 +24,9 @@ mode: standard
   --infra-base:  #64748B;   /* slate-500 */
   --terminal:    #1F2937;   /* gray-800 */
   --ink-strong:  #1F2937;
-  --canvas:      #FFFFFF;
-  --accent:      #EC4899;   /* pink-500，一般強調 */
+  --canvas-white: #FFFFFF;
+  --canvas-tint:  #F8FAFC;   /* slate-50 */
+  --accent:      #0E7490;   /* cyan-700，避開粉紅並與四個類別分離 */
   --highlight:   #F2E172;   /* 螢光筆 — 黃 H52 S84 — 跟隨主題的高飽和 */
 }
 ```

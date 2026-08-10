@@ -33,7 +33,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
-from derive import parse_theme, derive_cat, hex2rgb, luminance, contrast  # noqa: E402
+from derive import (parse_theme, derive_cat, derive_slide_semantics, hex2rgb,
+                    luminance, contrast)  # noqa: E402
 
 # Role, column heading, and what the role MEANS. The meaning column is the
 # reason this sheet exists: a swatch grid without it is just colours.
@@ -220,6 +221,21 @@ border-radius:3px;padding:1px 5px;opacity:.65}
 font-size:11.5px;cursor:pointer;border:1px solid rgba(0,0,0,.10);
 transition:transform .08s}
 .sw:hover{transform:translateY(-1px)}
+.slide-semantic{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1.5fr;
+gap:10px;padding:2px 18px 16px}
+.slide-role{min-height:78px;border:1px solid rgba(0,0,0,.10);border-radius:5px;
+padding:10px 12px;background:rgba(255,255,255,.62)}
+.copy-color{cursor:pointer;transition:transform .08s,box-shadow .08s}
+.copy-color:hover{transform:translateY(-1px);box-shadow:0 2px 7px rgba(0,0,0,.10)}
+.slide-role small{display:block;color:var(--dim);font-size:11px;margin-bottom:7px}
+.slide-role strong{font-size:18px;line-height:1.25}
+.slide-hex{display:block;margin-top:5px;font-family:var(--mono);font-size:11px;
+color:var(--dim)}
+.title-rule{display:block;width:74px;height:6px;margin-top:8px}
+.hero-number{font-size:30px!important;line-height:1!important}
+.category-dots{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding-top:3px}
+.category-dots i{display:block;width:26px;height:26px;border-radius:50%;
+border:1px solid rgba(0,0,0,.10)}
 .demo{border-radius:4px;display:flex;align-items:center;justify-content:center;
 font-size:13px;font-weight:700}
 .flow{display:flex;align-items:center;gap:0;flex-wrap:wrap}
@@ -258,6 +274,7 @@ body.grey .panel{filter:grayscale(1)}
 @media(max-width:900px){.srow{grid-template-columns:1fr}}
 @media(max-width:860px){.row,.hd{grid-template-columns:44px repeat(3,1fr)}
 .row>*:nth-child(n+5),.hd span:nth-child(n+4){display:none}
+.slide-semantic{grid-template-columns:1fr 1fr}
 .states{grid-template-columns:1fr}.lines{grid-template-columns:1fr}
 .lines .rt{text-align:left}}
 """
@@ -267,7 +284,7 @@ const b=document.body,t=document.getElementById('t');
 document.getElementById('g').onclick=e=>{const on=b.classList.toggle('grey');
 e.currentTarget.setAttribute('aria-pressed',on)};
 let timer;
-document.querySelectorAll('.sw').forEach(el=>el.onclick=()=>{
+document.querySelectorAll('.sw,.copy-color').forEach(el=>el.onclick=()=>{
   navigator.clipboard?.writeText(el.dataset.hex);
   t.textContent=el.dataset.hex+' 已複製';t.classList.add('on');
   clearTimeout(timer);timer=setTimeout(()=>t.classList.remove('on'),1100);});
@@ -420,22 +437,55 @@ def main():
         p.append('</section>')
 
     # ---- colours ----
-    p.append('<h2>顏色 <small>四選一</small></h2>')
+    p.append(f'<h2>顏色 <small>共 {len(ts)} 組</small></h2>')
     p.append('<div class="hd"><span></span>'
              + "".join(f'<span>{n}</span>' for _, n, _ in ROLES)
              + '<span>示範</span></div>')
     for tn, pur, mode, t in ts:
-        cats = [derive_cat(c, t["canvas"], t.get("outline"), t.get("print"),
+        display_canvas = t["canvas_tint"]
+        cats = [derive_cat(c, display_canvas, t.get("outline"), t.get("print"),
                            t.get("vivid")) for c in t["cats"]]
-        special = derive_cat(t["special"], t["canvas"], t.get("outline"),
+        special = derive_cat(t["special"], display_canvas, t.get("outline"),
                              t.get("print"), t.get("vivid")) if t.get("special") else None
+        slides = derive_slide_semantics(t, display_canvas, cats)
         gl = " · ".join(f'{luminance(hex2rgb(c["base"]))*100:.0f}' for c in cats)
         flags = "".join(f'<span class="flag">{m}</span>' for m in mode.split() if m)
-        p.append(f'<section class="panel" style="background:{t["canvas"]};'
+        p.append(f'<section class="panel" style="background:{display_canvas};'
                  f'color:{t["ink"]}">')
         p.append(f'<div class="phead"><span class="pname">{tn}</span>'
                  f'<span class="meta">{esc(pur)}</span>'
-                 f'<span class="meta">灰階 {gl}</span>{flags}</div>')
+                 f'<span class="meta">灰階 {gl}</span>'
+                 f'<span class="sw canvas-chip" data-hex="{t["canvas_white"]}" '
+                 f'style="background:{t["canvas_white"]};color:{ink_on(t["canvas_white"])}">'
+                 f'white {t["canvas_white"]}</span>'
+                 f'<span class="sw canvas-chip" data-hex="{display_canvas}" '
+                 f'style="background:{display_canvas};color:{ink_on(display_canvas)}">'
+                 f'tint {display_canvas}</span>{flags}</div>')
+        p.append('<div class="sub">投影片語意色　'
+                 '<span class="hint">角色映射，不是另一組獨立色碼</span></div>')
+        p.append('<div class="slide-semantic">')
+        p.append(f'<div class="slide-role copy-color" data-hex="{slides["ink"]}" '
+                 f'title="點擊複製 {slides["ink"]}"><small>主字體 · --slide-ink</small>'
+                 f'<strong style="color:{slides["ink"]}">架構是對的</strong>'
+                 f'<code class="slide-hex">{slides["ink"]}</code></div>')
+        p.append(f'<div class="slide-role copy-color" data-hex="{slides["emphasis"]}" '
+                 f'title="點擊複製 {slides["emphasis"]}"><small>字體強調 · --slide-emphasis</small>'
+                 f'<strong style="color:{slides["emphasis"]}">關鍵字</strong>'
+                 f'<code class="slide-hex">{slides["emphasis"]}</code></div>')
+        p.append(f'<div class="slide-role copy-color" data-hex="{slides["emphasis"]}" '
+                 f'title="點擊複製 {slides["emphasis"]}"><small>標題引導線 · --slide-title-rule</small>'
+                 f'<strong style="color:{slides["ink"]}">區塊標題</strong>'
+                 f'<span class="title-rule" style="background:{slides["emphasis"]}"></span>'
+                 f'<code class="slide-hex">{slides["emphasis"]}</code></div>')
+        p.append(f'<div class="slide-role copy-color" data-hex="{slides["emphasis"]}" '
+                 f'title="點擊複製 {slides["emphasis"]}"><small>大標數字／hero · --slide-hero</small>'
+                 f'<strong class="hero-number" style="color:{slides["emphasis"]}">90%</strong>'
+                 f'<code class="slide-hex">{slides["emphasis"]}</code></div>')
+        dots = "".join(f'<i class="copy-color" data-hex="{c}" '
+                       f'title="slide-category-{i} · 點擊複製 {c}" style="background:{c}"></i>'
+                       for i, c in enumerate(slides["categories"], 1))
+        p.append('<div class="slide-role"><small>category colors · --slide-category-N</small>'
+                 f'<div class="category-dots">{dots}</div></div></div>')
         p.append('<div class="grid">')
         for k, c in enumerate(cats):
             p.append(f'<div class="row"><span class="rl">cat-{k+1}</span>')

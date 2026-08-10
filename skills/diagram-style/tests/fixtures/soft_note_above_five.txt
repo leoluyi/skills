@@ -1,17 +1,23 @@
 exit=1
 :root{
   --canvas:#FFFFFF; --ink-strong:#22243A;
-  --cat-1-base:#1A1030; --cat-1-card:#E8E7EA; --cat-1-card-sub:#DDDBE0;
+  --cat-1-base:#1A1030; --cat-1-line:#170E2A; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#E8E7EA; --cat-1-card-sub:#DDDBE0;
   --cat-1-region:#F6F5F7; --cat-1-region-line:#DAD9DE; --cat-1-label:#1A1030;
-  --cat-2-base:#54478C; --cat-2-card:#EEEDF4; --cat-2-card-sub:#E4E2ED;
+  --cat-2-base:#54478C; --cat-2-line:#4C407F; --cat-2-badge-ink:#FFFFFF;
+  --cat-2-card:#EEEDF4; --cat-2-card-sub:#E4E2ED;
   --cat-2-region:#F8F8FA; --cat-2-region-line:#E4E2ED; --cat-2-label:#54478C;
-  --cat-3-base:#048BA8; --cat-3-card:#E6F3F6; --cat-3-card-sub:#D7ECF1;
+  --cat-3-base:#048BA8; --cat-3-line:#047F99; --cat-3-badge-ink:#FFFFFF;
+  --cat-3-card:#E6F3F6; --cat-3-card-sub:#D7ECF1;
   --cat-3-region:#F5FAFC; --cat-3-region-line:#D7ECF1; --cat-3-label:#047C96;
-  --cat-4-base:#0DB39E; --cat-4-card:#E7F7F5; --cat-4-card-sub:#D8F3EF;
+  --cat-4-base:#0DB39E; --cat-4-line:#0B9987; --cat-4-badge-ink:#111111;
+  --cat-4-card:#E7F7F5; --cat-4-card-sub:#D8F3EF;
   --cat-4-region:#F5FCFB; --cat-4-region-line:#D8F3EF; --cat-4-label:#098172;
-  --cat-5-base:#2ECC71; --cat-5-card:#EAFAF1; --cat-5-card-sub:#DEF7E8;
+  --cat-5-base:#2ECC71; --cat-5-line:#249E57; --cat-5-badge-ink:#111111;
+  --cat-5-card:#EAFAF1; --cat-5-card-sub:#DEF7E8;
   --cat-5-region:#F7FDF9; --cat-5-region-line:#DEF7E8; --cat-5-label:#1E8449;
-  --cat-6-base:#B9E769; --cat-6-card:#F8FDF0; --cat-6-card-sub:#F4FBE7;
+  --cat-6-base:#B9E769; --cat-6-line:#6C9B19; --cat-6-badge-ink:#111111;
+  --cat-6-card:#F8FDF0; --cat-6-card-sub:#F4FBE7;
   --cat-6-region:#FCFEF9; --cat-6-region-line:#F4FBE7; --cat-6-label:#588014;
 }
 

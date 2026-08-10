@@ -26,8 +26,9 @@ mode: vivid
   --terminal:    #2A2433;
   --ink-strong:  #2A2433;
   --ink-muted:   #5E5866;
-  --canvas:      #FFFFFF;
-  --accent:      #8B5CF6;   /* 紫 — 一般強調 */
+  --canvas-white: #FFFFFF;
+  --canvas-tint:  #F7F4F8;   /* 淡暮紫 */
+  --accent:      #147A8A;   /* 深 cyan — 避開主階梯與 warning 紅 */
   --highlight:   #ECE196;   /* 螢光筆 — 黃 H52 S70 */
 }
 ```

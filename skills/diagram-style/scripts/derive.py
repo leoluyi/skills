@@ -246,6 +246,17 @@ def derive_cat(base_hex, canvas_hex, outline=False, for_print=False,
     return out
 
 
+def derive_slide_semantics(cfg, canvas_hex, derived):
+    """Map palette inputs to slide roles without duplicating theme values."""
+    emphasis = rgb2hex(solve_ink(hex2rgb(cfg["accent"]), hex2rgb(canvas_hex),
+                                 LABEL_MIN_RATIO)) if cfg.get("accent") else None
+    return {
+        "ink": cfg["ink"].upper(),
+        "emphasis": emphasis,
+        "categories": [d["line"] for d in derived],
+    }
+
+
 def _mode(text, key):
     m = re.search(r"^mode:\s*(.+)$", text, re.M)
     if m:
@@ -268,7 +279,9 @@ def parse_theme(path):
     return {
         "cats": cats,
         "special": grab("cat-s-base"),
-        "canvas": grab("canvas") or "#FFFFFF",
+        "canvas_white": grab("canvas-white") or grab("canvas") or "#FFFFFF",
+        "canvas_tint": grab("canvas-tint") or grab("canvas") or "#FFFFFF",
+        "canvas": grab("canvas-white") or grab("canvas") or "#FFFFFF",
         "ink": grab("ink-strong") or "#111111",
         "terminal": grab("terminal"),
         "accent": grab("accent"),
@@ -291,6 +304,8 @@ def main():
     ap.add_argument("theme", nargs="?")
     ap.add_argument("--cat", help="comma-separated base hexes")
     ap.add_argument("--canvas", default="#FFFFFF")
+    ap.add_argument("--canvas-choice", choices=("white", "tint"), default="white",
+                    help="select a theme's white or dedicated tinted canvas")
     ap.add_argument("--ink", default="#111111")
     ap.add_argument("--terminal")
     ap.add_argument("--accent")
@@ -307,6 +322,7 @@ def main():
     norm = lambda h: ("#" + h.lstrip("#").upper()) if h else h
     if a.theme:
         cfg = parse_theme(a.theme)
+        cfg["canvas"] = cfg[f"canvas_{a.canvas_choice}"]
     else:
         if not a.cat:
             ap.error("give a theme file or --cat")
@@ -327,6 +343,7 @@ def main():
     # wider greyscale gap — are independent of tint depth. They were wrongly
     # rejected as exclusive.
     derived = [derive_cat(c, canvas, outline, for_print, vivid) for c in cfg["cats"]]
+    slides = derive_slide_semantics(cfg, canvas, derived)
     special = derive_cat(cfg["special"], canvas, outline, for_print, vivid) \
         if cfg.get("special") else None
     global MIN_GREY_GAP
@@ -338,15 +355,20 @@ def main():
     # a readable border. There the greyscale gap check is the only real gate.
 
     print(":root{")
+    if cfg.get("canvas_tint"):
+        print(f"  --canvas-white:{cfg['canvas_white'].upper()}; "
+              f"--canvas-tint:{cfg['canvas_tint'].upper()};")
     print(f"  --canvas:{canvas.upper()}; --ink-strong:{ink.upper()};")
     for i, d in enumerate(derived, 1):
-        print(f"  --cat-{i}-base:{d['base']}; --cat-{i}-card:{d['card']}; "
-              f"--cat-{i}-card-sub:{d['card-sub']};")
+        print(f"  --cat-{i}-base:{d['base']}; --cat-{i}-line:{d['line']}; "
+              f"--cat-{i}-badge-ink:{d['badge-ink']};")
+        print(f"  --cat-{i}-card:{d['card']}; --cat-{i}-card-sub:{d['card-sub']};")
         print(f"  --cat-{i}-region:{d['region']}; --cat-{i}-region-line:{d['region-line']}; "
               f"--cat-{i}-label:{d['label']};")
     if special:
-        print(f"  --cat-s-base:{special['base']}; --cat-s-card:{special['card']}; "
-              f"--cat-s-card-sub:{special['card-sub']};")
+        print(f"  --cat-s-base:{special['base']}; --cat-s-line:{special['line']}; "
+              f"--cat-s-badge-ink:{special['badge-ink']};")
+        print(f"  --cat-s-card:{special['card']}; --cat-s-card-sub:{special['card-sub']};")
         print(f"  --cat-s-region:{special['region']}; --cat-s-region-line:{special['region-line']}; "
               f"--cat-s-label:{special['label']};")
     if cfg.get("terminal"):
@@ -355,6 +377,14 @@ def main():
         print(f"  --accent:{cfg['accent'].upper()};")
     if cfg.get("highlight"):
         print(f"  --highlight:{cfg['highlight'].upper()};")
+    if a.theme:
+        print("  --slide-ink:var(--ink-strong);")
+        if slides["emphasis"]:
+            print(f"  --slide-emphasis:{slides['emphasis']};")
+            print("  --slide-title-rule:var(--slide-emphasis);")
+            print("  --slide-hero:var(--slide-emphasis);")
+        for i in range(len(slides["categories"])):
+            print(f"  --slide-category-{i + 1}:var(--cat-{i + 1}-line);")
     print("}")
 
     print("\n| pair | ratio | verdict |")
@@ -428,6 +458,11 @@ def main():
             print(f"note: highlight is {gap:.0f}° from {nearest}. Fine as a text "
                   "underline; avoid surface/emphasis on that category, where the "
                   "offset block would read as the category itself.")
+    if slides["emphasis"]:
+        r = contrast(hex2rgb(slides["emphasis"]), hex2rgb(canvas))
+        fails += r < 4.5
+        print(f"| slide emphasis on canvas | {r:.1f}:1 | "
+              f"{'PASS' if r >= 4.5 else 'FAIL body text'} |")
     if for_print and canvas.upper() != "#FFFFFF":
         fails += 1
         print(f"FAIL: print theme on canvas {canvas} — use #FFFFFF. Printing a "

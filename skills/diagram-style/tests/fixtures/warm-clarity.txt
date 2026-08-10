@@ -1,0 +1,61 @@
+exit=0
+:root{
+  --canvas-white:#FFFFFF; --canvas-tint:#FCFBF8;
+  --canvas:#FFFFFF; --ink-strong:#0B162C;
+  --cat-1-base:#245282; --cat-1-line:#214A76; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#E9EEF2; --cat-1-card-sub:#DCE3EB;
+  --cat-1-region:#F6F8FA; --cat-1-region-line:#DCE3EB; --cat-1-label:#245282;
+  --cat-2-base:#458F70; --cat-2-line:#3F8266; --cat-2-badge-ink:#FFFFFF;
+  --cat-2-card:#ECF4F1; --cat-2-card-sub:#E1EDE8;
+  --cat-2-region:#F8FBF9; --cat-2-region-line:#E1EDE8; --cat-2-label:#3D7E63;
+  --cat-3-base:#EC902F; --cat-3-line:#D1680E; --cat-3-badge-ink:#111111;
+  --cat-3-card:#FCECDC; --cat-3-card-sub:#FBE5CF;
+  --cat-3-region:#FDF3E8; --cat-3-region-line:#FBE5CF; --cat-3-label:#B2540C;
+  --cat-s-base:#C4473A; --cat-s-line:#B34135; --cat-s-badge-ink:#FFFFFF;
+  --cat-s-card:#F9EDEB; --cat-s-card-sub:#F6E2DF;
+  --cat-s-region:#FDF8F7; --cat-s-region-line:#F6E2DF; --cat-s-label:#C4473A;
+  --terminal:#0C1123;
+  --accent:#C04C00;
+  --highlight:#F1D37A;
+  --slide-ink:var(--ink-strong);
+  --slide-emphasis:#C04C00;
+  --slide-title-rule:var(--slide-emphasis);
+  --slide-hero:var(--slide-emphasis);
+  --slide-category-1:var(--cat-1-line);
+  --slide-category-2:var(--cat-2-line);
+  --slide-category-3:var(--cat-3-line);
+}
+
+| pair | ratio | verdict |
+|---|---|---|
+| ink on cat-1-card | 15.4:1 | PASS |
+| ink on cat-1-region | 16.9:1 | PASS |
+| cat-1-line on card (border) | 7.8:1 | PASS |
+| white on cat-1-line (badge) | 9.1:1 | PASS |
+| cat-1-label on region | 7.6:1 | PASS |
+| ink on cat-2-card | 16.1:1 | PASS |
+| ink on cat-2-region | 17.3:1 | PASS |
+| cat-2-line on card (border) | 4.1:1 | PASS |
+| white on cat-2-line (badge) | 4.6:1 | PASS |
+| cat-2-label on region | 4.6:1 | PASS |
+| ink on cat-3-card | 15.6:1 | PASS |
+| ink on cat-3-region | 16.4:1 | PASS |
+| cat-3-line on card (border) | 3.2:1 | PASS |
+| dark on cat-3-line (badge) | 5.1:1 | PASS |
+| cat-3-label on region | 4.6:1 | PASS |
+| ink on cat-s-card | 15.7:1 | PASS |
+| ink on cat-s-region | 17.1:1 | PASS |
+| cat-s-line on card (border) | 4.9:1 | PASS |
+| white on cat-s-line (badge) | 5.6:1 | PASS |
+| cat-s-label on region | 4.6:1 | PASS |
+| ink on highlight | 12.3:1 | PASS |
+| highlight on canvas | 1.46:1 | PASS |
+note: highlight is 14° from #EC902F. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
+| slide emphasis on canvas | 4.9:1 | PASS |
+| white on terminal | 18.7:1 | PASS |
+
+greyscale L: cat-1=8%  cat-2=22%  cat-3=38%
+category lightness: ascending — safe for ordered stages
+note: warm bump (+7%) applied to cat-3
+
+all text-carrying pairs pass.

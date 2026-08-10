@@ -1,13 +1,17 @@
 exit=0
 :root{
   --canvas:#FFFFFF; --ink-strong:#1E2A36;
-  --cat-1-base:#295087; --cat-1-card:#E1E6EE; --cat-1-card-sub:#D4DCE7;
+  --cat-1-base:#295087; --cat-1-line:#25497A; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#E1E6EE; --cat-1-card-sub:#D4DCE7;
   --cat-1-region:#EEF1F5; --cat-1-region-line:#D0D8E5; --cat-1-label:#295087;
-  --cat-2-base:#279B8D; --cat-2-card:#E1F1EF; --cat-2-card-sub:#CFE9E6;
+  --cat-2-base:#279B8D; --cat-2-line:#248E81; --cat-2-badge-ink:#111111;
+  --cat-2-card:#E1F1EF; --cat-2-card-sub:#CFE9E6;
   --cat-2-region:#EEF7F6; --cat-2-region-line:#CFE9E6; --cat-2-label:#1F7C71;
-  --cat-3-base:#E9A552; --cat-3-card:#FAECDB; --cat-3-card-sub:#F9E5CD;
+  --cat-3-base:#E9A552; --cat-3-line:#CA6B15; --cat-3-badge-ink:#111111;
+  --cat-3-card:#FAECDB; --cat-3-card-sub:#F9E5CD;
   --cat-3-region:#FCF2E5; --cat-3-region-line:#F9E5CD; --cat-3-label:#AC5712;
-  --cat-s-base:#B0342A; --cat-s-card:#F4E3E1; --cat-s-card-sub:#EED4D2;
+  --cat-s-base:#B0342A; --cat-s-line:#A02F26; --cat-s-badge-ink:#FFFFFF;
+  --cat-s-card:#F4E3E1; --cat-s-card-sub:#EED4D2;
   --cat-s-region:#F9EFEE; --cat-s-region-line:#EED2D0; --cat-s-label:#B0342A;
 }
 

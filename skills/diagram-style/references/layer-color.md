@@ -41,6 +41,32 @@
 單值角色：`canvas`、`ink-strong`、`ink-muted`、`connector`、`infra`、`terminal`、`accent`。
 `accent` 限 3 處以內，且不可與任何 `cat-*` 同色。
 
+## 投影片語意色
+
+投影片使用四組語意 token，讓標題、強調與類別不必直接引用底層色票名稱。
+
+| 投影片角色 | Token | 來源 | 用法 |
+|---|---|---|---|
+| 主字體顏色 | `--slide-ink` | `ink-strong` | 標題、內文與主要標籤 |
+| 字體強調色 | `--slide-emphasis` | `accent` 對所選 canvas 解到 4.6:1 | 一頁最多 3 處的關鍵字 |
+| 標題區塊引導線段 | `--slide-title-rule` | `--slide-emphasis` | 標題下方或旁側的短引導線 |
+| 大標數字／hero | `--slide-hero` | `--slide-emphasis` | 關鍵數字、單字或短句型 hero |
+| category colors | `--slide-category-N` | `cat-N-line` | 分類徽章底、邊框、圖示與短色條 |
+
+這一層只有語意別名，不另存一組色碼。
+`--slide-emphasis` 例外需要輸出實際色值，因為原始 `accent` 只決定色相與性格，不保證作為文字時對畫布有足夠對比。
+`--slide-title-rule` 與 `--slide-hero` 必須引用 `--slide-emphasis`，不能另選近似色；三者是同一個投影片引導語意的線段、強調文字與大型焦點表現。
+`--slide-category-N` 不可直接映射 `cat-N-base`，因為 base 是主題輸入值，沒有承擔可讀對比；映射到已解過對比的 `cat-N-line`。
+既有 `highlight` 仍供圖表的螢光筆畫記與表面強調使用，但不屬於投影片語意色。
+
+每組主題提供兩個畫布值：`canvas-white` 是純白底，`canvas-tint` 是帶有該主題色溫的專屬淺底。
+實際輸出時選定其中一個作 `canvas`，所有 region、card、line 與 label 都必須針對該 canvas 重新推導，不能把在白底算出的色階直接搬到淺色底。
+`print` 模式固定選 `canvas-white`；`canvas-tint` 只供螢幕或不受印刷限制的輸出使用。
+
+```bash
+python scripts/derive.py themes/<theme>.md --canvas-choice tint
+```
+
 以 `mix(base, canvas, p)`：`channel = base_ch × p + canvas_ch × (1 − p)`
 
 **混的對象是 canvas，不是白色。** 深底主題的卡片必須比底色亮一階而非暗一階，
@@ -196,8 +222,8 @@ python scripts/derive.py themes/<theme>.md
 ## 樣式參考表
 
 `docs/style-reference.html` 是整套系統的單一參考表：角色語意、三種筆調、
-四種狀態、五種線型、各主題的實際推導值。每組顏色**畫在自己的畫布色上**——
-色階是相對畫布推導的，全部排在白底會失真。
+四種狀態、五種線型、各主題的實際推導值。參考頁同時列出純白與專屬淺底，
+並在專屬淺底上重算、呈現整組色階；色階是相對畫布推導的，全部排在白底會失真。
 
 ```bash
 python scripts/render_reference.py       # 重生 docs/style-reference.html

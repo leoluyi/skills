@@ -1,19 +1,33 @@
 exit=0
 :root{
+  --canvas-white:#FFFFFF; --canvas-tint:#F7F4F8;
   --canvas:#FFFFFF; --ink-strong:#2A2433;
-  --cat-1-base:#324885; --cat-1-card:#E2E5EE; --cat-1-card-sub:#D6DAE7;
+  --cat-1-base:#324885; --cat-1-line:#2D4179; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#E2E5EE; --cat-1-card-sub:#D6DAE7;
   --cat-1-region:#E2E5EE; --cat-1-region-line:#ADB6CE; --cat-1-label:#324885;
-  --cat-2-base:#619A68; --cat-2-card:#DCE9DE; --cat-2-card-sub:#CEE0D0;
+  --cat-2-base:#619A68; --cat-2-line:#578B5E; --cat-2-badge-ink:#111111;
+  --cat-2-card:#DCE9DE; --cat-2-card-sub:#CEE0D0;
   --cat-2-region:#E9F1EA; --cat-2-region-line:#C0D7C3; --cat-2-label:#4A754F;
-  --cat-3-base:#B4BC11; --cat-3-card:#E6E9B0; --cat-3-card-sub:#DCE08F;
+  --cat-3-base:#B4BC11; --cat-3-line:#868209; --cat-3-badge-ink:#111111;
+  --cat-3-card:#E6E9B0; --cat-3-card-sub:#DCE08F;
   --cat-3-region:#F4F6DE; --cat-3-region-line:#E1E4A0; --cat-3-label:#777108;
-  --cat-4-base:#FFC367; --cat-4-card:#FFE4BB; --cat-4-card-sub:#FFDDA8;
+  --cat-4-base:#FFC367; --cat-4-line:#CA6400; --cat-4-badge-ink:#111111;
+  --cat-4-card:#FFE4BB; --cat-4-card-sub:#FFDDA8;
   --cat-4-region:#FFF2DF; --cat-4-region-line:#FFE3B8; --cat-4-label:#B05400;
-  --cat-s-base:#FF4567; --cat-s-card:#FFDEE4; --cat-s-card-sub:#FFCFD7;
+  --cat-s-base:#FF4567; --cat-s-line:#FE002E; --cat-s-badge-ink:#111111;
+  --cat-s-card:#FFDEE4; --cat-s-card-sub:#FFCFD7;
   --cat-s-region:#FFE5EA; --cat-s-region-line:#FFB5C2; --cat-s-label:#D40027;
   --terminal:#2A2433;
-  --accent:#8B5CF6;
+  --accent:#147A8A;
   --highlight:#ECE196;
+  --slide-ink:var(--ink-strong);
+  --slide-emphasis:#147A8A;
+  --slide-title-rule:var(--slide-emphasis);
+  --slide-hero:var(--slide-emphasis);
+  --slide-category-1:var(--cat-1-line);
+  --slide-category-2:var(--cat-2-line);
+  --slide-category-3:var(--cat-3-line);
+  --slide-category-4:var(--cat-4-line);
 }
 
 | pair | ratio | verdict |
@@ -46,6 +60,7 @@ exit=0
 | ink on highlight | 11.3:1 | PASS |
 | highlight on canvas | 1.33:1 | PASS |
 note: highlight is 10° from #B4BC11. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
+| slide emphasis on canvas | 5.0:1 | PASS |
 | white on terminal | 15.0:1 | PASS |
 
 greyscale L: cat-1=7%  cat-2=27%  cat-3=46%  cat-4=61%

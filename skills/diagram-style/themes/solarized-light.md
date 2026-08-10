@@ -2,7 +2,7 @@
 
 以 Ethan Schoonover 的 Solarized 淺色為底，兩處刻意偏離原始規格：
 
-1. **畫布近白**：`base3` `#FDF6E3`（L94.1 S87）→ `#FDFDFC`（L99 S26）。
+1. **雙畫布**：純白供通用輸出，專屬暖色淺底由 `base3` `#FDF6E3` 向白混色 75% 得到 `#FEFDF8`。
    幾乎是白色，只留極淡的暖調。
 2. **cat-1 換色相**：從 `base02` 深板岩改為 Solarized `blue` 色相的深藍。
    原本 cat-1 (H192) 與 cat-3 cyan (H175) 只差 18°，兩者都是青綠家族，
@@ -35,8 +35,9 @@ mode: standard
   --terminal:    #002B36;   /* base03 — 原值 */
   --ink-strong:  #002B36;   /* base03 — 原值 */
   --ink-muted:   #576F76;   /* base01 +8% 彩 */
-  --canvas:      #FDFDFC;   /* 近白，極淡暖調 */
-  --accent:      #686EC8;   /* violet +8% 彩 */
+  --canvas-white: #FFFFFF;
+  --canvas-tint:  #FEFDF8;   /* Solarized base3 向白混色 75% */
+  --accent:      #A13D7C;   /* magenta，避開藍、綠、橘黃類別 */
   --highlight:   #F0DF6F;   /* 螢光筆 — 黃 H52 S82 — 跟隨主題的高飽和 */
 }
 ```
@@ -57,12 +58,11 @@ mode: standard
 cat-3 從 Solarized yellow 的色相出發，但提高明度到 42%，讓它與 30% 的綠保有灰階距離。
 原本位於 18% 的 orange 改為 `cat-s`，保留給 warning、issue、error、blocker 與異常狀態。
 
-## 這是第一個非白畫布的主題
+## 專屬淺底
 
-色階推導混的是 `canvas` 而不是白色，所以卡片底帶著畫布的暖調，與底色同溫。
+`canvas-tint` 將 Solarized 原生 `base3` 分四階向白混色，每階增加 25% 白色，取調淺三階的 75% 混色值 `#FEFDF8`。
+選用它時，色階推導混的是該淺底而不是白色，所以卡片底會與畫布同溫。
 若推導寫死白色，卡片會泛冷、跟底色打架。
-
-畫布提亮到 L97.5 之後這件事更關鍵：色差變小，任何冷暖不一致都會更明顯。
 
 ## 為什麼三個類別無法全從強調色裡選
 
@@ -91,9 +91,8 @@ Solarized 靠**色相**區分，明度刻意齊平，這樣切換淺／深色版
 勉強及格，但放到帶色卡片底上只剩 **4.2:1**——低對比的名聲是真的。
 所以 `ink-strong` 用 base03，base01 降級為 `ink-muted`（僅用於註記、來源）。
 
-`cat-2` 橘與 `accent` 紫的明度分別是 18.4 與 19.0，灰階下幾乎同階。
-accent 限 3 處以內且通常用於文字強調，不當類別面，實務上不衝突——
-但**不要把 accent 拿去填任何卡片**。
+`accent` 使用類別階梯之外的 magenta，只承載投影片關鍵字、標題引導線與 hero。
+它不參與類別灰階排序，也**不能拿去填任何卡片**。
 
 ## 原始值
 

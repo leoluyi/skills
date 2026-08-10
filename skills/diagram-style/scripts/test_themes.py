@@ -19,6 +19,9 @@ import os
 import subprocess
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from derive import parse_theme  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 FIX = os.path.join(ROOT, "tests", "fixtures")
@@ -49,10 +52,17 @@ def main():
     a = ap.parse_args()
     os.makedirs(FIX, exist_ok=True)
 
+    failed = []
+    for name in themes():
+        cfg = parse_theme(os.path.join(ROOT, "themes", name + ".md"))
+        if cfg["canvas_white"].upper() != "#FFFFFF":
+            failed.append((name, "canvas-white must be #FFFFFF"))
+        if cfg["canvas_tint"].upper() == cfg["canvas_white"].upper():
+            failed.append((name, "canvas-tint must be distinct from canvas-white"))
+
     jobs = [(t, ["themes/%s.md" % t]) for t in themes()]
     jobs += [(c["name"], c["args"]) for c in cases()]
 
-    failed = []
     for name, args in jobs:
         got = run(args)
         path = os.path.join(FIX, name + ".txt")

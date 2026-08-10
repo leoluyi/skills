@@ -1,15 +1,26 @@
 exit=0
 :root{
+  --canvas-white:#FFFFFF; --canvas-tint:#F4F8FC;
   --canvas:#FFFFFF; --ink-strong:#0F3157;
-  --cat-1-base:#0F3157; --cat-1-card:#FFFFFF; --cat-1-card-sub:#FFFFFF;
+  --cat-1-base:#0F3157; --cat-1-line:#0D2C4E; --cat-1-badge-ink:#FFFFFF;
+  --cat-1-card:#FFFFFF; --cat-1-card-sub:#FFFFFF;
   --cat-1-region:#FFFFFF; --cat-1-region-line:#FFFFFF; --cat-1-label:#0F3157;
-  --cat-2-base:#2367B0; --cat-2-card:#FFFFFF; --cat-2-card-sub:#FFFFFF;
+  --cat-2-base:#2367B0; --cat-2-line:#205EA0; --cat-2-badge-ink:#FFFFFF;
+  --cat-2-card:#FFFFFF; --cat-2-card-sub:#FFFFFF;
   --cat-2-region:#FFFFFF; --cat-2-region-line:#FFFFFF; --cat-2-label:#2367B0;
-  --cat-3-base:#5091D8; --cat-3-card:#FFFFFF; --cat-3-card-sub:#FFFFFF;
+  --cat-3-base:#5091D8; --cat-3-line:#3B84D3; --cat-3-badge-ink:#111111;
+  --cat-3-card:#FFFFFF; --cat-3-card-sub:#FFFFFF;
   --cat-3-region:#FFFFFF; --cat-3-region-line:#FFFFFF; --cat-3-label:#2D77C8;
   --terminal:#0F3157;
-  --accent:#B03A2E;
+  --accent:#D35400;
   --highlight:#CBE2F3;
+  --slide-ink:var(--ink-strong);
+  --slide-emphasis:#C74F00;
+  --slide-title-rule:var(--slide-emphasis);
+  --slide-hero:var(--slide-emphasis);
+  --slide-category-1:var(--cat-1-line);
+  --slide-category-2:var(--cat-2-line);
+  --slide-category-3:var(--cat-3-line);
 }
 
 | pair | ratio | verdict |
@@ -32,6 +43,7 @@ exit=0
 | ink on highlight | 9.8:1 | PASS |
 | highlight on canvas | 1.34:1 | PASS |
 note: highlight is 6° from #2367B0. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
+| slide emphasis on canvas | 4.6:1 | PASS |
 | white on terminal | 13.1:1 | PASS |
 
 greyscale L: cat-1=3%  cat-2=13%  cat-3=27%
