@@ -322,8 +322,13 @@ def _round(name: str, cases: tuple[dict, ...], rows_: tuple[Row, ...], candidate
             group_index, group, group_rows = group_spec
             nonce = secrets.token_hex(8)
             candidate_is_a = secrets.randbelow(2) == 0
-            labelled_pairs = pairs if candidate_is_a else {
-                case_id: (base, candidate) for case_id, (candidate, base) in pairs.items()
+            group_ids = {case["id"] for case in group}
+            group_pairs = {
+                case_id: pairs[case_id]
+                for case_id in group_ids
+            }
+            labelled_pairs = group_pairs if candidate_is_a else {
+                case_id: (base, candidate) for case_id, (candidate, base) in group_pairs.items()
             }
             graded = _grade(_judge_prompt(group, group_rows, labelled_pairs, nonce), workspace,
                             f"grader-r{round_index}-g{group_index}", group_rows, nonce, False,
