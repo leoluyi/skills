@@ -17,8 +17,7 @@ from .legacy_errors import (
     Row,
     ScoreEvalsError,
 )
-
-FIXTURE_PATH = Path("evals") / "evals.json"
+from .schema import EvalError, detail_of, load_cases, slug_of
 
 CONFIG_KEYS = {
     "skill_paths",
@@ -255,54 +254,10 @@ def _incompatible(path: Path, value: object) -> tuple[dict, ...]:
 
 
 def load_fixture(skill_dir: Path) -> tuple[dict, ...]:
-    """Return evals.json's cases, validated down to the fields rows need."""
-    path = skill_dir / FIXTURE_PATH
-    if not path.exists():
-        raise FixtureError(f"missing declared fixture: {path}")
     try:
-        raw = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError) as exc:
-        raise FixtureError(f"{path}: {exc}") from exc
-    cases = raw.get("evals") if isinstance(raw, dict) else None
-    if not isinstance(cases, list) or not cases:
-        raise FixtureError(f"{path}: 'evals' must be a non-empty list")
-    seen: set[int] = set()
-    for index, case in enumerate(cases):
-        if not isinstance(case, dict):
-            raise FixtureError(f"{path}: evals[{index}] must be an object")
-        case_id = case.get("id")
-        if not isinstance(case_id, int) or isinstance(case_id, bool):
-            raise FixtureError(f"{path}: evals[{index}].id must be an integer, got {case_id!r}")
-        if case_id in seen:
-            raise FixtureError(f"{path}: duplicate case id {case_id}")
-        seen.add(case_id)
-        if not isinstance(case.get("prompt"), str) or not case["prompt"]:
-            raise FixtureError(f"{path}: case {case_id} has no prompt")
-        expectations = case.get("expectations")
-        if not isinstance(expectations, list) or any(
-            not isinstance(e, str) or not e for e in expectations
-        ):
-            raise FixtureError(f"{path}: case {case_id} expectations must be non-empty strings")
-        _reject_duplicate_slugs(path, case_id, expectations)
-    return tuple(cases)
-
-
-def _reject_duplicate_slugs(path: Path, case_id: int, expectations: list[str]) -> None:
-    """A case may not repeat an expectation slug.
-
-    Grader rows are matched on (case_id, slug), so two rows sharing that key
-    would both be satisfied by one judgment and silently take the same verdict
-    even when their classes differ.
-    """
-    seen: set[str] = set()
-    for expectation in expectations:
-        slug = slug_of(expectation)
-        if slug in seen:
-            raise FixtureError(
-                f"{path}: case {case_id} repeats expectation slug {slug!r}; "
-                "one judgment cannot stand for two rows"
-            )
-        seen.add(slug)
+        return load_cases(skill_dir)
+    except EvalError as exc:
+        raise FixtureError(str(exc)) from exc
 
 
 def unscored_notes(cases: tuple[dict, ...], config: dict) -> dict[int, tuple[str, ...]]:
@@ -318,15 +273,6 @@ def unscored_notes(cases: tuple[dict, ...], config: dict) -> dict[int, tuple[str
         )
         for case in cases
     }
-
-
-def slug_of(expectation: str) -> str:
-    return expectation.split(":", 1)[0].strip()
-
-
-def detail_of(expectation: str) -> str:
-    head, sep, tail = expectation.partition(":")
-    return tail.strip() if sep else head.strip()
 
 
 def classify(slug: str, verdict_class: dict) -> str:

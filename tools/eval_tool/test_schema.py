@@ -2,8 +2,11 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from eval_tool.cli import summarize_verdict
+from eval_tool.legacy_config import load_fixture
+from eval_tool.legacy_errors import FixtureError
 from eval_tool.schema import EvalError, load_cases, load_config, resolve_ids, rows
 
 
@@ -24,6 +27,14 @@ class SchemaTests(unittest.TestCase):
         self.assertEqual(resolve_ids("1-3,5", {1, 2, 3, 5}), (1, 2, 3, 5))
         with self.assertRaises(EvalError):
             resolve_ids("4", {1, 2, 3})
+
+    def test_annotation_fixture_errors_keep_fixture_error_type(self) -> None:
+        with TemporaryDirectory() as tmp:
+            skill = Path(tmp)
+            (skill / "evals").mkdir()
+            (skill / "evals" / "evals.json").write_text("{}\n", encoding="utf-8")
+            with self.assertRaises(FixtureError):
+                load_fixture(skill)
 
     def test_critical_regression_blocks(self) -> None:
         cases = load_cases(ROOT / "skills" / "humanizer-zh")
