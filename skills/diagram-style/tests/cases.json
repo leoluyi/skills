@@ -164,6 +164,21 @@
     ]
   },
   {
+    "name": "special_excluded_from_category_gap",
+    "why": "cat-s 是固定語意的特殊色；即使明度接近類別，也不應污染平行類別的灰階間距檢查",
+    "args": [
+      "--cat",
+      "295087,279B8D,E9A552",
+      "--cat-s",
+      "B0342A",
+      "--canvas",
+      "FFFFFF",
+      "--ink",
+      "1E2A36",
+      "--print"
+    ]
+  },
+  {
     "name": "print_and_vivid_compose",
     "why": "print 與 vivid 並存：走 vivid 階梯、套 print 的純白畫布與 15% 灰階門檻",
     "args": [

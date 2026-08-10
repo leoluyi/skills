@@ -7,8 +7,12 @@ exit=0
   --cat-2-region:#F5FCFA; --cat-2-region-line:#D9F4EB; --cat-2-label:#0B835B;
   --cat-3-base:#FBBF24; --cat-3-card:#FEF4DA; --cat-3-card-sub:#FEF0CD;
   --cat-3-region:#FFF8E7; --cat-3-region-line:#FEF0CD; --cat-3-label:#A26300;
+  --cat-4-base:#DDD6FF; --cat-4-card:#FCFBFF; --cat-4-card-sub:#FAF8FF;
+  --cat-4-region:#FEFDFF; --cat-4-region-line:#FAF8FF; --cat-4-label:#7356FF;
+  --cat-s-base:#DC2626; --cat-s-card:#FCE9E9; --cat-s-card-sub:#F9DCDC;
+  --cat-s-region:#FEF6F6; --cat-s-region-line:#F9DCDC; --cat-s-label:#DB2323;
   --terminal:#1F2937;
-  --accent:#EF4444;
+  --accent:#EC4899;
   --highlight:#F2E172;
 }
 
@@ -29,12 +33,22 @@ exit=0
 | cat-3-line on card (border) | 3.2:1 | PASS |
 | dark on cat-3-line (badge) | 5.4:1 | PASS |
 | cat-3-label on region | 4.6:1 | PASS |
+| ink on cat-4-card | 14.2:1 | PASS |
+| ink on cat-4-region | 14.5:1 | PASS |
+| cat-4-line on card (border) | 3.2:1 | PASS |
+| dark on cat-4-line (badge) | 5.7:1 | PASS |
+| cat-4-label on region | 4.6:1 | PASS |
+| ink on cat-s-card | 12.6:1 | PASS |
+| ink on cat-s-region | 13.8:1 | PASS |
+| cat-s-line on card (border) | 4.8:1 | PASS |
+| white on cat-s-line (badge) | 5.6:1 | PASS |
+| cat-s-label on region | 4.6:1 | PASS |
 | ink on highlight | 11.0:1 | PASS |
 | highlight on canvas | 1.33:1 | PASS |
 note: highlight is 9° from #FBBF24. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
 | white on terminal | 14.7:1 | PASS |
 
-greyscale L: cat-1=15%  cat-2=36%  cat-3=58%
+greyscale L: cat-1=15%  cat-2=36%  cat-3=58%  cat-4=71%
 category lightness: ascending — safe for ordered stages
 note: warm bump (+7%) applied to cat-3
 

@@ -267,6 +267,7 @@ def parse_theme(path):
     cats = re.findall(r"--cat-\d+-base:\s*(#[0-9A-Fa-f]{6})", text)
     return {
         "cats": cats,
+        "special": grab("cat-s-base"),
         "canvas": grab("canvas") or "#FFFFFF",
         "ink": grab("ink-strong") or "#111111",
         "terminal": grab("terminal"),
@@ -294,6 +295,7 @@ def main():
     ap.add_argument("--terminal")
     ap.add_argument("--accent")
     ap.add_argument("--highlight")
+    ap.add_argument("--cat-s", help="special warning/issue base hex; excluded from category ordering")
     ap.add_argument("--outline", action="store_true",
                     help="unfilled surfaces; solve contrast against the canvas")
     ap.add_argument("--print", dest="for_print", action="store_true",
@@ -312,6 +314,7 @@ def main():
                "canvas": norm(a.canvas), "ink": norm(a.ink),
                "terminal": norm(a.terminal), "accent": norm(a.accent),
                "highlight": norm(a.highlight),
+               "special": norm(a.cat_s),
                "outline": False, "print": False, "vivid": a.vivid}
 
     canvas, ink = cfg["canvas"], cfg["ink"]
@@ -324,6 +327,8 @@ def main():
     # wider greyscale gap — are independent of tint depth. They were wrongly
     # rejected as exclusive.
     derived = [derive_cat(c, canvas, outline, for_print, vivid) for c in cfg["cats"]]
+    special = derive_cat(cfg["special"], canvas, outline, for_print, vivid) \
+        if cfg.get("special") else None
     global MIN_GREY_GAP
     MIN_GREY_GAP = PRINT_GREY_GAP if for_print else 0.10
     # Only outline mode has a hard ceiling, and it is derived: the border must
@@ -339,6 +344,11 @@ def main():
               f"--cat-{i}-card-sub:{d['card-sub']};")
         print(f"  --cat-{i}-region:{d['region']}; --cat-{i}-region-line:{d['region-line']}; "
               f"--cat-{i}-label:{d['label']};")
+    if special:
+        print(f"  --cat-s-base:{special['base']}; --cat-s-card:{special['card']}; "
+              f"--cat-s-card-sub:{special['card-sub']};")
+        print(f"  --cat-s-region:{special['region']}; --cat-s-region-line:{special['region-line']}; "
+              f"--cat-s-label:{special['label']};")
     if cfg.get("terminal"):
         print(f"  --terminal:{cfg['terminal'].upper()};")
     if cfg.get("accent"):
@@ -371,6 +381,25 @@ def main():
         ok = r >= 4.5
         fails += not ok
         print(f"| cat-{i}-label on region | {r:.1f}:1 | {'PASS' if ok else 'FAIL'} |")
+    if special:
+        for surface in ("card", "region"):
+            r = contrast(hex2rgb(ink), hex2rgb(special[surface]))
+            ok = r >= 4.5
+            fails += not ok
+            print(f"| ink on cat-s-{surface} | {r:.1f}:1 | {'PASS' if ok else 'FAIL body text'} |")
+        r = contrast(hex2rgb(special["line"]), hex2rgb(special["card"]))
+        ok = r >= 3.0
+        fails += not ok
+        print(f"| cat-s-line on card (border) | {r:.1f}:1 | {'PASS' if ok else 'FAIL graphic contrast'} |")
+        r = contrast(hex2rgb(special["badge-ink"]), hex2rgb(special["line"]))
+        ok = r >= 4.5
+        fails += not ok
+        lbl = "white" if special["badge-ink"] == "#FFFFFF" else "dark"
+        print(f"| {lbl} on cat-s-line (badge) | {r:.1f}:1 | {'PASS' if ok else 'FAIL'} |")
+        r = contrast(hex2rgb(special["label"]), hex2rgb(special["region"]))
+        ok = r >= 4.5
+        fails += not ok
+        print(f"| cat-s-label on region | {r:.1f}:1 | {'PASS' if ok else 'FAIL'} |")
     if cfg.get("highlight"):
         hl = hex2rgb(cfg["highlight"])
         r = contrast(hex2rgb(ink), hl)

@@ -26,11 +26,12 @@ mode: print
   --cat-1-base:  #295087;   /* 藏青 */
   --cat-2-base:  #279B8D;   /* 青 */
   --cat-3-base:  #E9A552;   /* 陶 */
+  --cat-s-base:  #B0342A;   /* 紅，只用於 warning／issue 等異常狀態 */
   --infra-base:  #8A8F96;
   --terminal:    #26364A;
   --ink-strong:  #1E2A36;
   --canvas:      #FFFFFF;   /* 純白＝紙白 */
-  --accent:      #B0342A;
+  --accent:      #6D63A8;
   --highlight:   #ECE196;   /* 螢光筆 — 黃 H52 S70 */
 }
 ```

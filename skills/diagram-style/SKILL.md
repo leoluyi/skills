@@ -60,7 +60,7 @@ SVG 與 PPTX——角色是契約，媒材是實作。
 |---|---|---|
 | 技術讀者、長時間螢幕閱讀 | `solarized-light` | 3 |
 | 會被印出來或影印 | `muted-ledger` | 3 |
-| 要跟既有前端介面一致 | `tailwind-default` | 3 |
+| 要跟既有前端介面一致 | `tailwind-default` | 4 |
 | 四階流程，起點深、暖冷有方向、會印出來 | `dusk-ramp` | 4 |
 | 四階流程，螢幕、要色相跨得遠 | `spectral-ramp` | 4 |
 | 附錄線稿（僅配 `blueprint`） | `blueprint-mono` | 3 |

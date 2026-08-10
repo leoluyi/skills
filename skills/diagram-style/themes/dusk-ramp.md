@@ -21,12 +21,13 @@ mode: vivid
   --cat-2-base:  #619A68;   /* 鼠尾草 */
   --cat-3-base:  #B4BC11;   /* 橄欖 */
   --cat-4-base:  #FFC367;   /* 琥珀 */
+  --cat-s-base:  #FF4567;   /* 玫紅，只用於 warning／issue 等異常狀態 */
   --infra-base:  #8A879D;
   --terminal:    #2A2433;
   --ink-strong:  #2A2433;
   --ink-muted:   #5E5866;
   --canvas:      #FFFFFF;
-  --accent:      #FF4567;   /* 玫紅 — 漸層最暖端，不進類別 */
+  --accent:      #8B5CF6;   /* 紫 — 一般強調 */
   --highlight:   #ECE196;   /* 螢光筆 — 黃 H52 S70 */
 }
 ```
@@ -58,8 +59,8 @@ cat-1 用 `5A6070` 板岩而非 `4D455C` 紫灰：兩者明度只差 5，取哪�
 但板岩是藍色相（H224），與其餘三色（H129／H68／H38）相差 96–173°，
 比紫灰更能拉開。**色相分離和明度分離要一起看。**
 
-`#FD4869` 玫紅沒進類別而是當 `accent`：它是全組最搶眼的，
-放進類別會讓那一階永遠壓過其他三階。
+`#FD4869` 玫紅沒有進入平行類別。
+它是全組最搶眼的顏色，因此改作 `cat-s`，只標示 warning、issue、error、blocker 與異常狀態。
 
 ## 陷阱
 

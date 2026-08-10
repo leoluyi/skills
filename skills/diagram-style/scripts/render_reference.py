@@ -427,6 +427,8 @@ def main():
     for tn, pur, mode, t in ts:
         cats = [derive_cat(c, t["canvas"], t.get("outline"), t.get("print"),
                            t.get("vivid")) for c in t["cats"]]
+        special = derive_cat(t["special"], t["canvas"], t.get("outline"),
+                             t.get("print"), t.get("vivid")) if t.get("special") else None
         gl = " · ".join(f'{luminance(hex2rgb(c["base"]))*100:.0f}' for c in cats)
         flags = "".join(f'<span class="flag">{m}</span>' for m in mode.split() if m)
         p.append(f'<section class="panel" style="background:{t["canvas"]};'
@@ -455,6 +457,14 @@ def main():
                 p.append(f'<span class="demo" style="background:{c["card"]};'
                          f'border:1.5px solid {c["line"]}">卡片樣貌</span>')
             p.append('</div>')
+        if special:
+            p.append('<div class="row"><span class="rl">cat-s</span>')
+            for key, _, _ in ROLES:
+                p.append(f'<span class="sw" data-hex="{special[key]}" title="{key}" '
+                         f'style="background:{special[key]};color:{ink_on(special[key])}">'
+                         f'{special[key]}</span>')
+            p.append(f'<span class="demo" style="background:{special["card"]};'
+                     f'border:1.5px solid {special["line"]}">警告／問題</span></div>')
         p.append('</div></section>')
 
 

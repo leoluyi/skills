@@ -9,8 +9,10 @@ exit=0
   --cat-3-region:#F4F6DE; --cat-3-region-line:#E1E4A0; --cat-3-label:#777108;
   --cat-4-base:#FFC367; --cat-4-card:#FFE4BB; --cat-4-card-sub:#FFDDA8;
   --cat-4-region:#FFF2DF; --cat-4-region-line:#FFE3B8; --cat-4-label:#B05400;
+  --cat-s-base:#FF4567; --cat-s-card:#FFDEE4; --cat-s-card-sub:#FFCFD7;
+  --cat-s-region:#FFE5EA; --cat-s-region-line:#FFB5C2; --cat-s-label:#D40027;
   --terminal:#2A2433;
-  --accent:#FF4567;
+  --accent:#8B5CF6;
   --highlight:#ECE196;
 }
 
@@ -36,6 +38,11 @@ exit=0
 | cat-4-line on card (border) | 3.2:1 | PASS |
 | dark on cat-4-line (badge) | 4.8:1 | PASS |
 | cat-4-label on region | 4.6:1 | PASS |
+| ink on cat-s-card | 12.0:1 | PASS |
+| ink on cat-s-region | 12.6:1 | PASS |
+| cat-s-line on card (border) | 3.2:1 | PASS |
+| dark on cat-s-line (badge) | 4.7:1 | PASS |
+| cat-s-label on region | 4.6:1 | PASS |
 | ink on highlight | 11.3:1 | PASS |
 | highlight on canvas | 1.33:1 | PASS |
 note: highlight is 10° from #B4BC11. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.

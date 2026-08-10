@@ -9,9 +9,6 @@ exit=0
   --cat-3-region:#FCF2E5; --cat-3-region-line:#F9E5CD; --cat-3-label:#AC5712;
   --cat-s-base:#B0342A; --cat-s-card:#F4E3E1; --cat-s-card-sub:#EED4D2;
   --cat-s-region:#F9EFEE; --cat-s-region-line:#EED2D0; --cat-s-label:#B0342A;
-  --terminal:#26364A;
-  --accent:#6D63A8;
-  --highlight:#ECE196;
 }
 
 | pair | ratio | verdict |
@@ -36,10 +33,6 @@ exit=0
 | cat-s-line on card (border) | 5.8:1 | PASS |
 | white on cat-s-line (badge) | 7.2:1 | PASS |
 | cat-s-label on region | 5.5:1 | PASS |
-| ink on highlight | 11.0:1 | PASS |
-| highlight on canvas | 1.33:1 | PASS |
-note: highlight is 19° from #E9A552. Fine as a text underline; avoid surface/emphasis on that category, where the offset block would read as the category itself.
-| white on terminal | 12.3:1 | PASS |
 
 greyscale L: cat-1=8%  cat-2=26%  cat-3=45%
 category lightness: ascending — safe for ordered stages
