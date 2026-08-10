@@ -4,7 +4,7 @@
 
 **寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
-[![Skills](https://img.shields.io/badge/skills-20-6d4aff?style=flat-square)](#技能目錄)
+[![Skills](https://img.shields.io/badge/skills-21-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-20 個技能、7 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+21 個技能、7 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -92,6 +92,7 @@ tools/sync-skills
 | Skill | 叫用方式 | 做什麼 |
 |---|---|---|
 | **簡報顧問**<br>[`deck-consulting`](skills/deck-consulting/SKILL.md) | `user-invoked` | 像顧問一樣一次做一個節點：溝通定位、骨架定形、主張式標題、敘事編排、破題定錨、收束提請、口說轉譯、逐頁診斷，每個節點的產出落成檔案，下一個節點直接接手 |
+| **簡報內容撰寫**<br>[`deck-writer`](skills/deck-writer/SKILL.md) | `model-invoked` | 把主題或素材寫成完整的逐頁簡報 Markdown，包含論證、主張式標題、投影片內文、來源註記與講者備註 |
 
 ### 文件與設計
 

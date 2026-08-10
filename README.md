@@ -4,7 +4,7 @@
 
 **Agent skills that write Traditional Chinese like a real person — straight from my `~/.skills`.**
 
-[![Skills](https://img.shields.io/badge/skills-20-6d4aff?style=flat-square)](#skill-catalog)
+[![Skills](https://img.shields.io/badge/skills-21-6d4aff?style=flat-square)](#skill-catalog)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-second-setup)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -73,7 +73,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-20 skills across 7 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+21 skills across 7 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
@@ -97,6 +97,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 | Skill | Invocation | What it does |
 |---|---|---|
 | **Deck Consulting**<br>[`deck-consulting`](skills/deck-consulting/SKILL.md) | `user-invoked` | Advise on a presentation one node at a time — positioning, structure, headlines, storyline, opening, closing, delivery, layout — with each node's artifact on disk so the next one picks up where it left off |
+| **Deck Writer**<br>[`deck-writer`](skills/deck-writer/SKILL.md) | `model-invoked` | Turn a topic or source bundle into a complete slide-by-slide Markdown deck with an argument, assertion-style titles, full on-slide copy, evidence notes, and speaker notes |
 
 ### Docs & Design
 

@@ -1,0 +1,39 @@
+{
+  "skill_name": "deck-writer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "請把這份內部提案整理成 6 頁簡報內容，對象是工程處主管，目標是核准兩週的 observability 改善 sprint。已知資料：最近 30 天有 14 起告警，其中 9 起無法從 dashboard 定位；平均定位時間 47 分鐘；改善項目是 trace coverage、告警分級、三個核心服務的 SLO。請直接寫完整逐頁文案，不用做 PPT。",
+      "expected_output": "A six-slide Traditional Chinese content deck that leads engineering leadership from operational evidence to a bounded approval request.",
+      "expectations": [
+        "The artifact contains exactly six slide sections with assertion-style titles, complete on-slide copy, purpose, layout cue, and source notes.",
+        "The numbers 14, 9, and 47 retain their meaning and units, and no unsupported quantitative claim is added.",
+        "The final slide asks for approval of a two-week observability sprint and names trace coverage, alert tiers, and SLO work.",
+        "All user-facing prose uses Traditional Chinese with Taiwan business usage."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Turn the attached product notes into a 10-slide customer webinar deck for security engineers. The audience should leave understanding why passkeys reduce phishing exposure and book a technical assessment. Show me the outline first because legal has not approved the customer examples.",
+      "expected_output": "An English outline checkpoint that preserves the legal uncertainty and does not invent customer evidence or prematurely draft the full deck.",
+      "expectations": [
+        "The response contains exactly ten one-line slide entries, each naming an assertion-style claim, its job or evidence, and a proposed content form, then stops for outline approval before full slide copy.",
+        "The arc explains passkey phishing resistance and ends in a technical-assessment call to action.",
+        "Customer examples are marked as pending legal approval or as evidence gaps, not presented as facts.",
+        "The response does not claim to have produced a PPTX or rendered slides."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "我有一篇 3,000 字的市場分析，但還沒決定這份簡報要給投資人、產品團隊還是客戶看，也不知道要講 5 分鐘或 30 分鐘。先幫我開始規劃簡報。",
+      "expected_output": "A compact clarification that asks only for decisions that materially determine the deck before assigning slides.",
+      "expectations": [
+        "The response asks for audience and setting, desired belief or action, and speaking time or slide scale, using the user's stated audience and duration possibilities as mutually exclusive options.",
+        "The questions are grouped into one compact message rather than spread across multiple turns.",
+        "Each audience or duration option explains how that choice would change the storyline, evidence, or scale instead of merely repeating the option label.",
+        "The response does not invent an audience, outcome, slide count, or market facts.",
+        "All user-facing prose uses Traditional Chinese with Taiwan business usage."
+      ]
+    }
+  ]
+}

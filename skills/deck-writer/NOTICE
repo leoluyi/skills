@@ -1,0 +1,7 @@
+This skill is original work by Lu Yi under the repository-root MIT License.
+
+Its functional scope was informed by the `deck-writer` skill in
+https://github.com/leoluyi/social-image-kit/tree/ad7cfbbf9d47d4dede1dafd1b41782cc4e2f7327/.agents/skills/deck-writer.
+That repository did not publish a license when this implementation was created.
+No source prose, examples, layout identifiers, or tool-specific templates were copied.
+Only general workflow ideas were retained: establish a deck brief, organize source material, confirm an outline when needed, write complete slide copy, and save versioned Markdown.
