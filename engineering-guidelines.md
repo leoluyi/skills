@@ -20,9 +20,12 @@ skills/<name>/
     └── label-check.json  # optional — opt into the tools/check-labels gate
 ```
 
-Keep the body under 500 lines; everything past that belongs in `references/` or `scripts/`.
+Keep the body under 500 lines.
+Move additional prose to `references/`; put deterministic logic in `scripts/`.
 
-The frontmatter needs two fields. The `description` is the **trigger gate** — the only thing the agent sees when deciding whether to load the skill. Name what should fire it *and* what should not:
+The frontmatter needs two fields.
+`description` is routing metadata: for model-invoked skills, it is the **trigger gate** the agent uses to decide whether to load the skill, so state what should fire it and the nearest lookalike boundary; for user-invoked skills, it is human-facing picker copy, so keep it as a concise summary.
+See [Invocation modes](#invocation-modes).
 
 ```yaml
 ---
@@ -37,7 +40,7 @@ description: Write or review technical RFP documents from the issuer's perspecti
 
 The `description` is an unquoted YAML plain scalar, and YAML does not decode `\u` escapes in plain scalars — the loader hands the agent the raw escape sequences, not the decoded text. Non-ASCII trigger phrases written as escapes are therefore dead: the skill reads fine and loads fine, but silently never fires on those prompts. The body is unaffected (it isn't parsed as YAML), which is why the bug hides.
 
-- **Detect:** `rg -l '\\u[0-9A-F]{4}' skills/*/SKILL.md` — any hit on a `description:` line is the bug. Escapes inside a *double-quoted* scalar are fine; those decode.
+- **Detect:** `rg -l '\\u[0-9A-Fa-f]{4}' skills/*/SKILL.md` — inspect any hit on a `description:` line. Escapes inside a *double-quoted* scalar are fine; those decode.
 - **Fix:** write the description in real UTF-8, same as the body. Check scaffolded skills before shipping.
 - **Related:** a `: ` (colon-space) inside an *unquoted* description breaks strict YAML parsers. Scaffold descriptions as `>-` folded block scalars — inside a block scalar, `:` and `"` are literal.
 
@@ -50,8 +53,10 @@ A skill goes through seven stages. Most die at stage 3.
 3. **Test** — write 3+ realistic prompts, run each **with** the skill and **without**. See [Test discipline](#test-discipline).
 4. **Iterate** — adjust the body until with-skill beats the baseline on every prompt. If you can't get there, cut it.
 5. **Optimize the description** — rewrite the trigger gate until the agent invokes it on the right prompts and *not* on lookalike-but-wrong ones.
-6. **Deploy** — commit and push. Consumer machines pull via `npx skills update --all` or `tools/sync-skills`.
+6. **Publish** — after review and validation, use the repo's normal commit and pull-request workflow. Do not infer permission to commit, push, or make other external changes. Consumer machines pull via `npx skills update --all` or `tools/sync-skills`.
 7. **Maintain / retire** — `tools/usage-report` quarterly; archive dormant skills via `tools/archive-skill <name>`. See [Maintenance](#maintenance).
+
+Each stage is complete only when its named artifact or gate exists: a backlog entry, scaffold, with/without results, a skill that beats baseline, passing trigger checks for model-invoked skills or a recorded boundary for user-invoked skills, reviewed changes ready for the repo workflow, or a usage-based archive decision.
 
 ## Naming
 
@@ -67,7 +72,7 @@ Every skill is **model-invoked** (agent or user can fire it — the default) or 
 
 A skill's words compete for the model's attention, and their *register* sets the model's mode. Compliance vocabulary — gate, checklist, must, verify — pushes the model into satisficing: it optimizes *passing your checks* instead of doing the craft. Told "text must fit", a compliance-mode model enlarges the box (the fastest path to green) instead of cutting words.
 
-- **Open with role, taste, and stakes; keep procedure light.** Model the register on Anthropic's official skills (~50–150 body lines): a craft brief, not an SOP. The 500-line cap is a ceiling, not a target.
+- **Open with role, taste, and stakes; keep procedure light.** Model the register on Anthropic's official skills: a craft brief, not an SOP. The 500-line cap is a ceiling, not a target.
 - **Explain *why*, not just *what*.** The why lets the model extrapolate to edge cases the bullets miss — it is what makes judgement possible instead of pattern-matching. If the skill says "do X", say what X prevents.
 - **Growth by incident is a defect log, not a skill.** After a failure, prefer in order: (1) delete or simplify the rule that created the pressure, (2) add an eval assertion, (3) add a scripted check. A new prose paragraph is the last resort — per-incident prose is the fastest way to bury the generative core.
 - **Don't spend tokens on what the model already does.** A rule earns its place only if removing it makes the output worse. Before adding one — and periodically for the ones already there — delete it and re-run the evals; if nothing regresses, it was stating the obvious, and the context it consumed was pure cost. Rules written to hobble an older model become the thing hobbling the current one.
@@ -79,7 +84,7 @@ A skill's words compete for the model's attention, and their *register* sets the
 - **Borrow battle-tested content verbatim.** When a proven source covers domain-general ground your skill needs, check the license, then import near-verbatim with attribution (a `NOTICE` file in the skill dir; provenance in the skill's `design-notes.md`). Paraphrase regresses proven prose toward the mean. Adapt only where the domain genuinely diverges.
 - **Two external standards, one tie-break.** How to *write* a skill follows [`writing-great-skills`](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills); how to *evaluate* one follows the official `skill-creator`. Where they overlap, `writing-great-skills` wins.
 
-Smell test across versions: `grep -ciE '\bmust\b|\bnever\b|hard-fail|checklist|verify' skills/<name>/SKILL.md` — a rising count signals bloat, independent of line count.
+Smell test across versions: `rg -ci '\bmust\b|\bnever\b|hard-fail|checklist|verify' skills/<name>/SKILL.md` — a rising count signals bloat, independent of line count.
 
 Sources: [`writing-great-skills`](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills) (MIT, Copyright (c) 2026 Matt Pocock) · `skill-creator` · [The new rules of context engineering for Claude 5-generation models](https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-generation-models).
 
@@ -171,7 +176,7 @@ Sources: `code.claude.com/docs/en/skills` · `learn.chatgpt.com/docs/build-skill
 Evals follow the official `skill-creator` standard: `skills/<name>/evals/evals.json`, each case a prompt, a description of success, and objectively verifiable assertions. Don't force assertions onto subjective quality — for design and writing skills, judge qualitatively against a small corpus of cases the user has already ruled on (`evals/judged-cases.md`).
 
 - **Beat the baseline or cut the skill.** A skill that exists but doesn't help is worse than none — it eats context, pollutes the trigger surface for other skills, and makes the portfolio look healthier than it is. This is the single most important rule in this repo.
-- **One CLI, two speeds.** `tools/eval trigger <skill>` checks description boundaries; `tools/eval quick <skill>` runs up to six representative cases in a single arm and is a fast fail-fast check; `tools/eval gate <skill> --baseline REF` runs independent blind A/B rounds and is the only release evidence.
+- **One CLI, three paths.** `tools/eval trigger <skill>` checks description boundaries; `tools/eval quick <skill>` runs up to six representative cases in a single arm and is a fast fail-fast check; `tools/eval gate <skill> --baseline REF` runs independent blind A/B rounds and is the only release evidence.
 - **Adaptive gate.** The gate starts with three rounds, extends only cases with observed differences to six rounds, and caches baseline arm outputs by content, case, model, and prompt identity. This removes manual chunk, bank, null-sweep, and calibration operations while preserving repeated independent sampling.
 - **Verdicts stay conservative.** A confirmed critical regression is `NO-SHIP`; unresolved or non-critical conflicts are `INCONCLUSIVE` for human adjudication; `SHIP` requires a confirmed improvement with no unresolved regression.
 - **Compare as independent parallel agents,** one with the skill and one without, launched together — never one agent that reads the skill and then pretends it hasn't. Repeat each configuration a few times; a single run can't separate a real difference from sampling noise. For an existing skill, the baseline is the previous version, not vanilla.
@@ -199,10 +204,16 @@ The repo has no per-skill hosted docs page; a skill's public face is its **catal
 Finishing check before finalizing a skill edit:
 
 ```
-grep -rnE 'round [0-9]|eval #|FP ?=|recall|benchmark|precision' skills/<name>/
+rg -n \
+  --glob 'SKILL.md' \
+  --glob 'references/**' \
+  'round [0-9]|eval #|FP ?=|recall|benchmark|precision' \
+  skills/<name>/
 ```
 
-The grep only catches the mechanical tells; read for the rest — any sentence explaining *how a rule was arrived at* rather than how to apply it is noise, whatever words it uses. Hits inside `SKILL.md` or `references/` are noise — move them to the dev docs above. Hits inside `design-notes.md`, `judged-cases.md`, or eval fixtures are fine; that is where provenance lives.
+The command catches mechanical tells in runtime files; read for the rest.
+Any sentence explaining *how a rule was arrived at* rather than how to apply it is noise, whatever words it uses.
+The command excludes `design-notes.md`, `judged-cases.md`, and eval fixtures, where provenance belongs.
 
 ## Skill self-sufficiency and dependency direction
 
