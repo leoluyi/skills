@@ -1,8 +1,9 @@
 ---
 name: humanizer-zh
 description: >-
-  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit a named file in place); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
+  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit-in-place on a named file); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
 app-description: 稽核並改寫已完成的文稿，去除「AI 味」寫作模式，適用繁體中文、英文與中英混雜文本。觸發：「幫我把這段的 AI 味拿掉，改成人話」（改寫）或「先標出來就好，不用改」（只標記）。不降低技術程度給非技術讀者。
+argument-hint: "[--mode detect|rewrite|edit-in-place] [--voice <profile>] [--context <profile>] [--file <path>] [--expect-author] [--iterate <1|2>]"
 version: 2.3.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -50,11 +51,14 @@ The English in this file is structural labelling for you, not literal output. Ne
 
 | mode | select it when | deliver |
 |---|---|---|
-| `rewrite` | the user asks for the text itself to be fixed — 幫我改寫／把 AI 味拿掉／改成人話／修掉／rewrite | flagged items (canonical rule name + quoted span), the rewritten text, a short list of what changed, then one corrective self-pass (step 6) |
 | `detect` (default) | the user says 先標出來就好／不用改／flag only／audit／scan — and whenever the ask names neither mode | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. Every flag also carries its **改法方向** — one clause naming what the span should become. The text stays untouched. |
-| `edit` | the user names a file to fix in place | read the file, apply targeted edits to flagged spans only, re-read, and report before → after per span. Passages with no tells stay byte-identical. |
+| `rewrite` | the user asks for a revised version returned in the response; 幫我改寫／把 AI 味拿掉／改成人話／修掉／rewrite | return flagged items (canonical rule name + quoted span), the revised text, and a short list of what changed, then run one corrective self-pass (step 6); do not write to the source file |
+| `edit-in-place` | the user explicitly names a file and asks for it to be changed in place | edit only flagged spans in the named file, re-read it, and report before → after per span; passages with no tells stay byte-identical |
 
-**Rewriting is asked for, never assumed.** An ask that does not name the text as the thing to fix gets `detect`, and the turn ends there with a question about whether to rewrite — pasted prose with no instruction, 「看一下這段」, or a bare file reference is not a rewrite request. Which mode runs is all this decides; what a pass flags is settled by the rules and their carve-outs, exactly as it was.
+**Rewriting is asked for, never assumed.** An ask that does not name the text as the thing to fix gets `detect`, and the turn ends there with a question about whether to return revised text.
+Pasted prose with no instruction, 「看一下這段」, or a bare file reference is not a rewrite request.
+`rewrite` returns content without changing a file; `edit-in-place` changes a named file in place.
+Which mode runs is all this decides; what a pass flags is settled by the rules and their carve-outs, exactly as it was.
 
 **作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. This exclusion covers this rule only. The ordinary pass still evaluates the other rules, and each rule's own carve-outs decide whether it fires, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
 
@@ -95,7 +99,7 @@ Check it by quotation, not by impression: for each clause of the rewrite, point 
 *Done when* every clause of the rewrite is traceable to a quoted input span, you can point to where each load-bearing fact landed, no paragraph was silently deleted or hollowed rather than flagged, and every spared span has survived the re-read.
 
 **6. 出貨前自評.** Re-read your own output cold, as if it had just arrived. The pass introduces its own tells: recycled transitions, a rhythm you flattened while fixing it, a 你 stranded next to a rewritten sentence, a subject that jumps mid-paragraph.
-*Done when* `rewrite` or `edit` either states the output is clean or lists what survived with corrected text inline; `detect` confirms that the source text stayed untouched and reports each flag with its disposition. This corrective pass *is* pass 2 - `--iterate` caps at 2 total, and a third pass costs a full regeneration for almost nothing.
+*Done when* `rewrite` or `edit-in-place` either states the output is clean or lists what survived with corrected text inline; `detect` confirms that the source text stayed untouched and reports each flag with its disposition. This corrective pass *is* pass 2 - `--iterate` caps at 2 total, and a third pass costs a full regeneration for almost nothing.
 
 ## Shared vocabulary
 

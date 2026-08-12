@@ -27,7 +27,7 @@ It checks a passage across four independent axes and reports findings tiered by 
 
 Findings are ranked P0 (unmistakable mainland source — change it), P1 (jargon and grammar tics — fix before publishing), and P2 (borderline or already-normalized-in-Taiwan usage — fix when there's time).
 
-It runs in three modes: `rewrite` (default — flag and return a localized version), `detect` (flag only, grouped by tier, no rewriting), and `edit` (make minimal in-place edits to a named file with the Edit tool, touching only the flagged spans).
+It runs in three modes: `rewrite` (default — flag and return a localized version), `detect` (flag only, grouped by tier, no rewriting), and `edit-in-place` (make minimal in-place edits to a named file with the Edit tool, touching only the flagged spans).
 
 ## When to use
 

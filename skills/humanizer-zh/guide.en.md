@@ -32,7 +32,7 @@ It hunts two different defects, and they're independent judgments:
 
 Not one sentence carries the author's own choice, a concrete time/amount/scenario, or a spoken-register break from the pattern. This is `hidden author` (作者隱身) — a whole-document judgment, visible only when you step back, and it only runs on signed-voice writing.
 
-There are three modes (rewrite, detect-only, edit a file in place), and a protected list locked before any edit — prices, dates, commitment clauses, named quotes, code — these stay exactly as written even if they technically match a rule; a hit there gets marked "protected," not rewritten. It **doesn't write for you**: when stripping the AI-voice leaves nothing behind, it flags the gap in place rather than inventing an experience to fill it; `hidden author` in particular only reports, never rewrites. It also **doesn't inject a voice** — giving a piece opinion, metaphor, and rhythm is addition, that's `blog-writing-zh`'s job; this skill only subtracts.
+There are three modes (rewrite, detect-only, edit-in-place), and a protected list locked before any edit — prices, dates, commitment clauses, named quotes, code — these stay exactly as written even if they technically match a rule; a hit there gets marked "protected," not rewritten. It **doesn't write for you**: when stripping the AI-voice leaves nothing behind, it flags the gap in place rather than inventing an experience to fill it; `hidden author` in particular only reports, never rewrites. It also **doesn't inject a voice** — giving a piece opinion, metaphor, and rhythm is addition, that's `blog-writing-zh`'s job; this skill only subtracts.
 
 ## When to use
 
@@ -191,7 +191,7 @@ Three modes decide how you get the result back:
 |---|---|---|
 | "Get the AI-isms out of this" (default) | `rewrite` | Every hit (rule name + quote), the full rewritten text, a list of what changed |
 | "Just flag it, don't change anything" | `detect` | Hits grouped P0/P1/P2, each marked hard-defect or judgment-call; original text untouched |
-| "Edit draft.md directly" | `edit` | Reads the file, changes only the hit spans, re-reads once after editing, reports before/after per change; clean passages stay byte-identical |
+| "Edit draft.md directly" | `edit-in-place` | Reads the file, changes only the hit spans, re-reads once after editing, reports before/after per change; clean passages stay byte-identical |
 
 ### The checklist: 8 classes, 47 rules
 

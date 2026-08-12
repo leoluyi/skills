@@ -78,7 +78,7 @@ Reach for this when you need to write or rewrite a Taiwan-Chinese blog post or n
    hit: single-sentence paragraph, three in a row → exempt (deliberate rhythm break)
    ```
 
-3. **Only the non-exempt items go back for an actual rewrite**, in `rewrite` or `edit` mode, with the exempt list passed along as a hard constraint the downstream pass must not touch.
+3. **Only the non-exempt items go back for an actual rewrite**, in `rewrite` or `edit-in-place` mode, with the exempt list passed along as a hard constraint the downstream pass must not touch.
 
 This exists because a plain rewrite pass, run directly, flags a large share of intentional voice as if it were noise and can flatten it right alongside genuine AI-isms — the filtering has to happen on the side that actually knows what this piece's voice is supposed to sound like. The voice profile passed downstream keeps the register aligned — a 高見龍-flavored piece maps to `--voice casual`, a 保哥-flavored one to `--voice professional/technical`, a Simon Willison-flavored one to `--voice technical` — and a dual-draft merge always gets this pass, since the welded seams are where AI-isms most often survive. If the source material carried mainland-China (簡體/大陸) usage risk, `avoid-china-writing` runs immediately after in the same handoff. After either returns, this skill checks the diff for over-eager cuts to signature lines, single-sentence paragraphs, or emoticons before treating the result as final.
 

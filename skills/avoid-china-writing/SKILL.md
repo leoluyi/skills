@@ -1,7 +1,8 @@
 ---
 name: avoid-china-writing
-description: Audit and rewrite Traditional Chinese to remove mainland-China (PRC / 大陸) usage and convert it to Taiwan 正體中文 conventions across four axes — 陸用語詞彙 (視頻→影片、軟件→軟體、屏幕→螢幕、網絡→網路), 互聯網／職場黑話 (賦能、抓手、對齊顆粒度、閉環、落地、賽道、內卷), 簡體字殘留 (为／发／网／软／数据 混入繁體), and 音譯與專名／語法差異 (奧巴馬→歐巴馬、悉尼→雪梨、硅谷→矽谷、通過→透過). Trigger when the user asks to 去除大陸／陸用語、改成台灣用語、正體中文在地化、抓簡體殘留、把互聯網黑話改成正常中文, or「這段有沒有大陸用詞」. Supports detect / rewrite / edit modes. Do NOT invoke for 去除 AI 味／潤飾語氣 (use humanizer-zh), 結構化商業文件 簽呈／報告 (use formal-doc-structure), RFP／需求規格書 (use rfp-writing), 白話文翻譯 (use plain-speak), casual chat, creative writing, or code comments. This skill localizes across the strait — an axis orthogonal to AI-ism cleanup.
+description: Audit and rewrite Traditional Chinese to remove mainland-China (PRC / 大陸) usage and convert it to Taiwan 正體中文 conventions across four axes — 陸用語詞彙 (視頻→影片、軟件→軟體、屏幕→螢幕、網絡→網路), 互聯網／職場黑話 (賦能、抓手、對齊顆粒度、閉環、落地、賽道、內卷), 簡體字殘留 (为／发／网／软／数据 混入繁體), and 音譯與專名／語法差異 (奧巴馬→歐巴馬、悉尼→雪梨、硅谷→矽谷、通過→透過). Trigger when the user asks to 去除大陸／陸用語、改成台灣用語、正體中文在地化、抓簡體殘留、把互聯網黑話改成正常中文, or「這段有沒有大陸用詞」. Supports detect / rewrite / edit-in-place modes. Do NOT invoke for 去除 AI 味／潤飾語氣 (use humanizer-zh), 結構化商業文件 簽呈／報告 (use formal-doc-structure), RFP／需求規格書 (use rfp-writing), 白話文翻譯 (use plain-speak), casual chat, creative writing, or code comments. This skill localizes across the strait — an axis orthogonal to AI-ism cleanup.
 app-description: 稽核並改寫繁體中文，去除大陸（PRC）用語，改成台灣正體中文慣用法（如視頻→影片、軟件→軟體），涵蓋詞彙、網路黑話、簡體字殘留、音譯與語法差異。觸發：「這段有沒有大陸用詞」、去除陸用語、正體中文在地化。
+argument-hint: "[--mode detect|rewrite|edit-in-place] [--file <path>] [--tier P0|P1|P2]"
 version: 1.1.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
@@ -52,15 +53,15 @@ These are sibling skills on independent axes. Use the one that matches the reque
 
 ## Modes
 
-**`rewrite`** (default) — Flag 陸用語 and return a localized Taiwan-正體 version.
+**`rewrite`** (default, return revised text) — Flag 陸用語 and return a localized Taiwan-正體 version without changing a source file.
 
 **`detect`** — Flag only, no rewriting. Use when the writer wants to see what's flagged and decide themselves, when you're auditing text you shouldn't alter, or for a quick scan. Group flags by [severity tier](#severity-tiers).
 
-**`edit`** — Edit a file in place with the Edit tool. Use when the writer names a file ("把 `readme.md` 的陸用語改掉"). Make **minimal, targeted edits** — change the flagged spans, leave already-Taiwanese passages untouched. **Don't edit quoted mainland source material, code blocks, or brand names** — flag those instead. For a large file, confirm the section before changing anything. After editing, re-read and confirm the flagged terms are resolved.
+**`edit-in-place`** (change a named file) - Edit a file in place with the Edit tool. Use only when the writer names a file ("把 `readme.md` 的陸用語改掉"). Make **minimal, targeted edits**: change the flagged spans, leave already-Taiwanese passages untouched. **Don't edit quoted mainland source material, code blocks, or brand names**; flag those instead. For a large file, confirm the section before changing anything. After editing, re-read and confirm the flagged terms are resolved.
 
-Trigger detect mode on "偵測／標出來就好／先不要改／掃一下"; edit mode when the user names a file to fix in place; default to rewrite otherwise.
+Trigger detect mode on "偵測／標出來就好／先不要改／掃一下"; use edit-in-place mode when the user names a file to fix in place; default to rewrite otherwise.
 
-**Invocation.** Natural language is enough ("把這段大陸用語改成台灣講法", "掃一下有沒有簡體殘留", "編輯 `draft.md`,只改陸用語"). Power users can pass `[--mode rewrite|detect|edit]`, `[--file PATH]`, `[--tier P0|P1|P2]` (audit down to this tier only).
+**Invocation.** Natural language is enough ("把這段大陸用語改成台灣講法", "掃一下有沒有簡體殘留", "編輯 `draft.md`,只改陸用語"). Power users can pass `[--mode detect|rewrite|edit-in-place]`, `[--file PATH]`, `[--tier P0|P1|P2]` (audit down to this tier only).
 
 ---
 
@@ -224,7 +225,7 @@ Prioritize by how loudly a term signals a mainland source. Use P0+P1 for a quick
 
 **2. 判讀** — for each flag, note whether it's a clear 陸用語 or a judgment call (a Taiwan-adopted borrowing, a context-sensitive sense, a brand name). Call out what definitely needs changing vs. what's fine in context. If the text is already Taiwanese, say so.
 
-### Edit mode
+### Edit-in-place mode
 
 **1. 編輯清單** — bulleted, each with the file location and 陸用語 → 台灣正體. Only the spans you touched.
 

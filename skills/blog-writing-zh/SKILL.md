@@ -155,7 +155,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
 提示使用者接續執行，並附上建議指令。
 
 1. **必做：調用 `humanizer-zh` 做去 AI 味終稿檢查。**
-   用自然語言交棒即可，它支援 rewrite/detect/edit 模式與 voice
+   用自然語言交棒即可，它支援 rewrite/detect/edit-in-place 模式與 voice
    profile。**採 detect-first 三步流程**（最不會誤削聲音）：
 
    **步驟 A — 先 detect，拿命中清單。** 以 `detect` 模式交棒，
@@ -171,7 +171,7 @@ skill（Claude Code、Cursor 等讀得到同 repo/skills 目錄的 agent），
    未查證主張等）。
 
    **步驟 C — 只 rewrite 未豁免項。** 把過濾後的待修清單交回，
-   以 `rewrite`（或 `edit`）模式只改這些項，明確告知豁免清單不得
+   以 `rewrite`（或 `edit-in-place`）模式只改這些項，明確告知豁免清單不得
    更動。
 
    為什麼不直接 rewrite：直接 rewrite 時 detect 會命中大量
