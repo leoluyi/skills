@@ -8,7 +8,6 @@ license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
   author: Lu Yi
-  adaptation: zh-first bilingual design — one canonical rule set (47 rules in 8 classes) instead of two parallel catalogs; most rules carry both a Chinese and an English manifestation, and 13 are Chinese-specific. See design-notes.md.
   tags: writing editing voice quality zh-tw traditional-chinese
   agentskills_spec: "1.0"
   openclaw:
@@ -39,7 +38,7 @@ The English in this file is structural labelling for you, not literal output. Ne
 
 ## What this skill is and isn't
 
-**This skill judges surface, not provenance.** Every rule asks whether a span reads AI-flavored, never whether it was actually written by AI — that second question is a different claim this skill does not make. Signals, not proof: every pattern here is more frequent in LLM output, and every one of them also falls out of humans writing under deadline, in an unfamiliar genre, in translation, or as a benchmark sentence engineered to test a pattern. Independent audits put commercial detectors above 60% false positives on non-native English writers (Liang et al., Stanford, *Patterns* 2023) and open-source detectors as high as 78% (Jabarian & Imas, BFI Working Paper 2025-116, 2025); adversarial paraphrase strips roughly 88% of their true positives (arXiv:2506.07001, 2025). A flag that fires on human prose because it reads AI-flavored is doing its job, not failing at a different one. Pair it with context — who wrote this, in what genre, what their normal voice sounds like — before it feeds any consequential decision. Worth acting on; not worth ruining someone's day over.
+**This skill judges surface, not provenance.** It asks whether a span reads AI-flavored, not whether AI wrote it. Every signal also appears in human prose, especially under deadline, unfamiliar genre, translation, or deliberate examples. Pair flags with context - author, genre, and normal voice - before using them in a consequential decision. Treat them as editing leads, never proof of authorship.
 
 ## Routing
 
@@ -57,7 +56,7 @@ The English in this file is structural labelling for you, not literal output. Ne
 
 **Rewriting is asked for, never assumed.** An ask that does not name the text as the thing to fix gets `detect`, and the turn ends there with a question about whether to rewrite — pasted prose with no instruction, 「看一下這段」, or a bare file reference is not a rewrite request. Which mode runs is all this decides; what a pass flags is settled by the rules and their carve-outs, exactly as it was.
 
-**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. That exclusion covers this one rule and nothing else — the other 46 run on every genre, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
+**作者隱身 audit** — detect-only, and it reports absence rather than rewriting. Step 1's genre verdict is the entire trigger: every 署名文體 draft gets this audit whether or not the user asked for it, and 事務文體 never does. `--expect-author` reaches it by setting that verdict, not by bypassing it. Its five sub-signals and threshold live in [references/hidden-author.md](references/hidden-author.md); read that file before reporting anything under this heading, because the 事務文體 exclusion there is what keeps this from firing on 公文 and docs. This exclusion covers this rule only. The ordinary pass still evaluates the other rules, and each rule's own carve-outs decide whether it fires, so a 簽呈 stuffed with 「奠定堅實基礎」 is flagged like any other draft.
 
 Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
@@ -65,7 +64,7 @@ Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
 Six steps, in order. Each one finishes on something you can check.
 
-**1. 情境辨識.** Name the language, the genre, and whether the genre is 署名文體 (blog, newsletter, essay, opinion) or 事務文體 (docs, README, RFP, 簽呈, 公文, SOP, spec, reference, 規劃書, 建議書, 計劃書, investor-email — the reader came for the information and does not care who wrote it). `--expect-author` settles that verdict as 署名文體 on the user's declaration. The verdict governs exactly one rule, 作者隱身; every other rule runs at full strength on both, so 事務文體 is never a reason to let an AI-ism stand.
+**1. 情境辨識.** Name the language, the genre, and whether the genre is 署名文體 (blog, newsletter, essay, opinion) or 事務文體 (docs, README, RFP, 簽呈, 公文, SOP, spec, reference, 規劃書, 建議書, 計劃書, investor-email - the reader came for the information and does not care who wrote it). `--expect-author` settles that verdict as 署名文體 on the user's declaration. The verdict gates 作者隱身. `立場真空` keeps its own genre carve-outs; all other rules run on both.
 *Done when* you have stated the language, the genre, the 署名文體／事務文體 verdict and the two profiles in one sentence — and said which of them you inferred rather than were told.
 
 **2. 保護清單鎖定.** Before touching a single word, extract the spans that must survive verbatim and mark them immutable: ①交易事實（價格、原價、折扣碼、期限、數量、日期）②具名見證與原話 ③承諾條款（退費、保固、SLA、法遵條文）④必要免責與作業說明（金流、物流、客服）⑤引文、程式碼區塊、他人署名文字 ⑥使用者宣告的 voice profile 正向特徵（立場、比喻系統、刻意節奏、刻意口語破格）⑦真人的不完美（作者自己文字裡的錯字、縮寫、特異大小寫、殘句）⑧外部權威來源的正式引用. Protection covers the span, not the prose wrapped around it — hollow sentences packed around a protected price still get flagged. It also stops at AI-generated boilerplate that merely looks like a clause: a fabricated testimonial or invented statistic belongs to 幻覺引用與未查證主張.
@@ -96,7 +95,7 @@ Check it by quotation, not by impression: for each clause of the rewrite, point 
 *Done when* every clause of the rewrite is traceable to a quoted input span, you can point to where each load-bearing fact landed, no paragraph was silently deleted or hollowed rather than flagged, and every spared span has survived the re-read.
 
 **6. 出貨前自評.** Re-read your own output cold, as if it had just arrived. The pass introduces its own tells: recycled transitions, a rhythm you flattened while fixing it, a 你 stranded next to a rewritten sentence, a subject that jumps mid-paragraph.
-*Done when* you have either stated the output is clean or listed what survived, with the corrected text inline. This corrective pass *is* pass 2 — `--iterate` caps at 2 total, and a third pass costs a full regeneration for almost nothing.
+*Done when* `rewrite` or `edit` either states the output is clean or lists what survived with corrected text inline; `detect` confirms that the source text stayed untouched and reports each flag with its disposition. This corrective pass *is* pass 2 - `--iterate` caps at 2 total, and a third pass costs a full regeneration for almost nothing.
 
 ## Shared vocabulary
 

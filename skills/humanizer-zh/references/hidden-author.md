@@ -14,7 +14,7 @@ Every sub-signal below asks one question: can the reader see a person in this te
 
 ## The exclusion stops here
 
-事務文體 are excluded from **this rule only**. The other 44 rules run on every genre. 作者隱身 asks whether the author is missing; every other rule asks whether something is present that should not be. Those are independent questions, and only the first one is gated by genre — 事務文體 buys a draft nothing on the second.
+事務文體 are excluded from **this rule only**. The ordinary pass still evaluates the other canonical rules, while `立場真空` keeps its own genre carve-outs. 作者隱身 asks whether the author is missing; every other rule asks whether something is present that should not be. Those are independent questions, and only the first one is gated by this aggregate's genre rule - 事務文體 buys a draft nothing on the second.
 
 Route each finding by which question it answers:
 
