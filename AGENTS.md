@@ -1,31 +1,31 @@
-# Skills repo — hard rules
+# Skills repo - hard rules
 
-Forbidden directives for authoring skills here. For all other skill-development principles — anatomy, frontmatter gotchas, naming, portability, language strategy, and test discipline — see **[engineering-guidelines.md](engineering-guidelines.md)**.
+Load [engineering-guidelines.md](engineering-guidelines.md) for skill-authoring decisions beyond these hard rules: anatomy, frontmatter, lifecycle, invocation, body shape, language, tooling, portability, evals, maintenance, catalog, provenance, and dependencies.
 
-- **Never `\u`-escape a skill `description`.** YAML plain scalars don't decode `\u`, so escaped Chinese (or any non-ASCII) triggers silently never fire — the skill reads fine but won't load on those prompts. Write the description in real UTF-8. Detect: `rg -l '\\u[0-9A-F]{4}' skills/*/SKILL.md` — any hit on a `description:` line is the bug. ([why](engineering-guidelines.md#gotcha-frontmatter-must-be-real-utf-8-never-u-escapes))
+- **Write descriptions in real UTF-8.** Plain YAML scalars do not decode `\u` escapes, so escaped non-ASCII trigger phrases silently fail. Detect: `rg -n '\\u[0-9A-Fa-f]{4}' skills/*/SKILL.md`; inspect matches in frontmatter. ([why](engineering-guidelines.md#gotcha-frontmatter-must-be-real-utf-8-never-u-escapes))
 
-- **Never leave development-process noise in `SKILL.md` or `references/`.** No iteration provenance (`round 2 補強`, `eval #14`, FP/recall figures), no derivation narrative (`比對 A 與 B 後…`, `（benchmark 實證）`, `（補充樣本：…）`), no method-named headers. These files are runtime instructions — keep the insight, drop the derivation. Provenance lives in `<skill>/design-notes.md`, `<skill>/evals/judged-cases.md`, or commit messages. ([detail](engineering-guidelines.md#keep-development-process-noise-out-of-skill-content))
+- **Keep runtime content focused.** `SKILL.md` and `references/` contain task instructions; iteration provenance, eval IDs, benchmark metrics, derivation narrative, and method-named headers belong in `<skill>/design-notes.md`, `<skill>/evals/judged-cases.md`, or commit messages. ([detail](engineering-guidelines.md#keep-development-process-noise-out-of-skill-content))
 
-- **Never let a skill's core behavior depend on a tool-specific feature or on another skill.** It must run unchanged on Claude Code *and* Codex — tool-only power (`hooks`, `context: fork`, `model`) may be present but never load-bearing — and it must complete its own job standalone. Sibling-skill mentions are optional pointers, never `run X first` prerequisites; dependencies stay one-directional (no cycles); a callee never names its callers. ([portability](engineering-guidelines.md#portability) · [dependency direction](engineering-guidelines.md#skill-self-sufficiency-and-dependency-direction))
+- **Keep core behavior portable and self-sufficient.** Skills run unchanged on Claude Code and Codex and complete their own jobs. Tool-specific features are optional enhancements; sibling skills are optional pointers; dependencies form a one-way DAG; callees never name callers. ([portability](engineering-guidelines.md#portability) · [dependency direction](engineering-guidelines.md#skill-self-sufficiency-and-dependency-direction))
 
-- **Never ship a skill that doesn't beat its baseline** on `skills/<name>/evals/evals.json` — vanilla for a new skill, the previous version for an existing one, run as independent parallel agents. A skill that exists but doesn't help is worse than none — it eats context and pollutes the trigger surface. No bar-clearing, no skill. ([detail](engineering-guidelines.md#test-discipline))
+- **Ship only skills that beat baseline** on `skills/<name>/evals/evals.json`. Compare new skills with vanilla, existing skills with their previous version, and use independent parallel agents. ([detail](engineering-guidelines.md#test-discipline))
 
-- **Never hard-fail a scripted check on style preferences or unverified heuristics.** Hard gates are reserved for objective, reader-harming defects (won't parse, unreadable contrast, clipped/overflowing content); style and maintainability concerns are advisory warnings. A gate that false-positives — or blocks on taste — stops being trusted, and a distrusted gate is worse than none: regression-test new checks against real past artifacts before they can block. ([severity](engineering-guidelines.md#scripted-checks--severity-and-trust))
+- **Hard-fail only objective, reader-harming defects** such as parse failures, unreadable contrast, or clipped content. Keep style and maintainability concerns advisory, and regression-test new checks against real artifacts before promoting them to hard gates. ([severity](engineering-guidelines.md#scripted-checks--severity-and-trust))
 
-Respond terse like smart caveman. All technical substance stay. Only fluff die.
+Default response: terse smart-caveman style with full technical substance.
 
 Rules:
-- Drop: articles (a/an/the), filler (just/really/basically), pleasantries, hedging
-- Fragments OK. Short synonyms. Technical terms exact. Code unchanged.
+- Drop articles (a/an/the), filler (just/really/basically), pleasantries, and hedging.
+- Fragments are fine when clear. Keep technical terms exact. Keep code unchanged.
 - Pattern: [thing] [action] [reason]. [next step].
 - Not: "Sure! I'd be happy to help you with that."
 - Yes: "Bug in auth middleware. Fix:"
 
-Switch level: /caveman lite|full|ultra|wenyan
-Stop: "stop caveman" or "normal mode"
+Switch level: `/caveman lite|full|ultra|wenyan`.
+Stop: "stop caveman" or "normal mode".
 
-Auto-Clarity: drop caveman for security warnings, irreversible actions, user confused. Resume after.
+Use plain language for security warnings, irreversible actions, and confused users; resume caveman style afterward.
 
-Boundaries: code/commits/PRs written normal.
+Write code, commit messages, and PRs in normal prose.
 
-Repo exception — skill content also written normal: `skills/**` (SKILL.md, references/, evals/, research/), `design-notes.md`, `engineering-guidelines.md`, `AGENTS.md`. This repo ships precisely-worded documentation; compressing that prose damages the deliverable, not the chatter. `research/` is stricter still: it holds faithful distillations of outside sources with provenance headers and citations — never compress, paraphrase, or trim those; source fidelity is the whole point of the file.
+Repo prose stays normal in `skills/**` (SKILL.md, references/, evals/, research/), `design-notes.md`, `engineering-guidelines.md`, and `AGENTS.md`. Research files also preserve source fidelity, provenance, and citations.
