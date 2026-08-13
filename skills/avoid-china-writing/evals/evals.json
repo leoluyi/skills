@@ -161,6 +161,17 @@
         "xinxi-sense-choice：信息 依語境選「資訊」（泛指）而非「訊息」（一則），並說明選擇理由。",
         "keeps-social-register：改寫後仍是社群貼文的語氣，未被拉成正式書面語。"
       ]
+    },
+    {
+      "id": 15,
+      "prompt": "幫我把這段技術文件改成台灣用語：「部署失敗後請回滾版本；首次提到時可寫 rollback。不要修改 rollback-release 這個 CLI 名稱。」",
+      "expected_output": "User-specified blacklist term with a technical carve-out: 回滾 is flagged and rewritten as 還原（rollback）, while the fixed CLI identifier remains unchanged.",
+      "expectations": [
+        "flags-rollback: 回滾列入陸用語清單，建議改為「還原（rollback）」並標示為提示項。",
+        "keeps-original-english: 保留 rollback 作為原始英文或首次出現的術語說明。",
+        "protects-cli-identifier: rollback-release 是固定 CLI 名稱，不改寫、不拆解。",
+        "does-not-claim-prc-origin: 說明「回滾」在台灣技術語境亦常見，這項規則是用語偏好提示，不單獨判定陸源。"
+      ]
     }
   ]
 }

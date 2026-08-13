@@ -8,7 +8,7 @@ The **Carve-out** column names contexts where the mainland form (or a homograph)
 
 | 區塊 | Tier |
 |---|---|
-| A. 詞彙 — 資訊科技、生活／一般 | P0（少數已在地化借詞於 Carve-out 註明為 P2） |
+| A. 詞彙 — 資訊科技、生活／一般 | P0（少數已在地化借詞於 Carve-out 註明為 P2；「回滾」另依指定黑名單列為 P2 提示項） |
 | A. 詞彙 — 口語／俚語 | P2 |
 | B. 互聯網／職場黑話 | P1 |
 | C. 簡體字殘留 | P0 |
@@ -124,6 +124,7 @@ Everything in this file is reference data — 陸用語→台灣正體 pairs and
 | 粘貼 | 貼上 | — |
 | 剪切 | 剪下 | — |
 | 撤銷 | 復原／還原 | — |
+| 回滾 | 還原（rollback） | 本黑名單列為提示項；台灣技術語境亦常見，不作為陸源判定。固定 API／CLI／產品功能名稱保留 |
 | 文件（computer file） | 檔案 | 「文件」指文書時保留 |
 | 文檔 | 文件／檔案 | 技術語境作者刻意指「文件與檔案」合稱時保留 |
 | 文件夾 | 資料夾 | — |
