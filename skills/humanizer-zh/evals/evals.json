@@ -1091,6 +1091,40 @@
         "no-typo-correction: 「放心壓」三字原樣保留，不得改成「放心啦」。",
         "does-not-rewrite-in-detect: detect 模式只報不改。"
       ]
+    },
+    {
+      "id": 87,
+      "prompt": "用 humanizer-zh 的 preflight。現在還沒有草稿，但我有一份 plan、幾個來源和作者偏好，請先產出給下游 writer skill 的寫作 handoff，不要寫正文。",
+      "expected_output": "A compact pre-draft handoff containing a writing contract, positive style guidance, selected surface hazards with replacement behaviour, an evidence boundary, and a gap list. It must not contain finished document prose or invented author experience, facts, citations, or stance.",
+      "expectations": [
+        "returns-writing-contract: 產出 purpose、audience、genre、structure、voice 與 evidence boundary，而不是開始寫文章。",
+        "returns-gap-list: 把沒有來源或作者資料支撐的高影響資訊列成 gap 或問題，不用合理猜測補齊。",
+        "positive-style-guidance: 每個表面風險都附一個正向替代行為，且只選與本文件體裁相關的風險。",
+        "does-not-compose: 不產出可直接交付的正文，不把 handoff 標題當成文章大綱硬寫下去。",
+        "does-not-invent: 不新增作者經驗、事實、引用、承諾或個人立場。"
+      ]
+    },
+    {
+      "id": 88,
+      "prompt": "啟動 humanizer-zh，不給任何參數，先依預設準備後續寫作。現在沒有草稿，請使用目前 context。",
+      "expected_output": "The unparameterized blank-page invocation routes to preflight by default. It returns a compact writing contract, positive style guidance, evidence boundary, and visible gaps, then stops. It does not run the finished-prose detect spine or compose the document.",
+      "expectations": [
+        "default-preflight: 沒有 --mode、確切檔案位置或草稿內容時，直接選 preflight，不要求使用者再說一次 preflight。",
+        "returns-handoff: 產出可交給下游 writer 的 contract、positive style、evidence boundary 與 gap list。",
+        "does-not-detect: 不列出成稿的 P0/P1/P2 命中，也不進入保護清單與 finished-prose 六步驟。",
+        "does-not-compose: 不寫可直接交付的文章正文，不用假想內容填補 context 缺口。"
+      ]
+    },
+    {
+      "id": 89,
+      "prompt": "啟動 humanizer-zh，檔案位置是 docs/draft.md，請先處理。沒有指定 detect 或修改。",
+      "expected_output": "The skill stops at an exact-file choice prompt in the user's language, offering detect (report only) or modify (edit-in-place). It does not audit, rewrite, or edit before the user chooses.",
+      "expectations": [
+        "asks-mode-choice: 明確提示使用者在 detect 與 modify 之間選擇。",
+        "does-not-infer-edit: 不因為出現檔案位置或「處理」就直接修改檔案。",
+        "does-not-run-detect: 收到選擇前不列出任何該檔案的 AI-ism 命中。",
+        "keeps-explicit-mode-path: 說明之後可用明確模式繼續，且 modify 對應 edit-in-place。"
+      ]
     }
   ]
 }

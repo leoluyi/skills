@@ -29,6 +29,8 @@ from .dispatch import (
     CODEX_EFFORT,
     CODEX_MODEL,
     DispatchError,
+    GRADER_TIMEOUT,
+    RUNNER_TIMEOUT,
     dispatch,
     extract_rows,
     sanitize,
@@ -42,8 +44,6 @@ CACHE_ROOT = REPO_ROOT / ".eval-cache" / "arms"
 PREFIXES = ("SKILL.md", "references/", "scripts/", "assets/")
 CASE_GROUP = 8
 JUDGE_EFFORT = "high"
-RUNNER_TIMEOUT = 75
-GRADER_TIMEOUT = 75
 TRIGGER_TIMEOUT = 60
 
 

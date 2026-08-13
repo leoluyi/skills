@@ -8,6 +8,7 @@ from __future__ import annotations
 import concurrent.futures
 import hashlib
 import json
+import os
 import re
 import subprocess
 import sys
@@ -19,8 +20,8 @@ CODEX_MODEL = "gpt-5.6-luna"
 CODEX_EFFORT = "high"
 CLAUDE_MODEL = "claude-opus-5"
 
-RUNNER_TIMEOUT = 3600
-GRADER_TIMEOUT = 2400
+RUNNER_TIMEOUT = int(os.environ.get("SKILL_EVAL_RUNNER_TIMEOUT", "300"))
+GRADER_TIMEOUT = int(os.environ.get("SKILL_EVAL_GRADER_TIMEOUT", "180"))
 STDERR_TAIL_BYTES = 400
 
 SECRET_RE = re.compile(
@@ -73,14 +74,17 @@ def cli_command(family: str, prompt: str, empty_dir: Path, out_file: Path,
                  effort: str = CODEX_EFFORT) -> list[str]:
     drop = [token for name in DROPPED_ENV for token in ("-u", name)]
     if family == "codex":
+        codex_home = _isolated_codex_home(empty_dir)
         # --ignore-user-config is load-bearing: without it $CODEX_HOME/config.toml
         # silently overrides -m and the reasoning-effort pin, and a run stops
         # being comparable to any other run.
         return [
             "env", *drop,
+            f"CODEX_HOME={codex_home}",
             "codex", "exec", "-s", "read-only",
             "-C", str(empty_dir),
             "--skip-git-repo-check", "--ignore-user-config",
+            "--ignore-rules", "--ephemeral",
             "-m", CODEX_MODEL, "-c", f"model_reasoning_effort={effort}",
             "-o", str(out_file), prompt,
         ]
@@ -95,6 +99,33 @@ def cli_command(family: str, prompt: str, empty_dir: Path, out_file: Path,
         "claude", "-p", "--tools=", "--strict-mcp-config",
         "--model", CLAUDE_MODEL, prompt,
     ]
+
+
+def _isolated_codex_home(empty_dir: Path) -> Path:
+    """Give eval agents auth without loading the operator's agent instructions.
+
+    Codex discovers ``AGENTS.md`` from ``CODEX_HOME`` independently of
+    ``--ignore-user-config`` and ``--ignore-rules``. Loading the operator's
+    large global instructions makes a supposedly read-only eval agent inspect
+    tools and skills, which adds latency and can trigger unrelated shell
+    snapshot failures. Keep only a symlink to the existing auth file in the
+    per-run home; never copy credential contents into the eval workspace.
+    """
+    root = empty_dir.parent / "codex-home"
+    root.mkdir(parents=True, exist_ok=True)
+    source_home = Path(os.environ.get("CODEX_HOME", "~/.codex")).expanduser()
+    auth = source_home / "auth.json"
+    if not auth.is_file():
+        raise DispatchError(
+            f"Codex eval needs auth.json at {auth}; configure CODEX_HOME or authenticate Codex"
+        )
+    link = root / "auth.json"
+    try:
+        link.symlink_to(auth)
+    except FileExistsError:
+        if not link.is_symlink() or link.resolve() != auth.resolve():
+            raise DispatchError(f"Codex eval home contains unexpected auth path: {link}") from None
+    return root
 
 
 class _RetryableFailure(Exception):

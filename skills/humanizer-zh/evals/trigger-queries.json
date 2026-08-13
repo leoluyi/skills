@@ -65,6 +65,34 @@
       "should_trigger": true,
       "category": "positive/zh-tw/hidden-author",
       "note": "Structural-signal detect on blog voice: no word-level AI-isms but structurally voiceless. Should trigger the 作者隱身 layer under casual voice / --expect-author."
+    },
+    {
+      "id": 11,
+      "query": "手動啟動 humanizer-zh 的 preflight。現在還沒有草稿，請讀這份 plan 和我的寫作偏好，產出給下一個 writer skill 的寫作 handoff，不要寫正文。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/preflight",
+      "note": "Explicit pre-draft invocation. The skill should return a writing contract and gap list, not compose the document."
+    },
+    {
+      "id": 12,
+      "query": "幫我從零寫一篇介紹 PostgreSQL 索引的技術文章，要有範例和部署步驟。",
+      "should_trigger": false,
+      "category": "negative/blank-page-authoring",
+      "note": "Blank-page composition belongs to a writing skill; humanizer should not trigger without an explicit preflight request."
+    },
+    {
+      "id": 13,
+      "query": "啟動 humanizer-zh，不給任何參數，先依預設準備後續寫作。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/preflight-default",
+      "note": "Explicit skill invocation with no parameters. The default route is preflight, not finished-prose detect."
+    },
+    {
+      "id": 14,
+      "query": "啟動 humanizer-zh，檔案位置是 docs/draft.md，請先處理。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/exact-file-choice",
+      "note": "An exact file path without a mode should reach the skill, which must ask detect or modify before acting."
     }
   ]
 }

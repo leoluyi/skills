@@ -32,7 +32,11 @@ It hunts two different defects, and they're independent judgments:
 
 Not one sentence carries the author's own choice, a concrete time/amount/scenario, or a spoken-register break from the pattern. This is `hidden author` (作者隱身) — a whole-document judgment, visible only when you step back, and it only runs on signed-voice writing.
 
-There are three modes (rewrite, detect-only, edit-in-place), and a protected list locked before any edit — prices, dates, commitment clauses, named quotes, code — these stay exactly as written even if they technically match a rule; a hit there gets marked "protected," not rewritten. It **doesn't write for you**: when stripping the AI-voice leaves nothing behind, it flags the gap in place rather than inventing an experience to fill it; `hidden author` in particular only reports, never rewrites. It also **doesn't inject a voice** — giving a piece opinion, metaphor, and rhythm is addition, that's `blog-writing-zh`'s job; this skill only subtracts.
+There are three finished-prose modes (rewrite, detect-only, edit-in-place), and a protected list locked before any edit — prices, dates, commitment clauses, named quotes, code — these stay exactly as written even if they technically match a rule; a hit there gets marked "protected," not rewritten. It **doesn't write for you**: when stripping the AI-voice leaves nothing behind, it flags the gap in place rather than inventing an experience to fill it; `hidden author` in particular only reports, never rewrites. It also **doesn't inject a voice** — giving a piece opinion, metaphor, and rhythm is addition, that's `blog-writing-zh`'s job; this skill only subtracts.
+
+If no draft exists yet, but you manually invoke it to prepare writing context for a downstream planning or writing skill, read [writing preflight](https://github.com/leoluyi/skills/blob/main/skills/humanizer-zh/references/writing-preflight.md). This pre-draft handoff produces a writing contract, style guardrails, and gaps; it does not write the document or replace the skill that owns composition.
+
+When you manually invoke it with no mode, exact file path, or draft content, it defaults to `preflight`. When you provide an exact file path without a mode, it stops and asks whether you want `detect` or `modify` instead of guessing.
 
 ## When to use
 
@@ -40,7 +44,7 @@ Reach for it as a final de-AI pass before shipping a README, ADR, blog post, or 
 
 ## When not to
 
-Skip it when you need to compose a piece or give it a human voice from scratch, which is `blog-writing-zh`'s job; this skill removes tells but does not create voice.
+Use `blog-writing-zh` when you need to compose a piece or give it a human voice from scratch; this skill's `preflight` only prepares a writing handoff for the downstream writer and does not compose the document.
 
 ## How it works
 
@@ -185,13 +189,21 @@ Step 1's genre classification isn't a warm-up — it's the fork the whole report
 
 The line between A and B is the thing this whole page keeps repeating: **when genre switches off B, A doesn't lose a single rule.**
 
-Three modes decide how you get the result back:
+Three finished-prose modes decide how you get the result back.
+There is also a manual pre-draft handoff for a blank page.
+When manually invoked without a mode, exact file path, or draft content, `preflight` is the default.
+An exact file path without a mode opens a choice between `detect` and `modify`.
+For supplied prose or a draft, an unspecified rewrite request still defaults to `detect`.
 
 | How you asked | Mode | What you get |
 |---|---|---|
-| "Get the AI-isms out of this" (default) | `rewrite` | Every hit (rule name + quote), the full rewritten text, a list of what changed |
+| Invoke it directly with no mode, exact file path, or draft content | `preflight` | Reads the current context and returns a writing contract, positive style guidance, an evidence boundary, and gaps; does not write prose |
+| "Get the AI-isms out of this," "make it sound human," or "rewrite this" | `rewrite` | Every hit (rule name + quote), the full rewritten text, a list of what changed |
 | "Just flag it, don't change anything" | `detect` | Hits grouped P0/P1/P2, each marked hard-defect or judgment-call; original text untouched |
-| "Edit draft.md directly" | `edit-in-place` | Reads the file, changes only the hit spans, re-reads once after editing, reports before/after per change; clean passages stay byte-identical |
+| With prose or a draft supplied, "take a look at this," "scan this document," or no explicit rewrite request | `detect` | Hits grouped P0/P1/P2, each marked hard-defect or judgment-call; original text untouched |
+| Provide an exact path such as `draft.md` without a mode | choice prompt | Asks whether to `detect` or `modify`; does not audit or edit until the user chooses |
+| Choose modify, or say "Edit draft.md directly" | `edit-in-place` | Reads the file, changes only the hit spans, re-reads once after editing, reports before/after per change; clean passages stay byte-identical |
+| No draft exists and the user manually asks for a pre-draft writing handoff | `preflight` | Reads the brief, plan, sources, genre, and author preferences, then returns a writing contract and gap list; does not write prose. See [writing preflight](https://github.com/leoluyi/skills/blob/main/skills/humanizer-zh/references/writing-preflight.md) |
 
 ### The checklist: 8 classes, 47 rules
 
@@ -237,5 +249,5 @@ This table is why proposals and investor letters get flagged more often than mem
 
 ## Related skills
 
-- **blog-writing-zh** — use it instead for composing from scratch or giving a draft a personal voice; it handles addition (opinion, metaphor, rhythm), this skill only handles subtraction.
+- **blog-writing-zh** — use it for composing from scratch or giving a draft a personal voice; it handles addition (opinion, metaphor, rhythm), while this skill handles subtraction and the optional pre-draft handoff.
 - **avoid-china-writing** — catches mainland-China wording and stray Simplified characters, an orthogonal axis to de-AI cleanup; a document may need a pass from both.

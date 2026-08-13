@@ -7,16 +7,35 @@ Maintainer notes — provenance and build process for this one skill.
 A zh-first bilingual skill with **one** canonical rule set. A rule carries both its Chinese and its English manifestation rather than living twice in two parallel catalogs.
 
 ```
-SKILL.md                      — 114 lines: routing, the six-step spine, the shared vocabulary, severity, profiles
+SKILL.md                      — 140 lines: routing, the six-step finished-prose spine, the shared vocabulary, severity, profiles
 references/
   zh-rules.md                 — all 47 rules under the 8 classes, each with 抓 / 保留 / a before-after pair
   en-rules.md                 — the English manifestations, keyed to the same 8 classes
   hidden-author.md            — the detect-only 作者隱身 aggregate: gate, threshold, 5 sub-signals
   zh-phrase-rules.md          — the seven zh「詞→替換」lookup tables (data, not rules)
   examples.md                 — 6 worked end-to-end scenarios (synthetic samples)
+  writing-preflight.md        — manual blank-page handoff: writing contract, style guardrails, evidence boundary, gaps
 ```
 
 [`guide.zh.md`](guide.zh.md) (and its English counterpart [`guide.en.md`](guide.en.md)) is the **user-facing** companion to this file: what the skill does to a draft, why a 公文 report says 「作者隱身不適用」 and still carries five flags, when to reach for `--expect-author`. Keep measurements, provenance and the reasoning behind a split here; keep behaviour-as-experienced there.
+
+## Blank-page preflight handoff (2026-08-14)
+
+The skill now has a `preflight` branch for the case where the user has a plan or source context but no draft yet.
+
+An unparameterized manual invocation defaults to this branch.
+
+An exact file path without an explicit mode is a choice point: the skill asks whether to `detect` or `modify` before reading the draft as an editing task.
+
+It lives in [`references/writing-preflight.md`](references/writing-preflight.md) because it is a disclosed handoff recipe, not part of the always-loaded finished-prose audit spine.
+
+The branch emits a writing contract, positive style guidance, selected surface hazards, an evidence boundary, and gaps for the author or researcher.
+
+It does not compose prose, invent experience, or turn the subtractive humanizer rules into a general writing style.
+
+The downstream writer remains responsible for composition, and the finished draft still returns to `detect` before any `rewrite`.
+
+The branch remains explicit to the skill invocation, so an ordinary blank-page authoring request continues to route to the appropriate writing skill.
 
 ## 自我背書 — 第 47 條，過煞車的方式與前兩條都不同（2026-08-01）
 

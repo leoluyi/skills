@@ -1,10 +1,10 @@
 ---
 name: humanizer-zh
 description: >-
-  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit-in-place on a named file); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's.
-app-description: 稽核並改寫已完成的文稿，去除「AI 味」寫作模式，適用繁體中文、英文與中英混雜文本。觸發：「幫我把這段的 AI 味拿掉，改成人話」（改寫）或「先標出來就好，不用改」（只標記）。不降低技術程度給非技術讀者。
-argument-hint: "[--mode detect|rewrite|edit-in-place] [--voice <profile>] [--context <profile>] [--file <path>] [--expect-author] [--iterate <1|2>]"
-version: 2.3.0
+  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit-in-place on a named file); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's. When the user explicitly invokes this skill without a mode, exact file path, or draft, prepare a pre-draft writing handoff instead.
+app-description: 稽核並改寫已完成的文稿，去除「AI 味」寫作模式，適用繁體中文、英文與中英混雜文本。觸發：「幫我把這段的 AI 味拿掉，改成人話」（改寫）或「先標出來就好，不用改」（只標記）。未提供模式、檔案位置或草稿時，手動啟動預設產出寫作前置 handoff。不降低技術程度給非技術讀者。
+argument-hint: "[--mode detect|rewrite|edit-in-place|preflight] [--voice <profile>] [--context <profile>] [--file <path>] [--expect-author] [--iterate <1|2>]"
+version: 2.4.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -51,11 +51,16 @@ The English in this file is structural labelling for you, not literal output. Ne
 
 | mode | select it when | deliver |
 |---|---|---|
-| `detect` (default) | the user says 先標出來就好／不用改／flag only／audit／scan — and whenever the ask names neither mode | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. Every flag also carries its **改法方向** — one clause naming what the span should become. The text stays untouched. |
+| `detect` | the user supplies prose or a draft and says 先標出來就好／不用改／flag only／audit／scan, or selects detection after the exact-file prompt | flagged items grouped P0/P1/P2, each marked as a hard defect or a judgement call, plus anything ruled 受保護. Every flag also carries its **改法方向** — one clause naming what the span should become. The text stays untouched. |
 | `rewrite` | the user asks for a revised version returned in the response; 幫我改寫／把 AI 味拿掉／改成人話／修掉／rewrite | return flagged items (canonical rule name + quoted span), the revised text, and a short list of what changed, then run one corrective self-pass (step 6); do not write to the source file |
-| `edit-in-place` | the user explicitly names a file and asks for it to be changed in place | edit only flagged spans in the named file, re-read it, and report before → after per span; passages with no tells stay byte-identical |
+| `edit-in-place` | the user selects modify after naming an exact file, or explicitly asks to edit a named file in place | edit only flagged spans in the named file, re-read it, and report before → after per span; passages with no tells stay byte-identical |
+| `preflight` (default) | the user manually invokes this skill without a mode, exact file path, or draft content | read [references/writing-preflight.md](references/writing-preflight.md), then return a compact writing contract and gap list; do not write the document |
 
-**Rewriting is asked for, never assumed.** An ask that does not name the text as the thing to fix gets `detect`, and the turn ends there with a question about whether to return revised text.
+**Preflight is terminal.** For an unparameterized invocation with no draft or exact path, select it before the generic finished-prose routing. Read [references/writing-preflight.md](references/writing-preflight.md), return the handoff, and stop; do not enter the finished-prose spine or apply its protection and rewrite steps.
+
+**Exact-file choice comes first.** If the user gives an exact file path without an explicit mode, stop and ask whether to `detect` and only report findings, or `modify` the file with `edit-in-place`. Do not infer the choice from vague verbs such as 看看、處理 or clean up. Once the user chooses, continue under that mode. An explicit `--mode` always wins.
+
+**Finished-prose rewriting is asked for, never assumed.** For supplied prose or a draft, an ask that does not name the text as the thing to fix gets `detect`, and the turn ends there with a question about whether to return revised text. A blank unparameterized invocation already routes to `preflight`; an exact file path without a mode already routes to the choice prompt above.
 Pasted prose with no instruction, 「看一下這段」, or a bare file reference is not a rewrite request.
 `rewrite` returns content without changing a file; `edit-in-place` changes a named file in place.
 Which mode runs is all this decides; what a pass flags is settled by the rules and their carve-outs, exactly as it was.
@@ -64,7 +69,7 @@ Which mode runs is all this decides; what a pass flags is settled by the rules a
 
 Worked end-to-end scenarios: [references/examples.md](references/examples.md).
 
-## The spine
+## The finished-prose spine
 
 Six steps, in order. Each one finishes on something you can check.
 
