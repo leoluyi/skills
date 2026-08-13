@@ -1,0 +1,31 @@
+{
+  "skill_name": "document-meta-cleanup",
+  "queries": [
+    {
+      "id": 1,
+      "query": "$document-meta-cleanup 檢查這份 slidument 還有哪些 meta information 或打破第四面牆",
+      "should_trigger": true,
+      "category": "positive/detect"
+    },
+    {
+      "id": 2,
+      "query": "$document-meta-cleanup 直接移除簡報裡的『先看』『本頁』『接下來』等文件自述",
+      "should_trigger": true,
+      "category": "positive/edit"
+    },
+    {
+      "id": 3,
+      "query": "幫我把這段的 AI 味拿掉",
+      "should_trigger": false,
+      "category": "negative/ai-isms",
+      "note": "General AI-ism cleanup is broader than document meta cleanup."
+    },
+    {
+      "id": 4,
+      "query": "請重整這份報告的大綱和章節順序",
+      "should_trigger": false,
+      "category": "negative/document-structure",
+      "note": "Document restructuring is outside this skill."
+    }
+  ]
+}
