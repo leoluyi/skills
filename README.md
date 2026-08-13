@@ -4,7 +4,7 @@
 
 **Agent skills that write Traditional Chinese like a real person — straight from my `~/.skills`.**
 
-[![Skills](https://img.shields.io/badge/skills-23-6d4aff?style=flat-square)](#skill-catalog)
+[![Skills](https://img.shields.io/badge/skills-24-6d4aff?style=flat-square)](#skill-catalog)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-second-setup)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -73,7 +73,7 @@ That script symlinks each `skills/<name>/` into both `~/.claude/skills/<name>/` 
 <!-- CATALOG:START -->
 ## Skill catalog
 
-23 skills across 7 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
+24 skills across 7 categories. Every skill is labelled `model-invoked` (the agent fires it automatically on a matching task, and you can also call it by name) or `user-invoked` (only you can, by name). Browse the [interactive catalog ↗](https://leoluyi.tw/skills/) or read any [`SKILL.md`](skills/) directly.
 
 ### Traditional Chinese Writing
 
@@ -108,6 +108,7 @@ Language-agnostic professional tools that stand on their own — no Chinese requ
 | **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | Design-system-grade explanatory graphics — timelines, comparisons, process diagrams — as clean, self-contained SVG or a single HTML file. Language-agnostic; built to be saved and reshared |
 | **Diagram Style**<br>[`diagram-style`](skills/diagram-style/SKILL.md) | `model-invoked` | Generate a new diagram from requirements or restyle an existing one while preserving requested content |
 | **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | Engineering-grade knowledge docs on the Diátaxis model — tutorial, how-to, reference, explanation — writing only what the material supports and flagging the gaps honestly. A discipline that travels across domains |
+| **Document Meta Cleanup**<br>[`document-meta-cleanup`](skills/document-meta-cleanup/SKILL.md) | `user-invoked` | Removes prose about the artifact, reading path, page role, and commissioning context while preserving evidence and real instructions |
 | **Visual Output QA**<br>[`visual-output-qa`](skills/visual-output-qa/SKILL.md) | `model-invoked` | Review rendered visual artifacts against one fail-closed delivery standard |
 
 ### Knowledge Management
