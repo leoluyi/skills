@@ -1,3 +1,4 @@
+.worktrees/
 evals/*/runs/
 .DS_Store
 *.swp
