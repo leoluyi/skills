@@ -1,0 +1,10 @@
+{
+  "profile": "standard",
+  "quick_ids": [1, 2, 3, 4],
+  "critical_expectations": [
+    "1/Reports contrast.text_actual when computed text color fails against the visible badge background",
+    "2/Reports geometry.icon_text and geometry.connector_text for the corresponding collisions",
+    "3/Returns INCOMPLETE rather than PASS",
+    "4/Does not report contrast.text_actual for explicit white badge text on the dark-green circle"
+  ]
+}

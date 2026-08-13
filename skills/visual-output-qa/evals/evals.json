@@ -1,0 +1,45 @@
+{
+  "skill_name": "visual-output-qa",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Inspect `skills/visual-output-qa/tests/fixtures/svg-badge-marker-red.svg` as the final browser-rendered SVG. The badge number may inherit dark text and the marker may be consumed by the endpoint card.",
+      "expected_output": "Inspect computed rendered styles and painted connector geometry, then give a fail-closed delivery verdict with stable rule IDs.",
+      "expectations": [
+        "Reports contrast.text_actual when computed text color fails against the visible badge background",
+        "Reports geometry.connector_clearance when marker bodies are consumed by endpoint cards",
+        "Uses PASS, FAIL, or INCOMPLETE and does not pass an unverified hard condition"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Inspect `skills/visual-output-qa/tests/fixtures/html-collision-red.html` in its browser viewport before delivery. Check rendered text, icon, and connector collisions.",
+      "expected_output": "Render the final browser artifact and separate objective defects from advisory design comments.",
+      "expectations": [
+        "Inspects rendered paint or glyph geometry rather than source coordinates alone",
+        "Reports geometry.icon_text and geometry.connector_text for the corresponding collisions",
+        "Keeps aesthetic advice separate from blocking defects"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Validate this PPTX for delivery, but LibreOffice and PowerPoint are unavailable in the environment.",
+      "expected_output": "Refuse to claim a visual pass when the required delivery renderer is unavailable.",
+      "expectations": [
+        "Returns INCOMPLETE rather than PASS",
+        "Names the missing renderer as the reason verification is incomplete",
+        "Does not substitute source-package validity for rendered geometry verification"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Inspect `skills/visual-output-qa/tests/fixtures/svg-badge-marker-green.svg` and `skills/visual-output-qa/tests/fixtures/html-collision-green.html` in their final delivery profiles. Confirm that the legitimate versions do not produce hard findings.",
+      "expected_output": "Return PASS only after checking both rendered artifacts and report the inspected profiles.",
+      "expectations": [
+        "Does not report contrast.text_actual for explicit white badge text on the dark-green circle",
+        "Does not report geometry.connector_clearance for the separated connector and endpoint",
+        "Does not report geometry.icon_text or geometry.connector_text for the separated HTML fixture"
+      ]
+    }
+  ]
+}

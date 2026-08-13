@@ -30,13 +30,13 @@ your eye, measure it. Rules:
   (e.g. a 330px card with 16px padding = 298px inner, at 13px → ~41 chars;
   a 49-char line overflows.) If a label needs three lines, that's a signal to
   cut words or widen the box, not to let it run.
-- **Verify with the script, don't eyeball it.** `python
+- **Preflight with the script, don't eyeball source geometry.** `python
   scripts/check_text_fit.py --svg out.svg --pad <card-padding>` measures every
   `<text>`, finds the card it sits in (resolving nested `translate()`), and
   flags any line that overflows — including ones that look fine at a glance.
   Also `--text "…" --size N --max <inner-width>` to pre-check a single line.
-  Fix every overflow (shorten the copy, widen the box, or drop a size) before
-  delivering.
+  Fix every preflight overflow (shorten the copy, widen the box, or drop a size),
+  then run `visual-output-qa` against the rendered artifact before delivering.
 - Set `font-family` on the root `<svg>` and rely on inheritance; override per
   class in the `<style>` block. Always name a concrete family — an unnamed
   font renders as an ugly serif default and breaks on conversion.
@@ -254,5 +254,5 @@ agent asked to "change step 3's label" finds `<g id="step-3">` immediately.
 - [ ] Colour only via `:root` vars/classes — no inline hexes to hunt down?
 - [ ] Semantic `<g id>` groups + region comments for later editing?
 - [ ] Positions computed, not eyeballed? Gaps all multiples of the base unit?
-- [ ] **Ran the gate?** `python scripts/check.py out.svg --bg <canvas> --pad <n>` — hard-fails on xml/refs/canvas/text-fit/contrast/min-font (font, emoji, var-compat, restyle are advisories); exit 0 to deliver.
+- [ ] **Ran construction preflight?** `python scripts/check.py out.svg --bg <canvas> --pad <n>` — catches source-level xml/refs/text-fit/contrast/min-font issues; it does not replace the final `visual-output-qa` rendered review.
 - [ ] Rendered to PNG and actually looked at before delivering?

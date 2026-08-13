@@ -16,10 +16,11 @@ A palette is derived, not picked from a menu. Name 4–6 hex roles — backgroun
 ink (text ramp), theme, accent, and 2–3 category tints — and derive the hues
 from the subject's own world: security borrows deep navy and lock-teal,
 health borrows living greens, a hardware topic borrows its enclosure and PCB.
-The brief's brand colours always win; slot them into the roles. Then verify
+The brief's brand colours always win; slot them into the roles. Then preflight
 every text-carrying colour with `scripts/check_contrast.py` *before*
-committing — a beautiful mid-tone that lands at 3.4:1 is a headings-only
-colour, and finding that out after layout is expensive.
+committing. This is a source-level preflight; `visual-output-qa` is the final
+rendered-artifact review. A beautiful mid-tone that lands at 3.4:1 is a
+headings-only colour, and finding that out after layout is expensive.
 
 The verified starting points below are worked examples of the role
 structure, not a catalog — adjust hues to the subject, keep the roles. Every

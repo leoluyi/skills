@@ -20,11 +20,11 @@ highlights:
   en:
     - "Plans the graphic and critiques that plan before building, so it isn't a templated default"
     - "Draws palette, layout, and visual metaphor from the subject's own world for a distinctive look"
-    - "Three-level text hierarchy plus a deterministic gate that catches clipped text and weak contrast"
+    - "Three-level text hierarchy plus format-local preflight and rendered-artifact QA"
     - "Handles ByteByteGo-style technical explainers and animated HTML learning recaps"
   zh:
     - "先擬計畫再自我批判，才動手畫，避開樣板感的預設圖"
     - "配色、版面、視覺隱喻都取材自主題本身，做出獨特風格"
-    - "三層文字階層加自動檢查，抓出爆版、文字被切、對比不足"
+    - "三層文字階層加格式前置檢查與成品 QA，抓出爆版、文字被切、對比不足"
     - "支援 ByteByteGo 式技術圖解與動畫版學習總結 HTML"
 ---

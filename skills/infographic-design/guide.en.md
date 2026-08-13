@@ -48,12 +48,12 @@ Two more it declines. A cheatsheet — a dense quick-reference sheet of commands
 
 The design work — message, palette, layout, hierarchy, honest quantities, accessibility — is a self-critique pass: before delivery, the skill checks its own draft against the brief and, where one exists, against a real-world exemplar of the genre (a published diagram in the same style, held up side by side). That pass is judgment, and it stays judgment; it is not something a script can verify.
 
-Underneath it sits a deterministic gate, run as `python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>`, which wraps two objective checks:
+Underneath it sits a format-local construction preflight, run as `python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>`, which wraps two source-level checks:
 
 - `check_contrast.py` — verifies WCAG contrast ratios (4.5:1 for text, 3:1 for large text or graphic elements) so no color pairing is silently unreadable.
 - `check_text_fit.py` — catches the most common failure mode in generated SVG: text that overflows its box or gets clipped by its container.
 
-These two are hard gates — they catch reader-harming defects (parse errors, broken references, clipped text, failing contrast) that are true regardless of taste, and a build is not considered finished until `check.py` exits 0. If it flags something, the fix order is: cut words first, then shrink type, and only as a last resort enlarge boxes by growing the canvas while holding the grid's gaps.
+Resolve preflight failures before rendering. The final reader-harming verdict comes from `visual-output-qa`, which inspects the delivered artifact rather than trusting source estimates. If preflight flags something, the fix order is: cut words first, then shrink type, and only as a last resort enlarge boxes by growing the canvas while holding the grid's gaps.
 
 Everything else the gate reports — font-naming conventions, emoji use, CSS variable/renderer compatibility, restyle structure — is advisory: a judgment call left to whoever is building the graphic, never a blocking condition. That split mirrors a broader principle this project follows: a check only earns the right to block delivery when it catches an objective, reader-harming defect, not a style preference.
 

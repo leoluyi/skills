@@ -106,7 +106,7 @@ python scripts/check_fit.py out.svg --roles cd=body,sb=support,h1=title,rl=secti
 `--roles` 把 CSS class 對到角色名；未列出的 class 一律以 `caption` 的
 最小值（1.4%）檢查，那是全表最寬鬆的底線。
 
-exit 0 才交付。
+這是格式建構前置檢查，不是最終 rendered-artifact verdict；交付前仍要執行 `visual-output-qa`。
 
 ## 字寬估算
 

@@ -4,7 +4,7 @@
 
 **寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
-[![Skills](https://img.shields.io/badge/skills-22-6d4aff?style=flat-square)](#技能目錄)
+[![Skills](https://img.shields.io/badge/skills-23-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-22 個技能、7 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+23 個技能、7 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -103,6 +103,7 @@ tools/sync-skills
 | **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
 | **架構圖設計與重繪**<br>[`diagram-style`](skills/diagram-style/SKILL.md) | `model-invoked` | 從需求建立新圖，或保留指定內容重新設計既有架構圖與流程圖 |
 | **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
+| **視覺輸出品質檢查**<br>[`visual-output-qa`](skills/visual-output-qa/SKILL.md) | `model-invoked` | 以單一且無法驗證就不放行的標準，檢查視覺成品的實際呈現 |
 
 ### 知識管理
 

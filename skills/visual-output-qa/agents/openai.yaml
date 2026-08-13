@@ -1,0 +1,5 @@
+interface:
+  display_name: "Visual Output QA"
+  short_description: >-
+    Check rendered visual artifacts before delivery
+  default_prompt: "Use $visual-output-qa to inspect this rendered artifact and report PASS, FAIL, or INCOMPLETE."

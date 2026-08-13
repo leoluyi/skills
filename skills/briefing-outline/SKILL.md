@@ -43,7 +43,10 @@ The English in this file is structural labelling for you, not literal output. Ne
 
 **Re-sync branch** — a source document changed: identify the affected sections and re-run steps 4–7 for those only, including the cascade check in step 7.
 
-**Visual-emphasis branch** — the 提綱 will be rendered (PDF/HTML) for a 主管 to read from or scan aloud: after step 7, optionally add a visual emphasis layer (sparse yellow keyword anchors, blue definitional fields, boxed labels, A/B/C on parallel groups). Applies only when the render pipeline's CSS carries the classes; sparse by default; skip entirely for plain-text delivery. See `references/visual-emphasis.md` (full working stylesheet: `references/report.css`).
+**Visual-emphasis branch**: the 提綱 will be rendered (PDF/HTML) for a 主管 to read from or scan aloud: after step 7, optionally add a visual emphasis layer (sparse yellow keyword anchors, blue definitional fields, boxed labels, A/B/C on parallel groups).
+Applies only when the render pipeline's CSS carries the classes; sparse by default; skip entirely for plain-text delivery.
+See `references/visual-emphasis.md` (full working stylesheet: `references/report.css`).
+After rendering, run the `visual-output-qa` skill against the final PDF or browser artifact; only its `PASS` verdict completes this branch.
 
 ## Altitude: what stays, at what depth
 

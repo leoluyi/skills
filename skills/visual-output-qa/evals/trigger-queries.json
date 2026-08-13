@@ -1,0 +1,31 @@
+{
+  "skill_name": "visual-output-qa",
+  "queries": [
+    {
+      "id": 1,
+      "query": "幫我檢查這張 SVG 有沒有爆版、文字被切掉或箭頭被卡片吃掉。",
+      "should_trigger": true,
+      "category": "positive/rendered-svg-delivery-qa"
+    },
+    {
+      "id": 2,
+      "query": "幫我設計一張微服務架構圖，想要專業但不要太花。",
+      "should_trigger": false,
+      "category": "negative/visual-design-routes-to-diagram-style",
+      "note": "This asks for design and generation, not delivery QA of a rendered artifact."
+    },
+    {
+      "id": 3,
+      "query": "Review this PPTX for clipped text, missing glyphs, and low contrast before I present it.",
+      "should_trigger": true,
+      "category": "positive/pptx-delivery-qa"
+    },
+    {
+      "id": 4,
+      "query": "幫我把這份研究整理成十頁簡報大綱。",
+      "should_trigger": false,
+      "category": "negative/content-writing-routes-to-deck-writer",
+      "note": "This asks for slide content, not rendered visual QA."
+    }
+  ]
+}

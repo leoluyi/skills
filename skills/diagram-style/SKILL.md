@@ -39,6 +39,9 @@ SVG 與 PPTX——角色是契約，媒材是實作。
 
 媒材對映：SVG 見 `references/render-svg.md`，PPTX 見 `references/render-pptx.md`。
 
+**Rendered-output QA branch**：產出或大幅修改 SVG、PPTX 或其他固定版面視覺成品時，完成內容核對與本 skill 的格式檢查後，執行 `visual-output-qa` skill。
+它擁有跨媒材的 rendered truth 原則與最終交付 verdict；本 skill 只保留圖表設計、內容保留與媒材建構規則。
+
 **字級是硬底線。** 最小字級以畫布寬度的百分比定義（內文 2.0%、標題 3.5%），
 因為 SVG 會縮放，絕對 px 沒有意義。預設畫出來的字通常太小，就是因為
 畫布給得大方而字級照抄螢幕習慣。完整表與版面最佳化定義在 `references/typography.md`。
@@ -109,7 +112,7 @@ SVG 與 PPTX——角色是契約，媒材是實作。
 2. 圖片參考只提取使用者指定的風格、構圖、氛圍或主體特徵，不假設要保留其像素或內容。
 3. 讀 `references/canvas-design-system.md`，先寫一句可操作的 visual philosophy，再以它約束空間、色彩、型級、節奏與焦點。
 4. 選擇角色、筆調與顏色。結構可從需求建立，不受「沿用素材」限制。
-5. 產出後依「核對後交付」檢查內容、字級、溢位、對比與畫布邊界。
+5. 產出後依「核對後交付」檢查內容與格式，再執行 `visual-output-qa` skill 檢查實際呈現。
 
 完成條件：圖能獨立說明核心訊息，需求中的每個節點與關係都有對應圖元，且沒有未經需求支持的資訊。
 
@@ -191,10 +194,11 @@ python scripts/derive.py themes/<theme>.md
    SVG 逐字比對每個 `<text>`。
 2. **內容核對** — 對回步驟 1 的清單，節點、連線、群組逐項比。
 3. **量文字與字級** — `python scripts/check_fit.py out.svg --roles <cls=role,…>`
-   同時檢查溢出與最小字級。exit 0 才交付。塞不下時調版面，不縮字。
+   作為格式建構前置檢查，檢查估算溢出與最小字級。它不是 rendered-artifact verdict；塞不下時調版面，不縮字。
 4. **重跑 `derive.py`** — 確認交付的色值與主題檔一致。
    若改動過 `derive.py` 或任何主題，先跑 `python scripts/test_themes.py`，
    再跑 `python scripts/render_reference.py` 更新 `docs/style-reference.html`。
+5. **檢查實際呈現**：執行 `visual-output-qa` skill，使用最終交付 renderer 驗證 hard conditions；只有 `PASS` 才交付。
 
 ## 底線
 

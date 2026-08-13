@@ -265,22 +265,24 @@ fake-precise? When a real-world exemplar of this genre exists (a published
 ByteByteGo diagram, a chart you admire), hold your artifact next to it —
 external comparison catches what rule-checking can't. Fix what you find.
 
-Then run the deterministic gate as the final seatbelt — it catches
-reader-harming defects (parse errors, broken refs, clipped/overflowing text,
-contrast, tiny fonts); design quality was the reader-critique's job:
+Then run the format-local construction preflight. It catches
+source-level defects such as parse errors, broken refs, estimated text fit,
+contrast tokens, and tiny fonts; it is not the final rendered-artifact verdict:
 
 ```
 python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>
 ```
 
-Exit 0 required before delivering. If it flags something, fix the cause
+Resolve any preflight failure before continuing. If it flags something, fix the cause
 (usually: cut words first, then shrink type, enlarge boxes only last —
 growing the canvas, with the grid's gaps held). Advisory warnings (font
 naming, emoji, var() renderer compat, restyle structure) are judgment calls,
 yours to weigh.
 
-**Done when** every reader-critique question answers yes and the gate returns
-exit 0 — the green gate is the seatbelt, the reader-critique the driving.
+After preflight, run the `visual-output-qa` skill against the final rendered artifact.
+It owns the cross-format rendered truth review and delivery verdict; this skill owns infographic design and SVG or HTML construction.
+
+**Done when** every reader-critique question answers yes, the local gate returns exit 0, and `visual-output-qa` returns `PASS` for the delivery profile.
 
 ## Building the output
 
