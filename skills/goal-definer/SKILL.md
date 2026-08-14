@@ -1,7 +1,13 @@
 ---
 name: goal-definer
 description: >-
-  Turn a fuzzy task description into a six-element goal prompt — Outcome, Verification, Constraints, Boundaries, Iteration Policy, Blocked Stop Condition — that an AI agent can run for hours without drifting or wrapping up early. Use it when the user has a vague long-running task and no plan yet: "optimize the checkout speed", "tidy up our customer data", "rewrite our product copy", 「我想讓 agent 幫我跑一個長任務，但我還講不清楚」, 「幫我把這個任務寫成 agent 可以自己跑的目標」, "turn this into a goal I can run overnight", "make this task agent-runnable". It runs as an interview: it refuses vague success words like 更好／更完整／more polished and pushes every answer until another agent could verify completion without the user eyeballing the result. Do NOT invoke when the user already has a written plan and wants it turned into a goal (that is plan-to-goal's job), for writing the plan itself (that is plan mode), or for a task small enough that one prompt would do.
+  Turn a vague long-running task into six fields: Outcome, Verification,
+  Constraints, Boundaries, Iteration Policy, and Blocked Stop Condition. Use when
+  the user wants an agent-runnable goal for hours or overnight, such as
+  「我想讓 agent 幫我跑一個長任務，但我還講不清楚」 or 「幫我把這個任務寫成
+  agent 可以自己跑的目標」. Interview one field at a time until completion is
+  independently verifiable. Route existing plans to plan-to-goal, plan authoring
+  to plan mode, and small tasks to ordinary prompting.
 app-description: >-
   把模糊的任務描述訪談成六元素 goal prompt（Outcome、Verification、Constraints、Boundaries、Iteration
   Policy、Blocked Stop Condition），讓 agent 能自己跑好幾個小時不偏離、不提早收工。拒絕「更好」「更完整」這類模糊詞，逼到另一個 agent

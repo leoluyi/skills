@@ -1,21 +1,13 @@
 ---
 name: plain-speak
 description: >-
-  Translate technical jargon, code concepts, or dense engineering text into
-  plain language a non-technical colleague or manager can follow. Use when the
-  user asks to "explain in plain language", "白話文", "翻成人話", "用白話解釋",
-  "explain like I'm a PM", "make this non-technical", "simplify this term",
-  "what does this term mean", pastes technical text for a business-audience
-  version, or asks whether an existing plain-language draft works for a
-  non-technical reader ("這樣夠白話嗎", "幫我看非技術主管看不看得懂",
-  "is this clear enough for a PM"). Also use mid-conversation for requests to
-  re-explain preceding content ("上面那段用白話再講一次", "你剛剛講的我看不懂",
-  "剛剛那幾個選項差在哪", "講人話"), including a question just put to the
-  user. Reply in the user's language. Do NOT invoke for removing AI-isms /
-  潤飾語氣 (use humanizer-zh), structuring a formal business document
-  (簽呈/會議紀錄/報告; use formal-doc-structure), or RFP / 需求規格書 /
-  招標規格 (use rfp-writing). This skill lowers audience complexity, not voice,
-  structure, or document type.
+  Translate technical terms, code, errors, or dense engineering text for
+  non-technical readers; review or re-explain a plain-language draft, preceding
+  answer, or pending question. Trigger on 「白話文」, 「翻成人話」, 「用白話解釋」,
+  「講人話」, "explain in plain language", "explain like I'm a PM", or "is this
+  clear enough for a PM". Reply in the user's language. Route AI-ism cleanup to
+  humanizer-zh, whole formal documents to formal-doc-structure, RFPs to
+  rfp-writing, and deep technical explanation or implementation elsewhere.
 app-description: 把技術術語、程式概念或艱澀工程文字翻譯成非技術主管或同事能懂的白話文。適用於「白話文」「翻成人話」「用白話解釋」「講人話」，或審閱既有白話草稿是否「夠白話」。不去除 AI 寫作腔調。
 version: 1.5.0
 license: MIT

@@ -1,7 +1,12 @@
 ---
 name: humanizer-zh
 description: >-
-  Audit and rewrite finished prose to strip AI writing patterns ("AI-isms") — a language-layer cleanup pass over Traditional Chinese (Taiwan usage), English, and mixed zh/en text. Use when the user asks 「幫我把這段的 AI 味拿掉，改成人話」(zh-tw rewrite); 「先標出來就好，不用改」(zh-tw detect-only audit); "clean up the AI-isms in this draft" for English prose — blog posts, README, CONTRIBUTING, ADR, API docs, code comments; 「這份中英混雜的文件，中文那段去 AI 味，英文技術術語保留」(mixed zh/en); 「直接編輯 draft.md，把裡面的 AI 寫作模式修掉」(edit-in-place on a named file); or 「沒什麼明顯的 AI 空話，但讀起來就是很像 AI 寫的、沒有靈魂」— a detect-only 作者隱身 audit that names what is absent rather than rewriting for voice. It removes and flags AI patterns but does not create a voice — composing a blog or rewriting a draft into a human voice is blog-writing-zh's job, not this skill's. When the user explicitly invokes this skill without a mode, exact file path, or draft, prepare a pre-draft writing handoff instead.
+  Audit or rewrite finished Traditional Chinese, English, or mixed zh/en prose to
+  remove AI-isms while preserving facts, voice, and technical level. Trigger on
+  「去 AI 味」, 「改成人話」, 「先標出來就好，不用改」, "clean up the AI-isms",
+  detect-only, edit-in-place, or humanizer-zh/preflight requests. With no draft,
+  mode, or file, prepare the pre-draft handoff. Route blank-page composition to
+  writing skills and audience simplification to plain-speak.
 app-description: 稽核並改寫已完成的文稿，去除「AI 味」寫作模式，適用繁體中文、英文與中英混雜文本。觸發：「幫我把這段的 AI 味拿掉，改成人話」（改寫）或「先標出來就好，不用改」（只標記）。未提供模式、檔案位置或草稿時，手動啟動預設產出寫作前置 handoff。不降低技術程度給非技術讀者。
 argument-hint: "[--mode detect|rewrite|edit-in-place|preflight] [--voice <profile>] [--context <profile>] [--file <path>] [--expect-author] [--iterate <1|2>]"
 version: 2.4.0

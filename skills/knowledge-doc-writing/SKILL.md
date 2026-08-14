@@ -1,17 +1,15 @@
 ---
 name: knowledge-doc-writing
 description: >-
-  把自學或研究一個技術主題的成果，整理成一份包含四個清楚分離 Diátaxis 區塊的知識文件——tutorial（帶著上手）、
-  how-to（照著完成任務）、reference（查參數與結構）、explanation（What/Why 論述與取捨決策）；用 compass
-  兩問把每段素材路由到對應區塊，素材撐得起才寫，撐不起的型（研究過但未實作常缺 tutorial/how-to）明列為缺口，
-  不捏造、不搭空殼（繁體中文為主、術語保留英文）。觸發：使用者要把對話紀錄、官方文件或原始資料、或從零研究的主題
-  （強制查一手來源並標 as-of 時效）消化成可長期參考的技術文件；或改寫一份既有技術文件——依意圖分流：
-  更新時效／併入新素材→定點修補保留原形，重整／重構→依 compass 重建四型區塊。可接在 learn-loop 之後：
-  learn 管互動學習迴圈與親手 distillation（鐵律：distillation 是學習本身，不代寫），
-  本 skill 只接手 distill 完成後重新組織、補讀者上下文、套完稿檢查。不要用於：公司內部簽呈／會議紀錄／
-  評估報告等行政文件（用 formal-doc-structure，即使輸入是既有文件也不因此轉入本 skill）、RFP／招標規格
-  （用 rfp-writing）、部落格文章（用 blog-writing-zh）、只做語言層去 AI 味不動結構（用 humanizer-zh）、
-  只要口頭白話解釋不產文件（用 plain-speak）、learn 的互動學習迴圈本身（用 learn-loop）。
+  Turn self-study, research, conversation transcripts, or source material into a
+  durable technical document with separate Diátaxis tutorial, how-to, reference,
+  and explanation sections; also update or restructure an existing knowledge doc.
+  Use the compass, write only supported sections, and mark gaps without
+  fabrication. Trigger on 「整理成知識文件」 or requests to turn official docs or
+  research notes into a lasting reference. Route formal docs, RFPs, blogs,
+  language-only cleanup (humanizer-zh), plain-language explanations (plain-speak),
+  interactive learning (learn-loop), and mechanical spec-to-reference generation
+  elsewhere.
 app-description: 把自學或研究成果整理成 Diátaxis 四區塊知識文件：tutorial、how-to、reference、explanation，素材撐不起的區塊列為缺口，不捏造。觸發：把對話紀錄、官方文件或研究主題消化成可長期參考的技術文件，或重整既有技術文件。
 version: 2.0.0
 license: MIT

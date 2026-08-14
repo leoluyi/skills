@@ -1,7 +1,12 @@
 ---
 name: breakdown
 description: >-
-  Lay out every case in a decision exhaustively before evaluating any of them, decompose the open problem into the individual decisions only the user can answer, then stop and wait — and synthesize a recommendation only after they answer. Use it when the user wants the full ground laid out before a conclusion: 「先把所有情況攤開給我看」, 「不要先給結論，先列出所有選項和事實」, 「幫我拆解這個決定」, "lay out every case first", "don't recommend yet — decompose it", "what are all the options here, in full". Each case carries what is verified fact versus what is inference, uniform depth across cases, and an explicit excluded list. Do NOT invoke when the user wants one clickable decision surfaced right now (that is options), when the answer is genuinely unknown to both sides and needs joint exploration (that is discuss-with-me), or for a question with a settled answer that just needs looking up.
+  Before recommending, exhaustively lay out every case, separate facts from
+  inferences, list exclusions, and isolate decisions only the user can answer;
+  then stop and wait. Trigger on 「先把所有情況攤開給我看」, 「不要先給結論」,
+  「幫我拆解這個決定」, "lay out every case first", or "don't recommend yet -
+  decompose it". Route immediate option selection to options, joint unknown
+  exploration to discuss-with-me, and settled lookups to ordinary research.
 app-description: >-
   先把所有情況完整攤開再評估：每個 case 標明哪些是查證過的事實、哪些是推論，深度一致、排除項明列； 接著把問題拆成一題一決策交給使用者回答，然後停住等答案，答完才給建議。觸發：「先把所有情況攤開給我看」 「不要先給結論」「幫我拆解這個決定」。
 version: 1.0.0

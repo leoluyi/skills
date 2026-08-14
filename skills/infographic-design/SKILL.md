@@ -1,18 +1,12 @@
 ---
 name: infographic-design
 description: >-
-  Design polished, professional explanatory graphics as SVG or single-file
-  HTML. Use for infographic, 資訊圖表, 懶人包, 圖解, one-pager, visual summary,
-  or timeline/comparison/process ("how it works") requests, including review of
-  an existing graphic ("幫我看這張圖表哪裡可以改"). Also use for a teaching
-  recap ("學習總結成一張圖", "visual recap of what you taught me") or a figure
-  needed inside another document. Do NOT invoke for standalone analysis charts,
-  dashboards / BI tooling, slide decks, plain-language term explanations (use
-  plain-speak), dense command or syntax cheatsheets / 速查表, authoring a
-  knowledge or technical document (use knowledge-doc-writing), or data-dense
-  charts where numbers and precise scales are the subject. An explicit ask for
-  infographic / 資訊圖表 / 懶人包 / one-pager qualifies even with precise data;
-  evidence quantities inside an explanation remain in scope.
+  Design or review explanatory graphics as SVG or single-file HTML: infographics,
+  資訊圖表, 懶人包, 圖解, one-pagers, visual summaries, timelines, comparisons,
+  process explainers, learning recaps, and figures for documents. Route standalone
+  charts, dashboards/BI, slide decks, syntax cheatsheets, knowledge documents, and
+  exact-scale data charts elsewhere; plain-language explanations go to
+  plain-speak. Explicit infographic requests qualify even when data is precise.
 app-description: >-
   設計專業、精緻的解說型視覺圖像（SVG 或單檔 HTML）。適用於「資訊圖表」「懶人包」「圖解」「one-pager」、時間軸／比較／流程圖，或教學對話結束後的「學習總結成一張圖」視覺回顧，也可審閱既有圖表提出修改建議。
 version: 0.11.2
