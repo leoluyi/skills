@@ -1,5 +1,5 @@
 ---
-name: document-meta-cleanup
+name: fourth-wall-repair
 description: >-
   偵測或移除正文中談論文件本身、閱讀路徑、頁面角色或委託脈絡的文字，同時保留必要導覽、來源引用與實際操作指示。
 disable-model-invocation: true
@@ -14,7 +14,7 @@ metadata:
     emoji: "🧹"
 ---
 
-# Document Meta Cleanup
+# Fourth-Wall Repair
 
 Make subject-only prose stand on its own.
 Remove artifact narration, reading choreography, page-role commentary, and commissioning residue while carrying every subject fact into the result.

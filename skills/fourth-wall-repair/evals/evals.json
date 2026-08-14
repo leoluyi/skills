@@ -1,5 +1,5 @@
 {
-  "skill_name": "document-meta-cleanup",
+  "skill_name": "fourth-wall-repair",
   "evals": [
     {
       "id": 1,
@@ -48,7 +48,7 @@
     },
     {
       "id": 5,
-      "prompt": "$document-meta-cleanup docs/architecture.md",
+      "prompt": "$fourth-wall-repair docs/architecture.md",
       "expected_output": "Bare invocation chooses safe detect mode rather than silently editing the named file.",
       "expectations": [
         "defaults-to-detect: Reads and audits the named file without writing it.",

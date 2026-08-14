@@ -1,7 +1,7 @@
 # Codex skill metadata. User-invoked: this pairs with
 # `disable-model-invocation: true` in SKILL.md.
 interface:
-  display_name: "Document Meta Cleanup"
+  display_name: "Fourth-Wall Repair"
   short_description: >-
     偵測或移除正文中的文件自述、閱讀導引、頁面角色與委託脈絡，同時保留必要引用與操作指示。
 policy:

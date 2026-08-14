@@ -5,8 +5,8 @@ order: 3
 languages: [en, zh-TW]
 tags: [document-editing, meta-information, fourth-wall, technical-writing]
 title:
-  en: "Document Meta Cleanup"
-  zh: "文件自述清理"
+  en: "Fourth-Wall Repair"
+  zh: "第四面牆修復"
 tagline:
   en: "Removes prose about the artifact, reading path, page role, and commissioning context while preserving evidence and real instructions"
   zh: "移除文件自述、閱讀導引、頁面角色與委託脈絡，同時保留來源引用與實際操作指示"

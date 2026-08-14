@@ -1,15 +1,15 @@
 {
-  "skill_name": "document-meta-cleanup",
+  "skill_name": "fourth-wall-repair",
   "queries": [
     {
       "id": 1,
-      "query": "$document-meta-cleanup 檢查這份 slidument 還有哪些 meta information 或打破第四面牆",
+      "query": "$fourth-wall-repair 檢查這份 slidument 還有哪些 meta information 或打破第四面牆",
       "should_trigger": true,
       "category": "positive/detect"
     },
     {
       "id": 2,
-      "query": "$document-meta-cleanup 直接移除簡報裡的『先看』『本頁』『接下來』等文件自述",
+      "query": "$fourth-wall-repair 直接移除簡報裡的『先看』『本頁』『接下來』等文件自述",
       "should_trigger": true,
       "category": "positive/edit"
     },
