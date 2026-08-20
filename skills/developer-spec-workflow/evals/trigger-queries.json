@@ -1,0 +1,71 @@
+{
+  "skill_name": "developer-spec-workflow",
+  "queries": [
+    {
+      "id": 1,
+      "query": "我要從無到有產製一份給開發人員參考的技術規格書和 sample code，過程要用 AI 逐步訪談與驗證。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/from-scratch"
+    },
+    {
+      "id": 2,
+      "query": "我有一段初始 prompt，先幫我釐清需求，再寫 technical spec、做 runnable sample，最後證明文件步驟真的跑得通。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/brief-to-proof"
+    },
+    {
+      "id": 3,
+      "query": "Design an AI-assisted workflow that takes this rough system idea through a developer spec, executable example, and end-to-end validation.",
+      "should_trigger": true,
+      "category": "positive/en/end-to-end"
+    },
+    {
+      "id": 4,
+      "query": "延續上次的 developer spec workflow，brief 和 context 都已經在 repo，請從確認過的決策繼續做 sample。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/continuation"
+    },
+    {
+      "id": 5,
+      "query": "把我整理好的 Kubernetes 研究筆記寫成一份長期保存的技術知識文件，不需要 sample code。",
+      "should_trigger": false,
+      "category": "negative/writing-only-knowledge-doc",
+      "note": "Writing-only knowledge document belongs to knowledge-doc-writing."
+    },
+    {
+      "id": 6,
+      "query": "這份 API spec 已經核准了，照著實作 endpoint 和 tests。",
+      "should_trigger": false,
+      "category": "negative/approved-spec-implementation",
+      "note": "Requirements discovery and spec authoring are already complete."
+    },
+    {
+      "id": 7,
+      "query": "幫我寫一份讓廠商投標的系統建置需求規格書，包含評選與驗收條款。",
+      "should_trigger": false,
+      "category": "negative/rfp",
+      "note": "Procurement and bidding specs belong to rfp-writing."
+    },
+    {
+      "id": 8,
+      "query": "給我一段 Python 呼叫 REST API 的 sample code。",
+      "should_trigger": false,
+      "category": "negative/one-off-code-example",
+      "note": "A one-off snippet does not need the end-to-end workflow."
+    },
+    {
+      "id": 9,
+      "query": "登入 API 現在回 500，幫我 debug 並修好。",
+      "should_trigger": false,
+      "category": "negative/bug-fix",
+      "note": "Diagnosis and repair are not spec-to-sample creation."
+    },
+    {
+      "id": 10,
+      "query": "這份既有技術規格書的語氣太像 AI，幫我改自然一點，內容和 code 都不要動。",
+      "should_trigger": false,
+      "category": "negative/language-cleanup",
+      "note": "Language-only cleanup does not need this workflow."
+    }
+  ]
+}

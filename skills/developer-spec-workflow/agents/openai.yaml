@@ -1,0 +1,6 @@
+# Codex skill metadata. Model-invoked: no `policy` block, so
+# `allow_implicit_invocation` stays at its default of true.
+interface:
+  display_name: "Developer Spec Workflow"
+  short_description: >-
+    從初始需求逐題釐清，產出開發者技術規格、可執行 sample code 與 end-to-end 驗證證據。

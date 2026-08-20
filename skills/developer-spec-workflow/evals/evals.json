@@ -1,0 +1,51 @@
+{
+  "skill_name": "developer-spec-workflow",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我要從無到有寫一份 SQL Server Always Encrypted 給開發人員看的技術規格書，還要有可以跑的 sample code。我只有一段初始 prompt，請直接跟我開始。",
+      "expected_output": "Starts a persistent, decision-first workflow instead of drafting an authoritative spec or sample before the target environment and client stack are known.",
+      "expectations": [
+        "preserves-intake: Places or proposes preserving the initial prompt in docs/brief.md without rewriting it as settled requirements.",
+        "persistent-context: Uses docs/context.md to separate confirmed decisions, assumptions, and open questions rather than relying on chat history.",
+        "one-question: Asks one highest-leverage question in the turn, not a questionnaire wall.",
+        "no-premature-output: Does not present the technical specification or sample code as complete while architecture-critical choices remain open.",
+        "material-question: The question affects environment, client stack, key ownership, trust boundary, scope, or acceptance behavior rather than cosmetic formatting."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Help me create a developer technical specification and runnable Java sample for an idempotent Kafka consumer from this rough brief. The target is production teams, but we have not chosen Kafka or Java versions, the deduplication store, failure semantics, or the local test environment.",
+      "expected_output": "Frames the repository artifacts and begins grilling on the highest-impact design decision while keeping technical claims versioned and sourceable.",
+      "expectations": [
+        "minimal-working-set: Proposes or creates one brief, one live context record, one specification of record, and one sample area, adapting to existing repository conventions if present.",
+        "decision-first: Defers implementation until failure semantics, deduplication ownership, and executable environment are confirmed or explicitly assumed.",
+        "primary-source-plan: States that version-sensitive Kafka and client behavior will be checked against primary documentation with version scope.",
+        "one-question: Ends on one decision-bearing question or choice rather than many shallow questions."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Continue the developer spec workflow. docs/brief.md and docs/context.md already exist. context.md says the target stack, trust boundary, versions, non-goals, and acceptance conditions are confirmed. Produce the spec and sample, and verify the documented commands.",
+      "expected_output": "Continues from repository state without restarting discovery, keeps spec and sample aligned, and leaves runnable evidence.",
+      "expectations": [
+        "continues-state: Reads and uses existing brief and context instead of asking the user to restate confirmed decisions.",
+        "single-source: Treats docs/technical-spec.md as the specification of record and runnable sample files as the source for code behavior.",
+        "tracer-bullet: Implements the smallest end-to-end happy path before optional breadth, with a runnable check for non-trivial behavior.",
+        "docs-executed: Runs the commands documented for the sample and reports actual results.",
+        "diff-reviewed: Inspects the final diff and reports anything that remains unverified."
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Build an end-to-end technical spec and sample for an API that decrypts regulated customer data. The happy path is known. I also need developers to understand what happens without key access and how we prove no secrets are committed.",
+      "expected_output": "Treats security boundaries and negative evidence as core acceptance behavior, not optional prose added after the happy path.",
+      "expectations": [
+        "trust-boundary: Makes key ownership, authorization, and plaintext exposure explicit design decisions in context and spec.",
+        "negative-proof: Includes an unauthorized or missing-key check alongside the authorized success path.",
+        "secret-hygiene: Keeps credentials and private key material outside version control and includes a repository check or equivalent evidence.",
+        "no-security-placeholder: Does not declare security complete using generic wording without observable configuration or tests."
+      ]
+    }
+  ]
+}
