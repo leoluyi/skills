@@ -55,6 +55,40 @@
         "reports-mode: Makes clear that the source remained unchanged.",
         "no-invented-findings: Reports only spans present in the file."
       ]
+    },
+    {
+      "id": 6,
+      "prompt": "只檢查、不改檔。請找出這段正文裡的第四面牆語句：\n\n內容來源：docs/AI微服務平台RFP.md\n本節承接前一份文件的部署章節，詳見 docs/平台架構.md。\n平台以 Gateway 統一處理身分驗證與流量控管。\n來源：RFP 2.2 平台設計原則",
+      "expected_output": "Detect-only audit flags internal source and merge pointers while preserving the platform fact and the RFP evidence citation.",
+      "expectations": [
+        "flags-internal-source-label: Flags `內容來源：docs/AI微服務平台RFP.md` as internal provenance or merge residue, not as subject evidence.",
+        "flags-sibling-document-pointer: Flags the pointer to `docs/平台架構.md` and the previous document because it exposes document assembly rather than a required subject action.",
+        "keeps-subject-fact: Does not flag the Gateway identity and traffic-control statement.",
+        "keeps-rfp-evidence: Preserves `來源：RFP 2.2 平台設計原則` as named subject evidence.",
+        "no-mutation: Explicitly confirms the source was not changed."
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "檢查這段技術文件，不要改：\n\n以下所有結論均依前述三項標準，表內資料皆已完整核對。\nGateway 會依 system ID 套用權限政策。\n本節只適用於 internal tenant。",
+      "expected_output": "Detect-only audit flags defensive self-endorsement while preserving the system behavior and scope boundary.",
+      "expectations": [
+        "flags-self-endorsement: Flags the completeness and method-vouching sentence because it adds no subject fact.",
+        "keeps-system-fact: Preserves the Gateway policy behavior.",
+        "keeps-scope-boundary: Preserves the internal tenant scope exactly.",
+        "no-mutation: Explicitly confirms the source was not changed."
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "把這段簡報自述改成直接陳述，保留技術內容：\n\n我先比較甲家，發現延遲不符需求，接著改看乙家。\n甲家 p95 latency 為 480 ms，乙家為 190 ms。\n本頁接著說明為什麼最後選乙家。",
+      "expected_output": "Rewrite removes author process narration and page roadmap while preserving both latency facts and the resulting comparison.",
+      "expectations": [
+        "removes-process-leakage: Rewrites or removes the first-person evaluation path rather than narrating hidden drafting steps.",
+        "removes-page-roadmap: Removes the sentence about what this page will explain next.",
+        "keeps-latency-facts: Preserves p95 latency values 480 ms and 190 ms exactly.",
+        "no-new-decision: Does not invent a reason, owner, or decision beyond the stated comparison."
+      ]
     }
   ]
 }
