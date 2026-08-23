@@ -1,0 +1,35 @@
+{
+  "skill_name": "taste-distiller",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "我想整理自己改 AI 稿的標準，但還沒指定領域。幫我做一份 Taste Profile。",
+      "expected_output": "The interview starts by locating one domain before asking for examples or drafting a rubric.",
+      "expectations": [
+        "asks-domain: Asks which work domain most often requires rewriting AI output.",
+        "one-focus: If mentioning multiple possible domains, asks the user to choose one rather than blending them.",
+        "no-premature-profile: Does not invent standards or draft the Taste Profile before receiving evidence."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "我主要修改 AI 寫的技術部落格。幫我從退稿經驗找出自己的標準，整理成 rubric。",
+      "expected_output": "With the domain supplied, the interview immediately asks for the first concrete rejection example.",
+      "expectations": [
+        "skips-domain-question: Accepts technical blogging as the domain instead of asking the user to choose one again.",
+        "requests-rejection: Asks for an actual rejected AI output or a reconstruction specific enough to inspect.",
+        "domain-specific: Keeps the interview focused on technical blogging rather than broad personal style."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "領域是簡報。我每次只會說 AI 做的版本『太 AI 味』，你幫我把這個標準整理出來。",
+      "expected_output": "The interview refuses to treat a vague reaction as a standard and asks for observable evidence.",
+      "expectations": [
+        "vagueness-drilled: Treats '太 AI 味' as insufficient and asks which visible wording, layout, or narrative choice caused the rejection.",
+        "presentation-specific: Asks for visible evidence from the presentation rather than generic prose preferences.",
+        "no-personality-label: Does not convert the vague reaction directly into an abstract trait such as 'authenticity' without evidence."
+      ]
+    }
+  ]
+}

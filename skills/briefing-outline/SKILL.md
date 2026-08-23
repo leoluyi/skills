@@ -1,7 +1,9 @@
 ---
 name: briefing-outline
 description: >-
-  說明提綱 (briefing outline) writing — distill detailed source material into one high-altitude overview that gives each part its purpose and essence, then points down for the detail. Source count is not the point: it works over several documents or one long report (pointing down to its sections). Use when the user wants to 整理／撰寫一份說明提綱, condense one or more sources into a navigable briefing for a 主管 or 委員會, summarise a long report into a high-altitude overview that points down for detail, or re-sync an existing 提綱 after its sources changed. Do NOT invoke to author a single formal document from scratch — 簽呈/會議紀錄/報告/專案規劃 (use formal-doc-structure), for RFP / 需求規格書 / 招標規格 (use rfp-writing), for lowering one term or passage to a non-technical audience (use plain-speak), or for pure language cleanup (use humanizer-zh). This skill sits above the source material and points down into each part.
+  Distill one long report or multiple source documents into a high-altitude 說明提綱 that shows the whole and points down for detail.
+  Trigger on 「整理／撰寫說明提綱」, "briefing outline", a source-based briefing for a 主管 or 委員會, a one-page executive overview of a long report, or re-syncing a 提綱 after source changes.
+  Not for drafting a formal document or RFP, explaining one concept, or language-only cleanup.
 app-description: >-
   將數份文件或一份長報告，濃縮成一份高空俯瞰的說明提綱，逐節點出重點並指向細節來源，讓主管或委員會快速掌握全貌。觸發：整理／撰寫說明提綱、把長報告濃縮成總覽、或既有提綱因來源異動需要重新同步。
 version: 1.1.0

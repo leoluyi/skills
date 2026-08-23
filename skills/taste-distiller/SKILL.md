@@ -1,7 +1,9 @@
 ---
 name: taste-distiller
 description: >-
-  Mine the user's history of rejecting, rewriting and redoing AI output, and distil the implicit standards behind those rejections into a reusable Taste Profile — a 1-5 rubric in Markdown plus a JSON variant for an evaluator agent's grading prompt. Use it when the user keeps rewriting AI output and wants the standard written down: 「幫我把我改 AI 稿的標準整理成一份 rubric」, 「我每次都要重寫 AI 的東西，幫我找出我的標準」, "distil my taste into a profile", "turn my edits into a style rubric", "why do I keep rejecting this — write the rule down". It runs as an interview through rejection-grade-explain cycles and refuses abstract feedback like 「感覺怪怪的」 or 「太 AI 味」 without the specific phrase or structural choice that triggered it. Do NOT invoke to generate content in the user's style, to clean AI-isms out of a specific draft, or to define a goal for an agent run.
+  Distill repeated rejected or revised AI outputs into a reusable Taste Profile with a Markdown scoring rubric and evaluator-ready JSON.
+  Trigger on 「把我改 AI 稿的標準整理成 rubric」, "turn my edits into a style rubric", or requests to interview the user and extract why they keep rejecting AI output.
+  Not for autonomous agent goal specs, code review, 「去 AI 味」, editing a specific draft, or generating content in the user's style.
 app-description: >-
   從使用者退稿、重寫 AI 產出的實例裡，挖出他們心裡有、但沒說出口的標準，蒸餾成可重複使用的 Taste Profile： Markdown 的 1-5 分 rubric 加上給 evaluator agent 用的 JSON 版。訪談式進行，不接受「感覺怪怪的」 這種抽象回饋，一定追問到具體的字、句子或結構選擇。
 version: 1.0.0

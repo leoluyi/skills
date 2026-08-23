@@ -1,20 +1,9 @@
 ---
 name: discuss-with-me
 description: >-
-  Think through a question where neither the user nor you already knows the
-  answer — widen the options, ground the claims, attack the load-bearing
-  assumptions, and leave a record that says what would overturn it. Use when the
-  user says 「陪我想一下」「我也不確定」「幫我想清楚」「我們來釐清」「這個決定我還沒想清楚」
-  「幫我挑戰這個想法」「這個假設站得住嗎」「壓力測試一下這個方向」「red team 我的計畫」,
-  or "think this through with me", "poke holes in this", "stress-test this idea",
-  "what are we assuming here", "I don't know the answer either". Also use when a
-  discussion has been converging for a while and nobody has said what would make
-  it wrong. Do NOT invoke when the user already has the answer and only wants it
-  written up (use knowledge-doc-writing or formal-doc-structure), when the
-  concept has a settled answer the user simply hasn't learned yet (teach it, or
-  use learn-loop), for factual lookups, or for debugging and code review. The
-  test is whether the answer is unknown to both sides, not whether the topic
-  feels hard.
+  Explore decisions or ideas when the answer is genuinely unknown to both user and agent, including assumption testing, falsifier search, and red-teaming.
+  Trigger on 「陪我想一下」「幫我挑戰這個想法」「壓力測試一下這個方向」, "think this through with me", "poke holes in this", or requests to test what would overturn a converging conclusion.
+  Not for settled write-ups, teaching known concepts, factual lookup, debugging, or code review.
 app-description: >-
   與使用者一起深挖雙方都沒有答案的開放問題——擴大選項、查核論證、攻擊關鍵假設，留下可被推翻的決策紀錄。觸發：「陪我想一下」「幫我挑戰這個想法」「這個假設站得住嗎」「red team 我的計畫」，或
   stress-test this idea、poke holes in this。

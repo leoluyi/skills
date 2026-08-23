@@ -1,0 +1,57 @@
+{
+  "skill_name": "taste-distiller",
+  "queries": [
+    {
+      "id": 1,
+      "query": "我每次都要重寫 AI 的稿，幫我從這些退稿和修改紀錄找出我的標準，整理成 rubric。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/rejections-to-rubric"
+    },
+    {
+      "id": 2,
+      "query": "幫我把我改 AI 稿的標準整理成一份可以交給 evaluator agent 用的 Taste Profile。",
+      "should_trigger": true,
+      "category": "positive/zh-tw/evaluator-profile"
+    },
+    {
+      "id": 3,
+      "query": "Turn my edits and rejected drafts into a reusable style rubric.",
+      "should_trigger": true,
+      "category": "positive/en/edits-to-rubric"
+    },
+    {
+      "id": 4,
+      "query": "Why do I keep rejecting AI output? Interview me and write the underlying rules down.",
+      "should_trigger": true,
+      "category": "positive/en/interview-for-standards"
+    },
+    {
+      "id": 5,
+      "query": "這段 AI 稿感覺怪怪的，直接幫我去掉 AI 味，內容跟結構不要改。",
+      "should_trigger": false,
+      "category": "negative/specific-draft-cleanup",
+      "note": "Cleaning one draft routes to humanizer-zh; no reusable taste profile was requested."
+    },
+    {
+      "id": 6,
+      "query": "根據你對我的了解，用我的風格寫一篇 AI 代理人趨勢文章。",
+      "should_trigger": false,
+      "category": "negative/generate-in-user-style",
+      "note": "The user wants content generation, not extraction of standards from revision history."
+    },
+    {
+      "id": 7,
+      "query": "幫我把這個半年期重構任務整理成 agent 可以自己跑的 goal。",
+      "should_trigger": false,
+      "category": "negative/goal-definition",
+      "note": "Goal definition is unrelated to taste distillation."
+    },
+    {
+      "id": 8,
+      "query": "Review this pull request and tell me whether the implementation matches the issue.",
+      "should_trigger": false,
+      "category": "negative/code-review",
+      "note": "Reviewing code against a spec does not infer a reusable personal taste rubric."
+    }
+  ]
+}

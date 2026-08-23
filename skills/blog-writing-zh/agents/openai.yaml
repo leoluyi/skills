@@ -4,7 +4,7 @@
 interface:
   display_name: "Traditional Chinese Blog Writer"
   short_description: >-
-    撰寫或改寫具真實人味的繁體中文部落格文章／電子報，可從主題起草或改寫既有筆記、
-    翻譯稿，附 3-5 組標題／副標備選。
+    將主題、筆記或外文素材寫成有人味的台灣繁體中文文章。
+    Write or rewrite a zh-TW blog post or newsletter.
 policy:
   allow_implicit_invocation: false

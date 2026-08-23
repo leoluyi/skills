@@ -1,15 +1,9 @@
 ---
 name: knowledge-doc-writing
 description: >-
-  Turn self-study, research, conversation transcripts, or source material into a
-  durable technical document with separate Diátaxis tutorial, how-to, reference,
-  and explanation sections; also update or restructure an existing knowledge doc.
-  Use the compass, write only supported sections, and mark gaps without
-  fabrication. Trigger on 「整理成知識文件」 or requests to turn official docs or
-  research notes into a lasting reference. Route formal docs, RFPs, blogs,
-  language-only cleanup (humanizer-zh), plain-language explanations (plain-speak),
-  interactive learning (learn-loop), and mechanical spec-to-reference generation
-  elsewhere.
+  Create or update durable Diátaxis knowledge documents from self-study, research, conversations, lab notes, or existing learning notes; mark unsupported sections as gaps.
+  Trigger on 「整理成知識文件」, "turn these notes into a knowledge document", or requests for a lasting personal or team technical reference.
+  Not for 簽呈, 評估報告, RFPs, sentence-only cleanup, plain-language explanation, interactive learning, or mechanical spec-to-reference generation.
 app-description: 把自學或研究成果整理成 Diátaxis 四區塊知識文件：tutorial、how-to、reference、explanation，素材撐不起的區塊列為缺口，不捏造。觸發：把對話紀錄、官方文件或研究主題消化成可長期參考的技術文件，或重整既有技術文件。
 version: 2.0.0
 license: MIT

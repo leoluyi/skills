@@ -1,23 +1,11 @@
 ---
 name: blog-writing-zh
 description: >-
-  Write or rewrite Traditional Chinese (Taiwan) blog posts with a genuine human
-  voice, modeled on seven studied blogs (知識倉鼠, 保哥, 高見龍,
-  90s.pm.investing, AI避坑情報員, Julia Evans, Simon Willison). Manual trigger
-  only. Invoke by name for 寫部落格文章／電子報／blog post, 把筆記改寫成文章,
-  把 Obsidian 筆記變成 blog, 翻譯改寫外文文章／演講／討論串成中文長文,
-  "用我的風格寫一篇 X", or 不確定該用什麼風格寫. Supports compose and
-  rewrite modes, three technical-description modes (操作型可重現教學, 概念型
-  心智模型導讀, 推演型原理解說), selectable voice axes and length tiers
-  (短打/標準/深文/工具書級), optional dual drafts, and series-splitting
-  suggestions. Output article plus 3-5 title/subtitle candidates. Do NOT invoke
-  for 正式公文／簽呈 (use formal-doc-structure), RFP (use rfp-writing), 白話翻譯
-  單一術語 (use plain-speak), or pure de-AI editing without restructuring (use
-  humanizer-zh).
+  將主題、筆記或外文素材寫成有人味的台灣繁體中文部落格文章或電子報。
+  Write or rewrite a Taiwan Traditional Chinese blog post or newsletter from a topic, notes, or foreign-language source.
 app-description: >-
-  撰寫或改寫具真實人味的繁體中文部落格文章／電子報，模仿知識倉鼠、保哥、高見龍、Julia Evans、Simon
-  Willison 等風格。適用於「寫部落格文章」「把筆記改寫成文章」「把 Obsidian
-  筆記變成 blog」「翻譯改寫外文文章成中文長文」，並附標題／副標備選。
+  將主題、筆記或外文素材寫成有人味的台灣繁體中文文章。
+  Write or rewrite a zh-TW blog post or newsletter.
 disable-model-invocation: true
 version: 0.14.0
 license: MIT
