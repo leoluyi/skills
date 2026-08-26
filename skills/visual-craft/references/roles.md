@@ -53,6 +53,7 @@ preset 對這個角色的實作。換 preset 換的是實作，角色不動。
 | `surface/external` | 界外系統，不受我方控制 | 虛線框 `6 4` **＋照常填色** | `infra` 系 |
 | `state/planned` | 規劃中、尚未建置 | 虛線框 `6 4` **＋不填色** | 該類別的 `line` |
 | `state/deprecated` | 退場中、不在本次範圍 | 斜線紋 ＋ 中性色 | `infra` 系 |
+| `state/issue` | 出問題、待處理、風險、blocker | 緣邊粗條 ＋ 文字標籤 | `cat-s` 系 |
 | `surface/emphasis` | 這一頁在講的那個框 | 實心偏移陰影 | `highlight` |
 
 `object`／`region`／`annotation` 三者必須在**一眼之內**視覺可辨，
