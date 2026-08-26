@@ -3,3 +3,7 @@ interface:
   short_description: >-
     Explain a topic to a total beginner as a one-screen HTML explainer: big
     visuals, very few words, no jargon.
+  default_prompt: >-
+    Use $eli5 for the beginner explanation. Delegate visual implementation to
+    the narrowest available sibling skill, such as $visual-craft for visual
+    language or $infographic-design for explanatory SVG or HTML graphics.

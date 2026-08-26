@@ -8,6 +8,7 @@
     {"id": 5, "query": "把這段技術說明翻成白話文給 PM 看", "should_trigger": false, "category": "negative/plain-speak", "note": "Existing prose to simplify, not a topic to explain visually - that is plain-speak"},
     {"id": 6, "query": "幫我做一張資訊圖表，整理這四家雲端供應商的定價比較", "should_trigger": false, "category": "negative/infographic-design", "note": "Dense comparison graphic for an informed reader - that is infographic-design"},
     {"id": 7, "query": "Write the documentation for our authentication flow", "should_trigger": false, "category": "negative/technical-docs", "note": "Accurate reference documentation, where simplifying away precision would be a defect"},
-    {"id": 8, "query": "Explain how our caching layer works so I can debug it", "should_trigger": false, "category": "negative/expert-explanation", "note": "The asker is an engineer working on the code and needs precision, not an analogy"}
+    {"id": 8, "query": "Explain how our caching layer works so I can debug it", "should_trigger": false, "category": "negative/expert-explanation", "note": "The asker is an engineer working on the code and needs precision, not an analogy"},
+    {"id": 9, "query": "用五歲小孩聽得懂的方式解釋什麼是 CDN，並做成有精緻視覺設計的單檔 HTML", "should_trigger": true, "category": "positive/visual-skill-composition"}
   ]
 }

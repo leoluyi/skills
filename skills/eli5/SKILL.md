@@ -40,6 +40,22 @@ as few words as the explanation can survive on.
 - Skip when there is existing prose to simplify rather than a topic to explain —
   that is `plain-speak`.
 
+## Visual implementation routing
+
+ELI5 owns the teaching design: one idea, one analogy, minimal language, and the honesty note.
+Delegate visual implementation to the narrowest available sibling skill when its scope matches:
+
+- Use `$visual-craft` for deliberate visual language, composition, styling, or restyling of structured visual work.
+- Use `$infographic-design` for polished explanatory SVG or single-file HTML graphics.
+- Use `$theme-factory` when the user asks to apply or compare a named artifact theme.
+- Use `$visualize` when the user wants an interactive visual in the conversation, such as adjustable inputs, a simulator, or a UI preview.
+- Use `sites-building` only when the requested deliverable is a website or app rather than one standalone explainer.
+- After producing a fixed-layout visual artifact, use `visual-output-qa` when it is available to inspect the rendered result.
+
+Keep ELI5 primary for beginner teaching, and use one visual skill as the primary implementation owner.
+Add another only when their responsibilities are complementary.
+If no sibling skill is available, continue with inline SVG and CSS.
+
 ## Procedure
 
 1. **Find the one thing.** Name the single idea the reader must walk away with.
@@ -68,9 +84,8 @@ as few words as the explanation can survive on.
 Write a single `.html` file: inline CSS and SVG, no external fetches, readable
 on a phone, sensible in both light and dark. Where the harness can publish
 artifacts, publish it and hand back the link; otherwise leave the file on disk
-and give the path. If a sibling skill for artifact design or diagramming is
-available, prefer it for the visual pass — this skill's job is the explanation,
-not the styling engine.
+and give the path. Use the visual implementation routing above for the visual
+pass; this skill's job is the explanation, not the styling engine.
 
 Keep it to one screen-scroll. An eli5 that needs a table of contents has stopped
 being an eli5.

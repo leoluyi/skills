@@ -42,6 +42,16 @@
         "No HTML picture explainer is produced for this request",
         "The response either routes to plain-language rewriting or simply rewrites the prose, keeping the deliverable a document rather than a visual"
       ]
+    },
+    {
+      "id": 5,
+      "prompt": "用五歲小孩聽得懂的方式解釋什麼是 CDN，做成一個有精緻視覺設計的單檔 HTML。",
+      "expected_output": "ELI5 remains primary for the beginner explanation and delegates visual implementation to the narrowest available sibling skill, such as visual-craft or infographic-design.",
+      "expectations": [
+        "eli5-owned: 保留單一重點、單一生活比喻、3 到 6 個視覺步驟與簡化註記",
+        "visual-skill-routing: 視覺設計交給 visual-craft 或 infographic-design，不把 ELI5 的 inline SVG/CSS 當成唯一實作路徑",
+        "single-file-contract: 最終仍是單一自包含 HTML，沒有外部 fetch"
+      ]
     }
   ]
 }
