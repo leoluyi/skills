@@ -526,7 +526,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     for command in ("quick", "trigger"):
         child = sub.add_parser(command)
         child.add_argument("skill")
-        child.add_argument("--ids") if command == "quick" else child.add_argument("--agent", choices=("codex", "claude"), default=os.environ.get("RUN_EVAL_AGENT", "codex"))
+        if command == "quick":
+            child.add_argument("--ids")
+        else:
+            child.add_argument("--agent", choices=("codex", "claude"), default=os.environ.get("RUN_EVAL_AGENT", "codex"))
     gate = sub.add_parser("gate")
     gate.add_argument("skill")
     gate.add_argument("--baseline", required=True)

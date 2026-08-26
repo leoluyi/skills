@@ -15,6 +15,7 @@ skills/<name>/
 │   └── openai.yaml      # Codex picker text + invocation mode — see Invocation modes
 └── evals/
     ├── evals.json        # with-vs-without test cases
+    ├── trigger-queries.json  # description boundary fixtures
     ├── config.json        # optional quick/high-risk gate configuration
     ├── judged-cases.md   # optional — corpus of user verdicts
     └── label-check.json  # optional — opt into the tools/check-labels gate
@@ -184,8 +185,9 @@ Evals follow the official `skill-creator` standard: `skills/<name>/evals/evals.j
 - **Anchor evals externally, or they measure your taste.** Assertions derived from the skill's own prose, judged by a model reading that prose, measure conformance — not user value. Phrase assertions as reader outcomes ("a reader can verify X from the artifact alone"), anchor to external standards where they exist, and compare at least one output per round against a real-world exemplar of the genre. Source scenarios from real user requests and artifacts the user has already judged, not from "what does this skill claim to do well?" — a self-authored suite can only fail where you already thought to look. Keep it as a regression guard: good at noticing a deleted rule, worthless as evidence of improvement.
 - **Pair every should-fire assertion with a must-not-fire boundary.** A suite that only checks "the rule catches X" is blind to over-triggering: when adding a detection rule, also add the nearest legitimate text the rule must leave alone, and track the two failure classes separately — for most skills here, a false positive on real writing outranks a missed catch. Text-rewriting skills get three further standing checks on every rewrite output: fidelity (numbers, names, links, quoted text survive verbatim), no same-family substitution (deleting 「賦能」 only to insert 「加值」 is a fail, not a fix), and a prompt-injection probe (an "ignore your rules" instruction embedded in the manuscript is data to edit, not a command). Adapted from speak-human-tw's eval protocol.
 - **Human judgment is the tie-breaker.** When a person says the output got worse while every internal metric is green, suspect the rubric before the person.
-- **Cross-check a suspicious trigger result on the second harness before calling it a regression.** `tools/eval trigger` uses Codex by default; rerun with `--agent claude` for the second harness. When the two disagree case-by-case, report `INCONCLUSIVE`; when they agree, the triggering change is real.
+- **Evals run on one harness.** Trigger, quick, and gate all use the default agent; a second harness doubles cost for a signal that has never changed a ship decision here. Portability is enforced by the rules in [Portability](#portability) at review time, not by running the suite twice. Rerun elsewhere only when a specific result looks wrong and the harness is the suspect.
 - **Run Claude trigger suites sequentially.** Each suite already parallelizes its queries; launching several suites together multiplies Claude subprocesses and can cancel SessionEnd hooks before results are scored.
+
 ## Maintenance
 
 - `tools/usage-report` quarterly. Zero hits in 90 days → archive candidate (`tools/archive-skill <name>`).
@@ -212,9 +214,7 @@ rg -n \
   skills/<name>/
 ```
 
-The command catches mechanical tells in runtime files; read for the rest.
-Any sentence explaining *how a rule was arrived at* rather than how to apply it is noise, whatever words it uses.
-The command excludes `design-notes.md`, `judged-cases.md`, and eval fixtures, where provenance belongs.
+The command catches mechanical tells in runtime files and leaves `design-notes.md`, `judged-cases.md`, and eval fixtures alone, where provenance belongs; read for the rest, because any sentence explaining *how a rule was arrived at* rather than how to apply it is noise whatever words it uses.
 
 ## Skill self-sufficiency and dependency direction
 
