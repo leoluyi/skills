@@ -106,7 +106,7 @@ Language-agnostic professional tools that stand on their own — no Chinese requ
 | Skill | Invocation | What it does |
 |---|---|---|
 | **Infographic Design**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | Design-system-grade explanatory graphics — timelines, comparisons, process diagrams — as clean, self-contained SVG or a single HTML file. Language-agnostic; built to be saved and reshared |
-| **Diagram Style**<br>[`diagram-style`](skills/diagram-style/SKILL.md) | `model-invoked` | Generate a new diagram from requirements or restyle an existing one while preserving requested content |
+| **Visual Craft**<br>[`visual-craft`](skills/visual-craft/SKILL.md) | `model-invoked` | Create structured visual work from requirements or restyle existing work while preserving requested content |
 | **Knowledge Doc Writing (Diátaxis)**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | Engineering-grade knowledge docs on the Diátaxis model — tutorial, how-to, reference, explanation — writing only what the material supports and flagging the gaps honestly. A discipline that travels across domains |
 | **Fourth-Wall Repair**<br>[`fourth-wall-repair`](skills/fourth-wall-repair/SKILL.md) | `user-invoked` | Removes prose about the artifact, reading path, page role, and commissioning context while preserving evidence and real instructions |
 | **Visual Output QA**<br>[`visual-output-qa`](skills/visual-output-qa/SKILL.md) | `model-invoked` | Review rendered visual artifacts against one fail-closed delivery standard |

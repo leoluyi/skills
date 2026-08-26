@@ -5,14 +5,14 @@ order: 2
 languages: [zh-TW, en]
 tags: [diagram, svg, pptx, architecture-diagram, flowchart, visual-style, traditional-chinese]
 title:
-  en: "Diagram Style"
-  zh: "架構圖設計與重繪"
+  en: "Visual Craft"
+  zh: "視覺化設計與重繪"
 tagline:
-  en: "Generate a new diagram from requirements or restyle an existing one while preserving requested content"
-  zh: "從需求建立新圖，或保留指定內容重新設計既有架構圖與流程圖"
+  en: "Create structured visual work from requirements or restyle existing work while preserving requested content"
+  zh: "從需求建立結構化視覺化作品，或保留指定內容重新設計既有作品"
 whenUse:
-  en: "Use it to create an architecture or flow diagram from a topic or requirements, or when an existing SVG, PPTX, Mermaid source, or image needs a new visual treatment."
-  zh: "從主題或需求建立架構圖、流程圖，或替既有 SVG、PPTX、Mermaid 原碼與圖片換視覺風格時使用。"
+  en: "Use it to create structured visual work from a topic or requirements, or when existing SVG, PPTX, Mermaid source, or image needs a new visual treatment."
+  zh: "從主題或需求建立結構化視覺化作品，或替既有 SVG、PPTX、Mermaid 原碼與圖片換視覺風格時使用。"
 whenNot:
   en: "Do not infer unsupported system facts, or silently change content that the user asked an edit to preserve."
   zh: "不要捏造需求未提供的系統事實，也不要在 edit 模式默默修改使用者要求保留的內容。"

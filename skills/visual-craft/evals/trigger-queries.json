@@ -1,5 +1,5 @@
 {
-  "skill_name": "diagram-style",
+  "skill_name": "visual-craft",
   "queries": [
     {
       "id": 1,
@@ -21,7 +21,7 @@
     },
     {
       "id": 4,
-      "query": "用 diagram-style 把這份 SVG 的顏色換成適合列印的配色。",
+      "query": "用 visual-craft 把這份 SVG 的顏色換成適合列印的配色。",
       "should_trigger": true,
       "category": "positive/direct-skill"
     },

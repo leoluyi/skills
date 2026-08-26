@@ -520,9 +520,9 @@ def main():
 
     doc = ('<!doctype html><html lang="zh-Hant"><meta charset="utf-8">'
            '<meta name="viewport" content="width=device-width,initial-scale=1">'
-           f'<title>diagram-style 樣式參考</title><style>{CSS}</style>'
+           f'<title>visual-craft 樣式參考</title><style>{CSS}</style>'
            '<div class="bar"><div class="in">'
-           '<span class="who">diagram-style · 樣式參考</span>'
+           '<span class="who">visual-craft · 樣式參考</span>'
            '<button id="g" aria-pressed="false">灰階檢視</button></div></div>'
            f'<div class="wrap">{"".join(p)}</div>'
            f'<div class="toast" id="t"></div><script>{JS}</script></html>')

@@ -11,7 +11,7 @@
       "id": 2,
       "query": "幫我設計一張微服務架構圖，想要專業但不要太花。",
       "should_trigger": false,
-      "category": "negative/visual-design-routes-to-diagram-style",
+      "category": "negative/visual-design-routes-to-visual-craft",
       "note": "This asks for design and generation, not delivery QA of a rendered artifact."
     },
     {

@@ -1,14 +1,14 @@
 ---
-name: diagram-style
+name: visual-craft
 description: >-
-  設計或重新上樣式架構圖／流程圖：先判定 generate 或 edit；edit 保留指定的既有內容，
+  設計或重新上樣式結構化視覺化作品：先判定 generate 或 edit；edit 保留指定的既有內容，
   generate 從文字需求建立新圖，並套用 canvas composition 原則。
   使用者要求「幫我設計一張圖」「產出架構圖」「畫流程圖」、
   「幫我把這張圖的樣式調一調」「換個配色」「這幾張圖要看起來一致」時使用。
   輸入可為 SVG、PPTX、Mermaid、圖片、節點與關係條列，或只有主題與需求。
 ---
 
-# Diagram Style — 架構圖設計與重繪
+# Visual Craft - 視覺化設計與重繪
 
 先判定意圖，再選流程。
 
