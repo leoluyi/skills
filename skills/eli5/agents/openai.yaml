@@ -1,0 +1,5 @@
+interface:
+  display_name: "ELI5 Picture Explainer"
+  short_description: >-
+    Explain a topic to a total beginner as a one-screen HTML explainer: big
+    visuals, very few words, no jargon.

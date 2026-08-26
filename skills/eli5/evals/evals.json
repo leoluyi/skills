@@ -1,0 +1,47 @@
+{
+  "skill_name": "eli5",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/eli5 how does DNS work",
+      "expected_output": "A single self-contained HTML explainer that teaches DNS to a total beginner through one everyday analogy (e.g. a phonebook or a receptionist), 3-6 picture steps, and almost no text.",
+      "expectations": [
+        "Output is one self-contained HTML file with inline CSS and SVG and no external network fetches",
+        "The explainer has between 3 and 6 steps, each with a visual and at most one short sentence",
+        "A single everyday analogy is used consistently across all steps rather than one analogy per step",
+        "Unexplained jargon such as 'resolver', 'TTL', or 'authoritative nameserver' does not appear in the on-page copy",
+        "A short note outside the explainer states where the simplification is not literally true"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "幫我做一個超簡單的圖解，解釋什麼是 HTTPS，給完全不懂電腦的長輩看",
+      "expected_output": "A one-screen HTML picture explainer of HTTPS in Traditional Chinese, using a physical analogy such as a sealed envelope, with big visuals and minimal text.",
+      "expectations": [
+        "The on-page copy is in Traditional Chinese",
+        "The explanation rests on one physical, everyday analogy carried through every step",
+        "Each step pairs a visual with at most one short sentence",
+        "The output is a single HTML file rather than prose in the chat reply"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "explain like I'm 5: why is the sky blue",
+      "expected_output": "A beginner explainer that commits to one idea (short light scatters more), builds it from one analogy, and admits what it glossed over.",
+      "expectations": [
+        "The explainer commits to a single takeaway idea rather than covering several related physics topics",
+        "The response produces an HTML artifact or file rather than only a paragraph of text",
+        "A closing line states what the reader can now understand, and a separate note lists what was simplified"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Here is our onboarding doc. Rewrite it so a non-technical PM can follow it.",
+      "expected_output": "The eli5 skill declines to take over: this is simplifying existing prose, which belongs to plain-speak, not building a picture explainer.",
+      "expectations": [
+        "No HTML picture explainer is produced for this request",
+        "The response either routes to plain-language rewriting or simply rewrites the prose, keeping the deliverable a document rather than a visual"
+      ]
+    }
+  ]
+}

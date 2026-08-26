@@ -1,0 +1,13 @@
+{
+  "skill_name": "eli5",
+  "queries": [
+    {"id": 1, "query": "/eli5 how does DNS work", "should_trigger": true, "category": "positive/slash-command"},
+    {"id": 2, "query": "explain OAuth like I'm 5", "should_trigger": true, "category": "positive/explicit-phrase"},
+    {"id": 3, "query": "幫我做一個超簡單的圖解，解釋什麼是 VPN，給完全不懂的人看", "should_trigger": true, "category": "positive/zh-beginner-visual"},
+    {"id": 4, "query": "用五歲小孩聽得懂的方式解釋什麼是通貨膨脹", "should_trigger": true, "category": "positive/zh-explicit-phrase"},
+    {"id": 5, "query": "把這段技術說明翻成白話文給 PM 看", "should_trigger": false, "category": "negative/plain-speak", "note": "Existing prose to simplify, not a topic to explain visually - that is plain-speak"},
+    {"id": 6, "query": "幫我做一張資訊圖表，整理這四家雲端供應商的定價比較", "should_trigger": false, "category": "negative/infographic-design", "note": "Dense comparison graphic for an informed reader - that is infographic-design"},
+    {"id": 7, "query": "Write the documentation for our authentication flow", "should_trigger": false, "category": "negative/technical-docs", "note": "Accurate reference documentation, where simplifying away precision would be a defect"},
+    {"id": 8, "query": "Explain how our caching layer works so I can debug it", "should_trigger": false, "category": "negative/expert-explanation", "note": "The asker is an engineer working on the code and needs precision, not an analogy"}
+  ]
+}
