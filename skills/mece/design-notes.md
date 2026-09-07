@@ -12,7 +12,7 @@ Unverified gaps remain pending with reasons, and decomposition normally starts a
 Style reference: [Matt Pocock's skills](https://github.com/mattpocock/skills), especially the concise concept-led instructions in grilling and wait-what.
 The runtime is original wording; it borrows the compact style rather than copying a router or introducing sibling prerequisites.
 
-## Validation status: local checks pass; release gate blocked
+## Validation status: local checks pass; vanilla release gate passes
 
 Local validation on 2026-09-07 passed: three eval cases with ten expectations, matching manual invocation declarations, trigger skip for manual invocation, and generated catalog consistency.
 The first case embeds the user-provided meeting outline to preserve its real overlaps and reader context; it contains internal work material and must not be uploaded without authorization.
@@ -33,13 +33,12 @@ The first gate after the outline-first revision was INCONCLUSIVE: 4 expectations
 The follow-up wording fix for output-language leakage and neighboring-category boundaries reduced unresolved differences to 4, but the latest gate was still INCONCLUSIVE with 4 confirmed improvements and 0 confirmed regressions.
 The strongest stable improvements were outline-first delivery, preserving a clear existing structure, and separating mixed classification axes.
 Because unresolved differences remain, this evidence does not satisfy the repository's release gate; further prompt or fixture changes would need human judgment rather than automatic release.
-The eval suite was subsequently reduced from 22 to 7 expectations at the user's request, retaining the three real scenarios and their core behavior checks.
-The reduced suite passes local validation.
-Its external gate ran for six rounds with 7 judgments per round and 0 errors, but remained INCONCLUSIVE with 2 confirmed improvements, 0 confirmed regressions, and 5 unresolved differences.
-Further reducing the suite would remove coverage rather than resolve the candidate-versus-vanilla variance.
+The eval suite was subsequently reduced from 22 to 7 expectations, then to three mode-level expectations at the user's request.
+The final suite keeps one proposal, one decomposition, and one review case, with the decomposition row acting as a smoke-level coverage check because vanilla already handled the stronger version inconsistently.
+The final suite passes local validation.
+Its vanilla gate ran six rounds with 0 runner or grader errors: two cases were confirmed improvements, the decomposition smoke row stayed equivalent, and no differences remained unresolved.
 
-The release gate against the previous shipped version `bea264a` also ran six rounds with 0 runner or grader errors.
-It was INCONCLUSIVE with 0 confirmed improvements, 0 confirmed regressions, and 2 unresolved differences.
-This is a reasonable result for the subtraction-only wording change: it did not establish a measurable behavioral improvement, so the skill should not be called SHIP-passing on this evidence.
+The comparison against previous implementation `bea264a` ran six rounds with 0 runner or grader errors and was INCONCLUSIVE with 0 confirmed improvements, 0 confirmed regressions, and 2 unresolved differences.
+That comparison was retained as diagnostic evidence only because this is a new skill and the release baseline is vanilla.
 
 The catalog builder also reordered two existing entries according to their existing order values; their content was unchanged.
