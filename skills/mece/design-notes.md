@@ -34,6 +34,8 @@ The follow-up wording fix for output-language leakage and neighboring-category b
 The strongest stable improvements were outline-first delivery, preserving a clear existing structure, and separating mixed classification axes.
 Because unresolved differences remain, this evidence does not satisfy the repository's release gate; further prompt or fixture changes would need human judgment rather than automatic release.
 The eval suite was subsequently reduced from 22 to 7 expectations at the user's request, retaining the three real scenarios and their core behavior checks.
-The reduced suite passes local validation, but its external gate has not run because automatic approval review requires explicit authorization naming the private meeting-outline payload and OpenAI Codex as destination.
+The reduced suite passes local validation.
+Its external gate ran for six rounds with 7 judgments per round and 0 errors, but remained INCONCLUSIVE with 2 confirmed improvements, 0 confirmed regressions, and 5 unresolved differences.
+Further reducing the suite would remove coverage rather than resolve the candidate-versus-vanilla variance.
 
 The catalog builder also reordered two existing entries according to their existing order values; their content was unchanged.
