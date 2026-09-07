@@ -8,38 +8,30 @@ license: MIT
 compatibility: Claude Code and Codex. No external tools required.
 ---
 
-## Output Language
+## Output language
 
-Match the language of the user's request, and apply it to *all* user-facing output - option labels, generated-document headings, table column names - not just prose. If the user explicitly asks for another language, that wins.
-
-Language follows the request, not the source material. When the user writes in Chinese but the uploaded document, code, or reference is in English, output stays Chinese.
-
-If the request is in Chinese, use Traditional Chinese (Taiwan business usage) and keep established technical terms in English.
-
-The English in this file is structural labelling for you, not literal output. Never mirror this file's language into your response.
+Match the user's language in every heading, label, table cell, and explanation.
+For Chinese requests, use Taiwan Traditional Chinese; keep established technical terms in English.
+Do not mirror this file's English labels into the response.
 
 ## MECE
 
-Make the whole visible: readers should immediately understand which distinct matters belong here and where each detail goes.
+Make the whole visible: readers should know the distinct matters and where each detail goes.
 
 Choose mode from the request:
 
-- **Review.** If the current structure answers its question with clear sibling boundaries, report only the classification basis, evidence, and bounded gaps, then stop.
-- **Proposal.** If an existing document needs restructuring, deliver headings with one-line scopes, a compact source-to-destination mapping, and a structural check. Mapping cells use original headings plus short retain, move, or merge notes; stop after requesting direction approval, and rewrite only after approval.
-- **Decomposition.** For a new problem, deliver a two-level structure with its basis, assumptions, coverage, and pending gaps.
+- **Review.** If sibling boundaries already answer the document's question, report the basis, evidence, and bounded gaps, then stop.
+- **Proposal.** For an existing document that needs restructuring, return the new outline, a source mapping, and a structural check; request approval and stop before rewriting.
+- **Decomposition.** For a new problem, return a two-level structure, known-item mapping, assumptions, and pending gaps with reasons.
 
-1. **Scope.** Read the supplied material and state the question the structure must answer, its boundaries, and necessary assumptions in the output.
-   Proceed with reasonable stated assumptions; ask first only when an answer would materially change the classification.
-2. **Classification axis.** Build or repair the hierarchy using one classification basis among siblings, with boundaries that let readers assign content unambiguously.
-   Rebuild upper levels when needed; separate categories of work from shared discussion dimensions such as responsibility, evidence, or timing.
-   Test borderline details against neighboring categories and explain their ownership or handoff boundary.
-3. **Coverage.** Account for every supplied point, merging overlapping categories while preserving distinct meanings and constraints.
-   Judge mutual exclusivity among sibling categories; introductions, discussion details, and summaries may legitimately repeat a concept for different reader purposes.
-   For neighboring categories that can attract the same detail, state the boundary as trigger, owner, state, or handoff, and place each detail on one side.
-   Separate source-supported gaps from inferred possibilities; mark unverified gaps as pending confirmation with reasons, and bound any completeness claim to available evidence.
-4. **Deliver.** Present the selected mode's output and a brief check explaining the classification basis, overlaps resolved, and remaining gaps or ambiguous ownership.
-   In proposal mode, map every original section to a destination or explicit merge, then request approval and stop.
-   In rewrite mode, follow the approved mapping and preserve source facts and unresolved questions.
+For every mode, state the question, boundaries, and assumptions; proceed on reasonable assumptions unless an answer would change the classification.
+Use one basis among siblings, separate work categories from shared dimensions, and put each detail on one side of a trigger, owner, state, or handoff boundary.
+Cover every supplied point, merge only true overlap, and allow repetition when it serves different document functions.
+Separate source-supported material from inference, label each unverified gap with its reason, and bound completeness claims to the evidence.
 
-Stop decomposing when readers can name the main matters and place their details.
-For documents, start with two levels; deepen only branches that still mix distinct matters, with item counts and depths determined by content.
+In proposal mode, headings get one-line scopes; every original heading gets a retain, move, or merge destination; end with the structural check and approval request.
+Keep full source bullets and rewritten prose for the approved rewrite only; preserve source facts and unresolved questions.
+In decomposition mode, label supplied items and pending gaps separately so unverified causes never appear as facts.
+
+Stop when readers can name the main matters and place their details.
+Deepen only branches that still mix distinct matters.
