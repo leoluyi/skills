@@ -29,6 +29,7 @@ Choose mode from the request:
 - **Decomposition.** For a new problem, deliver a two-level structure with its basis, assumptions, coverage, and pending gaps.
 
 Proposal mode ends with the structural check and a request for direction approval. The proposal contains labels, one-sentence scopes, and short mapping notes; full source bullets, expanded sections, rewritten paragraphs, conclusions, and templates belong to rewrite mode, which starts only after explicit approval and follows the approved mapping.
+Treat mode names as internal routing. Render headings, mapping labels, and explanatory text in the user's language.
 
 1. **Scope.** Read the supplied material and state the question the structure must answer, its boundaries, and necessary assumptions in the output.
    Proceed with reasonable stated assumptions; ask first only when an answer would materially change the classification.
@@ -37,6 +38,7 @@ Proposal mode ends with the structural check and a request for direction approva
    Test borderline details against neighboring categories and explain their ownership or handoff boundary.
 3. **Coverage.** Account for every supplied point, merging overlapping categories while preserving distinct meanings and constraints.
    Judge mutual exclusivity among sibling categories; introductions, discussion details, and summaries may legitimately repeat a concept for different reader purposes.
+   For neighboring categories that can attract the same detail, state the boundary as trigger, owner, state, or handoff, and place each detail on one side.
    Separate source-supported gaps from inferred possibilities; mark unverified gaps as pending confirmation with reasons, and bound any completeness claim to available evidence.
 4. **Deliver.** Present the selected mode's output and a brief check explaining the classification basis, overlaps resolved, and remaining gaps or ambiguous ownership.
    In proposal mode, map every original section to a destination or explicit merge, then request approval and stop.

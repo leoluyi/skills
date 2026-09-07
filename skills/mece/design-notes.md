@@ -27,7 +27,13 @@ The first connected trial produced an expanded near-full rewrite before approval
 That trial was stopped, and the runtime now defines the first deliverable as headings with one-line scopes, a compact content mapping, and a structural check.
 The revision also makes scope assumptions visible and asks the agent to test ownership at neighboring category boundaries.
 The revised candidate passed local fixture validation and invocation/catalog checks.
-The repeated parallel gate was not rerun after the latest wording change because automatic approval review rejected the external evaluation command again, citing insufficiently specific trusted authorization for uploading the private meeting outline.
-No A/B release verdict is claimed.
+The user then authorized and completed the repeated parallel gate after the latest wording change.
+Six rounds ran with 10 judgments per round and 0 runner or grader errors.
+The first gate after the outline-first revision was INCONCLUSIVE: 4 expectations were confirmed improvements, 0 were confirmed regressions, and 6 differences remained unresolved across rounds.
+The follow-up wording fix for output-language leakage and neighboring-category boundaries reduced unresolved differences to 4, but the latest gate was still INCONCLUSIVE with 4 confirmed improvements and 0 confirmed regressions.
+The strongest stable improvements were outline-first delivery, preserving a clear existing structure, and separating mixed classification axes.
+Because unresolved differences remain, this evidence does not satisfy the repository's release gate; further prompt or fixture changes would need human judgment rather than automatic release.
+The eval suite was subsequently reduced from 22 to 7 expectations at the user's request, retaining the three real scenarios and their core behavior checks.
+The reduced suite passes local validation, but its external gate has not run because automatic approval review requires explicit authorization naming the private meeting-outline payload and OpenAI Codex as destination.
 
 The catalog builder also reordered two existing entries according to their existing order values; their content was unchanged.
