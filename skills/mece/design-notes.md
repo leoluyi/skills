@@ -38,4 +38,8 @@ The reduced suite passes local validation.
 Its external gate ran for six rounds with 7 judgments per round and 0 errors, but remained INCONCLUSIVE with 2 confirmed improvements, 0 confirmed regressions, and 5 unresolved differences.
 Further reducing the suite would remove coverage rather than resolve the candidate-versus-vanilla variance.
 
+The release gate against the previous shipped version `bea264a` also ran six rounds with 0 runner or grader errors.
+It was INCONCLUSIVE with 0 confirmed improvements, 0 confirmed regressions, and 2 unresolved differences.
+This is a reasonable result for the subtraction-only wording change: it did not establish a measurable behavioral improvement, so the skill should not be called SHIP-passing on this evidence.
+
 The catalog builder also reordered two existing entries according to their existing order values; their content was unchanged.

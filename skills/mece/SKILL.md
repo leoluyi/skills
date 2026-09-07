@@ -25,11 +25,8 @@ Make the whole visible: readers should immediately understand which distinct mat
 Choose mode from the request:
 
 - **Review.** If the current structure answers its question with clear sibling boundaries, report only the classification basis, evidence, and bounded gaps, then stop.
-- **Proposal.** If an existing document needs restructuring, deliver headings with one-line scopes, a compact source-to-destination mapping, and a structural check. Mapping cells use original headings plus short retain, move, or merge notes; outline sections get one sentence each.
+- **Proposal.** If an existing document needs restructuring, deliver headings with one-line scopes, a compact source-to-destination mapping, and a structural check. Mapping cells use original headings plus short retain, move, or merge notes; stop after requesting direction approval, and rewrite only after approval.
 - **Decomposition.** For a new problem, deliver a two-level structure with its basis, assumptions, coverage, and pending gaps.
-
-Proposal mode ends with the structural check and a request for direction approval. The proposal contains labels, one-sentence scopes, and short mapping notes; full source bullets, expanded sections, rewritten paragraphs, conclusions, and templates belong to rewrite mode, which starts only after explicit approval and follows the approved mapping.
-Treat mode names as internal routing. Render headings, mapping labels, and explanatory text in the user's language.
 
 1. **Scope.** Read the supplied material and state the question the structure must answer, its boundaries, and necessary assumptions in the output.
    Proceed with reasonable stated assumptions; ask first only when an answer would materially change the classification.
