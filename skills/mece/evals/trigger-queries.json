@@ -1,0 +1,24 @@
+{
+  "skill_name": "mece",
+  "queries": [
+    {
+      "id": 1,
+      "query": "$mece 幫我重整會議提綱。",
+      "should_trigger": true,
+      "category": "positive/explicit"
+    },
+    {
+      "id": 2,
+      "query": "幫我重整會議提綱。",
+      "should_trigger": false,
+      "category": "negative/implicit",
+      "note": "Manual invocation only on both harnesses."
+    },
+    {
+      "id": 3,
+      "query": "幫我潤飾這個句子。",
+      "should_trigger": false,
+      "category": "negative/sentence-edit"
+    }
+  ]
+}

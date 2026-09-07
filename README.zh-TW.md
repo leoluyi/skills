@@ -4,7 +4,7 @@
 
 **寫出像真人正體中文的 agent 技能，直接來自我的 `~/.skills`。**
 
-[![Skills](https://img.shields.io/badge/skills-26-6d4aff?style=flat-square)](#技能目錄)
+[![Skills](https://img.shields.io/badge/skills-27-6d4aff?style=flat-square)](#技能目錄)
 [![License: MIT](https://img.shields.io/badge/license-MIT-3ba55d?style=flat-square)](LICENSE)
 [![Runs on](https://img.shields.io/badge/runs%20on-Claude%20Code%20·%20Cursor%20·%20Codex-0ea5a3?style=flat-square)](#30-秒安裝)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-6d4aff?style=flat-square)](CONTRIBUTING.md)
@@ -68,7 +68,7 @@ tools/sync-skills
 <!-- CATALOG:START -->
 ## 技能目錄
 
-26 個技能、7 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
+27 個技能、7 個分類。每個技能都標了叫用方式：`model-invoked`（任務命中 trigger 時 agent 會自動載入，也能自己指名叫）或 `user-invoked`（只有你能指名叫）。可看[互動式目錄 ↗](https://leoluyi.tw/skills/)，或直接讀任何一份 [`SKILL.md`](skills/)。
 
 ### 繁中寫作
 
@@ -101,11 +101,12 @@ tools/sync-skills
 | Skill | 叫用方式 | 做什麼 |
 |---|---|---|
 | **資訊圖表設計**<br>[`infographic-design`](skills/infographic-design/SKILL.md) | `model-invoked` | 設計系統級的說明圖表（時間軸、比較、流程圖），輸出成乾淨、可獨立開啟的 SVG 或單一 HTML 檔案。跨語言通用，為收藏轉發而生 |
-| **視覺化設計與重繪**<br>[`visual-craft`](skills/visual-craft/SKILL.md) | `model-invoked` | 從需求建立結構化視覺化作品，或保留指定內容重新設計既有作品 |
 | **Diátaxis 知識文件寫作**<br>[`knowledge-doc-writing`](skills/knowledge-doc-writing/SKILL.md) | `model-invoked` | 以 Diátaxis 模型寫工程等級的知識文件（tutorial、how-to、reference、explanation），素材撐得起才寫，缺口據實標出。這套紀律跨領域通用 |
+| **視覺化設計與重繪**<br>[`visual-craft`](skills/visual-craft/SKILL.md) | `model-invoked` | 從需求建立結構化視覺化作品，或保留指定內容重新設計既有作品 |
 | **第四面牆修復**<br>[`fourth-wall-repair`](skills/fourth-wall-repair/SKILL.md) | `user-invoked` | 移除文件自述、閱讀導引、頁面角色與委託脈絡，同時保留來源引用與實際操作指示 |
 | **視覺輸出品質檢查**<br>[`visual-output-qa`](skills/visual-output-qa/SKILL.md) | `model-invoked` | 以單一且無法驗證就不放行的標準，檢查視覺成品的實際呈現 |
 | **五歲圖解**<br>[`eli5`](skills/eli5/SKILL.md) | `model-invoked` | 把任何主題變成一頁式 HTML 圖解：畫面大、字少、零術語 |
+| **MECE 架構重整**<br>[`mece`](skills/mece/SKILL.md) | `user-invoked` | 拆解問題、重整文件，讓讀者看清楚主要事項與細節歸屬。 |
 
 ### 知識管理
 

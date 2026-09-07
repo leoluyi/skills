@@ -9,7 +9,7 @@ description: >-
   writing skills and audience simplification to plain-speak.
 app-description: 稽核並改寫已完成的文稿，去除「AI 味」寫作模式，適用繁體中文、英文與中英混雜文本。觸發：「幫我把這段的 AI 味拿掉，改成人話」（改寫）或「先標出來就好，不用改」（只標記）。未提供模式、檔案位置或草稿時，手動啟動預設產出寫作前置 handoff。不降低技術程度給非技術讀者。
 argument-hint: "[--mode detect|rewrite|edit-in-place|preflight] [--voice <profile>] [--context <profile>] [--file <path>] [--expect-author] [--iterate <1|2>]"
-version: 2.4.0
+version: 2.4.1
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:

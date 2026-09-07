@@ -126,6 +126,10 @@
     "85/does-not-rewrite-in-detect",
     "86/does-not-spare-on-casual-register",
     "86/no-typo-correction",
-    "86/does-not-rewrite-in-detect"
+    "86/does-not-rewrite-in-detect",
+    "90/flags-calqued-baseline",
+    "90/fix-is-contextual",
+    "90/preserves-percentage",
+    "91/no-false-positive-on-typography-baseline"
   ]
 }

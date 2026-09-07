@@ -1125,6 +1125,26 @@
         "does-not-run-detect: 收到選擇前不列出任何該檔案的 AI-ism 命中。",
         "keeps-explicit-mode-path: 說明之後可用明確模式繼續，且 modify 對應 edit-in-place。"
       ]
+    },
+    {
+      "id": 90,
+      "prompt": "detect 這段技術文件（docs 語境）：「我們先建立基線，再比較新版表現。新版延遲比基線低 18%。」",
+      "expected_output": "Should-fix: generic baseline is rendered as 基線 twice without identifying whether it means a measured value, a version, or another comparison target. The rule should request a context-specific Chinese term or keep baseline, not blindly replace every occurrence with 基準.",
+      "expectations": [
+        "flags-calqued-baseline: 標記兩處泛用的「基線」為 baseline 的生硬直譯，依 翻譯腔／AI 慣用詞替換 規則處理。",
+        "fix-is-contextual: 改法方向要求說明比較起點，依語境選 `baseline`、基準值、基準版本、目前表現或直接寫明比較對象，不得一律替換成「基準」。",
+        "preserves-percentage: 「18%」這個具體事實必須保留，detect 模式不得改寫原文。"
+      ]
+    },
+    {
+      "id": 91,
+      "prompt": "detect 這段排版引擎文件（docs 語境）：「排版引擎依文字基線對齊同一行字元。基線位置由字體度量決定。」",
+      "expected_output": "Protection case: 基線 is an established typography term with a concrete definition, not a generic translation of baseline used as an unexplained comparison point.",
+      "expectations": [
+        "no-false-positive-on-typography-baseline: 不標記「文字基線」或「基線位置」——這裡是排版領域已有明確定義的專業術語，命中 AI 慣用詞替換列的 carve-out。",
+        "no-false-positive-on-defined-term: 不因出現英文對應詞 baseline 的中文形式就一律判為翻譯腔；本條先看語境與定義，再決定是否標記。",
+        "does-not-rewrite-in-detect: detect 模式只報不改。"
+      ]
     }
   ]
 }

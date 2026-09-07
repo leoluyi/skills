@@ -1,0 +1,5 @@
+interface:
+  display_name: "MECE"
+  short_description: "拆解問題、重整文件架構，釐清內容歸屬、重疊與缺口"
+policy:
+  allow_implicit_invocation: false
