@@ -254,5 +254,5 @@ agent asked to "change step 3's label" finds `<g id="step-3">` immediately.
 - [ ] Colour only via `:root` vars/classes — no inline hexes to hunt down?
 - [ ] Semantic `<g id>` groups + region comments for later editing?
 - [ ] Positions computed, not eyeballed? Gaps all multiples of the base unit?
-- [ ] **Ran construction preflight?** `python scripts/check.py out.svg --bg <canvas> --pad <n>` — catches source-level xml/refs/text-fit/contrast/min-font issues; it does not replace the final `visual-output-qa` rendered review.
+- [ ] **Ran SVG construction preflight?** `python scripts/check.py out.svg --bg <canvas> --pad <n>` — hard-fails XML, broken refs, and undefined CSS variables, and reports text-fit/contrast/min-font estimates; it does not replace the final `visual-output-qa` rendered review.
 - [ ] Rendered to PNG and actually looked at before delivering?

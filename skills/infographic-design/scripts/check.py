@@ -1,34 +1,30 @@
 #!/usr/bin/env python3
-"""Quality gate for infographic-design — one command, pass/fail verdict.
+"""Deterministic SVG preflight for infographic-design.
 
-Runs every deterministic check on a produced SVG and exits non-zero if any
-HARD gate fails, so it can sit in front of "deliver". Stdlib only; reuses the
-sibling scripts.
+Runs source checks on a produced SVG and exits non-zero only for definite
+reader-harming defects. Stdlib only; reuses the sibling scripts.
 
   python check.py out.svg --bg "#F7F9FC" --pad 16
 
-HARD gates (fail -> exit 1, do not deliver) — major quality defects only,
-i.e. the reader is actually harmed:
+HARD gates (fail -> exit 1):
   - xml-parse    file is well-formed XML (an unescaped & kills the whole render)
   - refs         every url(#id) resolves, no duplicate ids (broken marker =
                  arrowheads silently vanish = direction lost)
-  - canvas       no text placed outside the viewBox (clipped = content lost)
-  - text-fit     no <text> line overflows its card or the canvas
-  - contrast     every TEXT colour meets WCAG 4.5:1 (>=24px: 3:1) vs its
-                 actual background; CSS :root var() fills are resolved first,
-                 so var()-styled art gets a TRUE verdict, not a false pass
-  - min-font     no text below --min-font px (default 9; illegible)
+  - css-vars     every referenced var(--name) has a declared value
 
-ADVISORY (warn only -> still exit 0):
+ADVISORY diagnostics (warn only -> still exit 0; confirm in rendered QA):
+  - canvas       text anchor appears outside the viewBox
+  - text-fit     estimated <text> line overflow
+  - contrast     estimated WCAG contrast from parsed fills and shapes
+  - min-font     text below --min-font px (delivery scale varies)
   - font-family  named on the root <svg> (export robustness)
   - no-emoji     emoji in text (style consistency; prefer vector icons)
   - var-compat   var() colours present: browsers fine, cairosvg/librsvg are
                  not — rasterize from a resolved-hex copy
   - restyle      palette via :root var()/classes, semantic <g id=...> groups
 
-Precise contrast: unlike check_contrast.py --svg (which lists every colour and
-can't tell text from surface), this resolves each <text>'s own colour and its
-real background, so a pass/fail is trustworthy.
+Contrast and geometry are conservative source estimates, not rendered-artifact
+proof; use visual-output-qa for the final verdict.
 """
 import argparse
 import os
@@ -266,9 +262,9 @@ def main(argv):
     raw = open(a.svg).read()
     hard_fail = False
     soft_warns = []
-    print(f"Quality gate: {a.svg}  (bg={a.bg}, pad={a.pad})")
-    print("hard-fail: xml, refs, canvas, text-fit, contrast, min-font · "
-          "advisory: font, emoji, var-compat, restyle\n")
+    print(f"SVG preflight: {a.svg}  (bg={a.bg}, pad={a.pad})")
+    print("hard-fail: xml, refs, css-vars · advisory: canvas, text-fit, contrast, min-font, "
+          "font, emoji, var-compat, restyle\n")
 
     # 0a. xml well-formed — if this fails nothing else is trustworthy
     try:
@@ -276,7 +272,7 @@ def main(argv):
         print("[PASS] xml-parse: well-formed")
     except ET.ParseError as e:
         print(f"[FAIL] xml-parse: {e} — unescaped & / < in text is the usual cause")
-        print("\nGATE: FAIL — file does not parse; every other check is meaningless.")
+        print("\nPREFLIGHT: FAIL - file does not parse; every other check is meaningless.")
         return 1
 
     # 0b. resolve :root var() colours so every later check sees true hexes
@@ -309,8 +305,8 @@ def main(argv):
     # 0d. text inside the canvas
     outside, has_vb = canvas_gate(raw)
     if outside:
-        hard_fail = True
-        print(f"[FAIL] canvas: {len(outside)} text element(s) outside the viewBox (clipped = content lost)")
+        soft_warns.append("canvas: text anchor appears outside the viewBox; confirm rendered bounds")
+        print(f"[WARN] canvas: {len(outside)} text anchor(s) appear outside the viewBox (confirm rendered bounds)")
         for txt, x, y in outside[:4]:
             print(f"         at ({x:.0f},{y:.0f}): \"{txt}\"")
     elif has_vb:
@@ -322,19 +318,21 @@ def main(argv):
     # 1. text-fit
     fits, unchecked, n = textfit_scan(gate_path, a.pad)
     if fits:
-        hard_fail = True
-        print(f"[FAIL] text-fit: {len(fits)} line(s) overflow")
+        soft_warns.append("text-fit: estimated overflow; confirm in rendered output")
+        print(f"[WARN] text-fit: {len(fits)} line(s) estimated overflow")
         for s, over, kind, size in fits:
             print(f"         +{over}px past {kind}: \"{s[:48]}\"")
     else:
         print(f"[PASS] text-fit: {n} text elements, none overflow"
               + (f" ({unchecked} unchecked: complex transform)" if unchecked else ""))
+        if unchecked:
+            soft_warns.append("text-fit: complex transforms were not checked")
 
     # 2. contrast (text only, vs real bg)
     cfails = contrast_gate(gate_path, a.bg)
     if cfails:
-        hard_fail = True
-        print(f"[FAIL] contrast: {len(cfails)} text colour(s) below WCAG")
+        soft_warns.append("contrast: estimated below WCAG; confirm against rendered backgrounds")
+        print(f"[WARN] contrast: {len(cfails)} text colour estimate(s) below WCAG")
         for s, fill, r, th in cfails:
             print(f"         {fill} = {r}:1 (need {th}:1): \"{s}\"")
     else:
@@ -358,8 +356,8 @@ def main(argv):
     # 4b. minimum font size
     tiny = minfont_gate(raw, a.min_font)
     if tiny:
-        hard_fail = True
-        print(f"[FAIL] min-font: {len(tiny)} text element(s) below {a.min_font}px (illegible)")
+        soft_warns.append("min-font: estimated small text; confirm at delivery size")
+        print(f"[WARN] min-font: {len(tiny)} text element estimate(s) below {a.min_font}px")
         for txt, fs in tiny[:4]:
             print(f"         {fs}px: \"{txt}\"")
     else:
@@ -376,20 +374,11 @@ def main(argv):
 
     print()
     if hard_fail:
-        print("GATE: FAIL — fix hard failures before delivering (these are reader-harming defects).")
+        print("PREFLIGHT: FAIL - fix hard failures before delivering (these are reader-harming defects).")
         return 1
     n_adv = len(soft_warns) + len(warns)
-    print("GATE: PASS" + (f"  ({n_adv} advisory warning{'s' if n_adv != 1 else ''})" if n_adv else ""))
-    print(
-        "\nDeterministic checks pass. Before delivering, also self-attest the\n"
-        "JUDGMENT guard (not auto-checkable — answer honestly, fix if 'no'):\n"
-        "  [ ] One message: a first viewer can state the single takeaway in ~8s?\n"
-        "  [ ] Hierarchy: exactly one L1 element dominates (squint test)?\n"
-        "  [ ] Charts honest: zero-baseline bars, no 3-D/dual-axis, title states the finding?\n"
-        "  [ ] Nothing encoded by colour alone?\n"
-        "  [ ] Data source credited (small, L3)?\n"
-        "Deliver only when the gate is PASS AND every judgment box is checked."
-    )
+    print("PREFLIGHT: PASS" + (f"  ({n_adv} advisory warning{'s' if n_adv != 1 else ''})" if n_adv else ""))
+    print("\nDeterministic preflight passed. Confirm reader judgment and rendered output separately.")
     return 0
 
 

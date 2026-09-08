@@ -172,9 +172,7 @@ for f in references/*.md; do
    達標、文字是否溢框;「版面好不好看」「密度會不會太高」屬於質性。之前
    有一版塞了 31 條斷言而只有 4 條客觀,其餘由寫規則的同一模型判定 ——
    那量的是內部一致性,不是品質。
-2. **本 skill 專屬的客觀層是 `scripts/check.py`。** 錨在 WCAG、XML、幾何、
-   文字度量上,與作者無關,可無人值守跑。它衡量工藝地板,不衡量品質 ——
-   全綠只代表沒有明顯壞掉。
+2. **本 skill 專屬的來源層是 `scripts/check.py`。** XML、參照完整性與未定義 CSS 變數可 hard fail; WCAG、幾何與文字度量只提供來源估算,必須由 rendered QA 確認。它衡量工藝地板,不衡量品質——全綠只代表來源沒有明顯壞掉。
 
 ## 8. 環境陷阱
 
@@ -228,3 +226,11 @@ References 裡的具體數字(8px spacing、palette hex、type scale)是綜合
 否定只用來劃界)與無障礙硬規則(色彩不得單獨承載意義、3.3:1 不得用於內文)。這兩類留著。
 
 判準:**禁令要換成正面陳述,除非違反它會直接壞掉、或它本身就是無障礙下限。**
+
+---
+
+## 11. semantic relation 與 gate 邊界 (0.12.0)
+
+2026-09-08。從 diagram-design 借用「語意關係先於視覺版型」的最小原則,整合至 Step 3,並刪除重複的 arrangement test 與 script judgment checklist。
+
+`check.py` 的 hard fail 收斂至 XML、失效參照與未定義 CSS 變數; canvas、text-fit、contrast、min-font 改為來源估算,避免 parser 結果被誤報為 rendered truth。

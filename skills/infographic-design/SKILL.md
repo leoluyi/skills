@@ -9,7 +9,7 @@ description: >-
   plain-speak. Explicit infographic requests qualify even when data is precise.
 app-description: >-
   設計專業、精緻的解說型視覺圖像（SVG 或單檔 HTML）。適用於「資訊圖表」「懶人包」「圖解」「one-pager」、時間軸／比較／流程圖，或教學對話結束後的「學習總結成一張圖」視覺回顧，也可審閱既有圖表提出修改建議。
-version: 0.11.2
+version: 0.12.0
 license: MIT
 compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
 metadata:
@@ -43,13 +43,6 @@ dividers, badges — should each encode something true about the content; a
 device earns its place by carrying a fact. Numbered markers (① ② ③) are
 appropriate only when the content actually is a sequence; lanes only when parties genuinely act separately.
 Question each device before incorporating it.
-
-Derive the arrangement from how the parts actually relate — what feeds
-what, what contains what, what loops back. Three topics rendered as three
-equal blocks encodes the order you listed things in, which is a fact about
-your notes rather than the subject. The test: a layout that would survive
-with the content swapped for something else entirely came from the outline —
-rebuild it from the relations.
 
 For calibration: AI-generated infographics have a recognizable default look,
 and two of its tells are worth naming because they slip past every rule
@@ -168,18 +161,20 @@ only this:
 
 Say which host you are building into and take its tokens.
 
-### 3. Choose the layout archetype
+### 3. Encode the relation, then choose the layout
 
-Match the data's shape, then let the dial position set the density (see
-`references/layouts.md`): process/flow, comparison, hierarchy, timeline,
-part-whole, geo, hero-stat. For technical explainers read
-`references/bytebytego-style.md` — numbered walkthrough welded to the
-diagram, worked example, making abstract concepts visual. For a visual recap
-of a completed teaching dialogue also read `references/learn-loop-viz.md`.
+Name the one relation the reader must understand: flow, sequence, containment, comparison, quantity, or causality.
+Choose visible primitives that let the reader verify that relation without relying on the caption.
 
-**Done when** one archetype is named and it survives the outline test: if the
-arrangement would sit unchanged on a different subject, it came from your
-notes — rebuild it from how the parts actually relate.
+The relation owns semantic primitives; the archetype owns layout grammar.
+Use one primary relation.
+If a second relation needs full treatment, split the figure.
+
+Then choose the nearest archetype from `references/layouts.md` and let the dial position set its density.
+For technical explainers read `references/bytebytego-style.md`.
+For a visual recap of a completed teaching dialogue read `references/learn-loop-viz.md`.
+
+**Done when** every structural device carries a source fact, and the core relation is verifiable from the drawing alone.
 
 ### 4. Build the three-level hierarchy
 
@@ -259,24 +254,21 @@ fake-precise? When a real-world exemplar of this genre exists (a published
 ByteByteGo diagram, a chart you admire), hold your artifact next to it —
 external comparison catches what rule-checking can't. Fix what you find.
 
-Then run the format-local construction preflight. It catches
-source-level defects such as parse errors, broken refs, estimated text fit,
-contrast tokens, and tiny fonts; it is not the final rendered-artifact verdict:
+For SVG, run the format-local construction preflight.
+It catches source-level defects such as parse errors, broken refs, and estimated layout diagnostics; it is not the final rendered-artifact verdict:
 
 ```
 python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>
 ```
 
-Resolve any preflight failure before continuing. If it flags something, fix the cause
-(usually: cut words first, then shrink type, enlarge boxes only last —
-growing the canvas, with the grid's gaps held). Advisory warnings (font
-naming, emoji, var() renderer compat, restyle structure) are judgment calls,
-yours to weigh.
+Resolve hard preflight failures before continuing.
+Treat layout, contrast, and font diagnostics as prompts to inspect the rendered artifact, then fix the cause in this order: cut words, shrink type, enlarge boxes last.
+For HTML, skip this SVG-only preflight and rely on rendered QA.
 
 After preflight, run the `visual-output-qa` skill against the final rendered artifact.
 It owns the cross-format rendered truth review and delivery verdict; this skill owns infographic design and SVG or HTML construction.
 
-**Done when** every reader-critique question answers yes, the local gate returns exit 0, and `visual-output-qa` returns `PASS` for the delivery profile.
+**Done when** every reader-critique question answers yes, the applicable preflight returns exit 0, and `visual-output-qa` returns `PASS` for the delivery profile.
 
 ## Building the output
 

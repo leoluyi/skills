@@ -8,7 +8,7 @@
       "expectations": [
         "Exactly one text element is at least twice the body size",
         "The largest text states a finding rather than naming a topic",
-        "All four supplied figures appear somewhere in the graphic"
+        "All seven supplied figures appear somewhere in the graphic"
       ]
     },
     {

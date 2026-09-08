@@ -48,12 +48,16 @@ Two more it declines. A cheatsheet — a dense quick-reference sheet of commands
 
 The design work — message, palette, layout, hierarchy, honest quantities, accessibility — is a self-critique pass: before delivery, the skill checks its own draft against the brief and, where one exists, against a real-world exemplar of the genre (a published diagram in the same style, held up side by side). That pass is judgment, and it stays judgment; it is not something a script can verify.
 
-Underneath it sits a format-local construction preflight, run as `python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>`, which wraps two source-level checks:
+Underneath it sits an SVG-only construction preflight, run as `python scripts/check.py out.svg --bg "<canvas>" --pad <card-padding>`.
+It hard-fails XML, broken-reference, and undefined CSS-variable defects, and reports text fit, contrast, canvas bounds, and font size as source estimates for rendered review:
 
-- `check_contrast.py` — verifies WCAG contrast ratios (4.5:1 for text, 3:1 for large text or graphic elements) so no color pairing is silently unreadable.
-- `check_text_fit.py` — catches the most common failure mode in generated SVG: text that overflows its box or gets clipped by its container.
+- `check_contrast.py` — estimates WCAG contrast ratios from parsed fills and shapes.
+- `check_text_fit.py` — estimates whether text overflows its box or canvas.
 
-Resolve preflight failures before rendering. The final reader-harming verdict comes from `visual-output-qa`, which inspects the delivered artifact rather than trusting source estimates. If preflight flags something, the fix order is: cut words first, then shrink type, and only as a last resort enlarge boxes by growing the canvas while holding the grid's gaps.
+Resolve hard preflight failures before rendering.
+Inspect every layout diagnostic in the rendered artifact.
+The final reader-harming verdict comes from `visual-output-qa`, which inspects the delivered artifact rather than trusting source estimates.
+If preflight flags something, cut words first, then shrink type, and only as a last resort enlarge boxes by growing the canvas while holding the grid's gaps.
 
 Everything else the gate reports — font-naming conventions, emoji use, CSS variable/renderer compatibility, restyle structure — is advisory: a judgment call left to whoever is building the graphic, never a blocking condition. That split mirrors a broader principle this project follows: a check only earns the right to block delivery when it catches an objective, reader-harming defect, not a style preference.
 
