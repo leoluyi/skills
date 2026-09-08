@@ -2,6 +2,11 @@
 
 Load [engineering-guidelines.md](engineering-guidelines.md) for skill-authoring decisions beyond these hard rules: anatomy, frontmatter, lifecycle, invocation, body shape, language, tooling, portability, evals, maintenance, catalog, provenance, and dependencies.
 
+- **Read selected instructions completely before acting.** Read long `SKILL.md` files and required references in bounded ranges that fit the tool's output budget.
+  Check each result for truncation, including any combined-output limit; retry affected ranges in smaller pieces and continue until every range through EOF has been read without truncation.
+  A successful command or a visible file ending does not prove the middle was delivered.
+  Load conditional references only when their branch applies.
+
 - **Write descriptions in real UTF-8.** Plain YAML scalars do not decode `\u` escapes, so escaped non-ASCII trigger phrases silently fail. Detect: `rg -n '\\u[0-9A-Fa-f]{4}' skills/*/SKILL.md`; inspect matches in frontmatter. ([why](engineering-guidelines.md#gotcha-frontmatter-must-be-real-utf-8-never-u-escapes))
 
 - **Keep runtime content focused.** `SKILL.md` and `references/` contain task instructions; iteration provenance, eval IDs, benchmark metrics, derivation narrative, and method-named headers belong in `<skill>/design-notes.md`, `<skill>/evals/judged-cases.md`, or commit messages. ([detail](engineering-guidelines.md#keep-development-process-noise-out-of-skill-content))

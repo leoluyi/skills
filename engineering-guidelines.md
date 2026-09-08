@@ -24,6 +24,12 @@ skills/<name>/
 Keep the body under 500 lines.
 Move additional prose to `references/`; put deterministic logic in `scripts/`.
 
+Line count alone does not predict whether a first read fits: long paragraphs and multilingual text can exhaust a tool's output budget well below 500 lines.
+Keep shared instructions in the entrypoint and move substantial conditional detail behind explicit reference pointers.
+When validating loading, use the actual reader and check for omitted text, including truncation in a wrapper that combines several tool results.
+Recover an incomplete read with smaller contiguous ranges, reducing further or using character ranges when a single line is too large, until all selected instructions have been delivered.
+Splitting files does not replace checking that each required read completed.
+
 The frontmatter needs two fields.
 `description` is routing metadata: for model-invoked skills, it is the **trigger gate** the agent uses to decide whether to load the skill, so state what should fire it and the nearest lookalike boundary; for user-invoked skills, it is human-facing picker copy, so keep it as a concise summary.
 See [Invocation modes](#invocation-modes).

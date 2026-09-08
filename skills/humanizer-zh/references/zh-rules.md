@@ -10,7 +10,7 @@
 三份東西各司其職，一起用：
 
 - 逐詞查表（空話、確保家族、至關重要、AI 句式、慣用詞、四字評語、台灣用語偏好）→ [zh-phrase-rules.md](zh-phrase-rules.md)
-- 保護清單與 scope 兩個機制、severity、profile → `../SKILL.md`
+- 保護清單與 scope 兩個機制 → [finished-prose-workflow.md](finished-prose-workflow.md)；severity、profile → [review-criteria.md](review-criteria.md)
 - 作者隱身的完整判準 → [hidden-author.md](hidden-author.md)
 
 陸用語（視頻→影片、賦能、抓手）是另一條軸，`avoid-china-writing` 專門處理；本層只在它與 AI 空話重疊處順手帶到。
